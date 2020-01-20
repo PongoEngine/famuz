@@ -8,27 +8,24 @@ TODO: define syntax and write up a better readme.
 
 Famuz does not support conditional statements. Other than noise and random, everything is cleary defined. All functions are deterministic with a globally defined seed.
 
-
 ## Basic Syntax
 
 ```
-rhythm simpleRhythm
-    4~~~ 4--- 9~~~ 3~--;
+simpleRhythm00000000 =
+    x~~~ x--- x~~~ x~--
 
-rhythm simpleRhythm2
-    0~~~ 0--- 0~~~ 1~--;
+simplexxxxxxxxRhythm2 =
+    x~~~ x--- x~~~ x~--
 
-steps simpleSteps
-    0 1 2 3;
+//this is a comment
+simpleSteps =
+    0 1 2 3
 
-melody simpleMelody
-    simpleSteps | simpleRhythm2; 
+simpleMelody =
+    simpleSteps + simpleRhythm00000000 //this is another comment
 
-melody simpleLoop
-    simpleMelody | triad | arp; 
+simpleLoop =
+   arp(chord(TRIAD, simpleMelody))
 
-melody simpleLoopRef
-    simpleLoop; 
-
-song coolExampleSong simpleLoopRef|C#|melodic-minor;
+main(x~~~ x--- x~~~ x~-- + 0 1 2 9 + C# + harmonic-minor)
 ```
