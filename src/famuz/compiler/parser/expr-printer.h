@@ -103,6 +103,18 @@ void expr_print_const(Expr *expr, int spaces)
         printf("{\n%s  type: rhythm\n%s  value: %s\n%s}", spacer, spacer, rhythm, spacer);
         break;
     }
+    case C_MELODY:
+    {
+        char *melody = expr->expr.constant.value.melody;
+        printf("{\n%s  type: melody\n%s  value: %s\n%s}", spacer, spacer, melody, spacer);
+        break;
+    }
+    case C_HARMONY:
+    {
+        char *harmony = expr->expr.constant.value.harmony;
+        printf("{\n%s  type: harmony\n%s  value: %s\n%s}", spacer, spacer, harmony, spacer);
+        break;
+    }
     case C_STEPS:
     {
         char *rhythm = expr->expr.constant.value.rhythm;

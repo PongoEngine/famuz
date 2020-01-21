@@ -31,6 +31,10 @@ typedef char Rhythm[SETTINGS_LEXEME_LENGTH];
 
 typedef char Steps[SETTINGS_LEXEME_LENGTH];
 
+typedef char Melody[SETTINGS_LEXEME_LENGTH];
+
+typedef char Harmony[SETTINGS_LEXEME_LENGTH];
+
 typedef char Scale[SETTINGS_LEXEME_LENGTH];
 
 typedef char Key[SETTINGS_LEXEME_LENGTH];

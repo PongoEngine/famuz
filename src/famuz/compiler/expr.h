@@ -33,6 +33,8 @@ typedef enum
 {
     C_IDENTIFIER = 1,
     C_RHYTHM,
+    C_MELODY,
+    C_HARMONY,
     C_STEPS,
     C_SCALE,
     C_KEY,
@@ -43,6 +45,8 @@ typedef struct
     union {
         Identifier identifier;
         Rhythm rhythm;
+        Melody melody;
+        Harmony harmony;
         Steps steps;
         Scale scale;
         Key key;
