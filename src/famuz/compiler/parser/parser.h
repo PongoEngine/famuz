@@ -33,8 +33,11 @@ struct Expr *parse_expression(TokenScanner *scanner, Exprs *exprs);
 #include "./parser-rhythm.h"
 #include "./parser-steps.h"
 #include "./parser-binop.h"
-#include "./parser-call.h"
+#include "./parser-left-param.h"
 #include "./parser-assignment.h"
+#include "./parser-identifier.h"
+#include "./parser-scale.h"
+#include "./parser-key.h"
 
 Expr *get_expr(Exprs *exprs, ExprDefType def_type, Token *token)
 {
@@ -53,23 +56,17 @@ struct Expr *parse_expression_prefix(TokenScanner *scanner, Exprs *exprs)
     case IDENTIFIER:
     {
         Expr *expr = get_expr(exprs, E_CONST, &token);
-        expr->expr.constant.type = C_IDENTIFIER;
-        strcpy(expr->expr.constant.value.identifier, token.lexeme);
-        return expr;
+        return parse_identifier_prefix(expr, &token);
     }
     case SCALE:
     {
         Expr *expr = get_expr(exprs, E_CONST, &token);
-        expr->expr.constant.type = C_SCALE;
-        strcpy(expr->expr.constant.value.scale, token.lexeme);
-        return expr;
+        return parse_scale_prefix(expr, &token);
     }
     case KEY:
     {
         Expr *expr = get_expr(exprs, E_CONST, &token);
-        expr->expr.constant.type = C_KEY;
-        strcpy(expr->expr.constant.value.key, token.lexeme);
-        return expr;
+        return parse_key_prefix(expr, &token);
     }
 
     case STEPS:
@@ -123,7 +120,7 @@ struct Expr *parse_expression_infix(Expr *left, TokenScanner *scanner, Exprs *ex
     {
         token_scanner_next(scanner);
         Expr *expr = get_expr(exprs, E_CALL, &token);
-        return parse_call_infix(left, expr, scanner, exprs);
+        return parse_left_param_infix(left, expr, scanner, exprs);
     }
     case RIGHT_PARAM:
     case COMMA:

@@ -24,7 +24,7 @@
 #include "./parser.h"
 #include "../scanner.h"
 
-Expr *parse_call_infix(Expr *left, Expr *expr, TokenScanner *scanner, Exprs *exprs)
+Expr *parse_left_param_infix(Expr *left, Expr *expr, TokenScanner *scanner, Exprs *exprs)
 {
     expr->expr.call.e = left;
     expr->expr.call.params = parse_expression(scanner, exprs);
