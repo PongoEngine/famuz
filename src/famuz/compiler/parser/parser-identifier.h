@@ -23,6 +23,7 @@
 
 #include "./parser.h"
 #include "../scanner.h"
+#include "../../util/assert.h"
 
 Expr *parse_identifier_prefix(Expr *expr, Token *token)
 {

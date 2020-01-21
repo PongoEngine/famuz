@@ -21,13 +21,13 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#include "./parser.h"
-#include "../scanner.h"
-#include "../../util/assert.h"
+#include <stdio.h>
 
-Expr *parse_scale_prefix(Expr *expr, Token *token)
+bool assert_that(bool is_true, char *msg)
 {
-    expr->expr.constant.type = C_SCALE;
-    strcpy(expr->expr.constant.value.scale, token->lexeme);
-    return expr;
+    if (!is_true)
+    {
+        printf("%s", msg);
+    }
+    return is_true;
 }

@@ -23,6 +23,7 @@
 
 #include "./parser.h"
 #include "../scanner.h"
+#include "../../util/assert.h"
 
 void parse_rhythm_prefix_eat_duration(Scanner *scanner)
 {

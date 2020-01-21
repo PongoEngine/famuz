@@ -23,6 +23,7 @@
 
 #include "./parser.h"
 #include "../scanner.h"
+#include "../../util/assert.h"
 
 Expr *parse_steps_prefix(Expr *expr, Token *token)
 {

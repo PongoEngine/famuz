@@ -23,6 +23,7 @@
 
 #include "./parser.h"
 #include "../scanner.h"
+#include "../../util/assert.h"
 
 Expr *parse_left_param_infix(Expr *left, Expr *expr, TokenScanner *scanner, Exprs *exprs)
 {
@@ -31,7 +32,7 @@ Expr *parse_left_param_infix(Expr *left, Expr *expr, TokenScanner *scanner, Expr
     int params_length = 1;
     while (token_scanner_has_next(scanner) && token_scanner_peek(scanner).type != RIGHT_PARAM)
     {
-        if (token_scanner_peek(scanner).type == COMMA)
+        if (assert_that(token_scanner_peek(scanner).type == COMMA, "EXPECTED COMMA"))
         {
             token_scanner_next(scanner);
         }
@@ -39,6 +40,7 @@ Expr *parse_left_param_infix(Expr *left, Expr *expr, TokenScanner *scanner, Expr
         params_length++;
     }
     expr->expr.call.params_length = params_length;
-    token_scanner_next(scanner);
+
+    assert_that(token_scanner_next(scanner).type == RIGHT_PARAM, "EXPECTED RIGHT PARAM");
     return expr;
 }

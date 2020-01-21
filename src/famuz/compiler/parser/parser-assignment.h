@@ -23,6 +23,7 @@
 
 #include "./parser.h"
 #include "../scanner.h"
+#include "../../util/assert.h"
 
 Expr *parse_assignment_infix(Expr *left, Expr *expr, TokenScanner *scanner, Exprs *exprs)
 {
