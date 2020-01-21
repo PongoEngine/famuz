@@ -1,6 +1,8 @@
-# Famuz
+<img src="./famous.png" height="200"  align="right">
 
-![Famous](./famous.png)
+# Famuz
+> A modular music format for famous compositions.
+
 
 ## Basic Syntax
 
