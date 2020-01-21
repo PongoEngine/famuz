@@ -1,12 +1,6 @@
 # Famuz
 
-Famuz is a modular music format to create 'DRY' compositions using a bottom up approach.
-
-Rhythms and Melodies are defined seperately and composed together using the pipe operator. Items can also be piped with functions such as 'Arp', 'Triad', or ...;
-
-TODO: define syntax and write up a better readme.
-
-Famuz does not support conditional statements. Other than noise and random, everything is cleary defined. All functions are deterministic with a globally defined seed.
+![Famous](./famous.png)
 
 ## Basic Syntax
 
