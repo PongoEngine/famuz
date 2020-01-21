@@ -96,8 +96,18 @@ void expr_print_rhythm(Rhythm *rhythm)
         printf("{%i,%i} ", start, duration);
     }
     printf("]");
+}
 
-    // printf("%s", "x-x-x-x-");
+void expr_print_steps(Steps *steps)
+{
+    int length = steps->length;
+    printf("[ ");
+    for (size_t i = 0; i < length; i++)
+    {
+        int step = steps->steps[i];
+        printf("{%d} ", step);
+    }
+    printf("]");
 }
 
 void expr_print_const(Expr *expr, int spaces)
@@ -135,8 +145,10 @@ void expr_print_const(Expr *expr, int spaces)
     }
     case C_STEPS:
     {
-        char *steps = expr->expr.constant.value.steps;
-        printf("{\n%s  type: steps\n%s  value: %s\n%s}", spacer, spacer, steps, spacer);
+        Steps *steps = &(expr->expr.constant.value.steps);
+        printf("{\n%s  type: steps\n%s  value: ", spacer, spacer);
+        expr_print_steps(steps);
+        printf("\n%s}", spacer);
         break;
     }
     case C_SCALE:

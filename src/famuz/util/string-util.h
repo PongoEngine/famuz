@@ -45,7 +45,7 @@ bool is_rhythm(char ch)
 
 bool is_steps(char ch)
 {
-    return isdigit(ch) || ch == L_SPACE;
+    return isdigit(ch);
 }
 
 bool is_empty(char *str)

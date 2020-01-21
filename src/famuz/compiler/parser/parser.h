@@ -28,6 +28,7 @@
 #include "../token.h"
 #include "../scanner.h"
 #include "./parser-rhythm.h"
+#include "./parser-steps.h"
 
 struct Expr *parse_expression(TokenScanner *scanner, Exprs *exprs);
 
@@ -70,9 +71,7 @@ struct Expr *parse_expression_prefix(TokenScanner *scanner, Exprs *exprs)
     case STEPS:
     {
         Expr *expr = get_expr(exprs, E_CONST, &token);
-        expr->expr.constant.type = C_STEPS;
-        strcpy(expr->expr.constant.value.steps, token.lexeme);
-        return expr;
+        return parse_steps_prefix(expr, &token);
     }
     case RHYTHM:
     {
