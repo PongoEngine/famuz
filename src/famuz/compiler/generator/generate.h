@@ -33,7 +33,7 @@ void generate(Expr *expr)
     case E_VAR:
         break;
     case E_CALL:
-        // expr_print(expr, 0);
+        expr_print(expr, 0);
         break;
     case E_SCALE:
         break;
