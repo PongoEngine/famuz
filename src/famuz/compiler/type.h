@@ -1,6 +1,8 @@
 #pragma once
 
 /*
+ * MIT License
+ *
  * Copyright (c) 2019 Jeremy Meltingtallow
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -19,28 +21,16 @@
  * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*/
+ */
 
-#include "../expr.h"
-#include "../parser/expr-printer.h"
+#include "./settings.h"
 
-void generate(Expr *expr)
-{
-    switch (expr->def_type)
-    {
-    case E_CONST:
-        break;
-    case E_VAR:
-        break;
-    case E_CALL:
-        break;
-    case E_SCALE:
-        break;
-    case E_KEY:
-        break;
-    case E_SONG:
-        break;
-    case E_BINOP:
-        break;
-    }
-}
+typedef char Identifier[SETTINGS_LEXEME_LENGTH];
+
+typedef char Rhythm[SETTINGS_LEXEME_LENGTH];
+
+typedef char Steps[SETTINGS_LEXEME_LENGTH];
+
+typedef char Scale[SETTINGS_LEXEME_LENGTH];
+
+typedef char Key[SETTINGS_LEXEME_LENGTH];

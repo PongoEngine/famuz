@@ -25,6 +25,7 @@
 
 #include "./position.h"
 #include "./settings.h"
+#include "./type.h"
 
 typedef struct Expr Expr;
 
@@ -40,11 +41,11 @@ typedef enum
 typedef struct
 {
     union {
-        char identifier[SETTINGS_LEXEME_LENGTH];
-        char rhythm[SETTINGS_LEXEME_LENGTH];
-        char steps[SETTINGS_LEXEME_LENGTH];
-        char scale[SETTINGS_LEXEME_LENGTH];
-        char key[SETTINGS_LEXEME_LENGTH];
+        Identifier identifier;
+        Rhythm rhythm;
+        Steps steps;
+        Scale scale;
+        Key key;
     } value;
     ConstantType type;
 } Constant;
