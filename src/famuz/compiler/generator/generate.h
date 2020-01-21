@@ -33,8 +33,13 @@ void generate(Expr *expr)
     case E_VAR:
         break;
     case E_CALL:
-        expr_print(expr, 0);
-        break;
+    {
+        Expr *e = expr->expr.call.e;
+        Expr *params = expr->expr.call.params;
+        int length = expr->expr.call.params_length;
+        // expr_print(expr, 0);
+    }
+    break;
     case E_SCALE:
         break;
     case E_KEY:

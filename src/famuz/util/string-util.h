@@ -40,7 +40,7 @@ bool is_identifer(char ch)
 
 bool is_rhythm(char ch)
 {
-    return ch == L_HIT || ch == L_DURATION || ch == L_REST || ch == L_SPACE;
+    return ch == L_HIT || ch == L_DURATION || ch == L_REST;
 }
 
 bool is_steps(char ch)

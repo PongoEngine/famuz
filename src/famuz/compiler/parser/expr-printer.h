@@ -24,6 +24,7 @@
  */
 
 #include "../expr.h"
+#include "../type.h"
 
 #define create_spacer                   \
     char spacer[spaces + 1];            \
@@ -84,6 +85,21 @@ void expr_print_binop(Expr *expr, int spaces)
     printf("\n%s}", spacer);
 }
 
+void expr_print_rhythm(Rhythm *rhythm)
+{
+    int length = rhythm->length;
+    printf("[ ");
+    for (size_t i = 0; i < length; i++)
+    {
+        int start = rhythm->hits[i].start;
+        int duration = rhythm->hits[i].duration;
+        printf("{%i,%i} ", start, duration);
+    }
+    printf("]");
+
+    // printf("%s", "x-x-x-x-");
+}
+
 void expr_print_const(Expr *expr, int spaces)
 {
     create_spacer;
@@ -99,8 +115,10 @@ void expr_print_const(Expr *expr, int spaces)
     }
     case C_RHYTHM:
     {
-        char *rhythm = expr->expr.constant.value.rhythm;
-        printf("{\n%s  type: rhythm\n%s  value: %s\n%s}", spacer, spacer, rhythm, spacer);
+        Rhythm *rhythm = &(expr->expr.constant.value.rhythm);
+        printf("{\n%s  type: rhythm\n%s  value: ", spacer, spacer);
+        expr_print_rhythm(rhythm);
+        printf("\n%s}", spacer);
         break;
     }
     case C_MELODY:
@@ -117,8 +135,8 @@ void expr_print_const(Expr *expr, int spaces)
     }
     case C_STEPS:
     {
-        char *rhythm = expr->expr.constant.value.rhythm;
-        printf("{\n%s  type: steps\n%s  value: %s\n%s}", spacer, spacer, rhythm, spacer);
+        char *steps = expr->expr.constant.value.steps;
+        printf("{\n%s  type: steps\n%s  value: %s\n%s}", spacer, spacer, steps, spacer);
         break;
     }
     case C_SCALE:

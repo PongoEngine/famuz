@@ -26,6 +26,8 @@
 #include <stdbool.h>
 #include "../expr.h"
 #include "../token.h"
+#include "../scanner.h"
+#include "./parser-rhythm.h"
 
 struct Expr *parse_expression(TokenScanner *scanner, Exprs *exprs);
 
@@ -75,9 +77,7 @@ struct Expr *parse_expression_prefix(TokenScanner *scanner, Exprs *exprs)
     case RHYTHM:
     {
         Expr *expr = get_expr(exprs, E_CONST, &token);
-        expr->expr.constant.type = C_RHYTHM;
-        strcpy(expr->expr.constant.value.rhythm, token.lexeme);
-        return expr;
+        return parse_rhythm_prefix(expr, &token);
     }
     case COMMENT:
         return NULL;

@@ -83,9 +83,13 @@ void scanner_consume_identifier(Scanner *scanner, char *str)
 void scanner_consume_rhythm(Scanner *scanner, char *str)
 {
     int index = 0;
-    while (scanner_has_next(scanner) && is_rhythm(scanner_peek(scanner)))
+    while (scanner_has_next(scanner) && (is_rhythm(scanner_peek(scanner)) || scanner_peek(scanner) == L_SPACE))
     {
-        str[index++] = scanner_next(scanner);
+        char c = scanner_next(scanner);
+        if (c != L_SPACE)
+        {
+            str[index++] = c;
+        }
     }
     str[index] = '\0';
 }

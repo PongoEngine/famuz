@@ -27,7 +27,19 @@
 
 typedef char Identifier[SETTINGS_LEXEME_LENGTH];
 
-typedef char Rhythm[SETTINGS_LEXEME_LENGTH];
+typedef struct
+{
+    int start;
+    int duration;
+} Hit;
+
+typedef struct
+{
+    Hit hits[SETTINGS_HIT_LENGTH];
+    int length;
+} Rhythm;
+
+// typedef char Rhythm[SETTINGS_LEXEME_LENGTH];
 
 typedef char Steps[SETTINGS_LEXEME_LENGTH];
 

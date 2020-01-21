@@ -60,11 +60,12 @@ void famuz_parse(char *file_path)
             {
                 exprs.main = expr;
             }
+            expr_print(expr, 0);
         }
 
         if (exprs.main == NULL)
         {
-            printf("No Main Found!");
+            // printf("No Main Found!");
         }
         else
         {
