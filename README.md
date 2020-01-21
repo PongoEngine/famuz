@@ -1,6 +1,9 @@
-# Famuz
+<img src="./famous.png" height="200"  align="right">
 
-![Famous](./famous.png)
+# Famuz
+> A Modular Music Format for famous compositions.
+
+Famuz is a programming language that compiles to Midi. The goal of this project is to create music from atomic musical definitions.
 
 ## Basic Syntax
 
