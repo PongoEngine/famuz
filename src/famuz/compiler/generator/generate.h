@@ -22,7 +22,7 @@
 */
 
 #include "../expr.h"
-#include "../parser/expr-printer.h"
+#include "../../util/expr-printer.h"
 
 void generate(Expr *expr)
 {
@@ -40,12 +40,6 @@ void generate(Expr *expr)
         // expr_print(expr, 0);
     }
     break;
-    case E_SCALE:
-        break;
-    case E_KEY:
-        break;
-    case E_SONG:
-        break;
     case E_BINOP:
         break;
     }

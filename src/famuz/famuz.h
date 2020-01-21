@@ -28,7 +28,7 @@
 #include "./compiler/token.h"
 #include "./compiler/expr.h"
 #include "./compiler/parser/parser.h"
-#include "./compiler/parser/expr-printer.h"
+#include "./util/expr-printer.h"
 #include "./compiler/generator/generate.h"
 
 bool is_main(Expr *expr)
@@ -60,12 +60,12 @@ void famuz_parse(char *file_path)
             {
                 exprs.main = expr;
             }
-            expr_print(expr, 0);
+            // expr_print(expr, 0);
         }
 
         if (exprs.main == NULL)
         {
-            // printf("No Main Found!");
+            printf("No Main Found!");
         }
         else
         {

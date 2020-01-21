@@ -1,8 +1,6 @@
 #pragma once
 
 /*
- * MIT License
- *
  * Copyright (c) 2019 Jeremy Meltingtallow
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -21,34 +19,15 @@
  * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
+*/
 
-#include "./settings.h"
+#include "./parser.h"
+#include "../scanner.h"
 
-typedef char Identifier[SETTINGS_LEXEME_LENGTH];
-
-typedef struct
+Expr *parse_binop_infix(Expr *left, Expr *expr, TokenScanner *scanner, Exprs *exprs)
 {
-    int start;
-    int duration;
-} Hit;
-
-typedef struct
-{
-    Hit hits[SETTINGS_HIT_LENGTH];
-    int length;
-} Rhythm;
-
-typedef struct
-{
-    int steps[SETTINGS_STEP_LENGTH];
-    int length;
-} Steps;
-
-typedef char Melody[SETTINGS_LEXEME_LENGTH];
-
-typedef char Harmony[SETTINGS_LEXEME_LENGTH];
-
-typedef char Scale[SETTINGS_LEXEME_LENGTH];
-
-typedef char Key[SETTINGS_LEXEME_LENGTH];
+    Expr *right = parse_expression(scanner, exprs);
+    expr->expr.binop.e1 = left;
+    expr->expr.binop.e2 = right;
+    return expr;
+}

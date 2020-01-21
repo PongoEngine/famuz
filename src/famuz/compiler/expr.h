@@ -59,9 +59,6 @@ typedef enum
     E_CONST = 1,
     E_VAR,
     E_CALL,
-    E_SCALE,
-    E_KEY,
-    E_SONG,
     E_BINOP,
 } ExprDefType;
 
@@ -105,6 +102,8 @@ typedef struct Expr
     } expr;
     Position *pos;
     ExprDefType def_type;
+    ConstantType ret_type;
+
 } Expr;
 
 typedef struct

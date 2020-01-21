@@ -23,8 +23,8 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "../expr.h"
-#include "../type.h"
+#include "../compiler/expr.h"
+#include "../compiler/type.h"
 
 #define create_spacer                   \
     char spacer[spaces + 1];            \
@@ -54,10 +54,11 @@ void expr_print_call(Expr *expr, int spaces)
     int params_length = expr->expr.call.params_length;
     printf("{\n%s  type: call;\n%s  e: ", spacer, spacer);
     expr_print(e, spaces + 2);
-    printf("\n%s  params: [", spacer);
+    printf("\n%s  params:", spacer);
+    printf("\n%s    [", spacer);
     for (size_t i = 0; i < params_length; i++)
     {
-        expr_print(&params[i], spaces + 2);
+        expr_print(&params[i], spaces + 4);
         if (i == params_length - 1)
         {
             printf("]");
@@ -180,10 +181,6 @@ void expr_print(Expr *expr, int spaces)
         break;
     case E_CALL:
         expr_print_call(expr, spaces);
-        break;
-    case E_SCALE:
-    case E_KEY:
-    case E_SONG:
         break;
     case E_BINOP:
         expr_print_binop(expr, spaces);

@@ -24,13 +24,17 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
+
+struct Expr *parse_expression(TokenScanner *scanner, Exprs *exprs);
+
 #include "../expr.h"
 #include "../token.h"
 #include "../scanner.h"
 #include "./parser-rhythm.h"
 #include "./parser-steps.h"
-
-struct Expr *parse_expression(TokenScanner *scanner, Exprs *exprs);
+#include "./parser-binop.h"
+#include "./parser-call.h"
+#include "./parser-assignment.h"
 
 Expr *get_expr(Exprs *exprs, ExprDefType def_type, Token *token)
 {
@@ -107,37 +111,19 @@ struct Expr *parse_expression_infix(Expr *left, TokenScanner *scanner, Exprs *ex
     {
         token_scanner_next(scanner);
         Expr *expr = get_expr(exprs, E_BINOP, &token);
-        expr->expr.binop.e1 = left;
-        expr->expr.binop.e2 = parse_expression(scanner, exprs);
-        return expr;
+        return parse_binop_infix(left, expr, scanner, exprs);
     }
     case ASSIGNMENT:
     {
         token_scanner_next(scanner);
         Expr *expr = get_expr(exprs, E_VAR, &token);
-        strcpy(expr->expr.var.name, left->expr.constant.value.identifier);
-        expr->expr.var.e = parse_expression(scanner, exprs);
-        return expr;
+        return parse_assignment_infix(left, expr, scanner, exprs);
     }
     case LEFT_PARAM:
     {
         token_scanner_next(scanner);
         Expr *expr = get_expr(exprs, E_CALL, &token);
-        expr->expr.call.e = left;
-        expr->expr.call.params = parse_expression(scanner, exprs);
-        int params_length = 1;
-        while (token_scanner_has_next(scanner) && token_scanner_peek(scanner).type != RIGHT_PARAM)
-        {
-            if (token_scanner_peek(scanner).type == COMMA)
-            {
-                token_scanner_next(scanner);
-            }
-            parse_expression(scanner, exprs);
-            params_length++;
-        }
-        expr->expr.call.params_length = params_length;
-        token_scanner_next(scanner);
-        return expr;
+        return parse_call_infix(left, expr, scanner, exprs);
     }
     case RIGHT_PARAM:
     case COMMA:
