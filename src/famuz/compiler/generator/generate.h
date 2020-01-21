@@ -26,6 +26,22 @@
 
 int generate(Expr *expr)
 {
-    expr_print(expr, 0);
+    switch (expr->def_type)
+    {
+    case E_CONST:
+        break;
+    case E_VAR:
+        break;
+    case E_CALL:
+        break;
+    case E_SCALE:
+        break;
+    case E_KEY:
+        break;
+    case E_SONG:
+        break;
+    case E_BINOP:
+        break;
+    }
     return 0;
 }

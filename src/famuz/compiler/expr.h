@@ -85,11 +85,6 @@ typedef struct
     int params_length;
 } Call;
 
-typedef enum
-{
-    Cool
-} Type;
-
 typedef struct Expr
 {
     union ExprDef {
@@ -105,7 +100,6 @@ typedef struct Expr
     } expr;
     Position *pos;
     ExprDefType def_type;
-    Type type;
 } Expr;
 
 typedef struct
