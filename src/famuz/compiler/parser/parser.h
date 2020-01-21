@@ -24,7 +24,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
-#include "expr-printer.h"
 #include "../expr.h"
 #include "../token.h"
 
@@ -102,7 +101,6 @@ struct Expr *parse_expression_prefix(TokenScanner *scanner, Exprs *exprs)
 struct Expr *parse_expression_infix(Expr *left, TokenScanner *scanner, Exprs *exprs)
 {
     Token token = token_scanner_peek(scanner);
-    //
 
     switch (token.type)
     {
