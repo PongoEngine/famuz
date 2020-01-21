@@ -21,7 +21,7 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#include "../parser/expr.h"
+#include "../expr.h"
 #include "../parser/expr-printer.h"
 
 int generate(Expr *expr)

@@ -24,8 +24,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
-#include "expr.h"
 #include "expr-printer.h"
+#include "../expr.h"
 #include "../token.h"
 
 struct Expr *parse_expression(TokenScanner *scanner, Exprs *exprs);

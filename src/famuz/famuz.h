@@ -26,8 +26,8 @@
 #include "./util/file-util.h"
 #include "./compiler/lexer/lexer.h"
 #include "./compiler/token.h"
+#include "./compiler/expr.h"
 #include "./compiler/parser/parser.h"
-#include "./compiler/parser/expr.h"
 #include "./compiler/parser/expr-printer.h"
 #include "./compiler/generator/generate.h"
 

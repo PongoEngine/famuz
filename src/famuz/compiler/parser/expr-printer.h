@@ -23,7 +23,7 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "./expr.h"
+#include "../expr.h"
 
 #define create_spacer                   \
     char spacer[spaces + 1];            \

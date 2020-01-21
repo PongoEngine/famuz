@@ -23,8 +23,8 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "../position.h"
-#include "../settings.h"
+#include "./position.h"
+#include "./settings.h"
 
 typedef struct Expr Expr;
 
