@@ -1,6 +1,8 @@
 #pragma once
 
 /*
+ * MIT License
+ *
  * Copyright (c) 2019 Jeremy Meltingtallow
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -19,16 +21,49 @@
  * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*/
+ */
 
-#include "./parser.h"
-#include "../scanner.h"
-#include "../../util/assert.h"
+#include "../position.h"
+#include "../settings.h"
+#include "../type.h"
 
-Expr *parse_key_prefix(Expr *expr, Token *token)
+typedef struct Expr Expr;
+
+#include "./expr-constant.h"
+#include "./expr-binop.h"
+#include "./expr-var.h"
+#include "./expr-call.h"
+
+typedef enum
 {
-    expr->expr.constant.type = C_KEY;
-    strcpy(expr->expr.constant.value.key, token->lexeme);
-    expr->ret_type = C_KEY;
-    return expr;
-}
+    E_CONST = 1,
+    E_VAR,
+    E_CALL,
+    E_BINOP,
+} ExprDefType;
+
+typedef struct Expr
+{
+    union ExprDef {
+        //A constant.
+        Constant constant;
+        //Variable declaration.
+        Var var;
+        //A call e(params).
+        Call call;
+        //Binary operator e1 op e2.
+        Binop binop;
+
+    } expr;
+    Position *pos;
+    ExprDefType def_type;
+    ConstantType ret_type;
+
+} Expr;
+
+typedef struct
+{
+    Expr exprs[SETTINGS_EXPRS_LENGTH];
+    Expr *main;
+    int cur_index;
+} Exprs;

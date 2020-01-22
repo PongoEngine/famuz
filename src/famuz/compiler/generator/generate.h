@@ -21,7 +21,7 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#include "../expr.h"
+#include "../expr/expr.h"
 #include "../../util/expr-printer.h"
 
 void generate(Expr *expr)
@@ -33,13 +33,7 @@ void generate(Expr *expr)
     case E_VAR:
         break;
     case E_CALL:
-    {
-        Expr *e = expr->expr.call.e;
-        Expr *params = expr->expr.call.params;
-        int length = expr->expr.call.params_length;
-        // expr_print(expr, 0);
-    }
-    break;
+        break;
     case E_BINOP:
         break;
     }

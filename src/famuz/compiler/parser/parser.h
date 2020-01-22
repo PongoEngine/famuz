@@ -27,7 +27,7 @@
 
 struct Expr *parse_expression(TokenScanner *scanner, Exprs *exprs);
 
-#include "../expr.h"
+#include "../expr/expr.h"
 #include "../token.h"
 #include "../scanner.h"
 #include "./parser-rhythm.h"

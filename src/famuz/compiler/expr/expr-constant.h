@@ -1,6 +1,8 @@
 #pragma once
 
 /*
+ * MIT License
+ *
  * Copyright (c) 2019 Jeremy Meltingtallow
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -19,16 +21,29 @@
  * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*/
+ */
 
-#include "./parser.h"
-#include "../scanner.h"
-#include "../../util/assert.h"
-
-Expr *parse_key_prefix(Expr *expr, Token *token)
+typedef enum
 {
-    expr->expr.constant.type = C_KEY;
-    strcpy(expr->expr.constant.value.key, token->lexeme);
-    expr->ret_type = C_KEY;
-    return expr;
-}
+    C_IDENTIFIER = 1,
+    C_RHYTHM,
+    C_MELODY,
+    C_HARMONY,
+    C_STEPS,
+    C_SCALE,
+    C_KEY,
+} ConstantType;
+
+typedef struct
+{
+    union {
+        Identifier identifier;
+        Rhythm rhythm;
+        Melody melody;
+        Harmony harmony;
+        Steps steps;
+        Scale scale;
+        Key key;
+    } value;
+    ConstantType type;
+} Constant;

@@ -23,44 +23,7 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "./position.h"
-#include "./settings.h"
-#include "./type.h"
-
-typedef struct Expr Expr;
-
-typedef enum
-{
-    C_IDENTIFIER = 1,
-    C_RHYTHM,
-    C_MELODY,
-    C_HARMONY,
-    C_STEPS,
-    C_SCALE,
-    C_KEY,
-} ConstantType;
-
-typedef struct
-{
-    union {
-        Identifier identifier;
-        Rhythm rhythm;
-        Melody melody;
-        Harmony harmony;
-        Steps steps;
-        Scale scale;
-        Key key;
-    } value;
-    ConstantType type;
-} Constant;
-
-typedef enum
-{
-    E_CONST = 1,
-    E_VAR,
-    E_CALL,
-    E_BINOP,
-} ExprDefType;
+#include "./expr.h"
 
 typedef enum
 {
@@ -73,42 +36,3 @@ typedef struct
     Expr *e2;
     BinopType type;
 } Binop;
-
-typedef struct
-{
-    Expr *e;
-    char name[SETTINGS_LEXEME_LENGTH];
-} Var;
-
-typedef struct
-{
-    Expr *e;
-    Expr *params;
-    int params_length;
-} Call;
-
-typedef struct Expr
-{
-    union ExprDef {
-        //A constant.
-        Constant constant;
-        //Variable declaration.
-        Var var;
-        //A call e(params).
-        Call call;
-        //Binary operator e1 op e2.
-        Binop binop;
-
-    } expr;
-    Position *pos;
-    ExprDefType def_type;
-    ConstantType ret_type;
-
-} Expr;
-
-typedef struct
-{
-    Expr exprs[SETTINGS_EXPRS_LENGTH];
-    Expr *main;
-    int cur_index;
-} Exprs;

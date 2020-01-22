@@ -65,10 +65,11 @@ Expr *parse_rhythm_prefix(Expr *expr, Token *token)
         }
         else
         {
-            printf("ERROR");
+            assert_that(false, "INVALID RHYTHM");
             scanner_next(&scanner);
         }
     }
     expr->expr.constant.value.rhythm.length = index;
+    expr->ret_type = C_RHYTHM;
     return expr;
 }

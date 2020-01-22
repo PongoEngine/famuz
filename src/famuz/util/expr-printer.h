@@ -23,7 +23,7 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "../compiler/expr.h"
+#include "../compiler/expr/expr.h"
 #include "../compiler/type.h"
 
 #define create_spacer                   \
@@ -39,9 +39,10 @@ void expr_print(Expr *expr, int spaces);
 void expr_print_var(Expr *expr, int spaces)
 {
     create_spacer;
-    char *name = expr->expr.var.name;
+    char *name = expr->expr.var.identifier->expr.constant.value.identifier;
     Expr *e = expr->expr.var.e;
-    printf("{\n%s  type: var;\n%s  name:%s;\n%s  e: ", spacer, spacer, name, spacer);
+    ConstantType type = expr->ret_type;
+    printf("{\n%s  type: var;\n%s  ret: %i;\n%s  name:%s;\n%s  e: ", spacer, spacer, type, spacer, name, spacer);
     expr_print(e, spaces + 2);
     printf("\n%s}", spacer);
 }
@@ -75,7 +76,7 @@ void expr_print_call(Expr *expr, int spaces)
 void expr_print_binop(Expr *expr, int spaces)
 {
     create_spacer;
-    char *name = expr->expr.var.name;
+    char *name = expr->expr.var.identifier->expr.constant.value.identifier;
     Expr *e1 = expr->expr.binop.e1;
     BinopType type = expr->expr.binop.type;
     Expr *e2 = expr->expr.binop.e2;
