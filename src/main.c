@@ -1,6 +1,7 @@
 
 #include <stdio.h>
 #include <time.h>
+#include "./famuz/util/hash-array.h"
 #include "./famuz/famuz.h"
 
 int main()
