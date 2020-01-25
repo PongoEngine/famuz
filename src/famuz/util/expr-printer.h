@@ -31,7 +31,9 @@
 #define SET_COLOR_VAR printf("\033[01;33m");
 #define SET_COLOR_CALL printf("\033[1;34m");
 #define SET_COLOR_BINOP printf("\033[1;35m");
+#define SET_COLOR_PAREN printf("\033[1;36m");
 #define SET_COLOR_RESET printf("\033[0m");
+
 
 #define create_spacer                   \
     char spacer[spaces + 1];            \
@@ -86,7 +88,13 @@ void expr_print_call(Expr *expr, int spaces)
 
 void expr_print_paren(Expr *expr, int spaces)
 {
-    printf("PRINTING PARENS!\n");
+    create_spacer;
+    Expr *e = expr->def.parentheses.e;
+    ConstantType ret_type = expr->ret_type;
+    printf("{\n%s  type: parentheses;\n%s  ret: %i;\n%s  e: ", spacer, spacer, ret_type, spacer);
+    expr_print(e, spaces + 2);
+    SET_COLOR_PAREN
+    printf("\n%s}", spacer);
 }
 
 void expr_print_binop(Expr *expr, int spaces)
@@ -232,7 +240,7 @@ void expr_print(Expr *expr, int spaces)
     }
     case E_PAREN:
     {
-        SET_COLOR_BINOP
+        SET_COLOR_PAREN
         expr_print_paren(expr, spaces);
         break;
     }

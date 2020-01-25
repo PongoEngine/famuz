@@ -91,7 +91,7 @@ struct Expr *parse_expression_prefix(TokenScanner *scanner, Exprs *exprs)
     case LEFT_PARAM:
     {
         Expr *expr = get_expr(exprs, E_PAREN, &token);
-        return parse_left_paren_prefix(expr, &token);
+        return parse_left_paren_prefix(expr, scanner, exprs);
     }
     case RIGHT_PARAM:
         return NULL;

@@ -66,8 +66,10 @@ Expr *parse_left_paren_infix(Expr *left, Expr *expr, TokenScanner *scanner, Expr
 /**
  * Parsing parens "(...)"
  */
-Expr *parse_left_paren_prefix(Expr *expr, Token *token)
+Expr *parse_left_paren_prefix(Expr *expr, TokenScanner *scanner, Exprs *exprs)
 {
-    printf("WE ARE PARSING PARENS!");
+    expr->def.parentheses.e = parse_expression(scanner, exprs);
+    assert_that(token_scanner_next(scanner).type == RIGHT_PARAM, "EXPECTED RIGHT PARAM");
+    expr->ret_type = expr->def.parentheses.e->ret_type;
     return expr;
 }
