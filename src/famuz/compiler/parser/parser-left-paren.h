@@ -29,7 +29,7 @@
 /**
  * Parsing call "arp(...)"
  */
-Expr *parse_left_param_infix(Expr *left, Expr *expr, TokenScanner *scanner, Exprs *exprs)
+Expr *parse_left_paren_infix(Expr *left, Expr *expr, TokenScanner *scanner, Exprs *exprs)
 {
     expr->def.call.e = left;
     expr->def.call.params = parse_expression(scanner, exprs);
@@ -52,6 +52,9 @@ Expr *parse_left_param_infix(Expr *left, Expr *expr, TokenScanner *scanner, Expr
     }
     else if(strcmp(left->def.constant.value.identifier, "chord") == 0) {
         expr->ret_type = C_HARMONY;
+    }
+    else if(strcmp(left->def.constant.value.identifier, "main") == 0) {
+        expr->ret_type = C_MUSIC;
     }
     else {
         expr->ret_type = -1;

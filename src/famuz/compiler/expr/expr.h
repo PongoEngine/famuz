@@ -95,6 +95,10 @@ ConstantType expr_type_from_name(Exprs *exprs, char *name)
     {
         return C_HARMONY;
     }
+    else if (strcmp(name, "main") == 0)
+    {
+        return C_MUSIC;
+    }
 
     Expr *expr = expr_from_name(exprs, name);
     return expr == NULL ? -1 : expr->ret_type;

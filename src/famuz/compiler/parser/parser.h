@@ -33,7 +33,7 @@ struct Expr *parse_expression(TokenScanner *scanner, Exprs *exprs);
 #include "./parser-rhythm.h"
 #include "./parser-steps.h"
 #include "./parser-binop.h"
-#include "./parser-left-param.h"
+#include "./parser-left-paren.h"
 #include "./parser-assignment.h"
 #include "./parser-identifier.h"
 #include "./parser-scale.h"
@@ -121,7 +121,7 @@ struct Expr *parse_expression_infix(Expr *left, TokenScanner *scanner, Exprs *ex
     {
         token_scanner_next(scanner);
         Expr *expr = get_expr(exprs, E_CALL, &token);
-        return parse_left_param_infix(left, expr, scanner, exprs);
+        return parse_left_paren_infix(left, expr, scanner, exprs);
     }
     case RIGHT_PARAM:
     case COMMA:
