@@ -70,6 +70,5 @@ Expr *parse_rhythm_prefix(Expr *expr, Token *token)
         }
     }
     expr->expr.constant.value.rhythm.length = index;
-    expr->ret_type = C_RHYTHM;
     return expr;
 }

@@ -32,6 +32,5 @@ Expr *parse_assignment_infix(Expr *left, Expr *expr, TokenScanner *scanner, Expr
         expr->expr.var.identifier = left;
     }
     expr->expr.var.e = parse_expression(scanner, exprs);
-    expr->ret_type = expr->expr.var.e->ret_type;
     return expr;
 }

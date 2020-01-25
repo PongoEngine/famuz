@@ -48,8 +48,7 @@ void expr_print_var(Expr *expr, int spaces)
     create_spacer;
     char *name = expr->expr.var.identifier->expr.constant.value.identifier;
     Expr *e = expr->expr.var.e;
-    ConstantType ret_type = expr->ret_type;
-    printf("{\n%s  type: var;\n%s  ret: %i;\n%s  name:%s;\n%s  e: ", spacer, spacer, ret_type, spacer, name, spacer);
+    printf("{\n%s  type: var;\n%s  name:%s;\n%s  e: ", spacer, spacer, name, spacer);
     expr_print(e, spaces + 2);
     SET_COLOR_VAR
     printf("\n%s}", spacer);
@@ -61,8 +60,7 @@ void expr_print_call(Expr *expr, int spaces)
     Expr *e = expr->expr.call.e;
     Expr *params = expr->expr.call.params;
     int params_length = expr->expr.call.params_length;
-    ConstantType ret_type = expr->ret_type;
-    printf("{\n%s  type: call;\n%s  ret: %i;\n%s  e: ", spacer, spacer, ret_type, spacer);
+    printf("{\n%s  type: call;\n%s  e: ", spacer, spacer);
     expr_print(e, spaces + 2);
     SET_COLOR_CALL
     printf("\n%s  params:", spacer);
@@ -91,8 +89,7 @@ void expr_print_binop(Expr *expr, int spaces)
     Expr *e1 = expr->expr.binop.e1;
     BinopType type = expr->expr.binop.type;
     Expr *e2 = expr->expr.binop.e2;
-    ConstantType ret_type = expr->ret_type;
-    printf("{\n%s  type: binop;\n%s  ret: %i;\n%s  e1: ", spacer, spacer, ret_type, spacer);
+    printf("{\n%s  type: binop;\n%s  e1: ", spacer, spacer);
     expr_print(e1, spaces + 2);
     SET_COLOR_BINOP
     printf("\n%s  e2: ", spacer);
@@ -130,20 +127,19 @@ void expr_print_const(Expr *expr, int spaces)
 {
     create_spacer;
     ConstantType type = expr->expr.constant.type;
-    ConstantType ret_type = expr->ret_type;
 
     switch (type)
     {
     case C_IDENTIFIER:
     {
         char *identifier = expr->expr.constant.value.identifier;
-        printf("{\n%s  type: identifier;\n%s  ret: %i;\n%s  value: %s\n%s}", spacer, spacer, ret_type, spacer, identifier, spacer);
+        printf("{\n%s  type: identifier;\n%s  value: %s\n%s}", spacer, spacer, identifier, spacer);
         break;
     }
     case C_RHYTHM:
     {
         Rhythm *rhythm = &(expr->expr.constant.value.rhythm);
-        printf("{\n%s  type: rhythm;\n%s  ret: %i;\n%s  value: ", spacer, spacer, ret_type, spacer);
+        printf("{\n%s  type: rhythm;\n%s  value: ", spacer, spacer);
         expr_print_rhythm(rhythm);
         printf("\n%s}", spacer);
         break;
@@ -151,19 +147,19 @@ void expr_print_const(Expr *expr, int spaces)
     case C_MELODY:
     {
         char *melody = expr->expr.constant.value.melody;
-        printf("{\n%s  type: melody;\n%s  ret: %i;\n%s  value: %s\n%s}", spacer, spacer, ret_type, spacer, melody, spacer);
+        printf("{\n%s  type: melody;\n%s  value: %s\n%s}", spacer, spacer, melody, spacer);
         break;
     }
     case C_HARMONY:
     {
         char *harmony = expr->expr.constant.value.harmony;
-        printf("{\n%s  type: harmony;\n%s  ret: %i;\n%s  value: %s\n%s}", spacer, spacer, ret_type, spacer, harmony, spacer);
+        printf("{\n%s  type: harmony;\n%s  value: %s\n%s}", spacer, spacer, harmony, spacer);
         break;
     }
     case C_STEPS:
     {
         Steps *steps = &(expr->expr.constant.value.steps);
-        printf("{\n%s  type: steps;\n%s  ret: %i;\n%s  value: ", spacer, spacer, ret_type, spacer);
+        printf("{\n%s  type: steps;\n%s  value: ", spacer, spacer);
         expr_print_steps(steps);
         printf("\n%s}", spacer);
         break;
@@ -171,19 +167,19 @@ void expr_print_const(Expr *expr, int spaces)
     case C_SCALE:
     {
         char *scale = expr->expr.constant.value.scale;
-        printf("{\n%s  type: scale;\n%s  ret: %i;\n%s  value: %s\n%s}", spacer, spacer, ret_type, spacer, scale, spacer);
+        printf("{\n%s  type: scale;\n%s  value: %s\n%s}", spacer, spacer, scale, spacer);
         break;
     }
     case C_KEY:
     {
         char *key = expr->expr.constant.value.key;
-        printf("{\n%s  type: key;\n%s  ret: %i;\n%s  value: %s\n%s}", spacer, spacer, ret_type, spacer, key, spacer);
+        printf("{\n%s  type: key;\n%s  value: %s\n%s}", spacer, spacer, key, spacer);
         break;
     }
     case C_SCALED_KEY:
     {
         char *key = expr->expr.constant.value.key;
-        printf("{\n%s  type: scaled-key;\n%s  ret: %i;\n%s  value: %s\n%s}", spacer, spacer, ret_type, spacer, key, spacer);
+        printf("{\n%s  type: scaled-key;\n%s  value: %s\n%s}", spacer, spacer, key, spacer);
         break;
     }
     }

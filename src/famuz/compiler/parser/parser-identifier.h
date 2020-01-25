@@ -30,7 +30,5 @@ Expr *parse_identifier_prefix(Expr *expr, Exprs *exprs, Token *token)
 {
     expr->expr.constant.type = C_IDENTIFIER;
     strcpy(expr->expr.constant.value.identifier, token->lexeme);
-    expr->ret_type = expr_type_from_name(exprs, token->lexeme);
-
     return expr;
 }

@@ -38,6 +38,5 @@ Expr *parse_steps_prefix(Expr *expr, Token *token)
         expr->expr.constant.value.steps.steps[index++] = d;
     }
     expr->expr.constant.value.steps.length = index;
-    expr->ret_type = C_STEPS;
     return expr;
 }
