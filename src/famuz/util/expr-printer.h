@@ -26,6 +26,13 @@
 #include "../compiler/expr/expr.h"
 #include "../compiler/type.h"
 
+#define SET_COLOR_ERROR printf("\033[0;31m");
+#define SET_COLOR_CONST printf("\033[1;32m");
+#define SET_COLOR_VAR printf("\033[01;33m");
+#define SET_COLOR_CALL printf("\033[1;34m");
+#define SET_COLOR_BINOP printf("\033[1;35m");
+#define SET_COLOR_RESET printf("\033[0m");
+
 #define create_spacer                   \
     char spacer[spaces + 1];            \
     for (size_t i = 0; i < spaces; i++) \
@@ -44,6 +51,7 @@ void expr_print_var(Expr *expr, int spaces)
     ConstantType ret_type = expr->ret_type;
     printf("{\n%s  type: var;\n%s  ret: %i;\n%s  name:%s;\n%s  e: ", spacer, spacer, ret_type, spacer, name, spacer);
     expr_print(e, spaces + 2);
+    SET_COLOR_VAR
     printf("\n%s}", spacer);
 }
 
@@ -56,11 +64,13 @@ void expr_print_call(Expr *expr, int spaces)
     ConstantType ret_type = expr->ret_type;
     printf("{\n%s  type: call;\n%s  ret: %i;\n%s  e: ", spacer, spacer, ret_type, spacer);
     expr_print(e, spaces + 2);
+    SET_COLOR_CALL
     printf("\n%s  params:", spacer);
     printf("\n%s    [", spacer);
     for (size_t i = 0; i < params_length; i++)
     {
         expr_print(&params[i], spaces + 4);
+        SET_COLOR_CALL
         if (i == params_length - 1)
         {
             printf("]");
@@ -84,8 +94,10 @@ void expr_print_binop(Expr *expr, int spaces)
     ConstantType ret_type = expr->ret_type;
     printf("{\n%s  type: binop;\n%s  ret: %i;\n%s  e1: ", spacer, spacer, ret_type, spacer);
     expr_print(e1, spaces + 2);
+    SET_COLOR_BINOP
     printf("\n%s  e2: ", spacer);
     expr_print(e2, spaces + 2);
+    SET_COLOR_BINOP
     printf("\n%s}", spacer);
 }
 
@@ -184,16 +196,29 @@ void expr_print(Expr *expr, int spaces)
     switch (expr->def_type)
     {
     case E_CONST:
+    {
+        SET_COLOR_CONST
         expr_print_const(expr, spaces);
         break;
+    }
     case E_VAR:
+    {
+        SET_COLOR_VAR
         expr_print_var(expr, spaces);
         break;
+    }
     case E_CALL:
+    {
+        SET_COLOR_CALL
         expr_print_call(expr, spaces);
         break;
+    }
     case E_BINOP:
+    {
+        SET_COLOR_BINOP
         expr_print_binop(expr, spaces);
         break;
     }
+    }
+    SET_COLOR_RESET
 }

@@ -24,3 +24,41 @@ simpleLoop =
 
 main(simpleLoop + C# + harmonic-minor)
 ```
+
+## Notes (for personal use)
+
+- famuz
+  - compiler
+    - expr
+      - expr-binop.h
+      - expr-call.h
+      - expr-constant.h
+      - expr-var.h
+      - expr.h
+    - generator
+      - generate.h
+    - lexer
+      - lexer-token.h
+      - lexer.h
+      - reserved.h
+    - parser
+      - parser-assignment.h
+      - parser-binop.h
+      - parser-identifier.h
+      - parser-key.h
+      - parser-left-param.h
+      - parser-rhythm.h
+      - parser-scale.h
+      - parser-steps.h
+      - parser.h
+    - position.h
+    - scanner.h
+    - settings.h
+    - token.h
+    - type.h
+  - util
+    - assert.h
+    - expr-printer.h
+    - file-util.h
+    - string-util.h
+  - famuz.h

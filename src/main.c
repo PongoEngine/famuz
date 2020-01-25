@@ -11,6 +11,6 @@ int main()
 	famuz_parse("./data/test.famuz");
 	end = clock();
 	cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
-	printf("%f", cpu_time_used);
+	// printf("%f", cpu_time_used);
 	return 0;
 }
