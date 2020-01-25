@@ -19,10 +19,10 @@ simpleSteps =
 simpleMelody =
     simpleSteps + basicRhythm
 
-simpleLoop =
+simpleLoop = 
    arp(chord(TRIAD, simpleMelody))
 
-main(simpleLoop + C# + harmonic-minor)
+main((((simpleLoop))) + (C# + harmonic-minor))
 ```
 
 ## Famuz Types
