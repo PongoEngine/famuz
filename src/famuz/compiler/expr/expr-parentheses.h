@@ -1,6 +1,8 @@
 #pragma once
 
 /*
+ * MIT License
+ *
  * Copyright (c) 2019 Jeremy Meltingtallow
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -19,24 +21,11 @@
  * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*/
+ */
 
-#include "../expr/expr.h"
-#include "../../util/expr-printer.h"
+#include "./expr.h"
 
-void generate(Expr *expr)
+typedef struct
 {
-    switch (expr->def_type)
-    {
-    case E_CONST:
-        break;
-    case E_VAR:
-        break;
-    case E_CALL:
-        break;
-    case E_BINOP:
-        break;
-    case E_PAREN:
-        break;
-    }
-}
+    Expr *e;
+} Parentheses;

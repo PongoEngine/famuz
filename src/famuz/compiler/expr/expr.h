@@ -34,6 +34,7 @@ typedef struct Expr Expr;
 #include "./expr-binop.h"
 #include "./expr-var.h"
 #include "./expr-call.h"
+#include "./expr-parentheses.h"
 
 typedef enum
 {
@@ -41,6 +42,7 @@ typedef enum
     E_VAR,
     E_CALL,
     E_BINOP,
+    E_PAREN,
 } ExprDefType;
 
 typedef struct Expr
@@ -54,6 +56,8 @@ typedef struct Expr
         Call call;
         //Binary operator e1 op e2.
         Binop binop;
+        //Parentheses (e).
+        Parentheses parentheses;
 
     } def;
     Position *pos;

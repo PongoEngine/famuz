@@ -84,6 +84,11 @@ void expr_print_call(Expr *expr, int spaces)
     printf("\n%s}", spacer);
 }
 
+void expr_print_paren(Expr *expr, int spaces)
+{
+    printf("PRINTING PARENS!\n");
+}
+
 void expr_print_binop(Expr *expr, int spaces)
 {
     create_spacer;
@@ -223,6 +228,12 @@ void expr_print(Expr *expr, int spaces)
     {
         SET_COLOR_BINOP
         expr_print_binop(expr, spaces);
+        break;
+    }
+    case E_PAREN:
+    {
+        SET_COLOR_BINOP
+        expr_print_paren(expr, spaces);
         break;
     }
     }

@@ -62,3 +62,12 @@ Expr *parse_left_paren_infix(Expr *left, Expr *expr, TokenScanner *scanner, Expr
 
     return expr;
 }
+
+/**
+ * Parsing parens "(...)"
+ */
+Expr *parse_left_paren_prefix(Expr *expr, Token *token)
+{
+    printf("WE ARE PARSING PARENS!");
+    return expr;
+}

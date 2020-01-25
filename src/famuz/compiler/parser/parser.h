@@ -89,7 +89,10 @@ struct Expr *parse_expression_prefix(TokenScanner *scanner, Exprs *exprs)
     case ASSIGNMENT:
         return NULL;
     case LEFT_PARAM:
-        return NULL;
+    {
+        Expr *expr = get_expr(exprs, E_PAREN, &token);
+        return parse_left_paren_prefix(expr, &token);
+    }
     case RIGHT_PARAM:
         return NULL;
     case COMMA:
