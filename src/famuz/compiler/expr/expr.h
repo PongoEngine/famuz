@@ -23,6 +23,7 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+#include <string.h>
 #include "../position.h"
 #include "../settings.h"
 #include "../type.h"
@@ -64,6 +65,25 @@ typedef struct Expr
 typedef struct
 {
     Expr exprs[SETTINGS_EXPRS_LENGTH];
-    Expr *main;
     int cur_index;
 } Exprs;
+
+//turn into a map?
+Expr *expr_from_name(Exprs *exprs, char *name)
+{
+    for (size_t i = 0; i < exprs->cur_index; i++)
+    {
+        Expr *expr = &(exprs->exprs[i]);
+        if (expr->def_type == E_VAR && strcmp(expr->expr.var.identifier->expr.constant.value.identifier, name) == 0)
+        {
+            printf("VAR: %s", name);
+            return expr;
+        }
+        else if (expr->def_type == E_CALL && strcmp(expr->expr.call.e->expr.constant.value.identifier, name) == 0)
+        {
+            printf("CALL: %s", name);
+            return expr;
+        }
+    }
+    return NULL;
+}

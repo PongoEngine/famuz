@@ -31,14 +31,6 @@
 #include "./util/expr-printer.h"
 #include "./compiler/generator/generate.h"
 
-bool is_main(Expr *expr)
-{
-    return expr->def_type == E_CALL &&
-           expr->expr.call.e->def_type == E_CONST &&
-           expr->expr.call.e->expr.constant.type == C_IDENTIFIER &&
-           strcmp(expr->expr.call.e->expr.constant.value.identifier, "main") == 0;
-}
-
 void famuz_parse(char *file_path)
 {
     if (file_exists(file_path))
@@ -50,26 +42,14 @@ void famuz_parse(char *file_path)
         token_scanner.cur_index = 0;
         //
         Exprs exprs;
-        exprs.main = NULL;
         exprs.cur_index = 0;
 
         while (token_scanner_has_next(&token_scanner))
         {
             Expr *expr = parse_expression(&token_scanner, &exprs);
-            if (is_main(expr))
-            {
-                exprs.main = expr;
-            }
-            // expr_print(expr, 0);
         }
 
-        if (exprs.main == NULL)
-        {
-            printf("No Main Found!");
-        }
-        else
-        {
-            generate(exprs.main);
-        }
+        Expr *main = expr_from_name(&exprs, "main");
+        expr_print(main, 0);
     }
 }
