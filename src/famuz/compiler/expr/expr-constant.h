@@ -70,5 +70,5 @@ ConstantType constant_type_add(ConstantType a, ConstantType b)
     case C_SCALED_KEY:
         return -1;
     }
-    return -2;
+    return -1;
 }

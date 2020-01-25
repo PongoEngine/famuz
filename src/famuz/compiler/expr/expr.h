@@ -85,3 +85,18 @@ Expr *expr_from_name(Exprs *exprs, char *name)
     }
     return NULL;
 }
+
+ConstantType expr_type_from_name(Exprs *exprs, char *name)
+{
+    if (strcmp(name, "arp") == 0)
+    {
+        return C_MELODY;
+    }
+    else if (strcmp(name, "chord") == 0)
+    {
+        return C_HARMONY;
+    }
+
+    Expr *expr = expr_from_name(exprs, name);
+    return expr == NULL ? -1 : expr->ret_type;
+}
