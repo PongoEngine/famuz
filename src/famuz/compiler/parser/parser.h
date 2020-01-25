@@ -57,7 +57,7 @@ struct Expr *parse_expression_prefix(TokenScanner *scanner, Exprs *exprs)
     case IDENTIFIER:
     {
         Expr *expr = get_expr(exprs, E_CONST, &token);
-        return parse_identifier_prefix(expr, &token);
+        return parse_identifier_prefix(expr, exprs, &token);
     }
     case SCALE:
     {

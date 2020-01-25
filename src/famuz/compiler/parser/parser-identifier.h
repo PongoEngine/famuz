@@ -24,10 +24,20 @@
 #include "./parser.h"
 #include "../scanner.h"
 #include "../../util/assert.h"
+#include "../../util/expr-printer.h"
 
-Expr *parse_identifier_prefix(Expr *expr, Token *token)
+Expr *parse_identifier_prefix(Expr *expr, Exprs *exprs, Token *token)
 {
     expr->expr.constant.type = C_IDENTIFIER;
     strcpy(expr->expr.constant.value.identifier, token->lexeme);
+    Expr *ref = expr_from_name(exprs, token->lexeme);
+    if (ref != NULL)
+    {
+        expr->ret_type = ref->ret_type;
+    }
+    else
+    {
+        expr->ret_type = -1;
+    }
     return expr;
 }

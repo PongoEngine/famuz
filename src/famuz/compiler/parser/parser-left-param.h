@@ -40,6 +40,7 @@ Expr *parse_left_param_infix(Expr *left, Expr *expr, TokenScanner *scanner, Expr
         params_length++;
     }
     expr->expr.call.params_length = params_length;
+    expr->ret_type = -1;
 
     assert_that(token_scanner_next(scanner).type == RIGHT_PARAM, "EXPECTED RIGHT PARAM");
     return expr;

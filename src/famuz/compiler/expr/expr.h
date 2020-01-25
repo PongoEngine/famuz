@@ -76,12 +76,10 @@ Expr *expr_from_name(Exprs *exprs, char *name)
         Expr *expr = &(exprs->exprs[i]);
         if (expr->def_type == E_VAR && strcmp(expr->expr.var.identifier->expr.constant.value.identifier, name) == 0)
         {
-            printf("VAR: %s", name);
             return expr;
         }
         else if (expr->def_type == E_CALL && strcmp(expr->expr.call.e->expr.constant.value.identifier, name) == 0)
         {
-            printf("CALL: %s", name);
             return expr;
         }
     }
