@@ -27,10 +27,10 @@
 
 Expr *parse_assignment_infix(Expr *left, Expr *expr, TokenScanner *scanner, Exprs *exprs)
 {
-    if (assert_that(left->def_type == E_CONST && left->expr.constant.type == C_IDENTIFIER, "NOT IDENTIFIER"))
+    if (assert_that(left->def_type == E_CONST && left->def.constant.type == C_IDENTIFIER, "NOT IDENTIFIER"))
     {
-        expr->expr.var.identifier = left;
+        expr->def.var.identifier = left;
     }
-    expr->expr.var.e = parse_expression(scanner, exprs);
+    expr->def.var.e = parse_expression(scanner, exprs);
     return expr;
 }

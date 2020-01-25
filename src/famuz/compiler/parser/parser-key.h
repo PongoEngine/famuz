@@ -27,7 +27,7 @@
 
 Expr *parse_key_prefix(Expr *expr, Token *token)
 {
-    expr->expr.constant.type = C_KEY;
-    strcpy(expr->expr.constant.value.key, token->lexeme);
+    expr->def.constant.type = C_KEY;
+    strcpy(expr->def.constant.value.key, token->lexeme);
     return expr;
 }

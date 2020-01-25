@@ -27,7 +27,7 @@
 
 Expr *parse_steps_prefix(Expr *expr, Token *token)
 {
-    expr->expr.constant.type = C_STEPS;
+    expr->def.constant.type = C_STEPS;
     Scanner scanner = {.content = token->lexeme, .cur_index = 0, .length = strlen(token->lexeme)};
     int index = 0;
 
@@ -35,8 +35,8 @@ Expr *parse_steps_prefix(Expr *expr, Token *token)
     {
         char c = scanner_next(&scanner);
         int d = c - '0';
-        expr->expr.constant.value.steps.steps[index++] = d;
+        expr->def.constant.value.steps.steps[index++] = d;
     }
-    expr->expr.constant.value.steps.length = index;
+    expr->def.constant.value.steps.length = index;
     return expr;
 }

@@ -27,8 +27,8 @@
 
 Expr *parse_left_param_infix(Expr *left, Expr *expr, TokenScanner *scanner, Exprs *exprs)
 {
-    expr->expr.call.e = left;
-    expr->expr.call.params = parse_expression(scanner, exprs);
+    expr->def.call.e = left;
+    expr->def.call.params = parse_expression(scanner, exprs);
     int params_length = 1;
     while (token_scanner_has_next(scanner) && token_scanner_peek(scanner).type != RIGHT_PARAM)
     {
@@ -39,7 +39,7 @@ Expr *parse_left_param_infix(Expr *left, Expr *expr, TokenScanner *scanner, Expr
         parse_expression(scanner, exprs);
         params_length++;
     }
-    expr->expr.call.params_length = params_length;
+    expr->def.call.params_length = params_length;
 
     assert_that(token_scanner_next(scanner).type == RIGHT_PARAM, "EXPECTED RIGHT PARAM");
     return expr;

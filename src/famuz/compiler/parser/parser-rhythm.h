@@ -43,7 +43,7 @@ void parse_rhythm_prefix_eat_rest(Scanner *scanner)
 
 Expr *parse_rhythm_prefix(Expr *expr, Token *token)
 {
-    expr->expr.constant.type = C_RHYTHM;
+    expr->def.constant.type = C_RHYTHM;
     Scanner scanner = {.content = token->lexeme, .cur_index = 0, .length = strlen(token->lexeme)};
     int index = 0;
 
@@ -55,8 +55,8 @@ Expr *parse_rhythm_prefix(Expr *expr, Token *token)
             scanner_next(&scanner);
             parse_rhythm_prefix_eat_duration(&scanner);
             int duration = scanner.cur_index - start;
-            expr->expr.constant.value.rhythm.hits[index].start = start;
-            expr->expr.constant.value.rhythm.hits[index].duration = duration;
+            expr->def.constant.value.rhythm.hits[index].start = start;
+            expr->def.constant.value.rhythm.hits[index].duration = duration;
             index++;
         }
         else if (scanner_peek(&scanner) == '-')
@@ -69,6 +69,6 @@ Expr *parse_rhythm_prefix(Expr *expr, Token *token)
             scanner_next(&scanner);
         }
     }
-    expr->expr.constant.value.rhythm.length = index;
+    expr->def.constant.value.rhythm.length = index;
     return expr;
 }

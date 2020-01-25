@@ -28,7 +28,7 @@
 Expr *parse_binop_infix(Expr *left, Expr *expr, TokenScanner *scanner, Exprs *exprs)
 {
     Expr *right = parse_expression(scanner, exprs);
-    expr->expr.binop.e1 = left;
-    expr->expr.binop.e2 = right;
+    expr->def.binop.e1 = left;
+    expr->def.binop.e2 = right;
     return expr;
 }

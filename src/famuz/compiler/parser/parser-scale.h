@@ -27,7 +27,7 @@
 
 Expr *parse_scale_prefix(Expr *expr, Token *token)
 {
-    expr->expr.constant.type = C_SCALE;
-    strcpy(expr->expr.constant.value.scale, token->lexeme);
+    expr->def.constant.type = C_SCALE;
+    strcpy(expr->def.constant.value.scale, token->lexeme);
     return expr;
 }

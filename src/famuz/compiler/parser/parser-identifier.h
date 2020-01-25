@@ -28,7 +28,7 @@
 
 Expr *parse_identifier_prefix(Expr *expr, Exprs *exprs, Token *token)
 {
-    expr->expr.constant.type = C_IDENTIFIER;
-    strcpy(expr->expr.constant.value.identifier, token->lexeme);
+    expr->def.constant.type = C_IDENTIFIER;
+    strcpy(expr->def.constant.value.identifier, token->lexeme);
     return expr;
 }
