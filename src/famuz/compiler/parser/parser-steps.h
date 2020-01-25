@@ -25,6 +25,9 @@
 #include "../scanner.h"
 #include "../../util/assert.h"
 
+/**
+ * Parsing steps "0 1 2 3"
+ */
 Expr *parse_steps_prefix(Expr *expr, Token *token)
 {
     expr->def.constant.type = C_STEPS;
@@ -38,5 +41,6 @@ Expr *parse_steps_prefix(Expr *expr, Token *token)
         expr->def.constant.value.steps.steps[index++] = d;
     }
     expr->def.constant.value.steps.length = index;
+    expr->ret_type = C_STEPS;
     return expr;
 }

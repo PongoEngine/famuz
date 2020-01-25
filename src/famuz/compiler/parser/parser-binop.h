@@ -25,6 +25,9 @@
 #include "../scanner.h"
 #include "../../util/assert.h"
 
+/**
+ * Parsing binary opertation "... + ..."
+ */
 Expr *parse_binop_infix(Expr *left, Expr *expr, TokenScanner *scanner, Exprs *exprs)
 {
     Expr *right = parse_expression(scanner, exprs);

@@ -25,9 +25,13 @@
 #include "../scanner.h"
 #include "../../util/assert.h"
 
+/**
+ * Parsing scale "harmonic-minor"
+ */
 Expr *parse_scale_prefix(Expr *expr, Token *token)
 {
     expr->def.constant.type = C_SCALE;
     strcpy(expr->def.constant.value.scale, token->lexeme);
+    expr->ret_type = C_SCALE;
     return expr;
 }

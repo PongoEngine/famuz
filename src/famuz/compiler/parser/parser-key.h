@@ -25,9 +25,13 @@
 #include "../scanner.h"
 #include "../../util/assert.h"
 
+/**
+ * Parsing key "c#"
+ */
 Expr *parse_key_prefix(Expr *expr, Token *token)
 {
     expr->def.constant.type = C_KEY;
     strcpy(expr->def.constant.value.key, token->lexeme);
+    expr->ret_type = C_KEY;
     return expr;
 }

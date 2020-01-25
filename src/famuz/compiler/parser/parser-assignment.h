@@ -25,6 +25,9 @@
 #include "../scanner.h"
 #include "../../util/assert.h"
 
+/**
+ * Parsing assigning "... = ..."
+ */
 Expr *parse_assignment_infix(Expr *left, Expr *expr, TokenScanner *scanner, Exprs *exprs)
 {
     if (assert_that(left->def_type == E_CONST && left->def.constant.type == C_IDENTIFIER, "NOT IDENTIFIER"))

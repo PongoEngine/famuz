@@ -26,6 +26,9 @@
 #include "../../util/assert.h"
 #include "../../util/expr-printer.h"
 
+/**
+ * Parsing name "..."
+ */
 Expr *parse_identifier_prefix(Expr *expr, Exprs *exprs, Token *token)
 {
     expr->def.constant.type = C_IDENTIFIER;

@@ -58,7 +58,7 @@ typedef struct Expr
     } def;
     Position *pos;
     ExprDefType def_type;
-
+    ConstantType ret_type;
 } Expr;
 
 typedef struct

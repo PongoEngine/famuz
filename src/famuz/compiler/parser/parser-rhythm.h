@@ -41,6 +41,9 @@ void parse_rhythm_prefix_eat_rest(Scanner *scanner)
     }
 }
 
+/**
+ * Parsing rhythm "x~~~ x--- x~~~ x~--"
+ */
 Expr *parse_rhythm_prefix(Expr *expr, Token *token)
 {
     expr->def.constant.type = C_RHYTHM;
@@ -70,5 +73,6 @@ Expr *parse_rhythm_prefix(Expr *expr, Token *token)
         }
     }
     expr->def.constant.value.rhythm.length = index;
+    expr->ret_type = C_RHYTHM;
     return expr;
 }

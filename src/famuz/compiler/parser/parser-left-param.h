@@ -25,6 +25,9 @@
 #include "../scanner.h"
 #include "../../util/assert.h"
 
+/**
+ * Parsing call "arp(...)"
+ */
 Expr *parse_left_param_infix(Expr *left, Expr *expr, TokenScanner *scanner, Exprs *exprs)
 {
     expr->def.call.e = left;
