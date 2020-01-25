@@ -21,6 +21,7 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
+#include <string.h>
 #include "./parser.h"
 #include "../scanner.h"
 #include "../../util/assert.h"
@@ -45,5 +46,16 @@ Expr *parse_left_param_infix(Expr *left, Expr *expr, TokenScanner *scanner, Expr
     expr->def.call.params_length = params_length;
 
     assert_that(token_scanner_next(scanner).type == RIGHT_PARAM, "EXPECTED RIGHT PARAM");
+
+    if(strcmp(left->def.constant.value.identifier, "arp") == 0) {
+        expr->ret_type = C_MELODY;
+    }
+    else if(strcmp(left->def.constant.value.identifier, "chord") == 0) {
+        expr->ret_type = C_HARMONY;
+    }
+    else {
+        expr->ret_type = -1;
+    }
+
     return expr;
 }

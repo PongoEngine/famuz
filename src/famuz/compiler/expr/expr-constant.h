@@ -48,3 +48,27 @@ typedef struct
     } value;
     ConstantType type;
 } Constant;
+
+ConstantType constant_type_add(ConstantType a, ConstantType b)
+{
+    switch (a)
+    {
+    case C_IDENTIFIER:
+        return -1;
+    case C_RHYTHM:
+        return b == C_STEPS ? C_MELODY : -1;
+    case C_MELODY:
+        return -1;
+    case C_HARMONY:
+        return -1;
+    case C_STEPS:
+        return b == C_RHYTHM ? C_MELODY : -1;
+    case C_SCALE:
+        return b == C_KEY ? C_SCALED_KEY : -1;
+    case C_KEY:
+        return b == C_SCALE ? C_SCALED_KEY : -1;
+    case C_SCALED_KEY:
+        return -1;
+    }
+    return -1;
+}
