@@ -125,9 +125,11 @@ int lex(char *content, char *file_path, Token *tokens)
                 : scanner_next(&scanner);
             break;
         case L_DURATION:
+            scanner_next(&scanner);
             printf("FAILURE");
             break;
         case L_REST:
+            scanner_next(&scanner);
             printf("FAILURE");
             break;
         case L_TAB:
