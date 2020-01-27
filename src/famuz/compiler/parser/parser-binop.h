@@ -30,9 +30,18 @@
  */
 Expr *parse_binop_infix(Expr *left, Expr *expr, TokenScanner *scanner, Exprs *exprs)
 {
-    Expr *right = parse_expression(scanner, exprs);
     expr->def.binop.e1 = left;
-    expr->def.binop.e2 = right;
-    expr->ret_type = constant_type_add(left->ret_type, right->ret_type);
+
+    if (assert_that(token_scanner_has_next(scanner), "Cannot parse binary expression"))
+    {
+        Expr *right = parse_expression(scanner, exprs);
+        expr->def.binop.e2 = right;
+        expr->ret_type = right != NULL ? constant_type_add(left->ret_type, right->ret_type) : -1;
+    }
+    else
+    {
+        expr->def.binop.e2 = NULL;
+        expr->ret_type = -1;
+    }
     return expr;
 }

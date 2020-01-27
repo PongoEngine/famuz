@@ -145,9 +145,14 @@ struct Expr *parse_expression(TokenScanner *scanner, Exprs *expr)
     if (token_scanner_has_next(scanner))
     {
         Expr *left = parse_expression_prefix(scanner, expr);
-        if (left == NULL)
+        if (!assert_that(left != NULL, "WE FOUND AN ERROR!"))
         {
             printf("\n\nWE FOUND AN ERROR!\n\n");
+            if (token_scanner_has_next(scanner))
+            {
+                token_scanner_next(scanner);
+            }
+            return NULL;
         }
 
         bool has_next = token_scanner_has_next(scanner);

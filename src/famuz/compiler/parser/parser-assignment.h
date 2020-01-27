@@ -34,7 +34,16 @@ Expr *parse_assignment_infix(Expr *left, Expr *expr, TokenScanner *scanner, Expr
     {
         expr->def.var.identifier = left;
     }
-    expr->def.var.e = parse_expression(scanner, exprs);
-    expr->ret_type = expr->def.var.e->ret_type;
+
+    if (assert_that(token_scanner_has_next(scanner), "Cannot parse assignment expression"))
+    {
+        expr->def.var.e = parse_expression(scanner, exprs);
+        expr->ret_type = expr->def.var.e != NULL ? expr->def.var.e->ret_type : -1;
+    }
+    else
+    {
+        expr->def.var.e = NULL;
+        expr->ret_type = -1;
+    }
     return expr;
 }

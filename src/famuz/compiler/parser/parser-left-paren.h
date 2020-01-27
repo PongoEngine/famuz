@@ -32,31 +32,43 @@
 Expr *parse_left_paren_infix(Expr *left, Expr *expr, TokenScanner *scanner, Exprs *exprs)
 {
     expr->def.call.e = left;
-    expr->def.call.params = parse_expression(scanner, exprs);
-    int params_length = 1;
-    while (token_scanner_has_next(scanner) && token_scanner_peek(scanner).type != RIGHT_PARAM)
+    if (assert_that(token_scanner_has_next(scanner), "Cannot parse call expression"))
     {
-        if (assert_that(token_scanner_peek(scanner).type == COMMA, "EXPECTED COMMA"))
+        expr->def.call.params = parse_expression(scanner, exprs);
+        int params_length = 1;
+        while (token_scanner_has_next(scanner) && token_scanner_peek(scanner).type != RIGHT_PARAM)
         {
-            token_scanner_next(scanner);
+            if (assert_that(token_scanner_peek(scanner).type == COMMA, "EXPECTED COMMA"))
+            {
+                token_scanner_next(scanner);
+            }
+            parse_expression(scanner, exprs);
+            params_length++;
         }
-        parse_expression(scanner, exprs);
-        params_length++;
+        expr->def.call.params_length = params_length;
+
+        assert_that(token_scanner_has_next(scanner) && token_scanner_next(scanner).type == RIGHT_PARAM, "EXPECTED RIGHT PARAM");
     }
-    expr->def.call.params_length = params_length;
+    else
+    {
+        expr->def.call.params = NULL;
+        expr->def.call.params_length = 0;
+    }
 
-    assert_that(token_scanner_next(scanner).type == RIGHT_PARAM, "EXPECTED RIGHT PARAM");
-
-    if(strcmp(left->def.constant.value.identifier, "arp") == 0) {
+    if (strcmp(left->def.constant.value.identifier, "arp") == 0)
+    {
         expr->ret_type = C_MELODY;
     }
-    else if(strcmp(left->def.constant.value.identifier, "chord") == 0) {
+    else if (strcmp(left->def.constant.value.identifier, "chord") == 0)
+    {
         expr->ret_type = C_HARMONY;
     }
-    else if(strcmp(left->def.constant.value.identifier, "main") == 0) {
+    else if (strcmp(left->def.constant.value.identifier, "main") == 0)
+    {
         expr->ret_type = C_MUSIC;
     }
-    else {
+    else
+    {
         expr->ret_type = -1;
     }
 
@@ -69,7 +81,7 @@ Expr *parse_left_paren_infix(Expr *left, Expr *expr, TokenScanner *scanner, Expr
 Expr *parse_left_paren_prefix(Expr *expr, TokenScanner *scanner, Exprs *exprs)
 {
     expr->def.parentheses.e = parse_expression(scanner, exprs);
-    assert_that(token_scanner_next(scanner).type == RIGHT_PARAM, "EXPECTED RIGHT PARAM");
+    assert_that(token_scanner_has_next(scanner) && token_scanner_next(scanner).type == RIGHT_PARAM, "EXPECTED RIGHT PARAM");
     expr->ret_type = expr->def.parentheses.e->ret_type;
     return expr;
 }
