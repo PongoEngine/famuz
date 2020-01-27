@@ -45,9 +45,22 @@ typedef struct
     int length;
 } Steps;
 
-typedef char Melody[SETTINGS_LEXEME_LENGTH];
+typedef struct
+{
+    Hit *hit;
+    int step;
+} Note;
 
-typedef char Harmony[SETTINGS_LEXEME_LENGTH];
+typedef struct
+{
+    Note notes[SETTINGS_HIT_LENGTH];
+    int length;
+} Melody;
+
+typedef struct
+{
+    Melody *Melody[SETTINGS_POLY];
+} Harmony;
 
 typedef char Scale[SETTINGS_LEXEME_LENGTH];
 

@@ -8,7 +8,7 @@ Famuz is a programming language that compiles to Midi. The goal of this project 
 
 ## Simple Example
 
-```
+``` c
 basicRhythm =
     x~~~ x--- x~~~ x~--
 

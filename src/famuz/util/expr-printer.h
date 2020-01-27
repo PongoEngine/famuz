@@ -163,14 +163,18 @@ void expr_print_const(Expr *expr, int spaces)
     }
     case C_MELODY:
     {
-        char *melody = expr->def.constant.value.melody;
-        printf("{\n%s  type: melody;\n%s  ret: %i;\n%s  value: %s\n%s}", spacer, spacer, ret_type, spacer, melody, spacer);
+        Melody *melody = &(expr->def.constant.value.melody);
+        printf("{\n%s  type: melody;\n%s  ret: %i;\n%s  value: ", spacer, spacer, ret_type, spacer);
+        // expr_print_rhythm(rhythm);
+        printf("\n%s}", spacer);
         break;
     }
     case C_HARMONY:
     {
-        char *harmony = expr->def.constant.value.harmony;
-        printf("{\n%s  type: harmony;\n%s  ret: %i;\n%s  value: %s\n%s}", spacer, spacer, ret_type, spacer, harmony, spacer);
+        Harmony *harmony = &(expr->def.constant.value.harmony);
+        printf("{\n%s  type: harmony;\n%s  ret: %i;\n%s  value: ", spacer, spacer, ret_type, spacer);
+        // expr_print_rhythm(rhythm);
+        printf("\n%s}", spacer);
         break;
     }
     case C_STEPS:
