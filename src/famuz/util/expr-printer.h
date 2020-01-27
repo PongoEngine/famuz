@@ -34,7 +34,6 @@
 #define SET_COLOR_PAREN printf("\033[1;36m");
 #define SET_COLOR_RESET printf("\033[0m");
 
-
 #define create_spacer                   \
     char spacer[spaces + 1];            \
     for (size_t i = 0; i < spaces; i++) \
@@ -187,26 +186,26 @@ void expr_print_const(Expr *expr, int spaces)
     }
     case C_SCALE:
     {
-        char *scale = expr->def.constant.value.scale;
-        printf("{\n%s  type: scale;\n%s  ret: %i;\n%s  value: %s\n%s}", spacer, spacer, ret_type, spacer, scale, spacer);
+        Scale scale = expr->def.constant.value.scale;
+        printf("{\n%s  type: scale;\n%s  ret: %i;\n%s  value: %i\n%s}", spacer, spacer, ret_type, spacer, scale, spacer);
         break;
     }
     case C_KEY:
     {
-        char *key = expr->def.constant.value.key;
-        printf("{\n%s  type: key;\n%s  ret: %i;\n%s  value: %s\n%s}", spacer, spacer, ret_type, spacer, key, spacer);
+        Key key = expr->def.constant.value.key;
+        printf("{\n%s  type: key;\n%s  ret: %i;\n%s  value: %i\n%s}", spacer, spacer, ret_type, spacer, key, spacer);
         break;
     }
     case C_SCALED_KEY:
     {
-        char *key = expr->def.constant.value.key;
-        printf("{\n%s  type: scaled-key;\n%s  ret: %i;\n%s  value: %s\n%s}", spacer, spacer, ret_type, spacer, key, spacer);
+        // char *key = expr->def.constant.value.key;
+        // printf("{\n%s  type: scaled-key;\n%s  ret: %i;\n%s  value: %s\n%s}", spacer, spacer, ret_type, spacer, key, spacer);
         break;
     }
     case C_MUSIC:
     {
-        char *key = expr->def.constant.value.key;
-        printf("{\n%s  type: music;\n%s  ret: %i;\n%s  value: %s\n%s}", spacer, spacer, ret_type, spacer, key, spacer);
+        // char *key = expr->def.constant.value.key;
+        // printf("{\n%s  type: music;\n%s  ret: %i;\n%s  value: %s\n%s}", spacer, spacer, ret_type, spacer, key, spacer);
         break;
     }
     }

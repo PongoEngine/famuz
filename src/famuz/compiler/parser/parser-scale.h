@@ -31,7 +31,23 @@
 Expr *parse_scale_prefix(Expr *expr, Token *token)
 {
     expr->def.constant.type = C_SCALE;
-    strcpy(expr->def.constant.value.scale, token->lexeme);
+
+    if (strcmp(R_MAJOR, token->lexeme) == 0)
+    {
+        expr->def.constant.value.scale = SCALE_MAJOR;
+    }
+    else if (strcmp(R_NATURAL_MINOR, token->lexeme) == 0)
+    {
+        expr->def.constant.value.scale = SCALE_NATURAL_MINOR;
+    }
+    else if (strcmp(R_MELODIC_MINOR, token->lexeme) == 0)
+    {
+        expr->def.constant.value.scale = SCALE_MELODIC_MINOR;
+    }
+    else if (strcmp(R_HARMONIC_MINOR, token->lexeme) == 0)
+    {
+        expr->def.constant.value.scale = SCALE_HARMONIC_MINOR;
+    }
     expr->ret_type = C_SCALE;
     return expr;
 }

@@ -21,6 +21,7 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
+#include <string.h>
 #include "./parser.h"
 #include "../scanner.h"
 #include "../../util/assert.h"
@@ -31,7 +32,76 @@
 Expr *parse_key_prefix(Expr *expr, Token *token)
 {
     expr->def.constant.type = C_KEY;
-    strcpy(expr->def.constant.value.key, token->lexeme);
+
+    if (strcmp(R_C, token->lexeme) == 0)
+    {
+        expr->def.constant.value.key = KEY_C;
+    }
+    else if (strcmp(R_C_SHARP, token->lexeme) == 0)
+    {
+        expr->def.constant.value.key = KEY_C_SHARP;
+    }
+    else if (strcmp(R_D_FLAT, token->lexeme) == 0)
+    {
+        expr->def.constant.value.key = KEY_D_FLAT;
+    }
+    else if (strcmp(R_D, token->lexeme) == 0)
+    {
+        expr->def.constant.value.key = KEY_D;
+    }
+    else if (strcmp(R_D_SHARP, token->lexeme) == 0)
+    {
+        expr->def.constant.value.key = KEY_D_SHARP;
+    }
+    else if (strcmp(R_E_FLAT, token->lexeme) == 0)
+    {
+        expr->def.constant.value.key = KEY_E_FLAT;
+    }
+    else if (strcmp(R_E, token->lexeme) == 0)
+    {
+        expr->def.constant.value.key = KEY_E;
+    }
+    else if (strcmp(R_F, token->lexeme) == 0)
+    {
+        expr->def.constant.value.key = KEY_F;
+    }
+    else if (strcmp(R_F_SHARP, token->lexeme) == 0)
+    {
+        expr->def.constant.value.key = KEY_F_SHARP;
+    }
+    else if (strcmp(R_G_FLAT, token->lexeme) == 0)
+    {
+        expr->def.constant.value.key = KEY_G_FLAT;
+    }
+    else if (strcmp(R_G, token->lexeme) == 0)
+    {
+        expr->def.constant.value.key = KEY_G;
+    }
+    else if (strcmp(R_G_SHARP, token->lexeme) == 0)
+    {
+        expr->def.constant.value.key = KEY_G_SHARP;
+    }
+    else if (strcmp(R_A_FLAT, token->lexeme) == 0)
+    {
+        expr->def.constant.value.key = KEY_A_FLAT;
+    }
+    else if (strcmp(R_A, token->lexeme) == 0)
+    {
+        expr->def.constant.value.key = KEY_A;
+    }
+    else if (strcmp(R_A_SHARP, token->lexeme) == 0)
+    {
+        expr->def.constant.value.key = KEY_A_SHARP;
+    }
+    else if (strcmp(R_B_FLAT, token->lexeme) == 0)
+    {
+        expr->def.constant.value.key = KEY_B_FLAT;
+    }
+    else if (strcmp(R_B, token->lexeme) == 0)
+    {
+        expr->def.constant.value.key = KEY_B;
+    }
+
     expr->ret_type = C_KEY;
     return expr;
 }

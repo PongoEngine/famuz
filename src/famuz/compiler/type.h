@@ -62,6 +62,31 @@ typedef struct
     Melody *Melody[SETTINGS_POLY];
 } Harmony;
 
-typedef char Scale[SETTINGS_LEXEME_LENGTH];
+typedef enum
+{
+    SCALE_MAJOR = 1,
+    SCALE_NATURAL_MINOR,
+    SCALE_MELODIC_MINOR,
+    SCALE_HARMONIC_MINOR
+} Scale;
 
-typedef char Key[SETTINGS_LEXEME_LENGTH];
+typedef enum
+{
+    KEY_C = 1,
+    KEY_C_SHARP,
+    KEY_D_FLAT,
+    KEY_D,
+    KEY_D_SHARP,
+    KEY_E_FLAT,
+    KEY_E,
+    KEY_F,
+    KEY_F_SHARP,
+    KEY_G_FLAT,
+    KEY_G,
+    KEY_G_SHARP,
+    KEY_A_FLAT,
+    KEY_A,
+    KEY_A_SHARP,
+    KEY_B_FLAT,
+    KEY_B
+} Key;
