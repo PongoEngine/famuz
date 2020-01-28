@@ -54,6 +54,10 @@ TokenType word_type(char *str)
     {
         return SCALE;
     }
+    else if (strcmp(R_TRIAD, str) == 0)
+    {
+        return CHORD;
+    }
     else
     {
         return IDENTIFIER;

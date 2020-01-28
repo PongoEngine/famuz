@@ -37,6 +37,7 @@ struct Expr *parse_expression(TokenScanner *scanner, Exprs *exprs);
 #include "./parser-assignment.h"
 #include "./parser-identifier.h"
 #include "./parser-scale.h"
+#include "./parser-chord.h"
 #include "./parser-key.h"
 #include "../../util/assert.h"
 
@@ -63,6 +64,11 @@ struct Expr *parse_expression_prefix(TokenScanner *scanner, Exprs *exprs)
     {
         Expr *expr = get_expr(exprs, E_CONST, &token);
         return parse_scale_prefix(expr, &token);
+    }
+    case CHORD:
+    {
+        Expr *expr = get_expr(exprs, E_CONST, &token);
+        return parse_chord_prefix(expr, &token);
     }
     case KEY:
     {
@@ -131,6 +137,7 @@ struct Expr *parse_expression_infix(Expr *left, TokenScanner *scanner, Exprs *ex
     case SLASH:
     case IDENTIFIER:
     case SCALE:
+    case CHORD:
     case KEY:
     case WHITESPACE:
     case STEPS:

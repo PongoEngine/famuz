@@ -31,6 +31,8 @@ static const char R_MAIN[] = "main";
 static const char R_CHORD[] = "chord";
 static const char R_ARP[] = "arp";
 
+static const char R_TRIAD[] = "TRIAD";
+
 static const char R_C[] = "C";
 static const char R_C_SHARP[] = "C#";
 static const char R_D_FLAT[] = "Db";

@@ -29,6 +29,7 @@ typedef enum
 {
     IDENTIFIER = 1,
     SCALE,
+    CHORD,
     KEY,
     WHITESPACE,
     STEPS,
@@ -66,6 +67,9 @@ void print_token(Token *t)
         break;
     case SCALE:
         type = "SCALE";
+        break;
+    case CHORD:
+        type = "CHORD";
         break;
     case KEY:
         type = "KEY";

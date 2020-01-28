@@ -1,8 +1,6 @@
 #pragma once
 
 /*
- * MIT License
- *
  * Copyright (c) 2019 Jeremy Meltingtallow
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -21,77 +19,24 @@
  * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+#include "./parser.h"
+#include "../scanner.h"
+#include "../lexer/reserved.h"
+#include "../../util/assert.h"
+
+/**
+ * Parsing scale "harmonic-minor"
  */
-
-#include "./settings.h"
-
-typedef char Identifier[SETTINGS_LEXEME_LENGTH];
-
-typedef struct
+Expr *parse_chord_prefix(Expr *expr, Token *token)
 {
-    int start;
-    int duration;
-} Hit;
+    expr->def.constant.type = C_CHORD;
 
-typedef struct
-{
-    Hit hits[SETTINGS_HIT_LENGTH];
-    int length;
-} Rhythm;
-
-typedef struct
-{
-    int steps[SETTINGS_STEP_LENGTH];
-    int length;
-} Steps;
-
-typedef struct
-{
-    Hit *hit;
-    int step;
-} Note;
-
-typedef struct
-{
-    Note notes[SETTINGS_HIT_LENGTH];
-    int length;
-} Melody;
-
-typedef struct
-{
-    Melody *Melody[SETTINGS_POLY];
-} Harmony;
-
-typedef enum
-{
-    CHORD_TRIAD = 1,
-} Chord;
-
-typedef enum
-{
-    SCALE_MAJOR = 1,
-    SCALE_NATURAL_MINOR,
-    SCALE_MELODIC_MINOR,
-    SCALE_HARMONIC_MINOR
-} Scale;
-
-typedef enum
-{
-    KEY_C = 1,
-    KEY_C_SHARP,
-    KEY_D_FLAT,
-    KEY_D,
-    KEY_D_SHARP,
-    KEY_E_FLAT,
-    KEY_E,
-    KEY_F,
-    KEY_F_SHARP,
-    KEY_G_FLAT,
-    KEY_G,
-    KEY_G_SHARP,
-    KEY_A_FLAT,
-    KEY_A,
-    KEY_A_SHARP,
-    KEY_B_FLAT,
-    KEY_B
-} Key;
+    if (strcmp(R_TRIAD, token->lexeme) == 0)
+    {
+        expr->def.constant.value.chord = CHORD_TRIAD;
+    }
+    expr->ret_type = C_CHORD;
+    return expr;
+}

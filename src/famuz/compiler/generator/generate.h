@@ -24,19 +24,90 @@
 #include "../expr/expr.h"
 #include "../../util/expr-printer.h"
 
-void generate(Expr *expr)
+Expr *generate(Expr *expr, Exprs *exprs);
+
+#include "./generator_binop.h"
+
+Expr *generate_call(Expr *expr, Exprs *exprs)
+{
+    if (strcmp(expr->def.call.e->def.constant.value.identifier, "arp") == 0)
+    {
+        Expr *param = &(expr->def.call.params[0]);
+        return generate(param, exprs);
+    }
+    else if (strcmp(expr->def.call.e->def.constant.value.identifier, "chord") == 0)
+    {
+        Expr *param1 = &(expr->def.call.params[0]);
+        Expr *param2 = &(expr->def.call.params[1]);
+        generate(param1, exprs);
+        generate(param2, exprs);
+        return expr; //TODO COMPUTE EXPR
+    }
+    else if (strcmp(expr->def.call.e->def.constant.value.identifier, "main") == 0)
+    {
+        Expr *param = &(expr->def.call.params[0]);
+        return generate(param, exprs);
+    }
+    else
+    {
+        return expr; //INVALID
+    }
+}
+
+Expr *generate_parentheses(Expr *expr, Exprs *exprs)
+{
+    return generate(expr->def.parentheses.e, exprs);
+}
+
+Expr *generate_var(Expr *expr, Exprs *exprs)
+{
+    return generate(expr->def.var.e, exprs);
+}
+
+Expr *generate_const(Expr *expr, Exprs *exprs)
+{
+    switch (expr->def.constant.type)
+    {
+    case C_IDENTIFIER:
+    {
+        char *name = expr->def.constant.value.identifier;
+        Expr *expr = expr_from_name(exprs, name);
+        return generate(expr, exprs);
+    }
+    case C_RHYTHM:
+        return expr;
+    case C_MELODY:
+        return expr;
+    case C_HARMONY:
+        return expr;
+    case C_STEPS:
+        return expr;
+    case C_SCALE:
+        return expr;
+    case C_KEY:
+        return expr;
+    case C_SCALED_KEY:
+        return expr;
+    case C_MUSIC:
+        return expr;
+    case C_CHORD:
+        return expr;
+    }
+}
+
+Expr *generate(Expr *expr, Exprs *exprs)
 {
     switch (expr->def_type)
     {
     case E_CONST:
-        break;
+        return generate_const(expr, exprs);
     case E_VAR:
-        break;
+        return generate_var(expr, exprs);
     case E_CALL:
-        break;
+        return generate_call(expr, exprs);
     case E_BINOP:
-        break;
+        return generate_binop(expr, exprs);
     case E_PAREN:
-        break;
+        return generate_parentheses(expr, exprs);
     }
 }

@@ -208,6 +208,12 @@ void expr_print_const(Expr *expr, int spaces)
         // printf("{\n%s  type: music;\n%s  ret: %i;\n%s  value: %s\n%s}", spacer, spacer, ret_type, spacer, key, spacer);
         break;
     }
+    case C_CHORD:
+    {
+        Chord chord = expr->def.constant.value.chord;
+        printf("{\n%s  type: chord;\n%s  ret: %i;\n%s  value: %i\n%s}", spacer, spacer, ret_type, spacer, chord, spacer);
+        break;
+    }
     }
 }
 

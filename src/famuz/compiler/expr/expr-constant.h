@@ -33,7 +33,8 @@ typedef enum
     C_SCALE,
     C_KEY,
     C_SCALED_KEY,
-    C_MUSIC
+    C_MUSIC,
+    C_CHORD
 } ConstantType;
 
 typedef struct
@@ -45,6 +46,7 @@ typedef struct
         Harmony harmony;
         Steps steps;
         Scale scale;
+        Chord chord;
         Key key;
     } value;
     ConstantType type;
@@ -69,8 +71,11 @@ ConstantType constant_type_add(ConstantType a, ConstantType b)
     case C_KEY:
         return b == C_SCALE ? C_SCALED_KEY : -1;
     case C_SCALED_KEY:
-        return (b == C_MELODY || b == C_HARMONY) ? C_MUSIC : -1;;
+        return (b == C_MELODY || b == C_HARMONY) ? C_MUSIC : -1;
+        ;
     case C_MUSIC:
+        return -1;
+    case C_CHORD:
         return -1;
     }
     return -1;
