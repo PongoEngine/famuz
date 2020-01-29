@@ -34,19 +34,41 @@ Expr *generate_call(Expr *expr, Exprs *exprs)
     if (strcmp(expr->def.call.e->def.constant.value.identifier, "arp") == 0)
     {
         Expr *param = &(expr->def.call.params[0]);
-        return generate(param, exprs);
+        if (assert_that(param->ret_type == C_HARMONY, "WRONG PARAMS"))
+        {
+            return generate(param, exprs);
+        }
+        else
+        {
+            return NULL;
+        }
     }
     else if (strcmp(expr->def.call.e->def.constant.value.identifier, "chord") == 0)
     {
         Expr *chord = generate(&(expr->def.call.params[0]), exprs);
         Expr *melody = generate(&(expr->def.call.params[1]), exprs);
-        Expr *harmony = get_binop_expr(exprs, E_CONST, C_HARMONY, chord->pos, melody->pos);
-        return harmony;
+
+        if (assert_that(chord->ret_type == C_CHORD && melody->ret_type == C_MELODY, "WRONG PARAMS"))
+        {
+            Expr *harmony = get_binop_expr(exprs, E_CONST, C_HARMONY, chord->pos, melody->pos);
+            return harmony;
+        }
+        else
+        {
+            return NULL;
+        }
     }
     else if (strcmp(expr->def.call.e->def.constant.value.identifier, "main") == 0)
     {
         Expr *param = &(expr->def.call.params[0]);
-        return generate(param, exprs);
+        if (assert_that(param->ret_type == C_MUSIC, "WRONG PARAMS"))
+        {
+            return generate(param, exprs);
+        }
+        else
+        {
+            return NULL;
+        }
     }
     else
     {
