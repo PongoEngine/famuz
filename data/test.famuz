@@ -5,10 +5,12 @@ basicRhythm =
 simpleSteps =
     0 1 2 3
 
+c = TRIAD
+
 simpleMelody =
     simpleSteps + basicRhythm
 
 simpleLoop = 
-   arp(chord(TRIAD, simpleMelody))
+   arp(chord(c, simpleMelody))
 
 main(((((((((((simpleLoop)))))))))) + (C# + harmonic-minor))

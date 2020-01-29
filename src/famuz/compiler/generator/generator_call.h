@@ -1,0 +1,56 @@
+#pragma once
+
+/*
+ * Copyright (c) 2019 Jeremy Meltingtallow
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of
+ * this software and associated documentation files (the "Software"), to deal in
+ * the Software without restriction, including without limitation the rights to use,
+ * copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the
+ * Software, and to permit persons to whom the Software is furnished to do so,
+ * subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+ * FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+ * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN
+ * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH
+ * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+#include "../expr/expr.h"
+#include "../position.h"
+#include "../../util/expr-printer.h"
+#include "../../util/assert.h"
+
+Expr *generate(Expr *expr, Exprs *exprs);
+Expr *get_binop_expr(Exprs *exprs, ExprDefType def_type, ConstantType constant_type, Position *p1, Position *p2);
+
+Expr *generate_call(Expr *expr, Exprs *exprs)
+{
+    if (strcmp(expr->def.call.e->def.constant.value.identifier, "arp") == 0)
+    {
+        Expr *param = &(expr->def.call.params[0]);
+        return generate(param, exprs);
+    }
+    else if (strcmp(expr->def.call.e->def.constant.value.identifier, "chord") == 0)
+    {
+        Expr *chord = generate(&(expr->def.call.params[0]), exprs);
+        Expr *melody = generate(&(expr->def.call.params[1]), exprs);
+        Expr *harmony = get_binop_expr(exprs, E_CONST, C_HARMONY, chord->pos, melody->pos);
+        return harmony;
+    }
+    else if (strcmp(expr->def.call.e->def.constant.value.identifier, "main") == 0)
+    {
+        Expr *param = &(expr->def.call.params[0]);
+        return generate(param, exprs);
+    }
+    else
+    {
+        printf("INVALID");
+        return expr;
+    }
+}

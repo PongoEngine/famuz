@@ -27,43 +27,51 @@
 #include "../../util/assert.h"
 
 Expr *generate(Expr *expr, Exprs *exprs);
-
-Expr *get_binop_expr(Exprs *exprs, ExprDefType def_type, Position *p1, Position *p2)
-{
-    Expr *expr = &(exprs->exprs[exprs->cur_index++]);
-    expr->def_type = def_type;
-    // position_union(p1, p2, expr->pos);
-    return expr;
-}
+Expr *get_binop_expr(Exprs *exprs, ExprDefType def_type, ConstantType constant_type, Position *p1, Position *p2);
 
 Expr *generate_binop_add_rhythm(Expr *rhythm, Expr *right, Exprs *exprs)
 {
     switch (right->def.constant.type)
     {
-    default:
-        break;
+    case C_STEPS:
+    {
+        Expr *expr = get_binop_expr(exprs, E_CONST, C_MELODY, rhythm->pos, right->pos);
+        return expr;
     }
-    return rhythm;
+    default:
+        printf("WE FAILED GEN");
+        return rhythm;
+    }
 }
 
 Expr *generate_binop_add_melody(Expr *melody, Expr *right, Exprs *exprs)
 {
     switch (right->def.constant.type)
     {
-    default:
-        break;
+    case C_SCALED_KEY:
+    {
+        Expr *expr = get_binop_expr(exprs, E_CONST, C_MUSIC, melody->pos, right->pos);
+        return expr;
     }
-    return melody;
+    default:
+        printf("WE FAILED GEN");
+        return melody;
+    }
 }
 
 Expr *generate_binop_add_harmony(Expr *harmony, Expr *right, Exprs *exprs)
 {
     switch (right->def.constant.type)
     {
-    default:
-        break;
+    case C_SCALED_KEY:
+    {
+        Expr *expr = get_binop_expr(exprs, E_CONST, C_MUSIC, harmony->pos, right->pos);
+        return expr;
     }
-    return harmony;
+    default:
+        printf("WE FAILED GEN");
+        return harmony;
+    }
 }
 
 Expr *generate_binop_add_steps(Expr *steps, Expr *right, Exprs *exprs)
@@ -72,38 +80,59 @@ Expr *generate_binop_add_steps(Expr *steps, Expr *right, Exprs *exprs)
     {
     case C_RHYTHM:
     {
-        Rhythm *rhythm = &(right->def.constant.value.rhythm);
-        Expr *expr = get_binop_expr(exprs, E_CONST, steps->pos, right->pos);
-        expr->ret_type = C_MELODY;
-        expr->def.constant.type = C_MELODY;
-        Melody *melody = &(expr->def.constant.value.melody);
-        melody->length = rhythm->length;
+        Expr *expr = get_binop_expr(exprs, E_CONST, C_MELODY, steps->pos, right->pos);
         return expr;
     }
     default:
-        break;
+        printf("WE FAILED GEN");
+        return steps;
     }
-    return steps;
 }
 
 Expr *generate_binop_add_scale(Expr *scale, Expr *right, Exprs *exprs)
 {
     switch (right->def.constant.type)
     {
-    default:
-        break;
+    case C_KEY:
+    {
+        Expr *expr = get_binop_expr(exprs, E_CONST, C_SCALED_KEY, scale->pos, right->pos);
+        return expr;
     }
-    return scale;
+    default:
+        printf("WE FAILED GEN");
+        return scale;
+    }
 }
 
 Expr *generate_binop_add_key(Expr *key, Expr *right, Exprs *exprs)
 {
     switch (right->def.constant.type)
     {
-    default:
-        break;
+    case C_SCALE:
+    {
+        Expr *expr = get_binop_expr(exprs, E_CONST, C_SCALED_KEY, key->pos, right->pos);
+        return expr;
     }
-    return key;
+    default:
+        printf("WE FAILED GEN");
+        return key;
+    }
+}
+
+Expr *generate_binop_add_scaled_key(Expr *scaled_key, Expr *right, Exprs *exprs)
+{
+    switch (right->def.constant.type)
+    {
+    case C_MELODY:
+    case C_HARMONY:
+    {
+        Expr *expr = get_binop_expr(exprs, E_CONST, C_MUSIC, scaled_key->pos, right->pos);
+        return expr;
+    }
+    default:
+        printf("WE FAILED GEN");
+        return scaled_key;
+    }
 }
 
 Expr *generate_binop_add(Expr *left, Expr *right, Exprs *exprs)
@@ -130,10 +159,7 @@ Expr *generate_binop_add(Expr *left, Expr *right, Exprs *exprs)
         case C_KEY:
             return generate_binop_add_key(left, right, exprs);
         case C_SCALED_KEY:
-        {
-            printf("\n-CANNOT DO C_SCALED_KEY-\n");
-            return left;
-        }
+            return generate_binop_add_scaled_key(left, right, exprs);
         case C_MUSIC:
         {
             printf("\n-CANNOT DO C_MUSIC-\n");

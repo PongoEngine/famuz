@@ -27,32 +27,7 @@
 Expr *generate(Expr *expr, Exprs *exprs);
 
 #include "./generator_binop.h"
-
-Expr *generate_call(Expr *expr, Exprs *exprs)
-{
-    if (strcmp(expr->def.call.e->def.constant.value.identifier, "arp") == 0)
-    {
-        Expr *param = &(expr->def.call.params[0]);
-        return generate(param, exprs);
-    }
-    else if (strcmp(expr->def.call.e->def.constant.value.identifier, "chord") == 0)
-    {
-        Expr *param1 = &(expr->def.call.params[0]);
-        Expr *param2 = &(expr->def.call.params[1]);
-        generate(param1, exprs);
-        generate(param2, exprs);
-        return expr; //TODO COMPUTE EXPR
-    }
-    else if (strcmp(expr->def.call.e->def.constant.value.identifier, "main") == 0)
-    {
-        Expr *param = &(expr->def.call.params[0]);
-        return generate(param, exprs);
-    }
-    else
-    {
-        return expr; //INVALID
-    }
-}
+#include "./generator_call.h"
 
 Expr *generate_parentheses(Expr *expr, Exprs *exprs)
 {
@@ -110,4 +85,14 @@ Expr *generate(Expr *expr, Exprs *exprs)
     case E_PAREN:
         return generate_parentheses(expr, exprs);
     }
+}
+
+Expr *get_binop_expr(Exprs *exprs, ExprDefType def_type, ConstantType constant_type, Position *p1, Position *p2)
+{
+    Expr *expr = &(exprs->exprs[exprs->cur_index++]);
+    expr->def_type = def_type;
+    expr->ret_type = constant_type;
+    expr->def.constant.type = constant_type;
+    // position_union(p1, p2, expr->pos);
+    return expr;
 }
