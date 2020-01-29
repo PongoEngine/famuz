@@ -50,6 +50,7 @@ void famuz_parse(char *file_path)
         }
 
         Expr *main = expr_from_name(&exprs, "main");
-        generate(main, &exprs);
+        Expr *output = generate(main, &exprs);
+        expr_print(output, 0);
     }
 }

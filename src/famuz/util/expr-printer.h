@@ -200,12 +200,14 @@ void expr_print_const(Expr *expr, int spaces)
     {
         // char *key = expr->def.constant.value.key;
         // printf("{\n%s  type: scaled-key;\n%s  ret: %i;\n%s  value: %s\n%s}", spacer, spacer, ret_type, spacer, key, spacer);
+        printf("SCALED KEY!");
         break;
     }
     case C_MUSIC:
     {
         // char *key = expr->def.constant.value.key;
         // printf("{\n%s  type: music;\n%s  ret: %i;\n%s  value: %s\n%s}", spacer, spacer, ret_type, spacer, key, spacer);
+        printf("MUSIC!");
         break;
     }
     case C_CHORD:
