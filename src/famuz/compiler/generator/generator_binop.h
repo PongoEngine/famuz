@@ -35,6 +35,8 @@ Expr *generate_binop_add_rhythm(Expr *rhythm, Expr *right, Exprs *exprs)
     {
     case C_STEPS:
     {
+        Rhythm *r = &(rhythm->def.constant.value.rhythm);
+        Steps *s = &(right->def.constant.value.steps);
         Expr *expr = get_binop_expr(exprs, E_CONST, C_MELODY, rhythm->pos, right->pos);
         return expr;
     }
@@ -50,6 +52,8 @@ Expr *generate_binop_add_melody(Expr *melody, Expr *right, Exprs *exprs)
     {
     case C_SCALED_KEY:
     {
+        Melody *m = &(melody->def.constant.value.melody);
+        ScaledKey *s_k = &(right->def.constant.value.scaled_key);
         Expr *expr = get_binop_expr(exprs, E_CONST, C_MUSIC, melody->pos, right->pos);
         return expr;
     }
@@ -65,6 +69,8 @@ Expr *generate_binop_add_harmony(Expr *harmony, Expr *right, Exprs *exprs)
     {
     case C_SCALED_KEY:
     {
+        Harmony *h = &(harmony->def.constant.value.harmony);
+        ScaledKey *s_k = &(right->def.constant.value.scaled_key);
         Expr *expr = get_binop_expr(exprs, E_CONST, C_MUSIC, harmony->pos, right->pos);
         return expr;
     }
@@ -80,6 +86,8 @@ Expr *generate_binop_add_steps(Expr *steps, Expr *right, Exprs *exprs)
     {
     case C_RHYTHM:
     {
+        Steps *s = &(steps->def.constant.value.steps);
+        Rhythm *r = &(right->def.constant.value.rhythm);
         Expr *expr = get_binop_expr(exprs, E_CONST, C_MELODY, steps->pos, right->pos);
         return expr;
     }
@@ -95,6 +103,8 @@ Expr *generate_binop_add_scale(Expr *scale, Expr *right, Exprs *exprs)
     {
     case C_KEY:
     {
+        Scale *s = &(scale->def.constant.value.scale);
+        Key *k = &(right->def.constant.value.key);
         Expr *expr = get_binop_expr(exprs, E_CONST, C_SCALED_KEY, scale->pos, right->pos);
         return expr;
     }
@@ -110,6 +120,8 @@ Expr *generate_binop_add_key(Expr *key, Expr *right, Exprs *exprs)
     {
     case C_SCALE:
     {
+        Key *k = &(key->def.constant.value.key);
+        Scale *s = &(right->def.constant.value.scale);
         Expr *expr = get_binop_expr(exprs, E_CONST, C_SCALED_KEY, key->pos, right->pos);
         return expr;
     }
@@ -124,8 +136,16 @@ Expr *generate_binop_add_scaled_key(Expr *scaled_key, Expr *right, Exprs *exprs)
     switch (right->def.constant.type)
     {
     case C_MELODY:
+    {
+        ScaledKey *s_k = &(scaled_key->def.constant.value.scaled_key);
+        Melody *m = &(right->def.constant.value.melody);
+        Expr *expr = get_binop_expr(exprs, E_CONST, C_MUSIC, scaled_key->pos, right->pos);
+        return expr;
+    }
     case C_HARMONY:
     {
+        ScaledKey *s_k = &(scaled_key->def.constant.value.scaled_key);
+        Harmony *h = &(right->def.constant.value.harmony);
         Expr *expr = get_binop_expr(exprs, E_CONST, C_MUSIC, scaled_key->pos, right->pos);
         return expr;
     }
@@ -143,7 +163,7 @@ Expr *generate_binop_add(Expr *left, Expr *right, Exprs *exprs)
         {
         case C_IDENTIFIER:
         {
-            printf("\n-CANNOT DO C_IDENTIFIER-\n");
+            assert_that(false, "\n-CANNOT DO C_IDENTIFIER-\n");
             return left;
         }
         case C_RHYTHM:
@@ -162,12 +182,12 @@ Expr *generate_binop_add(Expr *left, Expr *right, Exprs *exprs)
             return generate_binop_add_scaled_key(left, right, exprs);
         case C_MUSIC:
         {
-            printf("\n-CANNOT DO C_MUSIC-\n");
+            assert_that(false, "\n-CANNOT DO C_MUSIC-\n");
             return left;
         }
         case C_CHORD:
         {
-            printf("\n-CANNOT DO C_CHORD-\n");
+            assert_that(false, "\n-CANNOT DO C_CHORD-\n");
             return left;
         }
         }

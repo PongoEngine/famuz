@@ -46,8 +46,10 @@ typedef struct
         Harmony harmony;
         Steps steps;
         Scale scale;
-        Chord chord;
         Key key;
+        ScaledKey scaled_key;
+        Music music;
+        Chord chord;
     } value;
     ConstantType type;
 } Constant;

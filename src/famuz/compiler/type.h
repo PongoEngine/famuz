@@ -95,3 +95,13 @@ typedef enum
     KEY_B_FLAT,
     KEY_B
 } Key;
+
+typedef struct
+{
+    Scale scale;
+    Key key;
+} ScaledKey;
+
+typedef struct
+{
+} Music;
