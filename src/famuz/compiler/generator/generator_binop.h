@@ -29,6 +29,7 @@
 Expr *generate(Expr *expr, Exprs *exprs);
 Expr *get_binop_expr(Exprs *exprs, ExprDefType def_type, ConstantType constant_type, Position *p1, Position *p2);
 
+//complete not_tested
 Expr *generate_binop_add_rhythm(Expr *rhythm, Expr *right, Exprs *exprs)
 {
     switch (right->def.constant.type)
@@ -37,11 +38,19 @@ Expr *generate_binop_add_rhythm(Expr *rhythm, Expr *right, Exprs *exprs)
     {
         Rhythm *r = &(rhythm->def.constant.value.rhythm);
         Steps *s = &(right->def.constant.value.steps);
-        Expr *expr = get_binop_expr(exprs, E_CONST, C_MELODY, rhythm->pos, right->pos);
-        return expr;
+        Expr *expr_melody = get_binop_expr(exprs, E_CONST, C_MELODY, rhythm->pos, right->pos);
+        expr_melody->def.constant.value.melody.length = r->length;
+        for (size_t i = 0; i < r->length; i++)
+        {
+            size_t i_wrapped = i % s->length;
+            expr_melody->def.constant.value.melody.notes[i].hit = &(r->hits[i]);
+            expr_melody->def.constant.value.melody.notes[i].step = s->steps[i_wrapped];
+        }
+
+        return expr_melody;
     }
     default:
-        printf("WE FAILED GEN");
+        assert_that(false, "WE FAILED RHYTHM GENERATION");
         return rhythm;
     }
 }
@@ -58,7 +67,7 @@ Expr *generate_binop_add_melody(Expr *melody, Expr *right, Exprs *exprs)
         return expr;
     }
     default:
-        printf("WE FAILED GEN");
+        assert_that(false, "WE FAILED MELODY GENERATION");
         return melody;
     }
 }
@@ -75,25 +84,8 @@ Expr *generate_binop_add_harmony(Expr *harmony, Expr *right, Exprs *exprs)
         return expr;
     }
     default:
-        printf("WE FAILED GEN");
+        assert_that(false, "WE FAILED HARMONY GENERATION");
         return harmony;
-    }
-}
-
-Expr *generate_binop_add_steps(Expr *steps, Expr *right, Exprs *exprs)
-{
-    switch (right->def.constant.type)
-    {
-    case C_RHYTHM:
-    {
-        Steps *s = &(steps->def.constant.value.steps);
-        Rhythm *r = &(right->def.constant.value.rhythm);
-        Expr *expr = get_binop_expr(exprs, E_CONST, C_MELODY, steps->pos, right->pos);
-        return expr;
-    }
-    default:
-        printf("WE FAILED GEN");
-        return steps;
     }
 }
 
@@ -109,7 +101,7 @@ Expr *generate_binop_add_scale(Expr *scale, Expr *right, Exprs *exprs)
         return expr;
     }
     default:
-        printf("WE FAILED GEN");
+        assert_that(false, "WE FAILED SCALE GENERATION");
         return scale;
     }
 }
@@ -126,35 +118,46 @@ Expr *generate_binop_add_key(Expr *key, Expr *right, Exprs *exprs)
         return expr;
     }
     default:
-        printf("WE FAILED GEN");
+        assert_that(false, "WE FAILED KEY GENERATION");
         return key;
     }
 }
 
+//complete
+Expr *generate_binop_add_steps(Expr *steps, Expr *right, Exprs *exprs)
+{
+    switch (right->def.constant.type)
+    {
+    case C_RHYTHM:
+    {
+        return generate_binop_add_rhythm(right, steps, exprs);
+    }
+    default:
+        assert_that(false, "WE FAILED STEPS GENERATION");
+        return steps;
+    }
+}
+
+//complete
 Expr *generate_binop_add_scaled_key(Expr *scaled_key, Expr *right, Exprs *exprs)
 {
     switch (right->def.constant.type)
     {
     case C_MELODY:
     {
-        ScaledKey *s_k = &(scaled_key->def.constant.value.scaled_key);
-        Melody *m = &(right->def.constant.value.melody);
-        Expr *expr = get_binop_expr(exprs, E_CONST, C_MUSIC, scaled_key->pos, right->pos);
-        return expr;
+        return generate_binop_add_melody(right, scaled_key, exprs);
     }
     case C_HARMONY:
     {
-        ScaledKey *s_k = &(scaled_key->def.constant.value.scaled_key);
-        Harmony *h = &(right->def.constant.value.harmony);
-        Expr *expr = get_binop_expr(exprs, E_CONST, C_MUSIC, scaled_key->pos, right->pos);
-        return expr;
+        return generate_binop_add_harmony(right, scaled_key, exprs);
     }
     default:
-        printf("WE FAILED GEN");
+        assert_that(false, "WE FAILED SCALED_KEY GENERATION");
         return scaled_key;
     }
 }
 
+//complete
 Expr *generate_binop_add(Expr *left, Expr *right, Exprs *exprs)
 {
     if (assert_that(left->def_type == E_CONST && right->def_type == E_CONST, "CAN ONLY DO ARITHMETIC ON CONSTANTS"))
