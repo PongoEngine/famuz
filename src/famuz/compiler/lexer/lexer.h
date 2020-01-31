@@ -70,6 +70,7 @@ void create_token_identifier(Scanner *scanner, Token *token)
     scanner_consume_identifier(scanner, token->lexeme);
     int max = scanner->cur_index;
     token->type = word_type(token->lexeme);
+
     position_update(&(token->pos), min, max, scanner->file_path);
 }
 
@@ -145,6 +146,9 @@ int lex(char *content, char *file_path, Token *tokens)
         case L_TAB:
         case L_SPACE:
         case L_LINE:
+        case L_CARRAIGE:
+        case L_TERMINATOR:
+        case L_DELETE:
             scanner_consume_whitespace(&scanner);
             break;
         case L_ZERO:

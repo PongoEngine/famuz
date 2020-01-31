@@ -21,6 +21,7 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
+#include <stdio.h>
 #include <stdbool.h>
 #include <ctype.h>
 #include <string.h>
@@ -28,7 +29,7 @@
 
 bool is_whitespace(char ch)
 {
-    return (ch == L_SPACE) || (ch == L_TAB) || (ch == L_LINE);
+    return isspace(ch) != 0 || ch == '\0' || ch == 127;
 }
 
 bool is_identifer(char ch)
