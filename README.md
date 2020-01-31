@@ -16,13 +16,23 @@ basicRhythm =
 simpleSteps =
     0 1 2 3
 
+c = TRIAD
+
+robot = {
+    woah = x~~~ x--- x~~~ x~--,
+    x~~~,
+    x~~~ x~--,
+    0 1 2 3,
+    c
+}
+
 simpleMelody =
     simpleSteps + basicRhythm
 
 simpleLoop = 
-   arp(chord(TRIAD, simpleMelody))
+   arp(chord(c, simpleMelody))
 
-main((((simpleLoop))) + (C# + harmonic-minor))
+main(((((simpleLoop)))) + (C# + harmonic-minor))
 ```
 
 ## Famuz Types
