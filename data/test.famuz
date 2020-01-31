@@ -13,4 +13,4 @@ simpleMelody =
 simpleLoop = 
    arp(chord(c, simpleMelody))
 
-main((simpleLoop) + (C# + harmonic-minor))
+main(simpleLoop + (C# + harmonic-minor))

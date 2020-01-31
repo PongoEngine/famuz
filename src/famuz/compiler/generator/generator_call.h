@@ -28,6 +28,7 @@
 
 Expr *generate(Expr *expr, Exprs *exprs);
 Expr *get_binop_expr(Exprs *exprs, ExprDefType def_type, ConstantType constant_type, Position *p1, Position *p2);
+Expr *create_expr(Exprs *exprs, ExprDefType def_type, ConstantType constant_type, Position *pos);
 
 Expr *generate_call(Expr *expr, Exprs *exprs)
 {
@@ -36,7 +37,8 @@ Expr *generate_call(Expr *expr, Exprs *exprs)
         Expr *param = &(expr->def.call.params[0]);
         if (assert_that(param->ret_type == C_HARMONY, "WRONG PARAMS"))
         {
-            return generate(param, exprs);
+            Expr *harmony = generate(param, exprs);
+            return harmony;
         }
         else
         {
@@ -46,12 +48,20 @@ Expr *generate_call(Expr *expr, Exprs *exprs)
     else if (strcmp(expr->def.call.e->def.constant.value.identifier, "chord") == 0)
     {
         Expr *chord = generate(&(expr->def.call.params[0]), exprs);
-        Expr *melody = generate(&(expr->def.call.params[1]), exprs);
+        Expr *m1 = generate(&(expr->def.call.params[1]), exprs);
 
-        if (assert_that(chord->ret_type == C_CHORD && melody->ret_type == C_MELODY, "WRONG PARAMS"))
+        if (assert_that(chord->ret_type == C_CHORD && m1->ret_type == C_MELODY, "WRONG PARAMS"))
         {
-            Expr *harmony = get_binop_expr(exprs, E_CONST, C_HARMONY, chord->pos, melody->pos);
-            return harmony;
+            switch (chord->def.constant.value.chord)
+            {
+            case CHORD_TRIAD:
+            {
+                Expr *harmony = get_binop_expr(exprs, E_CONST, C_HARMONY, chord->pos, m1->pos);
+                harmony->def.constant.value.harmony.length = 1;
+                harmony->def.constant.value.harmony.Melody[0] = &(m1->def.constant.value.melody);
+                return harmony;
+            }
+            }
         }
         else
         {

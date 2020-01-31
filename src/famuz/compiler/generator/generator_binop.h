@@ -40,8 +40,6 @@ Expr *generate_binop_add_harmony(Expr *harmony, Expr *right, Exprs *exprs)
         Harmony *h = &(harmony->def.constant.value.harmony);
         ScaledKey *s_k = &(right->def.constant.value.scaled_key);
         Expr *expr = get_binop_expr(exprs, E_CONST, C_MUSIC, harmony->pos, right->pos);
-        // expr->def.constant.value.music.
-        expr_print(harmony, 0);
         return expr;
     }
     default:

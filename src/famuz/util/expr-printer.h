@@ -117,7 +117,7 @@ void expr_print_hit(Hit *hit)
 {
     int start = hit->start;
     int duration = hit->duration;
-    printf("{%i,%i} ", start, duration);
+    printf("(%i,%i) ", start, duration);
 }
 
 void expr_print_rhythm(Rhythm *rhythm)
@@ -133,7 +133,7 @@ void expr_print_rhythm(Rhythm *rhythm)
 
 void expr_print_step(int step)
 {
-    printf("{%d} ", step);
+    printf("%d ", step);
 }
 
 void expr_print_steps(Steps *steps)
@@ -155,25 +155,31 @@ void expr_print_melody(Melody *melody)
     for (size_t i = 0; i < length; i++)
     {
         Note *note = &(melody->notes[i]);
-        printf("(");
+        printf("{hit:");
         expr_print_hit(note->hit);
-        printf(",");
+        printf("step:");
         expr_print_step(note->step);
-        printf(")");
+        printf("}");
+        if (i != (length - 1))
+        {
+            printf(",");
+        }
     }
     printf("]");
 }
 
-void expr_print_harmony(Harmony *harmony)
+void expr_print_harmony(Harmony *harmony, int spaces)
 {
+    create_spacer;
     int length = harmony->length;
     printf("[ ");
     for (size_t i = 0; i < length; i++)
     {
         Melody *melody = harmony->Melody[i];
+        printf("\n%s%s", spacer, spacer);
         expr_print_melody(melody);
     }
-    printf("]");
+    printf("\n%s]", spacer);
 }
 
 void expr_print_const(Expr *expr, int spaces)
@@ -210,7 +216,7 @@ void expr_print_const(Expr *expr, int spaces)
     {
         Harmony *harmony = &(expr->def.constant.value.harmony);
         printf("{\n%s  type: harmony;\n%s  ret: %i;\n%s  value: ", spacer, spacer, ret_type, spacer);
-        expr_print_harmony(harmony);
+        expr_print_harmony(harmony, spaces + 2);
         printf("\n%s}", spacer);
         break;
     }
