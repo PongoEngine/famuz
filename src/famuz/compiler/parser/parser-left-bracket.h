@@ -37,10 +37,6 @@ Expr *parse_left_bracket_prefix(Expr *expr, TokenScanner *scanner, Exprs *exprs)
     int exprs_length = 1;
     while (token_scanner_has_next(scanner) && token_scanner_peek(scanner).type != RIGHT_BRACKET)
     {
-        if (assert_that(token_scanner_peek(scanner).type == COMMA, "EXPECTED COMMA"))
-        {
-            token_scanner_next(scanner);
-        }
         parse_expression(scanner, exprs);
         exprs_length++;
     }

@@ -19,10 +19,10 @@ simpleSteps =
 c = TRIAD
 
 robot = {
-    woah = x~~~ x--- x~~~ x~--,
-    x~~~,
-    x~~~ x~--,
-    0 1 2 3,
+    woah = x~~~ x--- x~~~ x~--
+    x~~~
+    x~~~ x~--
+    0 1 2 3
     c
 }
 
