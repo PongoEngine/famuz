@@ -151,7 +151,7 @@ void expr_print_steps(Steps *steps)
 void expr_print_melody(Melody *melody)
 {
     int length = melody->length;
-    printf("[ ");
+    printf("[");
     for (size_t i = 0; i < length; i++)
     {
         Note *note = &(melody->notes[i]);
@@ -172,12 +172,16 @@ void expr_print_harmony(Harmony *harmony, int spaces)
 {
     create_spacer;
     int length = harmony->length;
-    printf("[ ");
+    printf("[");
     for (size_t i = 0; i < length; i++)
     {
         Melody *melody = harmony->Melody[i];
         printf("\n%s%s", spacer, spacer);
         expr_print_melody(melody);
+        if (i != (length - 1))
+        {
+            printf(",");
+        }
     }
     printf("\n%s]", spacer);
 }
@@ -297,6 +301,12 @@ void expr_print(Expr *expr, int spaces)
     {
         SET_COLOR_PAREN
         expr_print_paren(expr, spaces);
+        break;
+    }
+    case E_BLOCK:
+    {
+        // SET_COLOR_PAREN
+        // expr_print_paren(expr, spaces);
         break;
     }
     }

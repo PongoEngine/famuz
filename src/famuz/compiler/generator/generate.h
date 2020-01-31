@@ -40,6 +40,11 @@ Expr *generate_var(Expr *expr, Exprs *exprs)
     return generate(expr->def.var.e, exprs);
 }
 
+Expr *generate_block(Expr *expr, Exprs *exprs)
+{
+    return expr;
+}
+
 Expr *generate_const(Expr *expr, Exprs *exprs)
 {
     switch (expr->def.constant.type)
@@ -85,6 +90,8 @@ Expr *generate(Expr *expr, Exprs *exprs)
         return generate_binop(expr, exprs);
     case E_PAREN:
         return generate_parentheses(expr, exprs);
+    case E_BLOCK:
+        return generate_block(expr, exprs);
     }
 }
 

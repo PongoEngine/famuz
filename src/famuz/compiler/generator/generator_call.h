@@ -57,8 +57,10 @@ Expr *generate_call(Expr *expr, Exprs *exprs)
             case CHORD_TRIAD:
             {
                 Expr *harmony = get_binop_expr(exprs, E_CONST, C_HARMONY, chord->pos, m1->pos);
-                harmony->def.constant.value.harmony.length = 1;
+                harmony->def.constant.value.harmony.length = 3;
                 harmony->def.constant.value.harmony.Melody[0] = &(m1->def.constant.value.melody);
+                harmony->def.constant.value.harmony.Melody[1] = &(m1->def.constant.value.melody);
+                harmony->def.constant.value.harmony.Melody[2] = &(m1->def.constant.value.melody);
                 return harmony;
             }
             }
