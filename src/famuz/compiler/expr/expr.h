@@ -35,6 +35,7 @@ typedef struct Expr Expr;
 #include "./expr-var.h"
 #include "./expr-call.h"
 #include "./expr-block.h"
+#include "./expr-function.h"
 #include "./expr-parentheses.h"
 
 typedef enum
@@ -44,6 +45,7 @@ typedef enum
     E_CALL,
     E_BINOP,
     E_BLOCK,
+    E_FUNC,
     E_PAREN,
 } ExprDefType;
 

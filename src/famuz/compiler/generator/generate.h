@@ -45,6 +45,11 @@ Expr *generate_block(Expr *expr, Exprs *exprs)
     return expr;
 }
 
+Expr *generate_function(Expr *expr, Exprs *exprs)
+{
+    return expr;
+}
+
 Expr *generate_const(Expr *expr, Exprs *exprs)
 {
     switch (expr->def.constant.type)
@@ -92,6 +97,8 @@ Expr *generate(Expr *expr, Exprs *exprs)
         return generate_parentheses(expr, exprs);
     case E_BLOCK:
         return generate_block(expr, exprs);
+    case E_FUNC:
+        return generate_function(expr, exprs);
     }
 }
 

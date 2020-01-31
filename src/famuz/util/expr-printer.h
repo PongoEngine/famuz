@@ -309,6 +309,12 @@ void expr_print(Expr *expr, int spaces)
         // expr_print_paren(expr, spaces);
         break;
     }
+    case E_FUNC:
+    {
+        // SET_COLOR_PAREN
+        // expr_print_paren(expr, spaces);
+        break;
+    }
     }
     SET_COLOR_RESET
 }
