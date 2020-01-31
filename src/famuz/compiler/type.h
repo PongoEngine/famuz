@@ -60,6 +60,7 @@ typedef struct
 typedef struct
 {
     Melody *Melody[SETTINGS_POLY];
+    int length;
 } Harmony;
 
 typedef enum
@@ -98,8 +99,8 @@ typedef enum
 
 typedef struct
 {
-    Scale scale;
-    Key key;
+    Scale *scale;
+    Key *key;
 } ScaledKey;
 
 typedef struct

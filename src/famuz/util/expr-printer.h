@@ -113,17 +113,27 @@ void expr_print_binop(Expr *expr, int spaces)
     printf("\n%s}", spacer);
 }
 
+void expr_print_hit(Hit *hit)
+{
+    int start = hit->start;
+    int duration = hit->duration;
+    printf("{%i,%i} ", start, duration);
+}
+
 void expr_print_rhythm(Rhythm *rhythm)
 {
     int length = rhythm->length;
     printf("[ ");
     for (size_t i = 0; i < length; i++)
     {
-        int start = rhythm->hits[i].start;
-        int duration = rhythm->hits[i].duration;
-        printf("{%i,%i} ", start, duration);
+        expr_print_hit(&rhythm->hits[i]);
     }
     printf("]");
+}
+
+void expr_print_step(int step)
+{
+    printf("{%d} ", step);
 }
 
 void expr_print_steps(Steps *steps)
@@ -133,7 +143,35 @@ void expr_print_steps(Steps *steps)
     for (size_t i = 0; i < length; i++)
     {
         int step = steps->steps[i];
-        printf("{%d} ", step);
+        expr_print_step(step);
+    }
+    printf("]");
+}
+
+void expr_print_melody(Melody *melody)
+{
+    int length = melody->length;
+    printf("[ ");
+    for (size_t i = 0; i < length; i++)
+    {
+        Note *note = &(melody->notes[i]);
+        printf("(");
+        expr_print_hit(note->hit);
+        printf(",");
+        expr_print_step(note->step);
+        printf(")");
+    }
+    printf("]");
+}
+
+void expr_print_harmony(Harmony *harmony)
+{
+    int length = harmony->length;
+    printf("[ ");
+    for (size_t i = 0; i < length; i++)
+    {
+        Melody *melody = harmony->Melody[i];
+        expr_print_melody(melody);
     }
     printf("]");
 }
@@ -164,7 +202,7 @@ void expr_print_const(Expr *expr, int spaces)
     {
         Melody *melody = &(expr->def.constant.value.melody);
         printf("{\n%s  type: melody;\n%s  ret: %i;\n%s  value: ", spacer, spacer, ret_type, spacer);
-        // expr_print_rhythm(rhythm);
+        expr_print_melody(melody);
         printf("\n%s}", spacer);
         break;
     }
@@ -172,7 +210,7 @@ void expr_print_const(Expr *expr, int spaces)
     {
         Harmony *harmony = &(expr->def.constant.value.harmony);
         printf("{\n%s  type: harmony;\n%s  ret: %i;\n%s  value: ", spacer, spacer, ret_type, spacer);
-        // expr_print_rhythm(rhythm);
+        expr_print_harmony(harmony);
         printf("\n%s}", spacer);
         break;
     }
@@ -198,8 +236,8 @@ void expr_print_const(Expr *expr, int spaces)
     }
     case C_SCALED_KEY:
     {
-        // char *key = expr->def.constant.value.key;
-        // printf("{\n%s  type: scaled-key;\n%s  ret: %i;\n%s  value: %s\n%s}", spacer, spacer, ret_type, spacer, key, spacer);
+        ScaledKey scaled_key = expr->def.constant.value.scaled_key;
+        printf("{\n%s  type: key;\n%s  ret: %i;\n%s  value: %i, %i\n%s}", spacer, spacer, ret_type, spacer, *scaled_key.scale, *scaled_key.key, spacer);
         printf("SCALED KEY!");
         break;
     }

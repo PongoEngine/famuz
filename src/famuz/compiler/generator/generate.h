@@ -25,6 +25,7 @@
 #include "../../util/expr-printer.h"
 
 Expr *generate(Expr *expr, Exprs *exprs);
+Expr *create_expr(Exprs *exprs, ExprDefType def_type, ConstantType constant_type, Position *pos);
 
 #include "./generator_binop.h"
 #include "./generator_call.h"
@@ -85,6 +86,16 @@ Expr *generate(Expr *expr, Exprs *exprs)
     case E_PAREN:
         return generate_parentheses(expr, exprs);
     }
+}
+
+Expr *create_expr(Exprs *exprs, ExprDefType def_type, ConstantType constant_type, Position *pos)
+{
+    Expr *expr = &(exprs->exprs[exprs->cur_index++]);
+    expr->def_type = def_type;
+    expr->ret_type = constant_type;
+    expr->def.constant.type = constant_type;
+    expr->pos = pos;
+    return expr;
 }
 
 Expr *get_binop_expr(Exprs *exprs, ExprDefType def_type, ConstantType constant_type, Position *p1, Position *p2)

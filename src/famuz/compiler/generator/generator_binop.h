@@ -28,12 +28,54 @@
 
 Expr *generate(Expr *expr, Exprs *exprs);
 Expr *get_binop_expr(Exprs *exprs, ExprDefType def_type, ConstantType constant_type, Position *p1, Position *p2);
+Expr *create_expr(Exprs *exprs, ExprDefType def_type, ConstantType constant_type, Position *pos);
+
+Expr *generate_binop_add_harmony(Expr *harmony, Expr *right, Exprs *exprs)
+{
+    switch (right->def.constant.type)
+    {
+    //output: music
+    case C_SCALED_KEY:
+    {
+        Harmony *h = &(harmony->def.constant.value.harmony);
+        ScaledKey *s_k = &(right->def.constant.value.scaled_key);
+        Expr *expr = get_binop_expr(exprs, E_CONST, C_MUSIC, harmony->pos, right->pos);
+        // expr->def.constant.value.music.
+        expr_print(harmony, 0);
+        return expr;
+    }
+    default:
+        assert_that(false, "WE FAILED HARMONY GENERATION");
+        return harmony;
+    }
+}
+
+//complete not_tested
+Expr *generate_binop_add_melody(Expr *melody, Expr *right, Exprs *exprs)
+{
+    switch (right->def.constant.type)
+    {
+    //output: music
+    case C_SCALED_KEY:
+    {
+        Melody *m = &(melody->def.constant.value.melody);
+        Expr *harmony = create_expr(exprs, E_CONST, C_HARMONY, melody->pos);
+        harmony->def.constant.value.harmony.Melody[0] = m;
+        harmony->def.constant.value.harmony.length = 1;
+        return generate_binop_add_harmony(harmony, right, exprs);
+    }
+    default:
+        assert_that(false, "WE FAILED MELODY GENERATION");
+        return melody;
+    }
+}
 
 //complete not_tested
 Expr *generate_binop_add_rhythm(Expr *rhythm, Expr *right, Exprs *exprs)
 {
     switch (right->def.constant.type)
     {
+    //output: melody
     case C_STEPS:
     {
         Rhythm *r = &(rhythm->def.constant.value.rhythm);
@@ -55,49 +97,19 @@ Expr *generate_binop_add_rhythm(Expr *rhythm, Expr *right, Exprs *exprs)
     }
 }
 
-Expr *generate_binop_add_melody(Expr *melody, Expr *right, Exprs *exprs)
-{
-    switch (right->def.constant.type)
-    {
-    case C_SCALED_KEY:
-    {
-        Melody *m = &(melody->def.constant.value.melody);
-        ScaledKey *s_k = &(right->def.constant.value.scaled_key);
-        Expr *expr = get_binop_expr(exprs, E_CONST, C_MUSIC, melody->pos, right->pos);
-        return expr;
-    }
-    default:
-        assert_that(false, "WE FAILED MELODY GENERATION");
-        return melody;
-    }
-}
-
-Expr *generate_binop_add_harmony(Expr *harmony, Expr *right, Exprs *exprs)
-{
-    switch (right->def.constant.type)
-    {
-    case C_SCALED_KEY:
-    {
-        Harmony *h = &(harmony->def.constant.value.harmony);
-        ScaledKey *s_k = &(right->def.constant.value.scaled_key);
-        Expr *expr = get_binop_expr(exprs, E_CONST, C_MUSIC, harmony->pos, right->pos);
-        return expr;
-    }
-    default:
-        assert_that(false, "WE FAILED HARMONY GENERATION");
-        return harmony;
-    }
-}
-
+//complete not_tested
 Expr *generate_binop_add_scale(Expr *scale, Expr *right, Exprs *exprs)
 {
     switch (right->def.constant.type)
     {
+    //output: scaledKey
     case C_KEY:
     {
         Scale *s = &(scale->def.constant.value.scale);
         Key *k = &(right->def.constant.value.key);
         Expr *expr = get_binop_expr(exprs, E_CONST, C_SCALED_KEY, scale->pos, right->pos);
+        expr->def.constant.value.scaled_key.scale = s;
+        expr->def.constant.value.scaled_key.key = k;
         return expr;
     }
     default:
@@ -106,16 +118,14 @@ Expr *generate_binop_add_scale(Expr *scale, Expr *right, Exprs *exprs)
     }
 }
 
+//complete
 Expr *generate_binop_add_key(Expr *key, Expr *right, Exprs *exprs)
 {
     switch (right->def.constant.type)
     {
     case C_SCALE:
     {
-        Key *k = &(key->def.constant.value.key);
-        Scale *s = &(right->def.constant.value.scale);
-        Expr *expr = get_binop_expr(exprs, E_CONST, C_SCALED_KEY, key->pos, right->pos);
-        return expr;
+        return generate_binop_add_scale(right, key, exprs);
     }
     default:
         assert_that(false, "WE FAILED KEY GENERATION");
