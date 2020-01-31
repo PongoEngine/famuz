@@ -53,17 +53,17 @@ typedef struct Expr
 {
     union ExprDef {
         //A constant.
-        Constant constant;
+        EConstant constant;
         //Variable declaration.
-        Var var;
+        EVar var;
         //A call e(params).
-        Call call;
+        ECall call;
         //A block of expressions {exprs}.
-        Block block;
+        EBlock block;
         //Binary operator e1 op e2.
-        Binop binop;
+        EBinop binop;
         //Parentheses (e).
-        Parentheses parentheses;
+        EParentheses parentheses;
 
     } def;
     Position *pos;

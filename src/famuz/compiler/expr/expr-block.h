@@ -29,4 +29,4 @@ typedef struct
 {
     Expr *exprs;
     int exprs_length;
-} Block;
+} EBlock;

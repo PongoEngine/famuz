@@ -29,4 +29,4 @@ typedef struct
 {
     Expr *e;
     Expr *identifier;
-} Var;
+} EVar;

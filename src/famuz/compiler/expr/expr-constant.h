@@ -52,7 +52,7 @@ typedef struct
         Chord chord;
     } value;
     ConstantType type;
-} Constant;
+} EConstant;
 
 ConstantType constant_type_add(ConstantType a, ConstantType b)
 {

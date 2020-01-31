@@ -28,4 +28,4 @@
 typedef struct
 {
     Expr *e;
-} Parentheses;
+} EParentheses;

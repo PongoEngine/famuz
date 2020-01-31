@@ -35,4 +35,4 @@ typedef struct
     Expr *e1;
     Expr *e2;
     BinopType type;
-} Binop;
+} EBinop;

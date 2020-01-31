@@ -30,4 +30,4 @@ typedef struct
     Expr *e;
     Expr *params;
     int params_length;
-} Call;
+} ECall;
