@@ -34,6 +34,7 @@ struct Expr *parse_expression(TokenScanner *scanner, Exprs *exprs);
 #include "./parser-steps.h"
 #include "./parser-binop.h"
 #include "./parser-left-paren.h"
+#include "./parser-left-bracket.h"
 #include "./parser-assignment.h"
 #include "./parser-identifier.h"
 #include "./parser-scale.h"
@@ -101,6 +102,13 @@ struct Expr *parse_expression_prefix(TokenScanner *scanner, Exprs *exprs)
     }
     case RIGHT_PARAM:
         return NULL;
+    case LEFT_BRACKET:
+    {
+        Expr *expr = get_expr(exprs, E_BLOCK, &token);
+        return parse_left_bracket_prefix(expr, scanner, exprs);
+    }
+    case RIGHT_BRACKET:
+        return NULL;
     case COMMA:
         return NULL;
     case SLASH:
@@ -133,6 +141,8 @@ struct Expr *parse_expression_infix(Expr *left, TokenScanner *scanner, Exprs *ex
         return parse_left_paren_infix(left, expr, scanner, exprs);
     }
     case RIGHT_PARAM:
+    case LEFT_BRACKET:
+    case RIGHT_BRACKET:
     case COMMA:
     case SLASH:
     case IDENTIFIER:

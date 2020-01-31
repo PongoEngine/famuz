@@ -1,8 +1,6 @@
 #pragma once
 
 /*
- * MIT License
- *
  * Copyright (c) 2019 Jeremy Meltingtallow
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -21,20 +19,34 @@
  * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+#include <string.h>
+#include "./parser.h"
+#include "../scanner.h"
+#include "../../util/assert.h"
+
+/**
+ * Parsing blocks "{...}"
  */
-
-#include "./expr.h"
-
-typedef struct
+Expr *parse_left_bracket_prefix(Expr *expr, TokenScanner *scanner, Exprs *exprs)
 {
-    char name[SETTINGS_LEXEME_LENGTH];
-    ConstantType ret_type;
-} Parameter;
+    expr->def.block.exprs = parse_expression(scanner, exprs);
+    Expr *last_expr = expr->def.block.exprs;
 
-typedef struct
-{
-    Parameter params[SETTINGS_PARAM_LENGTH];
-    Expr *expr;
-    Expr *identifier;
-    int param_length;
-} EFunction;
+    int exprs_length = 1;
+    while (token_scanner_has_next(scanner) && token_scanner_peek(scanner).type != RIGHT_BRACKET)
+    {
+        if (assert_that(token_scanner_peek(scanner).type == COMMA, "EXPECTED COMMA"))
+        {
+            token_scanner_next(scanner);
+        }
+        parse_expression(scanner, exprs);
+        exprs_length++;
+    }
+    expr->def.block.exprs_length = exprs_length;
+
+    assert_that(token_scanner_has_next(scanner) && token_scanner_next(scanner).type == RIGHT_BRACKET, "EXPECTED RIGHT BRACKET");
+    expr->ret_type = last_expr->ret_type;
+    return expr;
+}

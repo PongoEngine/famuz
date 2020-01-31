@@ -27,6 +27,9 @@ typedef enum
 {
     L_HIT = 'x',
 
+    L_LEFT_BRACKET = '{',
+    L_RIGHT_BRACKET = '}',
+
     L_LEFT_PARAM = '(',
     L_RIGHT_PARAM = ')',
     L_COMMA = ',',

@@ -117,6 +117,12 @@ int lex(char *content, char *file_path, Token *tokens)
         case L_RIGHT_PARAM:
             create_token(RIGHT_PARAM, &scanner, &tokens[index++]);
             break;
+        case L_LEFT_BRACKET:
+            create_token(LEFT_BRACKET, &scanner, &tokens[index++]);
+            break;
+        case L_RIGHT_BRACKET:
+            create_token(RIGHT_BRACKET, &scanner, &tokens[index++]);
+            break;
         case L_COMMA:
             create_token(COMMA, &scanner, &tokens[index++]);
             break;

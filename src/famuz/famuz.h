@@ -47,6 +47,8 @@ void famuz_parse(char *file_path)
         while (token_scanner_has_next(&token_scanner))
         {
             Expr *expr = parse_expression(&token_scanner, &exprs);
+            expr_print(expr, 0);
+            printf("\n------------------------------\n");
         }
 
         Expr *main = expr_from_name(&exprs, "main");

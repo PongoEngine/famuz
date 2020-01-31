@@ -96,6 +96,31 @@ void expr_print_paren(Expr *expr, int spaces)
     printf("\n%s}", spacer);
 }
 
+void expr_print_block(Expr *expr, int spaces)
+{
+    create_spacer;
+    Expr *exprs = expr->def.block.exprs;
+    int exprs_length = expr->def.block.exprs_length;
+    ConstantType ret_type = expr->ret_type;
+    printf("{\n%s  type: block;\n%s  ret: %i;\n%s  e: ", spacer, spacer, ret_type, spacer);
+    printf("\n%s    [", spacer);
+    for (size_t i = 0; i < exprs_length; i++)
+    {
+        expr_print(&exprs[i], spaces + 4);
+        SET_COLOR_PAREN
+        if (i == exprs_length - 1)
+        {
+            printf("]");
+        }
+        else
+        {
+            printf(", ");
+        }
+    }
+    SET_COLOR_PAREN
+    printf("\n%s}", spacer);
+}
+
 void expr_print_binop(Expr *expr, int spaces)
 {
     create_spacer;
@@ -305,8 +330,8 @@ void expr_print(Expr *expr, int spaces)
     }
     case E_BLOCK:
     {
-        // SET_COLOR_PAREN
-        // expr_print_paren(expr, spaces);
+        SET_COLOR_PAREN
+        expr_print_block(expr, spaces);
         break;
     }
     case E_FUNC:

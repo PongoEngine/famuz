@@ -39,6 +39,8 @@ typedef enum
     ASSIGNMENT,
     LEFT_PARAM,
     RIGHT_PARAM,
+    LEFT_BRACKET,
+    RIGHT_BRACKET,
     COMMA,
     SLASH
 } TokenType;
@@ -97,6 +99,12 @@ void print_token(Token *t)
         break;
     case RIGHT_PARAM:
         type = "RIGHT_PARAM";
+        break;
+    case LEFT_BRACKET:
+        type = "LEFT_BRACKET";
+        break;
+    case RIGHT_BRACKET:
+        type = "RIGHT_BRACKET";
         break;
     case COMMA:
         type = "COMMA";
