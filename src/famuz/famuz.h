@@ -52,12 +52,12 @@ void famuz_parse(char *file_path)
         // Expr *main = expr_from_name(&exprs, "main");
         // Expr *output = generate(main, &exprs);
 
-        for (size_t i = 0; i < exprs.cur_index; i++)
-        {
-            Expr *expr = &(exprs.exprs[i]);
-            printf("\n------------------------------\n");
-            expr_print(expr, 0);
-        }
+        // for (size_t i = 0; i < exprs.cur_index; i++)
+        // {
+        //     Expr *expr = &(exprs.exprs[i]);
+        //     printf("\n------------------------------\n");
+        //     expr_print(expr, 0);
+        // }
         // expr_print(output, 0);
     }
 }
