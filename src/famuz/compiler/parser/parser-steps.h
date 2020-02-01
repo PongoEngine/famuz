@@ -28,15 +28,18 @@
 /**
  * Parsing steps "0 1 2 3"
  */
-Expr *parse_steps_prefix(Expr *expr, Token *token)
+Expr *parse_steps_prefix(TokenScanner *scanner, Exprs *exprs)
 {
+    Token token = token_scanner_next(scanner);
+    Expr *expr = get_expr(exprs, E_CONST, &token);
+
     expr->def.constant.type = C_STEPS;
-    Scanner scanner = {.content = token->lexeme, .cur_index = 0, .length = strlen(token->lexeme)};
+    Scanner steps_scanner = {.content = token.lexeme, .cur_index = 0, .length = strlen(token.lexeme)};
     int index = 0;
 
-    while (scanner_has_next(&scanner))
+    while (scanner_has_next(&steps_scanner))
     {
-        char c = scanner_next(&scanner);
+        char c = scanner_next(&steps_scanner);
         int d = c - '0';
         expr->def.constant.value.steps.steps[index++] = d;
     }

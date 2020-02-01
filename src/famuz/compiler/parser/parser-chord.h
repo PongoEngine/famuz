@@ -29,11 +29,14 @@
 /**
  * Parsing scale "harmonic-minor"
  */
-Expr *parse_chord_prefix(Expr *expr, Token *token)
+Expr *parse_chord_prefix(TokenScanner *scanner, Exprs *exprs)
 {
+    Token token = token_scanner_next(scanner);
+    Expr *expr = get_expr(exprs, E_CONST, &token);
+
     expr->def.constant.type = C_CHORD;
 
-    if (strcmp(R_TRIAD, token->lexeme) == 0)
+    if (strcmp(R_TRIAD, token.lexeme) == 0)
     {
         expr->def.constant.value.chord = CHORD_TRIAD;
     }

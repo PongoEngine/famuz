@@ -29,8 +29,11 @@
 /**
  * Parsing call "arp(...)"
  */
-Expr *parse_left_paren_infix(Expr *left, Expr *expr, TokenScanner *scanner, Exprs *exprs)
+Expr *parse_left_paren_infix(Expr *left, TokenScanner *scanner, Exprs *exprs)
 {
+    Token token = token_scanner_next(scanner);
+    Expr *expr = get_expr(exprs, E_CALL, &token);
+
     expr->def.call.identifier = left->def.constant.value.identifier;
     if (assert_that(token_scanner_has_next(scanner), "Cannot parse call expression"))
     {
@@ -78,8 +81,11 @@ Expr *parse_left_paren_infix(Expr *left, Expr *expr, TokenScanner *scanner, Expr
 /**
  * Parsing parens "(...)"
  */
-Expr *parse_left_paren_prefix(Expr *expr, TokenScanner *scanner, Exprs *exprs)
+Expr *parse_left_paren_prefix(TokenScanner *scanner, Exprs *exprs)
 {
+    Token token = token_scanner_next(scanner);
+    Expr *expr = get_expr(exprs, E_CONST, &token);
+
     expr->def.parentheses.e = parse_expression(scanner, exprs);
     assert_that(token_scanner_has_next(scanner) && token_scanner_next(scanner).type == RIGHT_PARAM, "EXPECTED RIGHT PARAM");
     expr->ret_type = expr->def.parentheses.e->ret_type;

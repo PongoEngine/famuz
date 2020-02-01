@@ -44,32 +44,35 @@ void parse_rhythm_prefix_eat_rest(Scanner *scanner)
 /**
  * Parsing rhythm "x~~~ x--- x~~~ x~--"
  */
-Expr *parse_rhythm_prefix(Expr *expr, Token *token)
+Expr *parse_rhythm_prefix(TokenScanner *scanner, Exprs *exprs)
 {
+    Token token = token_scanner_next(scanner);
+    Expr *expr = get_expr(exprs, E_CONST, &token);
+
     expr->def.constant.type = C_RHYTHM;
-    Scanner scanner = {.content = token->lexeme, .cur_index = 0, .length = strlen(token->lexeme)};
+    Scanner rhythm_scanner = {.content = token.lexeme, .cur_index = 0, .length = strlen(token.lexeme)};
     int index = 0;
 
-    while (scanner_has_next(&scanner))
+    while (scanner_has_next(&rhythm_scanner))
     {
-        if (scanner_peek(&scanner) == 'x')
+        if (scanner_peek(&rhythm_scanner) == 'x')
         {
-            int start = scanner.cur_index;
-            scanner_next(&scanner);
-            parse_rhythm_prefix_eat_duration(&scanner);
-            int duration = scanner.cur_index - start;
+            int start = rhythm_scanner.cur_index;
+            scanner_next(&rhythm_scanner);
+            parse_rhythm_prefix_eat_duration(&rhythm_scanner);
+            int duration = rhythm_scanner.cur_index - start;
             expr->def.constant.value.rhythm.hits[index].start = start;
             expr->def.constant.value.rhythm.hits[index].duration = duration;
             index++;
         }
-        else if (scanner_peek(&scanner) == '-')
+        else if (scanner_peek(&rhythm_scanner) == '-')
         {
-            parse_rhythm_prefix_eat_rest(&scanner);
+            parse_rhythm_prefix_eat_rest(&rhythm_scanner);
         }
         else
         {
             assert_that(false, "INVALID RHYTHM");
-            scanner_next(&scanner);
+            scanner_next(&rhythm_scanner);
         }
     }
     expr->def.constant.value.rhythm.length = index;

@@ -35,8 +35,11 @@ int parse_params(TokenScanner *scanner, Parameter *params)
 /**
  * Parsing function "main(...)"
  */
-Expr *parse_func_prefix(Expr *expr, TokenScanner *scanner, Exprs *exprs)
+Expr *parse_func_prefix(TokenScanner *scanner, Exprs *exprs)
 {
+    Token token = token_scanner_next(scanner);
+    Expr *expr = get_expr(exprs, E_CONST, &token);
+
     // Expr *call = parse_expression(scanner, exprs);
     // Expr *body = parse_expression(scanner, exprs);
     // expr_print(call, 0);

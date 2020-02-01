@@ -28,8 +28,11 @@
 /**
  * Parsing assigning "... = ..."
  */
-Expr *parse_assignment_infix(Expr *left, Expr *expr, TokenScanner *scanner, Exprs *exprs)
+Expr *parse_assignment_infix(Expr *left, TokenScanner *scanner, Exprs *exprs)
 {
+    Token token = token_scanner_next(scanner);
+    Expr *expr = get_expr(exprs, E_VAR, &token);
+
     if (assert_that(left->def_type == E_CONST && left->def.constant.type == C_IDENTIFIER, "NOT IDENTIFIER"))
     {
         expr->def.var.identifier = left->def.constant.value.identifier;

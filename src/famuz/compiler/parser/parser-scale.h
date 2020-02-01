@@ -28,23 +28,26 @@
 /**
  * Parsing scale "harmonic-minor"
  */
-Expr *parse_scale_prefix(Expr *expr, Token *token)
+Expr *parse_scale_prefix(TokenScanner *scanner, Exprs *exprs)
 {
+    Token token = token_scanner_next(scanner);
+    Expr *expr = get_expr(exprs, E_CONST, &token);
+
     expr->def.constant.type = C_SCALE;
 
-    if (strcmp(R_MAJOR, token->lexeme) == 0)
+    if (strcmp(R_MAJOR, token.lexeme) == 0)
     {
         expr->def.constant.value.scale = SCALE_MAJOR;
     }
-    else if (strcmp(R_NATURAL_MINOR, token->lexeme) == 0)
+    else if (strcmp(R_NATURAL_MINOR, token.lexeme) == 0)
     {
         expr->def.constant.value.scale = SCALE_NATURAL_MINOR;
     }
-    else if (strcmp(R_MELODIC_MINOR, token->lexeme) == 0)
+    else if (strcmp(R_MELODIC_MINOR, token.lexeme) == 0)
     {
         expr->def.constant.value.scale = SCALE_MELODIC_MINOR;
     }
-    else if (strcmp(R_HARMONIC_MINOR, token->lexeme) == 0)
+    else if (strcmp(R_HARMONIC_MINOR, token.lexeme) == 0)
     {
         expr->def.constant.value.scale = SCALE_HARMONIC_MINOR;
     }

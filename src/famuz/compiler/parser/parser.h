@@ -26,6 +26,7 @@
 #include <stdbool.h>
 
 struct Expr *parse_expression(TokenScanner *scanner, Exprs *exprs);
+Expr *get_expr(Exprs *exprs, ExprDefType def_type, Token *token);
 
 #include "../expr/expr.h"
 #include "../token.h"
@@ -53,56 +54,28 @@ Expr *get_expr(Exprs *exprs, ExprDefType def_type, Token *token)
 
 struct Expr *parse_expression_prefix(TokenScanner *scanner, Exprs *exprs)
 {
-    Token token = token_scanner_next(scanner);
+    Token token = token_scanner_peek(scanner);
 
     switch (token.type)
     {
     case IDENTIFIER:
-    {
-        Expr *expr = get_expr(exprs, E_CONST, &token);
-        return parse_identifier_prefix(expr, exprs, &token);
-    }
+        return parse_identifier_prefix(scanner, exprs);
     case SCALE:
-    {
-        Expr *expr = get_expr(exprs, E_CONST, &token);
-        return parse_scale_prefix(expr, &token);
-    }
+        return parse_scale_prefix(scanner, exprs);
     case CHORD:
-    {
-        Expr *expr = get_expr(exprs, E_CONST, &token);
-        return parse_chord_prefix(expr, &token);
-    }
+        return parse_chord_prefix(scanner, exprs);
     case KEY:
-    {
-        Expr *expr = get_expr(exprs, E_CONST, &token);
-        return parse_key_prefix(expr, &token);
-    }
-
+        return parse_key_prefix(scanner, exprs);
     case STEPS:
-    {
-        Expr *expr = get_expr(exprs, E_CONST, &token);
-        return parse_steps_prefix(expr, &token);
-    }
+        return parse_steps_prefix(scanner, exprs);
     case RHYTHM:
-    {
-        Expr *expr = get_expr(exprs, E_CONST, &token);
-        return parse_rhythm_prefix(expr, &token);
-    }
+        return parse_rhythm_prefix(scanner, exprs);
     case LEFT_PARAM:
-    {
-        Expr *expr = get_expr(exprs, E_PAREN, &token);
-        return parse_left_paren_prefix(expr, scanner, exprs);
-    }
+        return parse_left_paren_prefix(scanner, exprs);
     case LEFT_BRACKET:
-    {
-        Expr *expr = get_expr(exprs, E_BLOCK, &token);
-        return parse_left_bracket_prefix(expr, scanner, exprs);
-    }
+        return parse_left_bracket_prefix(scanner, exprs);
     case FUNC:
-    {
-        Expr *expr = get_expr(exprs, E_FUNC, &token);
-        return parse_func_prefix(expr, scanner, exprs);
-    }
+        return parse_func_prefix(scanner, exprs);
     case RIGHT_PARAM:
     case RIGHT_BRACKET:
     case COMMA:
@@ -112,7 +85,10 @@ struct Expr *parse_expression_prefix(TokenScanner *scanner, Exprs *exprs)
     case ADD:
     case ASSIGNMENT:
     case COLON:
+    {
+        token_scanner_next(scanner);
         return NULL;
+    }
     }
 }
 
@@ -123,29 +99,13 @@ struct Expr *parse_expression_infix(Expr *left, TokenScanner *scanner, Exprs *ex
     switch (token.type)
     {
     case ADD:
-    {
-        token_scanner_next(scanner);
-        Expr *expr = get_expr(exprs, E_BINOP, &token);
-        return parse_binop_infix(left, expr, scanner, exprs);
-    }
+        return parse_binop_infix(left, scanner, exprs);
     case ASSIGNMENT:
-    {
-        token_scanner_next(scanner);
-        Expr *expr = get_expr(exprs, E_VAR, &token);
-        return parse_assignment_infix(left, expr, scanner, exprs);
-    }
+        return parse_assignment_infix(left, scanner, exprs);
     case LEFT_PARAM:
-    {
-        token_scanner_next(scanner);
-        Expr *expr = get_expr(exprs, E_CALL, &token);
-        return parse_left_paren_infix(left, expr, scanner, exprs);
-    }
+        return parse_left_paren_infix(left, scanner, exprs);
     case COLON:
-    {
-        token_scanner_next(scanner);
-        Expr *expr = get_expr(exprs, E_CHECK_TYPE, &token);
-        return parse_identifier_infix(left, expr, scanner, exprs);
-    }
+        return parse_identifier_infix(left, scanner, exprs);
     case RIGHT_PARAM:
     case LEFT_BRACKET:
     case RIGHT_BRACKET:

@@ -28,8 +28,11 @@
 /**
  * Parsing binary opertation "... + ..."
  */
-Expr *parse_binop_infix(Expr *left, Expr *expr, TokenScanner *scanner, Exprs *exprs)
+Expr *parse_binop_infix(Expr *left, TokenScanner *scanner, Exprs *exprs)
 {
+    Token token = token_scanner_next(scanner);
+    Expr *expr = get_expr(exprs, E_BINOP, &token);
+
     expr->def.binop.e1 = left;
 
     if (assert_that(token_scanner_has_next(scanner), "Cannot parse binary expression"))
