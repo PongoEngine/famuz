@@ -40,6 +40,7 @@ struct Expr *parse_expression(TokenScanner *scanner, Exprs *exprs);
 #include "./parser-scale.h"
 #include "./parser-chord.h"
 #include "./parser-key.h"
+#include "./parser-func.h"
 #include "../../util/assert.h"
 
 Expr *get_expr(Exprs *exprs, ExprDefType def_type, Token *token)
@@ -87,31 +88,29 @@ struct Expr *parse_expression_prefix(TokenScanner *scanner, Exprs *exprs)
         Expr *expr = get_expr(exprs, E_CONST, &token);
         return parse_rhythm_prefix(expr, &token);
     }
-    case COMMENT:
-        return NULL;
-    case WHITESPACE:
-        return NULL;
-    case ADD:
-        return NULL;
-    case ASSIGNMENT:
-        return NULL;
     case LEFT_PARAM:
     {
         Expr *expr = get_expr(exprs, E_PAREN, &token);
         return parse_left_paren_prefix(expr, scanner, exprs);
     }
-    case RIGHT_PARAM:
-        return NULL;
     case LEFT_BRACKET:
     {
         Expr *expr = get_expr(exprs, E_BLOCK, &token);
         return parse_left_bracket_prefix(expr, scanner, exprs);
     }
+    case FUNC:
+    {
+        Expr *expr = get_expr(exprs, E_FUNC, &token);
+        return parse_func_prefix(expr, scanner, exprs);
+    }
+    case RIGHT_PARAM:
     case RIGHT_BRACKET:
-        return NULL;
     case COMMA:
-        return NULL;
     case SLASH:
+    case COMMENT:
+    case WHITESPACE:
+    case ADD:
+    case ASSIGNMENT:
         return NULL;
     }
 }
@@ -153,6 +152,7 @@ struct Expr *parse_expression_infix(Expr *left, TokenScanner *scanner, Exprs *ex
     case STEPS:
     case COMMENT:
     case RHYTHM:
+    case FUNC:
         return NULL;
     }
 }

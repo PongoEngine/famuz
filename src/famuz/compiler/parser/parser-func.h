@@ -1,8 +1,6 @@
 #pragma once
 
 /*
- * MIT License
- *
  * Copyright (c) 2019 Jeremy Meltingtallow
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -21,39 +19,29 @@
  * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+#include "./parser.h"
+#include "../scanner.h"
+#include "../lexer/reserved.h"
+#include "../../util/assert.h"
+#include "./parser-identifier.h"
+
+int parse_params(TokenScanner *scanner, Parameter *params)
+{
+    return 0;
+}
+
+/**
+ * Parsing function "main(...)"
  */
-
-#include <stdbool.h>
-#include <string.h>
-
-static const char R_MAIN[] = "main";
-
-static const char R_FUNC[] = "func";
-
-static const char R_CHORD[] = "chord";
-static const char R_ARP[] = "arp";
-
-static const char R_TRIAD[] = "TRIAD";
-
-static const char R_C[] = "C";
-static const char R_C_SHARP[] = "C#";
-static const char R_D_FLAT[] = "Db";
-static const char R_D[] = "D";
-static const char R_D_SHARP[] = "D#";
-static const char R_E_FLAT[] = "Eb";
-static const char R_E[] = "E";
-static const char R_F[] = "F";
-static const char R_F_SHARP[] = "F#";
-static const char R_G_FLAT[] = "Gb";
-static const char R_G[] = "G";
-static const char R_G_SHARP[] = "G#";
-static const char R_A_FLAT[] = "Ab";
-static const char R_A[] = "A";
-static const char R_A_SHARP[] = "A#";
-static const char R_B_FLAT[] = "Bb";
-static const char R_B[] = "B";
-
-static const char R_MAJOR[] = "major";
-static const char R_NATURAL_MINOR[] = "natural-minor";
-static const char R_MELODIC_MINOR[] = "melodic-minor";
-static const char R_HARMONIC_MINOR[] = "harmonic-minor";
+Expr *parse_func_prefix(Expr *expr, TokenScanner *scanner, Exprs *exprs)
+{
+    // Expr *call = parse_expression(scanner, exprs);
+    // Expr *body = parse_expression(scanner, exprs);
+    // expr_print(call, 0);
+    // expr_print(body, 0);
+    // printf("%s", possibleIdentifier->def.constant.value.identifier);
+    // expr->def.function.identifier = parse_expression(scanner, exprs);
+    return expr;
+}

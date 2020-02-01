@@ -64,6 +64,8 @@ typedef struct Expr
         EBinop binop;
         //Parentheses (e).
         EParentheses parentheses;
+        //A function declaration.
+        EFunction function;
 
     } def;
     Position *pos;

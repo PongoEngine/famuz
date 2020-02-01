@@ -52,7 +52,7 @@ void famuz_parse(char *file_path)
         Expr *basic = expr_from_name(&exprs, "basic");
         if (basic != NULL)
         {
-            expr_print(basic, 0);
+            // expr_print(basic, 0);
         }
 
         // for (size_t i = 0; i < exprs.cur_index; i++)

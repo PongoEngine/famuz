@@ -58,6 +58,10 @@ TokenType word_type(char *str)
     {
         return CHORD;
     }
+    else if (strcmp(R_FUNC, str) == 0)
+    {
+        return FUNC;
+    }
     else
     {
         return IDENTIFIER;

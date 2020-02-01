@@ -30,6 +30,7 @@ typedef enum
     IDENTIFIER = 1,
     SCALE,
     CHORD,
+    FUNC,
     KEY,
     WHITESPACE,
     STEPS,
@@ -111,6 +112,9 @@ void print_token(Token *t)
         break;
     case SLASH:
         type = "SLASH";
+        break;
+    case FUNC:
+        type = "FUNC";
         break;
     }
     printf("{ %s, %s, %s }\n", t->pos.file, type, t->lexeme);
