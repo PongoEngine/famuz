@@ -1,7 +1,4 @@
-robot = {
-    woah = x~~~ x--- x~~~ x~--
-    x~~~
-    x~~~ x~--
-    0 1 2 3
-    c
+func basic(a, b)
+{
+    a + b
 }

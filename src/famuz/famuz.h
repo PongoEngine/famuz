@@ -49,9 +49,11 @@ void famuz_parse(char *file_path)
             parse_expression(&token_scanner, &exprs);
         }
 
-        Expr *robot = expr_from_name(&exprs, "robot");
-        expr_print(robot, 0);
-        // Expr *output = generate(main, &exprs);
+        Expr *basic = expr_from_name(&exprs, "basic");
+        if (basic != NULL)
+        {
+            expr_print(basic, 0);
+        }
 
         // for (size_t i = 0; i < exprs.cur_index; i++)
         // {
@@ -59,6 +61,5 @@ void famuz_parse(char *file_path)
         //     printf("\n------------------------------\n");
         //     expr_print(expr, 0);
         // }
-        // expr_print(output, 0);
     }
 }
