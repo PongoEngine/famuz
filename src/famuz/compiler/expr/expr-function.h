@@ -28,7 +28,7 @@
 typedef struct
 {
     char name[SETTINGS_LEXEME_LENGTH];
-    ConstantType ret_type;
+    Type ret_type;
 } Parameter;
 
 typedef struct

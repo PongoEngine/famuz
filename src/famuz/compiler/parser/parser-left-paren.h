@@ -60,15 +60,15 @@ Expr *parse_left_paren_infix(Expr *left, TokenScanner *scanner, Exprs *exprs)
 
     if (strcmp(left->def.constant.value.identifier, "arp") == 0)
     {
-        expr->ret_type = C_MELODY;
+        expr->ret_type = TYPE_MELODY;
     }
     else if (strcmp(left->def.constant.value.identifier, "chord") == 0)
     {
-        expr->ret_type = C_HARMONY;
+        expr->ret_type = TYPE_HARMONY;
     }
     else if (strcmp(left->def.constant.value.identifier, "main") == 0)
     {
-        expr->ret_type = C_MUSIC;
+        expr->ret_type = TYPE_MUSIC;
     }
     else
     {
@@ -84,7 +84,7 @@ Expr *parse_left_paren_infix(Expr *left, TokenScanner *scanner, Exprs *exprs)
 Expr *parse_left_paren_prefix(TokenScanner *scanner, Exprs *exprs)
 {
     Token token = token_scanner_next(scanner);
-    Expr *expr = get_expr(exprs, E_CONST, &token);
+    Expr *expr = get_expr(exprs, E_PAREN, &token);
 
     expr->def.parentheses.e = parse_expression(scanner, exprs);
     assert_that(token_scanner_has_next(scanner) && token_scanner_next(scanner).type == RIGHT_PARAM, "EXPECTED RIGHT PARAM");

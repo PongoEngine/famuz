@@ -49,7 +49,7 @@ Expr *parse_rhythm_prefix(TokenScanner *scanner, Exprs *exprs)
     Token token = token_scanner_next(scanner);
     Expr *expr = get_expr(exprs, E_CONST, &token);
 
-    expr->def.constant.type = C_RHYTHM;
+    expr->def.constant.type = TYPE_RHYTHM;
     Scanner rhythm_scanner = {.content = token.lexeme, .cur_index = 0, .length = strlen(token.lexeme)};
     int index = 0;
 
@@ -76,6 +76,6 @@ Expr *parse_rhythm_prefix(TokenScanner *scanner, Exprs *exprs)
         }
     }
     expr->def.constant.value.rhythm.length = index;
-    expr->ret_type = C_RHYTHM;
+    expr->ret_type = TYPE_RHYTHM;
     return expr;
 }

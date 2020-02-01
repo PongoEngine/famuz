@@ -25,6 +25,43 @@
 
 #include "./settings.h"
 
+typedef enum
+{
+    TYPE_IDENTIFIER = 1,
+    TYPE_RHYTHM,
+    TYPE_MELODY,
+    TYPE_HARMONY,
+    TYPE_STEPS,
+    TYPE_SCALE,
+    TYPE_KEY,
+    TYPE_SCALED_KEY,
+    TYPE_MUSIC,
+    TYPE_CHORD
+} Type;
+
+Type type_from_name(char *name)
+{
+    if (strcmp("Rhythm", name) == 0)
+        return TYPE_RHYTHM;
+    if (strcmp("Melody", name) == 0)
+        return TYPE_MELODY;
+    if (strcmp("Harmony", name) == 0)
+        return TYPE_HARMONY;
+    if (strcmp("Steps", name) == 0)
+        return TYPE_STEPS;
+    if (strcmp("Scale", name) == 0)
+        return TYPE_SCALE;
+    if (strcmp("Key", name) == 0)
+        return TYPE_KEY;
+    if (strcmp("ScaledKey", name) == 0)
+        return TYPE_SCALED_KEY;
+    if (strcmp("Music", name) == 0)
+        return TYPE_MUSIC;
+    if (strcmp("Chord", name) == 0)
+        return TYPE_CHORD;
+    return -1;
+}
+
 typedef char Identifier[SETTINGS_LEXEME_LENGTH];
 
 typedef struct

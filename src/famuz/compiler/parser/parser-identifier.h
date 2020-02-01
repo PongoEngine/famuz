@@ -34,7 +34,7 @@ Expr *parse_identifier_prefix(TokenScanner *scanner, Exprs *exprs)
     Token token = token_scanner_next(scanner);
     Expr *expr = get_expr(exprs, E_CONST, &token);
 
-    expr->def.constant.type = C_IDENTIFIER;
+    expr->def.constant.type = TYPE_IDENTIFIER;
     strcpy(expr->def.constant.value.identifier, token.lexeme);
     expr->ret_type = expr_type_from_name(exprs, token.lexeme);
 
@@ -42,16 +42,13 @@ Expr *parse_identifier_prefix(TokenScanner *scanner, Exprs *exprs)
 }
 
 /**
- * Parsing optional identifier type ": rhythm"
+ * Parsing optional identifier type "rhythm : *"
  */
-Expr *parse_identifier_infix(Expr *left, TokenScanner *scanner, Exprs *exprs)
+Expr *parse_identifier_infix(Expr *expr, TokenScanner *scanner, Exprs *exprs)
 {
     Token token = token_scanner_next(scanner);
-    Expr *expr = get_expr(exprs, E_CHECK_TYPE, &token);
-
-    expr->def.type.e = left;
-    Expr *type = parse_expression(scanner, exprs);
-    // expr->def.type.
-    expr_print(type, 0);
-    return expr;
+    Expr *identifier = parse_expression(scanner, exprs);
+    Type type = type_from_name(expr->def.constant.value.identifier);
+    identifier->ret_type = type;
+    return identifier;
 }

@@ -32,7 +32,7 @@
 Expr *parse_left_bracket_prefix(TokenScanner *scanner, Exprs *exprs)
 {
     Token token = token_scanner_next(scanner);
-    Expr *expr = get_expr(exprs, E_CONST, &token);
+    Expr *expr = get_expr(exprs, E_BLOCK, &token);
 
     expr->def.block.exprs = parse_expression(scanner, exprs);
     Expr *last_expr = expr->def.block.exprs;

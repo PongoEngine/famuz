@@ -33,7 +33,7 @@ Expr *parse_scale_prefix(TokenScanner *scanner, Exprs *exprs)
     Token token = token_scanner_next(scanner);
     Expr *expr = get_expr(exprs, E_CONST, &token);
 
-    expr->def.constant.type = C_SCALE;
+    expr->def.constant.type = TYPE_SCALE;
 
     if (strcmp(R_MAJOR, token.lexeme) == 0)
     {
@@ -51,6 +51,6 @@ Expr *parse_scale_prefix(TokenScanner *scanner, Exprs *exprs)
     {
         expr->def.constant.value.scale = SCALE_HARMONIC_MINOR;
     }
-    expr->ret_type = C_SCALE;
+    expr->ret_type = TYPE_SCALE;
     return expr;
 }

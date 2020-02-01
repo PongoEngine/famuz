@@ -33,7 +33,7 @@ Expr *parse_steps_prefix(TokenScanner *scanner, Exprs *exprs)
     Token token = token_scanner_next(scanner);
     Expr *expr = get_expr(exprs, E_CONST, &token);
 
-    expr->def.constant.type = C_STEPS;
+    expr->def.constant.type = TYPE_STEPS;
     Scanner steps_scanner = {.content = token.lexeme, .cur_index = 0, .length = strlen(token.lexeme)};
     int index = 0;
 
@@ -44,6 +44,6 @@ Expr *parse_steps_prefix(TokenScanner *scanner, Exprs *exprs)
         expr->def.constant.value.steps.steps[index++] = d;
     }
     expr->def.constant.value.steps.length = index;
-    expr->ret_type = C_STEPS;
+    expr->ret_type = TYPE_STEPS;
     return expr;
 }

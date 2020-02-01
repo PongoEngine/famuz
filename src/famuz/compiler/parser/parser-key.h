@@ -34,7 +34,7 @@ Expr *parse_key_prefix(TokenScanner *scanner, Exprs *exprs)
     Token token = token_scanner_next(scanner);
     Expr *expr = get_expr(exprs, E_CONST, &token);
 
-    expr->def.constant.type = C_KEY;
+    expr->def.constant.type = TYPE_KEY;
 
     if (strcmp(R_C, token.lexeme) == 0)
     {
@@ -105,6 +105,6 @@ Expr *parse_key_prefix(TokenScanner *scanner, Exprs *exprs)
         expr->def.constant.value.key = KEY_B;
     }
 
-    expr->ret_type = C_KEY;
+    expr->ret_type = TYPE_KEY;
     return expr;
 }

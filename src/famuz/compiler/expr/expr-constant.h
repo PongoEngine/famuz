@@ -23,20 +23,6 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-typedef enum
-{
-    C_IDENTIFIER = 1,
-    C_RHYTHM,
-    C_MELODY,
-    C_HARMONY,
-    C_STEPS,
-    C_SCALE,
-    C_KEY,
-    C_SCALED_KEY,
-    C_MUSIC,
-    C_CHORD
-} ConstantType;
-
 typedef struct
 {
     union {
@@ -51,33 +37,33 @@ typedef struct
         Music music;
         Chord chord;
     } value;
-    ConstantType type;
+    Type type;
 } EConstant;
 
-ConstantType constant_type_add(ConstantType a, ConstantType b)
+Type constant_type_add(Type a, Type b)
 {
     switch (a)
     {
-    case C_IDENTIFIER:
+    case TYPE_IDENTIFIER:
         return -1;
-    case C_RHYTHM:
-        return b == C_STEPS ? C_MELODY : -1;
-    case C_MELODY:
-        return b == C_SCALED_KEY ? C_MUSIC : -1;
-    case C_HARMONY:
-        return b == C_SCALED_KEY ? C_MUSIC : -1;
-    case C_STEPS:
-        return b == C_RHYTHM ? C_MELODY : -1;
-    case C_SCALE:
-        return b == C_KEY ? C_SCALED_KEY : -1;
-    case C_KEY:
-        return b == C_SCALE ? C_SCALED_KEY : -1;
-    case C_SCALED_KEY:
-        return (b == C_MELODY || b == C_HARMONY) ? C_MUSIC : -1;
+    case TYPE_RHYTHM:
+        return b == TYPE_STEPS ? TYPE_MELODY : -1;
+    case TYPE_MELODY:
+        return b == TYPE_SCALED_KEY ? TYPE_MUSIC : -1;
+    case TYPE_HARMONY:
+        return b == TYPE_SCALED_KEY ? TYPE_MUSIC : -1;
+    case TYPE_STEPS:
+        return b == TYPE_RHYTHM ? TYPE_MELODY : -1;
+    case TYPE_SCALE:
+        return b == TYPE_KEY ? TYPE_SCALED_KEY : -1;
+    case TYPE_KEY:
+        return b == TYPE_SCALE ? TYPE_SCALED_KEY : -1;
+    case TYPE_SCALED_KEY:
+        return (b == TYPE_MELODY || b == TYPE_HARMONY) ? TYPE_MUSIC : -1;
         ;
-    case C_MUSIC:
+    case TYPE_MUSIC:
         return -1;
-    case C_CHORD:
+    case TYPE_CHORD:
         return -1;
     }
     return -1;

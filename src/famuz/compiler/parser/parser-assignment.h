@@ -33,7 +33,7 @@ Expr *parse_assignment_infix(Expr *left, TokenScanner *scanner, Exprs *exprs)
     Token token = token_scanner_next(scanner);
     Expr *expr = get_expr(exprs, E_VAR, &token);
 
-    if (assert_that(left->def_type == E_CONST && left->def.constant.type == C_IDENTIFIER, "NOT IDENTIFIER"))
+    if (assert_that(left->def_type == E_CONST && left->def.constant.type == TYPE_IDENTIFIER, "NOT IDENTIFIER"))
     {
         expr->def.var.identifier = left->def.constant.value.identifier;
     }
@@ -41,7 +41,7 @@ Expr *parse_assignment_infix(Expr *left, TokenScanner *scanner, Exprs *exprs)
     if (assert_that(token_scanner_has_next(scanner), "Cannot parse assignment expression"))
     {
         expr->def.var.e = parse_expression(scanner, exprs);
-        expr->ret_type = expr->def.var.e != NULL ? expr->def.var.e->ret_type : -1;
+        // expr->ret_type = expr->def.var.e != NULL ? expr->def.var.e->ret_type : -1;
     }
     else
     {

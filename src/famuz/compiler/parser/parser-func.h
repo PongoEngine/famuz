@@ -27,23 +27,18 @@
 #include "../../util/assert.h"
 #include "./parser-identifier.h"
 
-int parse_params(TokenScanner *scanner, Parameter *params)
-{
-    return 0;
-}
-
 /**
  * Parsing function "main(...)"
  */
 Expr *parse_func_prefix(TokenScanner *scanner, Exprs *exprs)
 {
     Token token = token_scanner_next(scanner);
-    Expr *expr = get_expr(exprs, E_CONST, &token);
+    Expr *expr = get_expr(exprs, E_FUNC, &token);
 
-    // Expr *call = parse_expression(scanner, exprs);
-    // Expr *body = parse_expression(scanner, exprs);
-    // expr_print(call, 0);
-    // expr_print(body, 0);
+    Expr *call = parse_expression(scanner, exprs);
+    expr_print(call, 0);
+    Expr *body = parse_expression(scanner, exprs);
+    expr_print(body, 0);
     // printf("%s", possibleIdentifier->def.constant.value.identifier);
     // expr->def.function.identifier = parse_expression(scanner, exprs);
     return expr;

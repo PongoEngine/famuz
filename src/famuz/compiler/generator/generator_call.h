@@ -27,15 +27,15 @@
 #include "../../util/assert.h"
 
 Expr *generate(Expr *expr, Exprs *exprs);
-Expr *get_binop_expr(Exprs *exprs, ExprDefType def_type, ConstantType constant_type, Position *p1, Position *p2);
-Expr *create_expr(Exprs *exprs, ExprDefType def_type, ConstantType constant_type, Position *pos);
+Expr *get_binop_expr(Exprs *exprs, ExprDefType def_type, Type constant_type, Position *p1, Position *p2);
+Expr *create_expr(Exprs *exprs, ExprDefType def_type, Type constant_type, Position *pos);
 
 Expr *generate_call(Expr *expr, Exprs *exprs)
 {
     if (strcmp(expr->def.call.identifier, "arp") == 0)
     {
         Expr *param = &(expr->def.call.params[0]);
-        if (assert_that(param->ret_type == C_HARMONY, "WRONG PARAMS"))
+        if (assert_that(param->ret_type == TYPE_HARMONY, "WRONG PARAMS"))
         {
             Expr *harmony = generate(param, exprs);
             return harmony;
@@ -50,13 +50,13 @@ Expr *generate_call(Expr *expr, Exprs *exprs)
         Expr *chord = generate(&(expr->def.call.params[0]), exprs);
         Expr *m1 = generate(&(expr->def.call.params[1]), exprs);
 
-        if (assert_that(chord->ret_type == C_CHORD && m1->ret_type == C_MELODY, "WRONG PARAMS"))
+        if (assert_that(chord->ret_type == TYPE_CHORD && m1->ret_type == TYPE_MELODY, "WRONG PARAMS"))
         {
             switch (chord->def.constant.value.chord)
             {
             case CHORD_TRIAD:
             {
-                Expr *harmony = get_binop_expr(exprs, E_CONST, C_HARMONY, chord->pos, m1->pos);
+                Expr *harmony = get_binop_expr(exprs, E_CONST, TYPE_HARMONY, chord->pos, m1->pos);
                 harmony->def.constant.value.harmony.length = 3;
                 harmony->def.constant.value.harmony.Melody[0] = &(m1->def.constant.value.melody);
                 harmony->def.constant.value.harmony.Melody[1] = &(m1->def.constant.value.melody);
@@ -73,7 +73,7 @@ Expr *generate_call(Expr *expr, Exprs *exprs)
     else if (strcmp(expr->def.call.identifier, "main") == 0)
     {
         Expr *param = &(expr->def.call.params[0]);
-        if (assert_that(param->ret_type == C_MUSIC, "WRONG PARAMS"))
+        if (assert_that(param->ret_type == TYPE_MUSIC, "WRONG PARAMS"))
         {
             return generate(param, exprs);
         }

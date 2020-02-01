@@ -75,7 +75,7 @@ typedef struct Expr
     } def;
     Position *pos;
     ExprDefType def_type;
-    ConstantType ret_type;
+    Type ret_type;
 } Expr;
 
 typedef struct
@@ -102,19 +102,19 @@ Expr *expr_from_name(Exprs *exprs, char *name)
     return NULL;
 }
 
-ConstantType expr_type_from_name(Exprs *exprs, char *name)
+Type expr_type_from_name(Exprs *exprs, char *name)
 {
     if (strcmp(name, "arp") == 0)
     {
-        return C_MELODY;
+        return TYPE_MELODY;
     }
     else if (strcmp(name, "chord") == 0)
     {
-        return C_HARMONY;
+        return TYPE_HARMONY;
     }
     else if (strcmp(name, "main") == 0)
     {
-        return C_MUSIC;
+        return TYPE_MUSIC;
     }
 
     Expr *expr = expr_from_name(exprs, name);

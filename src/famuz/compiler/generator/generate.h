@@ -25,7 +25,7 @@
 #include "../../util/expr-printer.h"
 
 Expr *generate(Expr *expr, Exprs *exprs);
-Expr *create_expr(Exprs *exprs, ExprDefType def_type, ConstantType constant_type, Position *pos);
+Expr *create_expr(Exprs *exprs, ExprDefType def_type, Type constant_type, Position *pos);
 
 #include "./generator_binop.h"
 #include "./generator_call.h"
@@ -59,29 +59,29 @@ Expr *generate_const(Expr *expr, Exprs *exprs)
 {
     switch (expr->def.constant.type)
     {
-    case C_IDENTIFIER:
+    case TYPE_IDENTIFIER:
     {
         char *name = expr->def.constant.value.identifier;
         Expr *expr = expr_from_name(exprs, name);
         return generate(expr, exprs);
     }
-    case C_RHYTHM:
+    case TYPE_RHYTHM:
         return expr;
-    case C_MELODY:
+    case TYPE_MELODY:
         return expr;
-    case C_HARMONY:
+    case TYPE_HARMONY:
         return expr;
-    case C_STEPS:
+    case TYPE_STEPS:
         return expr;
-    case C_SCALE:
+    case TYPE_SCALE:
         return expr;
-    case C_KEY:
+    case TYPE_KEY:
         return expr;
-    case C_SCALED_KEY:
+    case TYPE_SCALED_KEY:
         return expr;
-    case C_MUSIC:
+    case TYPE_MUSIC:
         return expr;
-    case C_CHORD:
+    case TYPE_CHORD:
         return expr;
     }
 }
@@ -109,7 +109,7 @@ Expr *generate(Expr *expr, Exprs *exprs)
     }
 }
 
-Expr *create_expr(Exprs *exprs, ExprDefType def_type, ConstantType constant_type, Position *pos)
+Expr *create_expr(Exprs *exprs, ExprDefType def_type, Type constant_type, Position *pos)
 {
     Expr *expr = &(exprs->exprs[exprs->cur_index++]);
     expr->def_type = def_type;
@@ -119,7 +119,7 @@ Expr *create_expr(Exprs *exprs, ExprDefType def_type, ConstantType constant_type
     return expr;
 }
 
-Expr *get_binop_expr(Exprs *exprs, ExprDefType def_type, ConstantType constant_type, Position *p1, Position *p2)
+Expr *get_binop_expr(Exprs *exprs, ExprDefType def_type, Type constant_type, Position *p1, Position *p2)
 {
     Expr *expr = &(exprs->exprs[exprs->cur_index++]);
     expr->def_type = def_type;
