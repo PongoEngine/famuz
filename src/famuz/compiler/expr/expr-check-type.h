@@ -23,41 +23,10 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-typedef enum
+#include "./expr.h"
+
+typedef struct
 {
-    L_COLON = ':',
-
-    L_HIT = 'x',
-
-    L_LEFT_BRACKET = '{',
-    L_RIGHT_BRACKET = '}',
-
-    L_LEFT_PARAM = '(',
-    L_RIGHT_PARAM = ')',
-    L_COMMA = ',',
-    L_ASSIGNMENT = '=',
-
-    L_ADD = '+',
-    L_FORWARD_SLASH = '/',
-
-    L_DURATION = '~',
-    L_REST = '-',
-
-    L_TAB = '\t',
-    L_SPACE = ' ',
-    L_LINE = '\n',
-    L_CARRAIGE = '\r',
-    L_TERMINATOR = '\0',
-    L_DELETE = 127,
-
-    L_ZERO = '0',
-    L_ONE = '1',
-    L_TWO = '2',
-    L_THREE = '3',
-    L_FOUR = '4',
-    L_FIVE = '5',
-    L_SIX = '6',
-    L_SEVEN = '7',
-    L_EIGHT = '8',
-    L_NINE = '9'
-} LexerToken;
+    Expr *e;
+    ExprDefType def_type;
+} ECheckType;

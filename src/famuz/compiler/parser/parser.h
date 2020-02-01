@@ -111,6 +111,7 @@ struct Expr *parse_expression_prefix(TokenScanner *scanner, Exprs *exprs)
     case WHITESPACE:
     case ADD:
     case ASSIGNMENT:
+    case COLON:
         return NULL;
     }
 }
@@ -138,6 +139,12 @@ struct Expr *parse_expression_infix(Expr *left, TokenScanner *scanner, Exprs *ex
         token_scanner_next(scanner);
         Expr *expr = get_expr(exprs, E_CALL, &token);
         return parse_left_paren_infix(left, expr, scanner, exprs);
+    }
+    case COLON:
+    {
+        token_scanner_next(scanner);
+        Expr *expr = get_expr(exprs, E_CHECK_TYPE, &token);
+        return parse_identifier_infix(left, expr, scanner, exprs);
     }
     case RIGHT_PARAM:
     case LEFT_BRACKET:

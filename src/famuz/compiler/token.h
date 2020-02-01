@@ -28,6 +28,7 @@
 typedef enum
 {
     IDENTIFIER = 1,
+    COLON,
     SCALE,
     CHORD,
     FUNC,
@@ -67,6 +68,9 @@ void print_token(Token *t)
     {
     case IDENTIFIER:
         type = "IDENTIFIER";
+        break;
+    case COLON:
+        type = "COLON";
         break;
     case SCALE:
         type = "SCALE";

@@ -115,6 +115,9 @@ int lex(char *content, char *file_path, Token *tokens)
         case L_ASSIGNMENT:
             create_token(ASSIGNMENT, &scanner, &tokens[index++]);
             break;
+        case L_COLON:
+            create_token(COLON, &scanner, &tokens[index++]);
+            break;
         case L_LEFT_PARAM:
             create_token(LEFT_PARAM, &scanner, &tokens[index++]);
             break;

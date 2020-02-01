@@ -37,3 +37,12 @@ Expr *parse_identifier_prefix(Expr *expr, Exprs *exprs, Token *token)
 
     return expr;
 }
+
+/**
+ * Parsing optional identifier type ": rhythm"
+ */
+Expr *parse_identifier_infix(Expr *left, Expr *expr, TokenScanner *scanner, Exprs *exprs)
+{
+    expr_print(left, 0);
+    return expr;
+}
