@@ -59,12 +59,11 @@ void expr_print_var(Expr *expr, int spaces)
 void expr_print_call(Expr *expr, int spaces)
 {
     create_spacer;
-    Expr *e = expr->def.call.e;
+    char *identifier = expr->def.call.identifier;
     Expr *params = expr->def.call.params;
     int params_length = expr->def.call.params_length;
     ConstantType ret_type = expr->ret_type;
-    printf("{\n%s  type: call;\n%s  ret: %i;\n%s  e: ", spacer, spacer, ret_type, spacer);
-    expr_print(e, spaces + 2);
+    printf("{\n%s  type: call;\n%s  ret: %i;\n%s  name: %s", spacer, spacer, ret_type, spacer, identifier);
     SET_COLOR_CALL
     printf("\n%s  params:", spacer);
     printf("\n%s    [", spacer);

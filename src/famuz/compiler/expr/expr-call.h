@@ -27,7 +27,7 @@
 
 typedef struct
 {
-    Expr *e;
+    char *identifier;
     Expr *params;
     int params_length;
 } ECall;

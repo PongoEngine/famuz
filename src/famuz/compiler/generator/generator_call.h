@@ -32,7 +32,7 @@ Expr *create_expr(Exprs *exprs, ExprDefType def_type, ConstantType constant_type
 
 Expr *generate_call(Expr *expr, Exprs *exprs)
 {
-    if (strcmp(expr->def.call.e->def.constant.value.identifier, "arp") == 0)
+    if (strcmp(expr->def.call.identifier, "arp") == 0)
     {
         Expr *param = &(expr->def.call.params[0]);
         if (assert_that(param->ret_type == C_HARMONY, "WRONG PARAMS"))
@@ -45,7 +45,7 @@ Expr *generate_call(Expr *expr, Exprs *exprs)
             return NULL;
         }
     }
-    else if (strcmp(expr->def.call.e->def.constant.value.identifier, "chord") == 0)
+    else if (strcmp(expr->def.call.identifier, "chord") == 0)
     {
         Expr *chord = generate(&(expr->def.call.params[0]), exprs);
         Expr *m1 = generate(&(expr->def.call.params[1]), exprs);
@@ -70,7 +70,7 @@ Expr *generate_call(Expr *expr, Exprs *exprs)
             return NULL;
         }
     }
-    else if (strcmp(expr->def.call.e->def.constant.value.identifier, "main") == 0)
+    else if (strcmp(expr->def.call.identifier, "main") == 0)
     {
         Expr *param = &(expr->def.call.params[0]);
         if (assert_that(param->ret_type == C_MUSIC, "WRONG PARAMS"))

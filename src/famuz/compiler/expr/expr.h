@@ -87,7 +87,7 @@ Expr *expr_from_name(Exprs *exprs, char *name)
         {
             return expr;
         }
-        else if (expr->def_type == E_CALL && strcmp(expr->def.call.e->def.constant.value.identifier, name) == 0)
+        else if (expr->def_type == E_CALL && strcmp(expr->def.call.identifier, name) == 0)
         {
             return expr;
         }

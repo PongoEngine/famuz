@@ -31,7 +31,7 @@
  */
 Expr *parse_left_paren_infix(Expr *left, Expr *expr, TokenScanner *scanner, Exprs *exprs)
 {
-    expr->def.call.e = left;
+    expr->def.call.identifier = left->def.constant.value.identifier;
     if (assert_that(token_scanner_has_next(scanner), "Cannot parse call expression"))
     {
         expr->def.call.params = parse_expression(scanner, exprs);
