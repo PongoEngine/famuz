@@ -47,7 +47,7 @@ void expr_print(Expr *expr, int spaces);
 void expr_print_var(Expr *expr, int spaces)
 {
     create_spacer;
-    char *name = expr->def.var.identifier->def.constant.value.identifier;
+    char *name = expr->def.var.identifier;
     Expr *e = expr->def.var.e;
     ConstantType ret_type = expr->ret_type;
     printf("{\n%s  type: var;\n%s  ret: %i;\n%s  name:%s;\n%s  e: ", spacer, spacer, ret_type, spacer, name, spacer);
@@ -124,7 +124,7 @@ void expr_print_block(Expr *expr, int spaces)
 void expr_print_binop(Expr *expr, int spaces)
 {
     create_spacer;
-    char *name = expr->def.var.identifier->def.constant.value.identifier;
+    char *name = expr->def.var.identifier;
     Expr *e1 = expr->def.binop.e1;
     BinopType type = expr->def.binop.type;
     Expr *e2 = expr->def.binop.e2;

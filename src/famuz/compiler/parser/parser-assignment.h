@@ -32,7 +32,7 @@ Expr *parse_assignment_infix(Expr *left, Expr *expr, TokenScanner *scanner, Expr
 {
     if (assert_that(left->def_type == E_CONST && left->def.constant.type == C_IDENTIFIER, "NOT IDENTIFIER"))
     {
-        expr->def.var.identifier = left;
+        expr->def.var.identifier = left->def.constant.value.identifier;
     }
 
     if (assert_that(token_scanner_has_next(scanner), "Cannot parse assignment expression"))

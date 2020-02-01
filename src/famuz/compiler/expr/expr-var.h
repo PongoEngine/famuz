@@ -28,5 +28,5 @@
 typedef struct
 {
     Expr *e;
-    Expr *identifier;
+    char *identifier;
 } EVar;

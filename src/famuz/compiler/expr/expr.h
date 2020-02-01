@@ -83,7 +83,7 @@ Expr *expr_from_name(Exprs *exprs, char *name)
     for (size_t i = 0; i < exprs->cur_index; i++)
     {
         Expr *expr = &(exprs->exprs[i]);
-        if (expr->def_type == E_VAR && strcmp(expr->def.var.identifier->def.constant.value.identifier, name) == 0)
+        if (expr->def_type == E_VAR && strcmp(expr->def.var.identifier, name) == 0)
         {
             return expr;
         }
