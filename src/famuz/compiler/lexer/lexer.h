@@ -70,8 +70,6 @@ void create_token_identifier(Scanner *scanner, Token *token)
     scanner_consume_identifier(scanner, token->lexeme);
     int max = scanner->cur_index;
     token->type = word_type(token->lexeme);
-    printf("-- lexeme: %s -- %i\n", token->lexeme, token->lexeme[0]);
-
     position_update(&(token->pos), min, max, scanner->file_path);
 }
 

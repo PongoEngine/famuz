@@ -42,6 +42,7 @@ void file_content(char *file_path, char *str)
     {
         str[index++] = ch;
     }
+    str[index] = '\0';
 
     fclose(fp);
 }
