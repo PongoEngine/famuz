@@ -23,7 +23,7 @@
 
 #include "./parser.h"
 #include "../scanner.h"
-#include "../lexer/reserved.h"
+#include "../reserved.h"
 #include "../../util/assert.h"
 #include "./parser-identifier.h"
 
@@ -36,9 +36,9 @@ Expr *parse_func_prefix(TokenScanner *scanner, Exprs *exprs)
     Expr *expr = get_expr(exprs, E_FUNC, &token);
 
     Expr *call = parse_expression(scanner, exprs);
-    expr_print(call, 0);
+    // expr_print(call, 0);
     Expr *body = parse_expression(scanner, exprs);
-    expr_print(body, 0);
+    // expr_print(body, 0);
     // printf("%s", possibleIdentifier->def.constant.value.identifier);
     // expr->def.function.identifier = parse_expression(scanner, exprs);
     return expr;

@@ -1,7 +1,1 @@
-//Rhythm : basicRhythm = x~~~ x--- x~~~ x~--
-
-Rhythm : func robot(cool, nice) {
-    x~~~ x--- x~~~ x~--
-}
-
-print(robot)
+basicRhythm : Rhythm = x~~~ x--- x~~~ x~--

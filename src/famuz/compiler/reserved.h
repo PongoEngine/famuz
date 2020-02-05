@@ -52,3 +52,13 @@ static const char R_MAJOR[] = "major";
 static const char R_NATURAL_MINOR[] = "natural-minor";
 static const char R_MELODIC_MINOR[] = "melodic-minor";
 static const char R_HARMONIC_MINOR[] = "harmonic-minor";
+
+static const char R_RHYTHM[] = "Rhythm";
+static const char R_MELODY[] = "Melody";
+static const char R_HARMONY[] = "Harmony";
+static const char R_STEPS[] = "Steps";
+static const char R_SCALE[] = "Scale";
+static const char R_KEY[] = "Key";
+static const char R_SCALED_KEY[] = "ScaledKey";
+static const char R_MUSIC[] = "Music";
+static const char R_CHORD[] = "Chord";

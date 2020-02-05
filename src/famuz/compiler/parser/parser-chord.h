@@ -23,7 +23,7 @@
 
 #include "./parser.h"
 #include "../scanner.h"
-#include "../lexer/reserved.h"
+#include "../reserved.h"
 #include "../../util/assert.h"
 
 /**

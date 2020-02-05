@@ -25,8 +25,8 @@
 #include <string.h>
 #include "../token.h"
 #include "../scanner.h"
+#include "../reserved.h"
 #include "./lexer-token.h"
-#include "./reserved.h"
 
 void create_token(TokenType type, Scanner *scanner, Token *token)
 {
