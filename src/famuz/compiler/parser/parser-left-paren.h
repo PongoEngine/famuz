@@ -25,6 +25,7 @@
 #include "./parser.h"
 #include "../scanner.h"
 #include "../../util/assert.h"
+#include "../../util/expr-printer.h"
 
 /**
  * Parsing call "arp(...)"
@@ -37,15 +38,25 @@ Expr *parse_left_paren_infix(Expr *left, TokenScanner *scanner, Exprs *exprs)
     expr->def.call.identifier = left->def.constant.value.identifier;
     if (assert_that(token_scanner_has_next(scanner), "Cannot parse call expression"))
     {
-        expr->def.call.params = parse_expression(scanner, exprs);
+        Expr *param = parse_expression(scanner, exprs);
+        expr->def.call.params = param;
         int params_length = 1;
         while (token_scanner_has_next(scanner) && token_scanner_peek(scanner).type != RIGHT_PARAM)
         {
-            if (assert_that(token_scanner_peek(scanner).type == COMMA, "EXPECTED COMMA"))
+            if (token_scanner_peek(scanner).type == COMMA)
             {
                 token_scanner_next(scanner);
+                param = parse_expression(scanner, exprs);
             }
-            parse_expression(scanner, exprs);
+            else if (token_scanner_peek(scanner).type == COLON)
+            {
+                param = parse_expression(scanner, exprs);
+                expr_print(param, 0);
+            }
+            else
+            {
+                assert_that(false, "INVALID PARAMS PARSING IN CALL");
+            }
             params_length++;
         }
         expr->def.call.params_length = params_length;
@@ -58,22 +69,7 @@ Expr *parse_left_paren_infix(Expr *left, TokenScanner *scanner, Exprs *exprs)
         expr->def.call.params_length = 0;
     }
 
-    if (strcmp(left->def.constant.value.identifier, "arp") == 0)
-    {
-        expr->ret_type = TYPE_MELODY;
-    }
-    else if (strcmp(left->def.constant.value.identifier, "chord") == 0)
-    {
-        expr->ret_type = TYPE_HARMONY;
-    }
-    else if (strcmp(left->def.constant.value.identifier, "main") == 0)
-    {
-        expr->ret_type = TYPE_MUSIC;
-    }
-    else
-    {
-        expr->ret_type = -1;
-    }
+    expr->ret_type = -1;
 
     return expr;
 }

@@ -26,12 +26,7 @@
 #include <stdbool.h>
 #include <string.h>
 
-static const char R_MAIN[] = "main";
-
 static const char R_FUNC[] = "func";
-
-static const char R_CHORD[] = "chord";
-static const char R_ARP[] = "arp";
 
 static const char R_TRIAD[] = "TRIAD";
 

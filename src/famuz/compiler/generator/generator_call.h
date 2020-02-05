@@ -32,59 +32,6 @@ Expr *create_expr(Exprs *exprs, ExprDefType def_type, Type constant_type, Positi
 
 Expr *generate_call(Expr *expr, Exprs *exprs)
 {
-    if (strcmp(expr->def.call.identifier, "arp") == 0)
-    {
-        Expr *param = &(expr->def.call.params[0]);
-        if (assert_that(param->ret_type == TYPE_HARMONY, "WRONG PARAMS"))
-        {
-            Expr *harmony = generate(param, exprs);
-            return harmony;
-        }
-        else
-        {
-            return NULL;
-        }
-    }
-    else if (strcmp(expr->def.call.identifier, "chord") == 0)
-    {
-        Expr *chord = generate(&(expr->def.call.params[0]), exprs);
-        Expr *m1 = generate(&(expr->def.call.params[1]), exprs);
-
-        if (assert_that(chord->ret_type == TYPE_CHORD && m1->ret_type == TYPE_MELODY, "WRONG PARAMS"))
-        {
-            switch (chord->def.constant.value.chord)
-            {
-            case CHORD_TRIAD:
-            {
-                Expr *harmony = get_binop_expr(exprs, E_CONST, TYPE_HARMONY, chord->pos, m1->pos);
-                harmony->def.constant.value.harmony.length = 3;
-                harmony->def.constant.value.harmony.Melody[0] = &(m1->def.constant.value.melody);
-                harmony->def.constant.value.harmony.Melody[1] = &(m1->def.constant.value.melody);
-                harmony->def.constant.value.harmony.Melody[2] = &(m1->def.constant.value.melody);
-                return harmony;
-            }
-            }
-        }
-        else
-        {
-            return NULL;
-        }
-    }
-    else if (strcmp(expr->def.call.identifier, "main") == 0)
-    {
-        Expr *param = &(expr->def.call.params[0]);
-        if (assert_that(param->ret_type == TYPE_MUSIC, "WRONG PARAMS"))
-        {
-            return generate(param, exprs);
-        }
-        else
-        {
-            return NULL;
-        }
-    }
-    else
-    {
-        printf("INVALID");
-        return expr;
-    }
+    printf("WORK ON GENERATE CALL!");
+    return expr;
 }

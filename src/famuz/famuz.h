@@ -49,17 +49,17 @@ void famuz_parse(char *file_path)
             parse_expression(&token_scanner, &exprs);
         }
 
-        Expr *basicRhythm = expr_from_name(&exprs, "basicRhythm");
-        if (basicRhythm != NULL)
-        {
-            expr_print(basicRhythm, 0);
-        }
-
-        // for (size_t i = 0; i < exprs.cur_index; i++)
+        // Expr *basicRhythm = expr_from_name(&exprs, "basicRhythm");
+        // if (basicRhythm != NULL)
         // {
-        //     Expr *expr = &(exprs.exprs[i]);
-        //     printf("\n------------------------------\n");
-        //     expr_print(expr, 0);
+        //     expr_print(basicRhythm, 0);
         // }
+
+        for (size_t i = 0; i < exprs.cur_index; i++)
+        {
+            Expr *expr = &(exprs.exprs[i]);
+            // printf("\n------------------------------\n");
+            // expr_print(expr, 0);
+        }
     }
 }

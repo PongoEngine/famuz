@@ -42,11 +42,7 @@ void create_token(TokenType type, Scanner *scanner, Token *token)
 
 TokenType word_type(char *str)
 {
-    if (strcmp(R_MAIN, str) == 0 || strcmp(R_CHORD, str) == 0 || strcmp(R_ARP, str) == 0)
-    {
-        return IDENTIFIER;
-    }
-    else if (strcmp(R_C, str) == 0 || strcmp(R_C_SHARP, str) == 0 || strcmp(R_D_FLAT, str) == 0 || strcmp(R_D, str) == 0 || strcmp(R_D_SHARP, str) == 0 || strcmp(R_E_FLAT, str) == 0 || strcmp(R_E, str) == 0 || strcmp(R_F, str) == 0 || strcmp(R_F_SHARP, str) == 0 || strcmp(R_G_FLAT, str) == 0 || strcmp(R_G, str) == 0 || strcmp(R_G_SHARP, str) == 0 || strcmp(R_A_FLAT, str) == 0 || strcmp(R_A, str) == 0 || strcmp(R_A_SHARP, str) == 0 || strcmp(R_B_FLAT, str) == 0 || strcmp(R_B, str) == 0)
+    if (strcmp(R_C, str) == 0 || strcmp(R_C_SHARP, str) == 0 || strcmp(R_D_FLAT, str) == 0 || strcmp(R_D, str) == 0 || strcmp(R_D_SHARP, str) == 0 || strcmp(R_E_FLAT, str) == 0 || strcmp(R_E, str) == 0 || strcmp(R_F, str) == 0 || strcmp(R_F_SHARP, str) == 0 || strcmp(R_G_FLAT, str) == 0 || strcmp(R_G, str) == 0 || strcmp(R_G_SHARP, str) == 0 || strcmp(R_A_FLAT, str) == 0 || strcmp(R_A, str) == 0 || strcmp(R_A_SHARP, str) == 0 || strcmp(R_B_FLAT, str) == 0 || strcmp(R_B, str) == 0)
     {
         return KEY;
     }
