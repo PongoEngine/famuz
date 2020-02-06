@@ -24,29 +24,19 @@
 #include "./parser.h"
 #include "../scanner.h"
 #include "../../util/assert.h"
+#include "../../util/expr-printer.h"
 
 /**
- * Parsing assigning "... = ..."
+ * Parsing optional identifier type "rhythm : *"
  */
-Expr *parse_assignment_infix(Expr *left, TokenScanner *scanner, Exprs *exprs)
+Expr *parse_colon_infix(Expr *expr, TokenScanner *scanner, Exprs *exprs)
 {
+    // printf("\n--WE SHOULD BE HERE!--\n");
+    expr_print(expr, 0);
     Token token = token_scanner_next(scanner);
-    Expr *expr = get_expr(exprs, E_VAR, &token);
-
-    if (assert_that(left->def_type == E_CONST && left->def.constant.type == TYPE_IDENTIFIER, "NOT IDENTIFIER"))
-    {
-        expr->def.var.identifier = left->def.constant.value.identifier;
-    }
-
-    if (assert_that(token_scanner_has_next(scanner), "Cannot parse assignment expression"))
-    {
-        expr->def.var.e = parse_expression(0, scanner, exprs);
-        // expr->ret_type = expr->def.var.e != NULL ? expr->def.var.e->ret_type : -1;
-    }
-    else
-    {
-        expr->def.var.e = NULL;
-        expr->ret_type = -1;
-    }
+    Expr *identifier = parse_expression(0, scanner, exprs);
+    expr_print(identifier, 0);
+    // Type type = type_from_name(expr->def.constant.value.identifier);
+    // identifier->ret_type = type;
     return expr;
 }

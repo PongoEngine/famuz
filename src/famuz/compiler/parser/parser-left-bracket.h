@@ -34,13 +34,13 @@ Expr *parse_left_bracket_prefix(TokenScanner *scanner, Exprs *exprs)
     Token token = token_scanner_next(scanner);
     Expr *expr = get_expr(exprs, E_BLOCK, &token);
 
-    expr->def.block.exprs = parse_expression(scanner, exprs);
+    expr->def.block.exprs = parse_expression(0, scanner, exprs);
     Expr *last_expr = expr->def.block.exprs;
 
     int exprs_length = 1;
     while (token_scanner_has_next(scanner) && token_scanner_peek(scanner).type != RIGHT_BRACKET)
     {
-        parse_expression(scanner, exprs);
+        parse_expression(0, scanner, exprs);
         exprs_length++;
     }
     expr->def.block.exprs_length = exprs_length;

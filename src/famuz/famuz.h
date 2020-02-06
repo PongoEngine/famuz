@@ -47,7 +47,7 @@ void famuz_parse(char *file_path)
 
         while (token_scanner_has_next(&token_scanner))
         {
-            parse_expression(&token_scanner, &exprs);
+            parse_expression(0, &token_scanner, &exprs);
         }
 
         // Expr *basicRhythm = expr_from_name(&exprs, "basicRhythm");

@@ -38,7 +38,7 @@ Expr *parse_left_paren_infix(Expr *left, TokenScanner *scanner, Exprs *exprs)
     expr->def.call.identifier = left->def.constant.value.identifier;
     if (assert_that(token_scanner_has_next(scanner), "Cannot parse call expression"))
     {
-        Expr *param = parse_expression(scanner, exprs);
+        Expr *param = parse_expression(0, scanner, exprs);
         expr->def.call.params = param;
         int params_length = 1;
         while (token_scanner_has_next(scanner) && token_scanner_peek(scanner).type != RIGHT_PARAM)
@@ -46,11 +46,11 @@ Expr *parse_left_paren_infix(Expr *left, TokenScanner *scanner, Exprs *exprs)
             if (token_scanner_peek(scanner).type == COMMA)
             {
                 token_scanner_next(scanner);
-                param = parse_expression(scanner, exprs);
+                param = parse_expression(0, scanner, exprs);
             }
             else if (token_scanner_peek(scanner).type == COLON)
             {
-                param = parse_expression(scanner, exprs);
+                param = parse_expression(0, scanner, exprs);
                 expr_print(param, 0);
             }
             else
@@ -82,7 +82,7 @@ Expr *parse_left_paren_prefix(TokenScanner *scanner, Exprs *exprs)
     Token token = token_scanner_next(scanner);
     Expr *expr = get_expr(exprs, E_PAREN, &token);
 
-    expr->def.parentheses.e = parse_expression(scanner, exprs);
+    expr->def.parentheses.e = parse_expression(0, scanner, exprs);
     assert_that(token_scanner_has_next(scanner) && token_scanner_next(scanner).type == RIGHT_PARAM, "EXPECTED RIGHT PARAM");
     expr->ret_type = expr->def.parentheses.e->ret_type;
     return expr;

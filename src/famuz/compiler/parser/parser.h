@@ -25,7 +25,7 @@
 #include <string.h>
 #include <stdbool.h>
 
-struct Expr *parse_expression(TokenScanner *scanner, Exprs *exprs);
+struct Expr *parse_expression(int precedence, TokenScanner *scanner, Exprs *exprs);
 Expr *get_expr(Exprs *exprs, ExprDefType def_type, Token *token);
 
 #include "../expr/expr.h"
@@ -38,6 +38,7 @@ Expr *get_expr(Exprs *exprs, ExprDefType def_type, Token *token);
 #include "./parser-left-bracket.h"
 #include "./parser-assignment.h"
 #include "./parser-identifier.h"
+#include "./parser-colon.h"
 #include "./parser-scale.h"
 #include "./parser-chord.h"
 #include "./parser-key.h"
@@ -105,7 +106,7 @@ struct Expr *parse_expression_infix(Expr *left, TokenScanner *scanner, Exprs *ex
     case LEFT_PARAM:
         return parse_left_paren_infix(left, scanner, exprs);
     case COLON:
-        return parse_identifier_infix(left, scanner, exprs);
+        return parse_colon_infix(left, scanner, exprs);
     case RIGHT_PARAM:
     case LEFT_BRACKET:
     case RIGHT_BRACKET:
@@ -124,7 +125,7 @@ struct Expr *parse_expression_infix(Expr *left, TokenScanner *scanner, Exprs *ex
     }
 }
 
-struct Expr *parse_expression(TokenScanner *scanner, Exprs *expr)
+struct Expr *parse_expression(int precedence, TokenScanner *scanner, Exprs *expr)
 {
     if (token_scanner_has_next(scanner))
     {

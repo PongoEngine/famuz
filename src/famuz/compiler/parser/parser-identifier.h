@@ -40,18 +40,3 @@ Expr *parse_identifier_prefix(TokenScanner *scanner, Exprs *exprs)
 
     return expr;
 }
-
-/**
- * Parsing optional identifier type "rhythm : *"
- */
-Expr *parse_identifier_infix(Expr *expr, TokenScanner *scanner, Exprs *exprs)
-{
-    // printf("\n--WE SHOULD BE HERE!--\n");
-    expr_print(expr, 0);
-    Token token = token_scanner_next(scanner);
-    Expr *identifier = parse_expression(scanner, exprs);
-    expr_print(identifier, 0);
-    // Type type = type_from_name(expr->def.constant.value.identifier);
-    // identifier->ret_type = type;
-    return expr;
-}

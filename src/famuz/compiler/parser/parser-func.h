@@ -35,9 +35,9 @@ Expr *parse_func_prefix(TokenScanner *scanner, Exprs *exprs)
     Token token = token_scanner_next(scanner);
     Expr *expr = get_expr(exprs, E_FUNC, &token);
 
-    Expr *call = parse_expression(scanner, exprs);
+    Expr *call = parse_expression(0, scanner, exprs);
     // expr_print(call, 0);
-    Expr *body = parse_expression(scanner, exprs);
+    Expr *body = parse_expression(0, scanner, exprs);
     // expr_print(body, 0);
     // printf("%s", possibleIdentifier->def.constant.value.identifier);
     // expr->def.function.identifier = parse_expression(scanner, exprs);
