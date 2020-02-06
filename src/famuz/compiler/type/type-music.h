@@ -1,6 +1,8 @@
 #pragma once
 
 /*
+ * MIT License
+ *
  * Copyright (c) 2019 Jeremy Meltingtallow
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -19,23 +21,8 @@
  * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*/
-
-#include "./parser.h"
-#include "../scanner.h"
-#include "../../util/assert.h"
-
-/**
- * Parsing scale "harmonic-minor"
  */
-Expr *parse_scale_prefix(TokenScanner *scanner, Exprs *exprs)
+
+typedef struct
 {
-    Token token = token_scanner_next(scanner);
-    Expr *expr = get_expr(exprs, E_CONST, &token);
-
-    expr->def.constant.type = TYPE_SCALE;
-    expr->def.constant.value.scale = type_get_scale(token.lexeme);
-    expr->ret_type = TYPE_SCALE;
-
-    return expr;
-}
+} Music;

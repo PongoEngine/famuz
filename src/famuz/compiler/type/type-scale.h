@@ -1,6 +1,8 @@
 #pragma once
 
 /*
+ * MIT License
+ *
  * Copyright (c) 2019 Jeremy Meltingtallow
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -19,23 +21,38 @@
  * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*/
-
-#include "./parser.h"
-#include "../scanner.h"
-#include "../../util/assert.h"
-
-/**
- * Parsing scale "harmonic-minor"
  */
-Expr *parse_scale_prefix(TokenScanner *scanner, Exprs *exprs)
+
+#include <string.h>
+
+typedef enum
 {
-    Token token = token_scanner_next(scanner);
-    Expr *expr = get_expr(exprs, E_CONST, &token);
+    SCALE_MAJOR = 1,
+    SCALE_NATURAL_MINOR,
+    SCALE_MELODIC_MINOR,
+    SCALE_HARMONIC_MINOR
+} Scale;
 
-    expr->def.constant.type = TYPE_SCALE;
-    expr->def.constant.value.scale = type_get_scale(token.lexeme);
-    expr->ret_type = TYPE_SCALE;
+static const char RESERVED_SCALE[4][16] = {
+    "major",
+    "natural-minor",
+    "melodic-minor",
+    "harmonic-minor",
+};
 
-    return expr;
+Scale type_get_scale(char *str)
+{
+    for (int i = 0; i < 4; i++)
+    {
+        if (strcmp(RESERVED_SCALE[i], str) == 0)
+        {
+            return (Scale)(i + 1);
+        }
+    }
+    return (Scale)-1;
+}
+
+bool type_is_scale(char *str)
+{
+    return (int)type_get_scale(str) != -1;
 }

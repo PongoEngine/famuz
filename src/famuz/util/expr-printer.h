@@ -24,7 +24,7 @@
  */
 
 #include "../compiler/expr/expr.h"
-#include "../compiler/type.h"
+#include "../compiler/type/type.h"
 
 #define SET_COLOR_ERROR printf("\033[0;31m");
 #define SET_COLOR_CONST printf("\033[1;32m");

@@ -21,11 +21,16 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
+#define RESERVED_KEY_INDEX 2
+#define RESERVED_SCALE_INDEX 19
+#define RESERVED_TYPE_INDEX 23
+
 #include <stdio.h>
 #include <stdbool.h>
 #include "./util/file-util.h"
 #include "./compiler/lexer/lexer.h"
 #include "./compiler/token.h"
+#include "./compiler/reserved.h"
 #include "./compiler/expr/expr.h"
 #include "./compiler/parser/parser.h"
 #include "./util/expr-printer.h"

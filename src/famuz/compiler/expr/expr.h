@@ -26,7 +26,7 @@
 #include <string.h>
 #include "../position.h"
 #include "../settings.h"
-#include "../type.h"
+#include "../type/type.h"
 
 typedef struct Expr Expr;
 

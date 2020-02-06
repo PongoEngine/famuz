@@ -46,7 +46,7 @@ TokenType word_type(char *str)
     {
         return KEY;
     }
-    else if (strcmp(R_MAJOR, str) == 0 || strcmp(R_NATURAL_MINOR, str) == 0 || strcmp(R_MELODIC_MINOR, str) == 0 || strcmp(R_HARMONIC_MINOR, str) == 0)
+    else if (type_is_scale(str))
     {
         return SCALE;
     }

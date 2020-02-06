@@ -25,9 +25,60 @@
 
 #include <stdbool.h>
 #include <string.h>
+#include "./type/type.h"
+
+#define RESERVED_WORD_COUNT 33
+
+static const char RESERVED[RESERVED_WORD_COUNT][16] = {
+    "func",  //0
+    "TRIAD", //1
+    "C",     //2
+    "C#",
+    "Db",
+    "D",
+    "D#",
+    "Eb",
+    "E",
+    "F",
+    "F#",
+    "Gb",
+    "G",
+    "G#",
+    "Ab",
+    "A",
+    "A#",
+    "Bb",
+    "B",
+    "Identifier", //RESERVED_TYPE_INDEX
+    "Rhythm",
+    "Melody",
+    "Harmony",
+    "Steps",
+    "Scale",
+    "Key",
+    "ScaledKey",
+    "Music",
+    "Chord",
+};
+
+Type reserved_get_type(char *str)
+{
+    for (size_t i = RESERVED_TYPE_INDEX; i < RESERVED_WORD_COUNT; i++)
+    {
+        if (strcmp(RESERVED[i], str) == 0)
+        {
+            return i;
+        }
+    }
+    return -1;
+}
+
+bool reserved_is_type(char *str)
+{
+    return (int)reserved_get_type(str) != -1;
+}
 
 static const char R_FUNC[] = "func";
-
 static const char R_TRIAD[] = "TRIAD";
 
 static const char R_C[] = "C";
@@ -47,18 +98,3 @@ static const char R_A[] = "A";
 static const char R_A_SHARP[] = "A#";
 static const char R_B_FLAT[] = "Bb";
 static const char R_B[] = "B";
-
-static const char R_MAJOR[] = "major";
-static const char R_NATURAL_MINOR[] = "natural-minor";
-static const char R_MELODIC_MINOR[] = "melodic-minor";
-static const char R_HARMONIC_MINOR[] = "harmonic-minor";
-
-static const char R_RHYTHM[] = "Rhythm";
-static const char R_MELODY[] = "Melody";
-static const char R_HARMONY[] = "Harmony";
-static const char R_STEPS[] = "Steps";
-static const char R_SCALE[] = "Scale";
-static const char R_KEY[] = "Key";
-static const char R_SCALED_KEY[] = "ScaledKey";
-static const char R_MUSIC[] = "Music";
-static const char R_CHORD[] = "Chord";

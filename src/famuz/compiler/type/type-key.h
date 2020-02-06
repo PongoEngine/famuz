@@ -1,6 +1,8 @@
 #pragma once
 
 /*
+ * MIT License
+ *
  * Copyright (c) 2019 Jeremy Meltingtallow
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -19,23 +21,25 @@
  * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*/
-
-#include "./parser.h"
-#include "../scanner.h"
-#include "../../util/assert.h"
-
-/**
- * Parsing scale "harmonic-minor"
  */
-Expr *parse_scale_prefix(TokenScanner *scanner, Exprs *exprs)
+
+typedef enum
 {
-    Token token = token_scanner_next(scanner);
-    Expr *expr = get_expr(exprs, E_CONST, &token);
-
-    expr->def.constant.type = TYPE_SCALE;
-    expr->def.constant.value.scale = type_get_scale(token.lexeme);
-    expr->ret_type = TYPE_SCALE;
-
-    return expr;
-}
+    KEY_C = 1,
+    KEY_C_SHARP,
+    KEY_D_FLAT,
+    KEY_D,
+    KEY_D_SHARP,
+    KEY_E_FLAT,
+    KEY_E,
+    KEY_F,
+    KEY_F_SHARP,
+    KEY_G_FLAT,
+    KEY_G,
+    KEY_G_SHARP,
+    KEY_A_FLAT,
+    KEY_A,
+    KEY_A_SHARP,
+    KEY_B_FLAT,
+    KEY_B
+} Key;
