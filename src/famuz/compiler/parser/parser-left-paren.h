@@ -26,6 +26,7 @@
 #include "../scanner.h"
 #include "../../util/assert.h"
 #include "../../util/expr-printer.h"
+#include "./precedence.h"
 
 /**
  * Parsing call "arp(...)"
@@ -38,7 +39,7 @@ Expr *parse_left_paren_infix(Expr *left, TokenScanner *scanner, Exprs *exprs)
     expr->def.call.identifier = left->def.constant.value.identifier;
     if (assert_that(token_scanner_has_next(scanner), "Cannot parse call expression"))
     {
-        Expr *param = parse_expression(0, scanner, exprs);
+        Expr *param = parse_expression(PRECEDENCE_CALL, scanner, exprs);
         expr->def.call.params = param;
         int params_length = 1;
         while (token_scanner_has_next(scanner) && token_scanner_peek(scanner).type != RIGHT_PARAM)

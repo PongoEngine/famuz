@@ -50,11 +50,11 @@ void famuz_parse(char *file_path)
             parse_expression(0, &token_scanner, &exprs);
         }
 
-        // Expr *basicRhythm = expr_from_name(&exprs, "basicRhythm");
-        // if (basicRhythm != NULL)
-        // {
-        //     expr_print(basicRhythm, 0);
-        // }
+        Expr *basicRhythm = expr_from_name(&exprs, "basicRhythm");
+        if (basicRhythm != NULL)
+        {
+            expr_print(basicRhythm, 0);
+        }
 
         for (size_t i = 0; i < exprs.cur_index; i++)
         {

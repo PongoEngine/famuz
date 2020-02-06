@@ -24,6 +24,7 @@
 #include "./parser.h"
 #include "../scanner.h"
 #include "../../util/assert.h"
+#include "./precedence.h"
 
 /**
  * Parsing assigning "... = ..."
@@ -36,11 +37,17 @@ Expr *parse_assignment_infix(Expr *left, TokenScanner *scanner, Exprs *exprs)
     if (assert_that(left->def_type == E_CONST && left->def.constant.type == TYPE_IDENTIFIER, "NOT IDENTIFIER"))
     {
         expr->def.var.identifier = left->def.constant.value.identifier;
+        expr->ret_type = left->ret_type;
     }
 
     if (assert_that(token_scanner_has_next(scanner), "Cannot parse assignment expression"))
     {
-        expr->def.var.e = parse_expression(0, scanner, exprs);
+        Expr *e = parse_expression(PRECEDENCE_ASSIGNMENT, scanner, exprs);
+        if ((int)left->ret_type != -1 && left->ret_type != e->ret_type)
+        {
+            printf("WHAT THE FUCK!");
+        }
+        expr->def.var.e = e;
         // expr->ret_type = expr->def.var.e != NULL ? expr->def.var.e->ret_type : -1;
     }
     else

@@ -141,15 +141,12 @@ struct Expr *parse_expression(int precedence, TokenScanner *scanner, Exprs *expr
         }
 
         bool has_next = token_scanner_has_next(scanner);
-        if (has_next)
+        while (has_next && precedence < get_precedence(scanner))
         {
-            Expr *infix = parse_expression_infix(left, scanner, expr);
-            return infix;
+            left = parse_expression_infix(left, scanner, expr);
+            has_next = token_scanner_has_next(scanner);
         }
-        else
-        {
-            return left;
-        }
+        return left;
     }
     else
     {

@@ -42,15 +42,12 @@ typedef enum
 {
     E_CONST = 1,
     E_VAR,
-    E_CHECK_TYPE,
     E_CALL,
     E_BINOP,
     E_BLOCK,
     E_FUNC,
     E_PAREN,
 } ExprDefType;
-
-#include "./expr-check-type.h"
 
 typedef struct Expr
 {
@@ -59,8 +56,6 @@ typedef struct Expr
         EConstant constant;
         //Variable declaration.
         EVar var;
-        //A (e:t) expression.
-        ECheckType type;
         //A call e(params).
         ECall call;
         //A block of expressions {exprs}.

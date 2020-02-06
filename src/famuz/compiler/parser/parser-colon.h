@@ -25,18 +25,15 @@
 #include "../scanner.h"
 #include "../../util/assert.h"
 #include "../../util/expr-printer.h"
+#include "./precedence.h"
 
 /**
  * Parsing optional identifier type "rhythm : *"
  */
 Expr *parse_colon_infix(Expr *expr, TokenScanner *scanner, Exprs *exprs)
 {
-    // printf("\n--WE SHOULD BE HERE!--\n");
-    expr_print(expr, 0);
     Token token = token_scanner_next(scanner);
-    Expr *identifier = parse_expression(0, scanner, exprs);
-    expr_print(identifier, 0);
-    // Type type = type_from_name(expr->def.constant.value.identifier);
-    // identifier->ret_type = type;
+    Expr *typeIdentifier = parse_expression(PRECEDENCE_TYPE, scanner, exprs);
+    expr->ret_type = type_get_type(typeIdentifier->def.constant.value.identifier);
     return expr;
 }

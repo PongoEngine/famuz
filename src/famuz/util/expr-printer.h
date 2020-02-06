@@ -335,12 +335,7 @@ void expr_print(Expr *expr, int spaces)
     }
     case E_FUNC:
     {
-        // SET_COLOR_PAREN
-        // expr_print_paren(expr, spaces);
-        break;
-    }
-    case E_CHECK_TYPE:
-    {
+        printf("WE ARE PRINTING A FUNCTION!");
         // SET_COLOR_PAREN
         // expr_print_paren(expr, spaces);
         break;
