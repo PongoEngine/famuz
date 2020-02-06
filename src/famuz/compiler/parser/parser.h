@@ -43,6 +43,7 @@ Expr *get_expr(Exprs *exprs, ExprDefType def_type, Token *token);
 #include "./parser-chord.h"
 #include "./parser-key.h"
 #include "./parser-func.h"
+#include "./precedence.h"
 #include "../../util/assert.h"
 
 Expr *get_expr(Exprs *exprs, ExprDefType def_type, Token *token)
@@ -140,15 +141,14 @@ struct Expr *parse_expression(int precedence, TokenScanner *scanner, Exprs *expr
         }
 
         bool has_next = token_scanner_has_next(scanner);
-        Expr *infix = has_next ? parse_expression_infix(left, scanner, expr) : NULL;
-
-        if (infix == NULL)
+        if (has_next)
         {
-            return left;
+            Expr *infix = parse_expression_infix(left, scanner, expr);
+            return infix;
         }
         else
         {
-            return infix;
+            return left;
         }
     }
     else
