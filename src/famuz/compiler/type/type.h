@@ -23,6 +23,8 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+#define RESERVED_TYPE_COUNT 10
+
 #include "../settings.h"
 #include "./type-scale.h"
 #include "./type-identifier.h"
@@ -39,7 +41,7 @@
 
 typedef enum
 {
-    TYPE_IDENTIFIER = RESERVED_TYPE_INDEX,
+    TYPE_IDENTIFIER = 1,
     TYPE_RHYTHM,
     TYPE_MELODY,
     TYPE_HARMONY,
@@ -50,3 +52,33 @@ typedef enum
     TYPE_MUSIC,
     TYPE_CHORD
 } Type;
+
+static const char RESERVED_TYPE[RESERVED_TYPE_COUNT][16] = {
+    "Identifier",
+    "Rhythm",
+    "Melody",
+    "Harmony",
+    "Steps",
+    "Scale",
+    "Key",
+    "ScaledKey",
+    "Music",
+    "Chord",
+};
+
+Type type_get_type(char *str)
+{
+    for (int i = 0; i < RESERVED_TYPE_COUNT; i++)
+    {
+        if (strcmp(RESERVED_TYPE[i], str) == 0)
+        {
+            return (Type)(i + 1);
+        }
+    }
+    return (Type)-1;
+}
+
+bool type_is_type(char *str)
+{
+    return (int)type_get_type(str) != -1;
+}

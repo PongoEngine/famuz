@@ -23,7 +23,30 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+#define RESERVED_CHORD_COUNT 1
+
 typedef enum
 {
     CHORD_TRIAD = 1,
 } Chord;
+
+static const char RESERVED_CHORD[RESERVED_CHORD_COUNT][16] = {
+    "TRIAD",
+};
+
+Chord type_get_chord(char *str)
+{
+    for (int i = 0; i < RESERVED_CHORD_COUNT; i++)
+    {
+        if (strcmp(RESERVED_CHORD[i], str) == 0)
+        {
+            return (Chord)(i + 1);
+        }
+    }
+    return (Chord)-1;
+}
+
+bool type_is_chord(char *str)
+{
+    return (int)type_get_chord(str) != -1;
+}

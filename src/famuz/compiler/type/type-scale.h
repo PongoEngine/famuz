@@ -23,6 +23,7 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+#define RESERVED_SCALE_COUNT 4
 #include <string.h>
 
 typedef enum
@@ -33,7 +34,7 @@ typedef enum
     SCALE_HARMONIC_MINOR
 } Scale;
 
-static const char RESERVED_SCALE[4][16] = {
+static const char RESERVED_SCALE[RESERVED_SCALE_COUNT][16] = {
     "major",
     "natural-minor",
     "melodic-minor",
@@ -42,7 +43,7 @@ static const char RESERVED_SCALE[4][16] = {
 
 Scale type_get_scale(char *str)
 {
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < RESERVED_SCALE_COUNT; i++)
     {
         if (strcmp(RESERVED_SCALE[i], str) == 0)
         {

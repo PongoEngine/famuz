@@ -35,11 +35,7 @@ Expr *parse_chord_prefix(TokenScanner *scanner, Exprs *exprs)
     Expr *expr = get_expr(exprs, E_CONST, &token);
 
     expr->def.constant.type = TYPE_CHORD;
-
-    if (strcmp(R_TRIAD, token.lexeme) == 0)
-    {
-        expr->def.constant.value.chord = CHORD_TRIAD;
-    }
+    expr->def.constant.value.chord = type_get_chord(token.lexeme);
     expr->ret_type = TYPE_CHORD;
     return expr;
 }

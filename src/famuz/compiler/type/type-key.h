@@ -23,6 +23,8 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+#define RESERVED_KEY_COUNT 17
+
 typedef enum
 {
     KEY_C = 1,
@@ -43,3 +45,40 @@ typedef enum
     KEY_B_FLAT,
     KEY_B
 } Key;
+
+static const char RESERVED_KEY[RESERVED_KEY_COUNT][16] = {
+    "C",
+    "C#",
+    "Db",
+    "D",
+    "D#",
+    "Eb",
+    "E",
+    "F",
+    "F#",
+    "Gb",
+    "G",
+    "G#",
+    "Ab",
+    "A",
+    "A#",
+    "Bb",
+    "B",
+};
+
+Key type_get_key(char *str)
+{
+    for (int i = 0; i < RESERVED_KEY_COUNT; i++)
+    {
+        if (strcmp(RESERVED_KEY[i], str) == 0)
+        {
+            return (Key)(i + 1);
+        }
+    }
+    return (Key)-1;
+}
+
+bool type_is_key(char *str)
+{
+    return (int)type_get_key(str) != -1;
+}
