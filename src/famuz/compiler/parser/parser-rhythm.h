@@ -24,6 +24,7 @@
 #include "./parser.h"
 #include "../scanner.h"
 #include "../../util/assert.h"
+#include "../environment.h"
 
 void parse_rhythm_eat_duration(Scanner *scanner)
 {
@@ -44,7 +45,7 @@ void parse_rhythm_eat_rest(Scanner *scanner)
 /**
  * Parsing rhythm "x~~~ x--- x~~~ x~--"
  */
-Expr *parse_rhythm(TokenScanner *scanner, Exprs *exprs)
+Expr *parse_rhythm(TokenScanner *scanner, Environment *exprs)
 {
     Token token = token_scanner_next(scanner);
     Expr *expr = get_expr(exprs, E_CONST, &token);

@@ -26,11 +26,12 @@
 #include "../scanner.h"
 #include "../../util/assert.h"
 #include "./precedence.h"
+#include "../environment.h"
 
 /**
  * Parsing parens "(...)"
  */
-Expr *parse_parentheses(TokenScanner *scanner, Exprs *exprs)
+Expr *parse_parentheses(TokenScanner *scanner, Environment *exprs)
 {
     Token token = token_scanner_next(scanner);
     Expr *expr = get_expr(exprs, E_PAREN, &token);

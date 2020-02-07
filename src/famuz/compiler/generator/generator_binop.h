@@ -24,9 +24,10 @@
 #include "./generate.h"
 #include "../expr/expr.h"
 #include "../position.h"
+#include "../environment.h"
 #include "../../util/assert.h"
 
-Expr *generate(Expr *expr, Exprs *exprs);
+Expr *generate(Expr *expr, Environment *exprs);
 
 Expr *prepare_binop_expr(ExprDefType def_type, Type constant_type, Position *p1, Position *p2)
 {
@@ -46,7 +47,7 @@ Expr *prepare_expr(ExprDefType def_type, Type constant_type, Position *pos)
     return &generate_temp_expr;
 }
 
-Expr *generate_binop_add_harmony(Expr *harmony, Expr *right, Exprs *exprs)
+Expr *generate_binop_add_harmony(Expr *harmony, Expr *right, Environment *exprs)
 {
     switch (right->def.constant.type)
     {
@@ -63,7 +64,7 @@ Expr *generate_binop_add_harmony(Expr *harmony, Expr *right, Exprs *exprs)
     }
 }
 
-Expr *generate_binop_add_melody(Expr *melody, Expr *right, Exprs *exprs)
+Expr *generate_binop_add_melody(Expr *melody, Expr *right, Environment *exprs)
 {
     switch (right->def.constant.type)
     {
@@ -81,7 +82,7 @@ Expr *generate_binop_add_melody(Expr *melody, Expr *right, Exprs *exprs)
     }
 }
 
-Expr *generate_binop_add_rhythm(Expr *rhythm, Expr *right, Exprs *exprs)
+Expr *generate_binop_add_rhythm(Expr *rhythm, Expr *right, Environment *exprs)
 {
     switch (right->def.constant.type)
     {
@@ -106,7 +107,7 @@ Expr *generate_binop_add_rhythm(Expr *rhythm, Expr *right, Exprs *exprs)
     }
 }
 
-Expr *generate_binop_add_scale(Expr *scale, Expr *right, Exprs *exprs)
+Expr *generate_binop_add_scale(Expr *scale, Expr *right, Environment *exprs)
 {
     switch (right->def.constant.type)
     {
@@ -125,7 +126,7 @@ Expr *generate_binop_add_scale(Expr *scale, Expr *right, Exprs *exprs)
     }
 }
 
-Expr *generate_binop_add_key(Expr *key, Expr *right, Exprs *exprs)
+Expr *generate_binop_add_key(Expr *key, Expr *right, Environment *exprs)
 {
     switch (right->def.constant.type)
     {
@@ -139,7 +140,7 @@ Expr *generate_binop_add_key(Expr *key, Expr *right, Exprs *exprs)
     }
 }
 
-Expr *generate_binop_add_steps(Expr *steps, Expr *right, Exprs *exprs)
+Expr *generate_binop_add_steps(Expr *steps, Expr *right, Environment *exprs)
 {
     switch (right->def.constant.type)
     {
@@ -153,7 +154,7 @@ Expr *generate_binop_add_steps(Expr *steps, Expr *right, Exprs *exprs)
     }
 }
 
-Expr *generate_binop_add_scaled_key(Expr *scaled_key, Expr *right, Exprs *exprs)
+Expr *generate_binop_add_scaled_key(Expr *scaled_key, Expr *right, Environment *exprs)
 {
     switch (right->def.constant.type)
     {
@@ -171,7 +172,7 @@ Expr *generate_binop_add_scaled_key(Expr *scaled_key, Expr *right, Exprs *exprs)
     }
 }
 
-Expr *generate_binop_add(Expr *left, Expr *right, Exprs *exprs)
+Expr *generate_binop_add(Expr *left, Expr *right, Environment *exprs)
 {
     if (assert_that(left->def_type == E_CONST && right->def_type == E_CONST, "CAN ONLY DO ARITHMETIC ON CONSTANTS"))
     {
@@ -214,7 +215,7 @@ Expr *generate_binop_add(Expr *left, Expr *right, Exprs *exprs)
     }
 }
 
-Expr *generate_binop(Expr *expr, Exprs *exprs)
+Expr *generate_binop(Expr *expr, Environment *exprs)
 {
     Expr *e1 = expr->def.binop.e1;
     Expr *e2 = expr->def.binop.e2;

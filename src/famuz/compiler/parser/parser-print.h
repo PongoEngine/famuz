@@ -28,17 +28,17 @@
 #include "../../util/assert.h"
 #include "../../util/printer.h"
 #include "./precedence.h"
+#include "../environment.h"
 
 /**
  * Parsing parens "(...)"
  */
-Expr *parse_print(TokenScanner *scanner, Exprs *exprs)
+Expr *parse_print(TokenScanner *scanner, Environment *exprs)
 {
     token_scanner_next(scanner);
     token_scanner_next(scanner);
     Expr *expr = parse_expression(0, scanner, exprs);
-    Expr *computed = generate(expr, exprs);
-    print(computed);
+    print(generate(expr, exprs));
     assert_that(token_scanner_has_next(scanner) && token_scanner_next(scanner).type == RIGHT_PARAM, "\nparse_print: EXPECTED RIGHT PARAM\n");
     return expr;
 }

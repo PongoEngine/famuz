@@ -24,8 +24,9 @@
 #include "../expr/expr.h"
 #include "../position.h"
 #include "../../util/assert.h"
+#include "../environment.h"
 
-Expr *generate_call(Expr *expr, Exprs *exprs)
+Expr *generate_call(Expr *expr, Environment *exprs)
 {
     printf("WORK ON GENERATE CALL!");
     return expr;

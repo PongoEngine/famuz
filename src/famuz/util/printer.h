@@ -26,10 +26,34 @@
 #include <stdio.h>
 #include "../compiler/expr/expr.h"
 #include "../compiler/type/type.h"
+#include "../compiler/position.h"
+
+void print_position(Position *p)
+{
+    printf("%s: ", p->file);
+}
 
 void print_constant(char *str)
 {
     printf("\n%s\n", str);
+}
+
+void print_hit(Hit *hit)
+{
+    int start = hit->start;
+    int duration = hit->duration;
+    printf("(%i,%i) ", start, duration);
+}
+
+void print_rhythm(Rhythm *rhythm)
+{
+    int length = rhythm->length;
+    printf("[ ");
+    for (size_t i = 0; i < length; i++)
+    {
+        print_hit(&rhythm->hits[i]);
+    }
+    printf("]");
 }
 
 void print(Expr *expr)
@@ -46,8 +70,12 @@ void print(Expr *expr)
             print_constant("TYPE_IDENTIFIER");
             break;
         case TYPE_RHYTHM:
-            print_constant("TYPE_RHYTHM");
+        {
+            print_position(expr->pos);
+            print_rhythm(&expr->def.constant.value.rhythm);
+            printf("\n");
             break;
+        }
         case TYPE_HARMONY:
             print_constant("TYPE_HARMONY");
             break;

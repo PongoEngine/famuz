@@ -25,11 +25,12 @@
 #include "./parser.h"
 #include "../scanner.h"
 #include "../../util/assert.h"
+#include "../environment.h"
 
 /**
  * Parsing blocks "{...}"
  */
-Expr *parse_block(TokenScanner *scanner, Exprs *exprs)
+Expr *parse_block(TokenScanner *scanner, Environment *exprs)
 {
     Token token = token_scanner_next(scanner);
     Expr *expr = get_expr(exprs, E_BLOCK, &token);

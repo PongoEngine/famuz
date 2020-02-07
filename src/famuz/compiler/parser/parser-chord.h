@@ -25,11 +25,12 @@
 #include "../scanner.h"
 #include "../reserved.h"
 #include "../../util/assert.h"
+#include "../environment.h"
 
 /**
  * Parsing scale "harmonic-minor"
  */
-Expr *parse_chord(TokenScanner *scanner, Exprs *exprs)
+Expr *parse_chord(TokenScanner *scanner, Environment *exprs)
 {
     Token token = token_scanner_next(scanner);
     Expr *expr = get_expr(exprs, E_CONST, &token);

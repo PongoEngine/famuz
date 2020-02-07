@@ -24,11 +24,12 @@
 #include "./parser.h"
 #include "../scanner.h"
 #include "../../util/assert.h"
+#include "../environment.h"
 
 /**
  * Parsing steps "0 1 2 3"
  */
-Expr *parse_steps(TokenScanner *scanner, Exprs *exprs)
+Expr *parse_steps(TokenScanner *scanner, Environment *exprs)
 {
     Token token = token_scanner_next(scanner);
     Expr *expr = get_expr(exprs, E_CONST, &token);

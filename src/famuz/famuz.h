@@ -26,6 +26,7 @@
 #include "./util/file-util.h"
 #include "./compiler/lexer/lexer.h"
 #include "./compiler/token.h"
+#include "./compiler/environment.h"
 #include "./compiler/reserved.h"
 #include "./compiler/expr/expr.h"
 #include "./compiler/parser/parser.h"
@@ -42,7 +43,7 @@ void famuz_parse(char *file_path)
         token_scanner.length = lex(content, file_path, token_scanner.tokens);
         token_scanner.cur_index = 0;
         //
-        Exprs exprs;
+        Environment exprs;
         exprs.cur_index = 0;
 
         while (token_scanner_has_next(&token_scanner))

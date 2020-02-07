@@ -25,11 +25,12 @@
 #include "../scanner.h"
 #include "../../util/assert.h"
 #include "./precedence.h"
+#include "../environment.h"
 
 /**
  * Parsing optional identifier type "Rhythm : *"
  */
-Expr *parse_typing(Expr *typingExpr, TokenScanner *scanner, Exprs *exprs)
+Expr *parse_typing(Expr *typingExpr, TokenScanner *scanner, Environment *exprs)
 {
     Token token = token_scanner_next(scanner);
     Expr *expr = parse_expression(PRECEDENCE_TYPE, scanner, exprs);

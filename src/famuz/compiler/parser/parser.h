@@ -24,9 +24,10 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
+#include "../environment.h"
 
-struct Expr *parse_expression(int precedence, TokenScanner *scanner, Exprs *exprs);
-Expr *get_expr(Exprs *exprs, ExprDefType def_type, Token *token);
+struct Expr *parse_expression(int precedence, TokenScanner *scanner, Environment *exprs);
+Expr *get_expr(Environment *exprs, ExprDefType def_type, Token *token);
 
 #include "../expr/expr.h"
 #include "../token.h"
@@ -47,8 +48,9 @@ Expr *get_expr(Exprs *exprs, ExprDefType def_type, Token *token);
 #include "./parser-key.h"
 #include "./precedence.h"
 #include "../../util/assert.h"
+#include "../environment.h"
 
-Expr *get_expr(Exprs *exprs, ExprDefType def_type, Token *token)
+Expr *get_expr(Environment *exprs, ExprDefType def_type, Token *token)
 {
     Expr *expr = &(exprs->exprs[exprs->cur_index++]);
     expr->def_type = def_type;
@@ -56,7 +58,7 @@ Expr *get_expr(Exprs *exprs, ExprDefType def_type, Token *token)
     return expr;
 }
 
-struct Expr *parse_expression_prefix(TokenScanner *scanner, Exprs *exprs)
+struct Expr *parse_expression_prefix(TokenScanner *scanner, Environment *exprs)
 {
     Token token = token_scanner_peek(scanner);
 
@@ -98,7 +100,7 @@ struct Expr *parse_expression_prefix(TokenScanner *scanner, Exprs *exprs)
     }
 }
 
-struct Expr *parse_expression_infix(Expr *left, TokenScanner *scanner, Exprs *exprs)
+struct Expr *parse_expression_infix(Expr *left, TokenScanner *scanner, Environment *exprs)
 {
     Token token = token_scanner_peek(scanner);
 
@@ -131,7 +133,7 @@ struct Expr *parse_expression_infix(Expr *left, TokenScanner *scanner, Exprs *ex
     }
 }
 
-struct Expr *parse_expression(int precedence, TokenScanner *scanner, Exprs *expr)
+struct Expr *parse_expression(int precedence, TokenScanner *scanner, Environment *expr)
 {
     if (token_scanner_has_next(scanner))
     {

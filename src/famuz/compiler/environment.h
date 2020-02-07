@@ -1,6 +1,8 @@
 #pragma once
 
 /*
+ * MIT License
+ *
  * Copyright (c) 2019 Jeremy Meltingtallow
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -19,35 +21,33 @@
  * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*/
-
-#include "./parser.h"
-#include "../scanner.h"
-#include "../reserved.h"
-#include "../../util/assert.h"
-#include "./parser-identifier.h"
-#include "../environment.h"
-
-/**
- * Parsing function "main(...)"
  */
-Expr *parse_func(TokenScanner *scanner, Environment *exprs)
+
+#include <string.h>
+#include "./settings.h"
+#include "./expr/expr.h"
+
+typedef struct
 {
-    Token token = token_scanner_next(scanner);
-    Expr *expr = get_expr(exprs, E_FUNC, &token);
+    Expr exprs[SETTINGS_EXPRS_LENGTH];
+    int cur_index;
+} Environment;
 
-    Expr *functionIdentifier = parse_identifier(scanner, exprs);
-    expr->def.function.identifier = functionIdentifier->def.constant.value.identifier;
-    assert_that(token_scanner_next(scanner).type == LEFT_PARAM, "\nparse_func :NOT LEFT PARENTHESES!\n");
-    while (token_scanner_peek(scanner).type != RIGHT_PARAM)
+Expr *expr_from_name(Environment *exprs, char *name)
+{
+    for (size_t i = 0; i < exprs->cur_index; i++)
     {
-        token_scanner_next(scanner);
+        Expr *expr = &(exprs->exprs[i]);
+        if (expr->def_type == E_VAR && strcmp(expr->def.var.identifier, name) == 0)
+        {
+            return expr;
+        }
     }
-    assert_that(token_scanner_next(scanner).type == RIGHT_PARAM, "\nparse_func :NOT LEFT PARENTHESES!\n");
+    return NULL;
+}
 
-    // Expr *call = parse_expression(0, scanner, exprs);
-    // expr_print(call, 0);
-    // Expr *body = parse_expression(0, scanner, exprs);
-    // expr_print(body, 0);
-    return expr;
+Type expr_type_from_name(Environment *exprs, char *name)
+{
+    Expr *expr = expr_from_name(exprs, name);
+    return expr == NULL ? (Type)-1 : expr->ret_type;
 }

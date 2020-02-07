@@ -24,11 +24,12 @@
 #include "./parser.h"
 #include "../scanner.h"
 #include "../../util/assert.h"
+#include "../environment.h"
 
 /**
  * Parsing name "..."
  */
-Expr *parse_identifier(TokenScanner *scanner, Exprs *exprs)
+Expr *parse_identifier(TokenScanner *scanner, Environment *exprs)
 {
     Token token = token_scanner_next(scanner);
     Expr *expr = get_expr(exprs, E_CONST, &token);

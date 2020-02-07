@@ -22,36 +22,36 @@
 */
 
 #include "../expr/expr.h"
+#include "../environment.h"
 
 static Expr generate_temp_expr;
 
-Expr *generate(Expr *expr, Exprs *exprs);
-// Expr *create_expr(Exprs *exprs, ExprDefType def_type, Type constant_type, Position *pos);
+Expr *generate(Expr *expr, Environment *exprs);
 
 #include "./generator_binop.h"
 #include "./generator_call.h"
 
-Expr *generate_parentheses(Expr *expr, Exprs *exprs)
+Expr *generate_parentheses(Expr *expr, Environment *exprs)
 {
     return generate(expr->def.parentheses.e, exprs);
 }
 
-Expr *generate_var(Expr *expr, Exprs *exprs)
+Expr *generate_var(Expr *expr, Environment *exprs)
 {
     return generate(expr->def.var.e, exprs);
 }
 
-Expr *generate_block(Expr *expr, Exprs *exprs)
+Expr *generate_block(Expr *expr, Environment *exprs)
 {
     return expr;
 }
 
-Expr *generate_function(Expr *expr, Exprs *exprs)
+Expr *generate_function(Expr *expr, Environment *exprs)
 {
     return expr;
 }
 
-Expr *generate_const(Expr *expr, Exprs *exprs)
+Expr *generate_const(Expr *expr, Environment *exprs)
 {
     switch (expr->def.constant.type)
     {
@@ -82,8 +82,9 @@ Expr *generate_const(Expr *expr, Exprs *exprs)
     }
 }
 
-Expr *generate(Expr *expr, Exprs *exprs)
+Expr *generate(Expr *expr, Environment *exprs)
 {
+    printf("--%s--\n\n", expr->pos->file);
     switch (expr->def_type)
     {
     case E_CONST:

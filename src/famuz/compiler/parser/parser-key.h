@@ -25,11 +25,12 @@
 #include "./parser.h"
 #include "../scanner.h"
 #include "../../util/assert.h"
+#include "../environment.h"
 
 /**
  * Parsing key "c#"
  */
-Expr *parse_key(TokenScanner *scanner, Exprs *exprs)
+Expr *parse_key(TokenScanner *scanner, Environment *exprs)
 {
     Token token = token_scanner_next(scanner);
     Expr *expr = get_expr(exprs, E_CONST, &token);

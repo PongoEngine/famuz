@@ -26,11 +26,12 @@
 #include "../scanner.h"
 #include "../../util/assert.h"
 #include "./precedence.h"
+#include "../environment.h"
 
 /**
  * Parsing call "arp(...)"
  */
-Expr *parse_call(Expr *left, TokenScanner *scanner, Exprs *exprs)
+Expr *parse_call(Expr *left, TokenScanner *scanner, Environment *exprs)
 {
     Token token = token_scanner_next(scanner);
     Expr *expr = get_expr(exprs, E_CALL, &token);

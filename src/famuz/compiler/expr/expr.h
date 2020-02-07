@@ -72,33 +72,3 @@ typedef struct Expr
     ExprDefType def_type;
     Type ret_type;
 } Expr;
-
-typedef struct
-{
-    Expr exprs[SETTINGS_EXPRS_LENGTH];
-    int cur_index;
-} Exprs;
-
-//turn into a map?
-Expr *expr_from_name(Exprs *exprs, char *name)
-{
-    for (size_t i = 0; i < exprs->cur_index; i++)
-    {
-        Expr *expr = &(exprs->exprs[i]);
-        if (expr->def_type == E_VAR && strcmp(expr->def.var.identifier, name) == 0)
-        {
-            return expr;
-        }
-        // else if (expr->def_type == E_FUNC && strcmp(expr->def.function.identifier, name) == 0)
-        // {
-        //     return expr;
-        // }
-    }
-    return NULL;
-}
-
-Type expr_type_from_name(Exprs *exprs, char *name)
-{
-    Expr *expr = expr_from_name(exprs, name);
-    return expr == NULL ? -1 : expr->ret_type;
-}

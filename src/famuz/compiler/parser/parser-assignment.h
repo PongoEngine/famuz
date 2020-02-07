@@ -25,11 +25,12 @@
 #include "../scanner.h"
 #include "../../util/assert.h"
 #include "./precedence.h"
+#include "../environment.h"
 
 /**
  * Parsing assigning "... = ..."
  */
-Expr *parse_assignment(Expr *left, TokenScanner *scanner, Exprs *exprs)
+Expr *parse_assignment(Expr *left, TokenScanner *scanner, Environment *exprs)
 {
     Token token = token_scanner_next(scanner);
     Expr *expr = get_expr(exprs, E_VAR, &token);
