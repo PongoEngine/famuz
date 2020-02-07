@@ -31,6 +31,7 @@ Expr *generate(Expr *expr, Environment *exprs);
 
 Expr *prepare_binop_expr(ExprDefType def_type, Type constant_type, Position *p1, Position *p2)
 {
+    printf("\n\n----prepare_binop_expr----\n\n");
     generate_temp_expr.def_type = def_type;
     generate_temp_expr.ret_type = constant_type;
     generate_temp_expr.def.constant.type = constant_type;
@@ -40,6 +41,7 @@ Expr *prepare_binop_expr(ExprDefType def_type, Type constant_type, Position *p1,
 
 Expr *prepare_expr(ExprDefType def_type, Type constant_type, Position *pos)
 {
+    printf("\n\n----prepare_expr----\n\n");
     generate_temp_expr.def_type = def_type;
     generate_temp_expr.ret_type = constant_type;
     generate_temp_expr.def.constant.type = constant_type;

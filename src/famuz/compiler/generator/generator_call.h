@@ -28,6 +28,6 @@
 
 Expr *generate_call(Expr *expr, Environment *exprs)
 {
-    printf("WORK ON GENERATE CALL!");
+    printf("\n\n----generate_call----\n\n");
     return expr;
 }

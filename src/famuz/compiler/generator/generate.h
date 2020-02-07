@@ -23,6 +23,7 @@
 
 #include "../expr/expr.h"
 #include "../environment.h"
+#include "../../util/expr-printer.h"
 
 static Expr generate_temp_expr;
 
@@ -33,33 +34,41 @@ Expr *generate(Expr *expr, Environment *exprs);
 
 Expr *generate_parentheses(Expr *expr, Environment *exprs)
 {
+    printf("\n\n----generate_parentheses----\n\n");
     return generate(expr->def.parentheses.e, exprs);
 }
 
 Expr *generate_var(Expr *expr, Environment *exprs)
 {
+    printf("\n\n----generate_var----\n\n");
     return generate(expr->def.var.e, exprs);
 }
 
 Expr *generate_block(Expr *expr, Environment *exprs)
 {
+    printf("\n\n----generate_block----\n\n");
     return expr;
 }
 
 Expr *generate_function(Expr *expr, Environment *exprs)
 {
+    printf("\n\n----generate_function----\n\n");
     return expr;
 }
 
 Expr *generate_const(Expr *expr, Environment *exprs)
 {
+    printf("\n\n----generate_const----\n\n");
     switch (expr->def.constant.type)
     {
     case TYPE_IDENTIFIER:
     {
         char *name = expr->def.constant.value.identifier;
-        Expr *expr = expr_from_name(exprs, name);
-        return generate(expr, exprs);
+        Expr *ref = expr_from_name(exprs, name);
+        printf("\nstart from name\n");
+        printf("%s%", ref->pos->file);
+        printf("\nend from name\n");
+        return generate(ref, exprs);
     }
     case TYPE_RHYTHM:
         return expr;
@@ -84,7 +93,7 @@ Expr *generate_const(Expr *expr, Environment *exprs)
 
 Expr *generate(Expr *expr, Environment *exprs)
 {
-    printf("--%s--\n\n", expr->pos->file);
+    printf("--| %s |--\n\n", expr->pos->file);
     switch (expr->def_type)
     {
     case E_CONST:
