@@ -21,21 +21,33 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
+#include <string.h>
 #include "./parser.h"
 #include "../scanner.h"
 #include "../../util/assert.h"
+#include "../../util/expr-printer.h"
+#include "./precedence.h"
 
 /**
- * Parsing scale "harmonic-minor"
+ * Parsing call "arp(...)"
  */
-Expr *parse_scale(TokenScanner *scanner, Exprs *exprs)
+Expr *parse_call(Expr *left, TokenScanner *scanner, Exprs *exprs)
 {
     Token token = token_scanner_next(scanner);
-    Expr *expr = get_expr(exprs, E_CONST, &token);
+    Expr *expr = get_expr(exprs, E_CALL, &token);
 
-    expr->def.constant.type = TYPE_SCALE;
-    expr->def.constant.value.scale = type_get_scale(token.lexeme);
-    expr->ret_type = TYPE_SCALE;
+    expr->def.call.identifier = left->def.constant.value.identifier;
+    Expr *param = parse_expression(PRECEDENCE_CALL, scanner, exprs);
+    int params_length = 0;
+    while (token_scanner_has_next(scanner) && token_scanner_peek(scanner).type != RIGHT_PARAM)
+    {
+        token_scanner_next(scanner);
+    }
+    expr->def.call.params_length = params_length;
+
+    assert_that(token_scanner_has_next(scanner) && token_scanner_next(scanner).type == RIGHT_PARAM, "EXPECTED RIGHT PARAM");
+
+    expr->ret_type = -1;
 
     return expr;
 }

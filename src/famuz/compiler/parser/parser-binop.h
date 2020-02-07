@@ -29,7 +29,7 @@
 /**
  * Parsing binary opertation "... + ..."
  */
-Expr *parse_binop_infix(Expr *left, TokenScanner *scanner, Exprs *exprs)
+Expr *parse_binop(Expr *left, TokenScanner *scanner, Exprs *exprs)
 {
     Token token = token_scanner_next(scanner);
     Expr *expr = get_expr(exprs, E_BINOP, &token);

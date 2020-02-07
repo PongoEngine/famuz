@@ -25,7 +25,7 @@
 #include "../scanner.h"
 #include "../../util/assert.h"
 
-void parse_rhythm_prefix_eat_duration(Scanner *scanner)
+void parse_rhythm_eat_duration(Scanner *scanner)
 {
     while (scanner_has_next(scanner) && scanner_peek(scanner) == '~')
     {
@@ -33,7 +33,7 @@ void parse_rhythm_prefix_eat_duration(Scanner *scanner)
     }
 }
 
-void parse_rhythm_prefix_eat_rest(Scanner *scanner)
+void parse_rhythm_eat_rest(Scanner *scanner)
 {
     while (scanner_has_next(scanner) && scanner_peek(scanner) == '-')
     {
@@ -44,7 +44,7 @@ void parse_rhythm_prefix_eat_rest(Scanner *scanner)
 /**
  * Parsing rhythm "x~~~ x--- x~~~ x~--"
  */
-Expr *parse_rhythm_prefix(TokenScanner *scanner, Exprs *exprs)
+Expr *parse_rhythm(TokenScanner *scanner, Exprs *exprs)
 {
     Token token = token_scanner_next(scanner);
     Expr *expr = get_expr(exprs, E_CONST, &token);
@@ -59,7 +59,7 @@ Expr *parse_rhythm_prefix(TokenScanner *scanner, Exprs *exprs)
         {
             int start = rhythm_scanner.cur_index;
             scanner_next(&rhythm_scanner);
-            parse_rhythm_prefix_eat_duration(&rhythm_scanner);
+            parse_rhythm_eat_duration(&rhythm_scanner);
             int duration = rhythm_scanner.cur_index - start;
             expr->def.constant.value.rhythm.hits[index].start = start;
             expr->def.constant.value.rhythm.hits[index].duration = duration;
@@ -67,7 +67,7 @@ Expr *parse_rhythm_prefix(TokenScanner *scanner, Exprs *exprs)
         }
         else if (scanner_peek(&rhythm_scanner) == '-')
         {
-            parse_rhythm_prefix_eat_rest(&rhythm_scanner);
+            parse_rhythm_eat_rest(&rhythm_scanner);
         }
         else
         {

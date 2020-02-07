@@ -28,7 +28,7 @@
 /**
  * Parsing steps "0 1 2 3"
  */
-Expr *parse_steps_prefix(TokenScanner *scanner, Exprs *exprs)
+Expr *parse_steps(TokenScanner *scanner, Exprs *exprs)
 {
     Token token = token_scanner_next(scanner);
     Expr *expr = get_expr(exprs, E_CONST, &token);

@@ -1,5 +1,5 @@
 basicRhythm : Rhythm = x~~~ x--- x~~~ x~--
 
-func neptune(a, b, c) {
+func neptune(a :Steps, b :Steps, c :Steps) : Rhythm {
     x~~~ x--- x~~~ x~--
 }

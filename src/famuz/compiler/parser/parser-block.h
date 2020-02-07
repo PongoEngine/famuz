@@ -29,7 +29,7 @@
 /**
  * Parsing blocks "{...}"
  */
-Expr *parse_left_bracket_prefix(TokenScanner *scanner, Exprs *exprs)
+Expr *parse_block(TokenScanner *scanner, Exprs *exprs)
 {
     Token token = token_scanner_next(scanner);
     Expr *expr = get_expr(exprs, E_BLOCK, &token);

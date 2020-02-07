@@ -33,14 +33,14 @@ int get_precedence(TokenScanner *scanner)
     TokenType t = token_scanner_peek(scanner).type;
     switch (t)
     {
-    case COLON:
-        return PRECEDENCE_TYPE;
-    case ADD:
-        return PRECEDENCE_SUM;
     case ASSIGNMENT:
         return PRECEDENCE_ASSIGNMENT;
+    case ADD:
+        return PRECEDENCE_SUM;
     case LEFT_PARAM:
         return PRECEDENCE_CALL;
+    case COLON:
+        return PRECEDENCE_TYPE;
     default:
         return 0;
     }

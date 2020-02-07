@@ -29,7 +29,7 @@
 /**
  * Parsing name "..."
  */
-Expr *parse_identifier_prefix(TokenScanner *scanner, Exprs *exprs)
+Expr *parse_identifier(TokenScanner *scanner, Exprs *exprs)
 {
     Token token = token_scanner_next(scanner);
     Expr *expr = get_expr(exprs, E_CONST, &token);

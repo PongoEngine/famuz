@@ -30,7 +30,7 @@
 /**
  * Parsing optional identifier type "rhythm : *"
  */
-Expr *parse_colon_infix(Expr *expr, TokenScanner *scanner, Exprs *exprs)
+Expr *parse_typing(Expr *expr, TokenScanner *scanner, Exprs *exprs)
 {
     Token token = token_scanner_next(scanner);
     Expr *typeIdentifier = parse_expression(PRECEDENCE_TYPE, scanner, exprs);

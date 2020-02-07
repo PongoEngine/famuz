@@ -34,11 +34,12 @@ Expr *get_expr(Exprs *exprs, ExprDefType def_type, Token *token);
 #include "./parser-rhythm.h"
 #include "./parser-steps.h"
 #include "./parser-binop.h"
-#include "./parser-left-paren.h"
-#include "./parser-left-bracket.h"
+#include "./parser-call.h"
+#include "./parser-parentheses.h"
+#include "./parser-block.h"
 #include "./parser-assignment.h"
 #include "./parser-identifier.h"
-#include "./parser-colon.h"
+#include "./parser-typing.h"
 #include "./parser-scale.h"
 #include "./parser-chord.h"
 #include "./parser-key.h"
@@ -61,21 +62,21 @@ struct Expr *parse_expression_prefix(TokenScanner *scanner, Exprs *exprs)
     switch (token.type)
     {
     case IDENTIFIER:
-        return parse_identifier_prefix(scanner, exprs);
+        return parse_identifier(scanner, exprs);
     case SCALE:
-        return parse_scale_prefix(scanner, exprs);
+        return parse_scale(scanner, exprs);
     case CHORD:
-        return parse_chord_prefix(scanner, exprs);
+        return parse_chord(scanner, exprs);
     case KEY:
-        return parse_key_prefix(scanner, exprs);
+        return parse_key(scanner, exprs);
     case STEPS:
-        return parse_steps_prefix(scanner, exprs);
+        return parse_steps(scanner, exprs);
     case RHYTHM:
-        return parse_rhythm_prefix(scanner, exprs);
+        return parse_rhythm(scanner, exprs);
     case LEFT_PARAM:
-        return parse_left_paren_prefix(scanner, exprs);
+        return parse_parentheses(scanner, exprs);
     case LEFT_BRACKET:
-        return parse_left_bracket_prefix(scanner, exprs);
+        return parse_block(scanner, exprs);
     case FUNC:
         return parse_func_prefix(scanner, exprs);
     case RIGHT_PARAM:
@@ -101,13 +102,13 @@ struct Expr *parse_expression_infix(Expr *left, TokenScanner *scanner, Exprs *ex
     switch (token.type)
     {
     case ADD:
-        return parse_binop_infix(left, scanner, exprs);
+        return parse_binop(left, scanner, exprs);
     case ASSIGNMENT:
-        return parse_assignment_infix(left, scanner, exprs);
+        return parse_assignment(left, scanner, exprs);
     case LEFT_PARAM:
-        return parse_left_paren_infix(left, scanner, exprs);
+        return parse_call(left, scanner, exprs);
     case COLON:
-        return parse_colon_infix(left, scanner, exprs);
+        return parse_typing(left, scanner, exprs);
     case RIGHT_PARAM:
     case LEFT_BRACKET:
     case RIGHT_BRACKET:
