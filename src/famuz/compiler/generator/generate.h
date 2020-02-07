@@ -23,10 +23,10 @@
 
 #include "../expr/expr.h"
 
-static Expr temp;
+static Expr generate_temp_expr;
 
 Expr *generate(Expr *expr, Exprs *exprs);
-Expr *create_expr(Exprs *exprs, ExprDefType def_type, Type constant_type, Position *pos);
+// Expr *create_expr(Exprs *exprs, ExprDefType def_type, Type constant_type, Position *pos);
 
 #include "./generator_binop.h"
 #include "./generator_call.h"
@@ -101,24 +101,4 @@ Expr *generate(Expr *expr, Exprs *exprs)
     case E_FUNC:
         return generate_function(expr, exprs);
     }
-}
-
-Expr *create_expr(Exprs *exprs, ExprDefType def_type, Type constant_type, Position *pos)
-{
-    Expr *expr = &(exprs->exprs[exprs->cur_index++]);
-    expr->def_type = def_type;
-    expr->ret_type = constant_type;
-    expr->def.constant.type = constant_type;
-    expr->pos = pos;
-    return expr;
-}
-
-Expr *get_binop_expr(Exprs *exprs, ExprDefType def_type, Type constant_type, Position *p1, Position *p2)
-{
-    Expr *expr = &(exprs->exprs[exprs->cur_index++]);
-    expr->def_type = def_type;
-    expr->ret_type = constant_type;
-    expr->def.constant.type = constant_type;
-    // position_union(p1, p2, expr->pos);
-    return expr;
 }

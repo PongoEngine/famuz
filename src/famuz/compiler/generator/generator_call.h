@@ -25,10 +25,6 @@
 #include "../position.h"
 #include "../../util/assert.h"
 
-Expr *generate(Expr *expr, Exprs *exprs);
-Expr *get_binop_expr(Exprs *exprs, ExprDefType def_type, Type constant_type, Position *p1, Position *p2);
-Expr *create_expr(Exprs *exprs, ExprDefType def_type, Type constant_type, Position *pos);
-
 Expr *generate_call(Expr *expr, Exprs *exprs)
 {
     printf("WORK ON GENERATE CALL!");
