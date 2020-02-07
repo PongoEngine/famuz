@@ -1,5 +1,7 @@
-basicRhythm : Rhythm = x~~~ x--- x~~~ x~--
+//Rhythm : basicRhythm = x~~~ x--- x~~~ x~--
 
-func neptune(a :Steps, b :Steps, c :Steps) : Rhythm {
+Rhythm : func neptune(Steps: a, Steps: b, Steps: c) {
     x~~~ x--- x~~~ x~--
 }
+
+print(neptune)

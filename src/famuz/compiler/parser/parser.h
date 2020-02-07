@@ -34,6 +34,7 @@ Expr *get_expr(Exprs *exprs, ExprDefType def_type, Token *token);
 #include "./parser-rhythm.h"
 #include "./parser-steps.h"
 #include "./parser-binop.h"
+#include "./parser-func.h"
 #include "./parser-call.h"
 #include "./parser-parentheses.h"
 #include "./parser-block.h"
@@ -43,7 +44,6 @@ Expr *get_expr(Exprs *exprs, ExprDefType def_type, Token *token);
 #include "./parser-scale.h"
 #include "./parser-chord.h"
 #include "./parser-key.h"
-#include "./parser-func.h"
 #include "./precedence.h"
 #include "../../util/assert.h"
 
@@ -78,7 +78,7 @@ struct Expr *parse_expression_prefix(TokenScanner *scanner, Exprs *exprs)
     case LEFT_BRACKET:
         return parse_block(scanner, exprs);
     case FUNC:
-        return parse_func_prefix(scanner, exprs);
+        return parse_func(scanner, exprs);
     case RIGHT_PARAM:
     case RIGHT_BRACKET:
     case COMMA:

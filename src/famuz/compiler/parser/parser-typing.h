@@ -28,12 +28,12 @@
 #include "./precedence.h"
 
 /**
- * Parsing optional identifier type "rhythm : *"
+ * Parsing optional identifier type "Rhythm : *"
  */
-Expr *parse_typing(Expr *expr, TokenScanner *scanner, Exprs *exprs)
+Expr *parse_typing(Expr *typingExpr, TokenScanner *scanner, Exprs *exprs)
 {
     Token token = token_scanner_next(scanner);
-    Expr *typeIdentifier = parse_expression(PRECEDENCE_TYPE, scanner, exprs);
-    expr->ret_type = type_get_type(typeIdentifier->def.constant.value.identifier);
+    Expr *expr = parse_expression(PRECEDENCE_TYPE, scanner, exprs);
+    expr->ret_type = type_get_type(typingExpr->def.constant.value.identifier);
     return expr;
 }

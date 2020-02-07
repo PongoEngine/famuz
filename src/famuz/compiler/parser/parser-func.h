@@ -30,14 +30,23 @@
 /**
  * Parsing function "main(...)"
  */
-Expr *parse_func_prefix(TokenScanner *scanner, Exprs *exprs)
+Expr *parse_func(TokenScanner *scanner, Exprs *exprs)
 {
     Token token = token_scanner_next(scanner);
     Expr *expr = get_expr(exprs, E_FUNC, &token);
 
-    Expr *call = parse_expression(0, scanner, exprs);
-    expr_print(call, 0);
-    Expr *body = parse_expression(0, scanner, exprs);
-    expr_print(body, 0);
+    Expr *functionIdentifier = parse_identifier(scanner, exprs);
+    expr->def.function.identifier = functionIdentifier->def.constant.value.identifier;
+    assert_that(token_scanner_next(scanner).type == LEFT_PARAM, "\nparse_func :NOT LEFT PARENTHESES!\n");
+    while (token_scanner_peek(scanner).type != RIGHT_PARAM)
+    {
+        token_scanner_next(scanner);
+    }
+    assert_that(token_scanner_next(scanner).type == RIGHT_PARAM, "\nparse_func :NOT LEFT PARENTHESES!\n");
+
+    // Expr *call = parse_expression(0, scanner, exprs);
+    // expr_print(call, 0);
+    // Expr *body = parse_expression(0, scanner, exprs);
+    // expr_print(body, 0);
     return expr;
 }
