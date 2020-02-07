@@ -31,3 +31,8 @@ bool reserved_is_func(char *str)
 {
     return strcmp("func", str) == 0;
 }
+
+bool reserved_is_print(char *str)
+{
+    return strcmp("print", str) == 0;
+}

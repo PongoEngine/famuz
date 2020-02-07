@@ -32,6 +32,7 @@ typedef enum
     SCALE,
     CHORD,
     FUNC,
+    PRINT,
     KEY,
     WHITESPACE,
     STEPS,
@@ -119,6 +120,9 @@ void print_token(Token *t)
         break;
     case FUNC:
         type = "FUNC";
+        break;
+    case PRINT:
+        type = "PRINT";
         break;
     }
     printf("{ %s, %s, %s }\n", t->pos.file, type, t->lexeme);

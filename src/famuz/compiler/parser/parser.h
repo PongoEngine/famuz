@@ -37,6 +37,7 @@ Expr *get_expr(Exprs *exprs, ExprDefType def_type, Token *token);
 #include "./parser-func.h"
 #include "./parser-call.h"
 #include "./parser-parentheses.h"
+#include "./parser-print.h"
 #include "./parser-block.h"
 #include "./parser-assignment.h"
 #include "./parser-identifier.h"
@@ -79,6 +80,8 @@ struct Expr *parse_expression_prefix(TokenScanner *scanner, Exprs *exprs)
         return parse_block(scanner, exprs);
     case FUNC:
         return parse_func(scanner, exprs);
+    case PRINT:
+        return parse_print(scanner, exprs);
     case RIGHT_PARAM:
     case RIGHT_BRACKET:
     case COMMA:
@@ -123,6 +126,7 @@ struct Expr *parse_expression_infix(Expr *left, TokenScanner *scanner, Exprs *ex
     case COMMENT:
     case RHYTHM:
     case FUNC:
+    case PRINT:
         return NULL;
     }
 }

@@ -23,7 +23,6 @@
 
 #include "../expr/expr.h"
 #include "../position.h"
-#include "../../util/expr-printer.h"
 #include "../../util/assert.h"
 
 Expr *generate(Expr *expr, Exprs *exprs);

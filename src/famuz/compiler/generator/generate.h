@@ -22,7 +22,8 @@
 */
 
 #include "../expr/expr.h"
-#include "../../util/expr-printer.h"
+
+static Expr temp;
 
 Expr *generate(Expr *expr, Exprs *exprs);
 Expr *create_expr(Exprs *exprs, ExprDefType def_type, Type constant_type, Position *pos);

@@ -22,21 +22,23 @@
 */
 
 #include <string.h>
+#include "../generator/generate.h"
 #include "./parser.h"
 #include "../scanner.h"
 #include "../../util/assert.h"
+#include "../../util/printer.h"
 #include "./precedence.h"
 
 /**
  * Parsing parens "(...)"
  */
-Expr *parse_parentheses(TokenScanner *scanner, Exprs *exprs)
+Expr *parse_print(TokenScanner *scanner, Exprs *exprs)
 {
-    Token token = token_scanner_next(scanner);
-    Expr *expr = get_expr(exprs, E_PAREN, &token);
-
-    expr->def.parentheses.e = parse_expression(0, scanner, exprs);
-    assert_that(token_scanner_has_next(scanner) && token_scanner_next(scanner).type == RIGHT_PARAM, "\nparse_parentheses: EXPECTED RIGHT PARAM\n");
-    expr->ret_type = expr->def.parentheses.e->ret_type;
+    token_scanner_next(scanner);
+    token_scanner_next(scanner);
+    Expr *expr = parse_expression(0, scanner, exprs);
+    Expr *computed = generate(expr, exprs);
+    print(computed);
+    assert_that(token_scanner_has_next(scanner) && token_scanner_next(scanner).type == RIGHT_PARAM, "\nparse_print: EXPECTED RIGHT PARAM\n");
     return expr;
 }

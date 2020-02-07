@@ -58,6 +58,10 @@ TokenType word_type(char *str)
     {
         return FUNC;
     }
+    else if (reserved_is_print(str))
+    {
+        return PRINT;
+    }
     else
     {
         return IDENTIFIER;

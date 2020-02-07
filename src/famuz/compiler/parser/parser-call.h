@@ -25,7 +25,6 @@
 #include "./parser.h"
 #include "../scanner.h"
 #include "../../util/assert.h"
-#include "../../util/expr-printer.h"
 #include "./precedence.h"
 
 /**
