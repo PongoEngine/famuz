@@ -40,10 +40,10 @@ void famuz_parse(char *file_path)
         TokenScanner token_scanner;
         lex(file_path, &token_scanner);
         //
-        Environment environment = {.cur_index = 0};
-        while (token_scanner_has_next(&token_scanner))
-        {
-            parse_expression(0, &token_scanner, &environment);
-        }
+        // Environment environment = {.cur_index = 0};
+        // while (token_scanner_has_next(&token_scanner))
+        // {
+        //     parse_expression(0, &token_scanner, &environment);
+        // }
     }
 }
