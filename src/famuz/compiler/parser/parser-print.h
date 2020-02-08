@@ -33,12 +33,12 @@
 /**
  * Parsing parens "(...)"
  */
-Expr *parse_print(TokenScanner *scanner, Environment *exprs)
+Expr *parse_print(TokenScanner *scanner, Environment *environment)
 {
     token_scanner_next(scanner);
     token_scanner_next(scanner);
-    Expr *expr = parse_expression(0, scanner, exprs);
-    print(generate(expr, exprs));
+    Expr *expr = parse_expression(0, scanner, environment);
+    print(generate(expr, environment));
     assert_that(token_scanner_has_next(scanner) && token_scanner_next(scanner).type == RIGHT_PARAM, "\nparse_print: EXPECTED RIGHT PARAM\n");
     return expr;
 }

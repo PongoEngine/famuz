@@ -31,12 +31,12 @@
 /**
  * Parsing function "main(...)"
  */
-Expr *parse_func(TokenScanner *scanner, Environment *exprs)
+Expr *parse_func(TokenScanner *scanner, Environment *environment)
 {
     Token token = token_scanner_next(scanner);
-    Expr *expr = get_expr(exprs, E_FUNC, &token);
+    Expr *expr = get_expr(environment, E_FUNC, &token);
 
-    Expr *functionIdentifier = parse_identifier(scanner, exprs);
+    Expr *functionIdentifier = parse_identifier(scanner, environment);
     expr->def.function.identifier = functionIdentifier->def.constant.value.identifier;
     assert_that(token_scanner_next(scanner).type == LEFT_PARAM, "\nparse_func :NOT LEFT PARENTHESES!\n");
     while (token_scanner_peek(scanner).type != RIGHT_PARAM)

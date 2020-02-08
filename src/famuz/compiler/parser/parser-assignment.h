@@ -30,10 +30,10 @@
 /**
  * Parsing assigning "... = ..."
  */
-Expr *parse_assignment(Expr *left, TokenScanner *scanner, Environment *exprs)
+Expr *parse_assignment(Expr *left, TokenScanner *scanner, Environment *environment)
 {
     Token token = token_scanner_next(scanner);
-    Expr *expr = get_expr(exprs, E_VAR, &token);
+    Expr *expr = get_expr(environment, E_VAR, &token);
 
     if (assert_that(left->def_type == E_CONST && left->def.constant.type == TYPE_IDENTIFIER, "NOT IDENTIFIER"))
     {
@@ -43,10 +43,9 @@ Expr *parse_assignment(Expr *left, TokenScanner *scanner, Environment *exprs)
 
     if (assert_that(token_scanner_has_next(scanner), "Cannot parse assignment expression"))
     {
-        Expr *e = parse_expression(PRECEDENCE_ASSIGNMENT, scanner, exprs);
+        Expr *e = parse_expression(PRECEDENCE_ASSIGNMENT, scanner, environment);
         if ((int)left->ret_type != -1 && left->ret_type != e->ret_type)
         {
-            printf("WHAT THE FUCK!");
         }
         expr->def.var.e = e;
         // expr->ret_type = expr->def.var.e != NULL ? expr->def.var.e->ret_type : -1;

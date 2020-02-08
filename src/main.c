@@ -11,6 +11,5 @@ int main(int argc, char **argv)
 	famuz_parse(argv[1]);
 	end = clock();
 	cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
-	printf("%f", cpu_time_used);
 	return 0;
 }

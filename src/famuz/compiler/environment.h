@@ -33,11 +33,11 @@ typedef struct
     int cur_index;
 } Environment;
 
-Expr *expr_from_name(Environment *exprs, char *name)
+Expr *expr_from_name(Environment *environment, char *name)
 {
-    for (size_t i = 0; i < exprs->cur_index; i++)
+    for (size_t i = 0; i < environment->cur_index; i++)
     {
-        Expr *expr = &(exprs->exprs[i]);
+        Expr *expr = &(environment->exprs[i]);
         if (expr->def_type == E_VAR && strcmp(expr->def.var.identifier, name) == 0)
         {
             return expr;
@@ -46,8 +46,8 @@ Expr *expr_from_name(Environment *exprs, char *name)
     return NULL;
 }
 
-Type expr_type_from_name(Environment *exprs, char *name)
+Type expr_type_from_name(Environment *environment, char *name)
 {
-    Expr *expr = expr_from_name(exprs, name);
+    Expr *expr = expr_from_name(environment, name);
     return expr == NULL ? (Type)-1 : expr->ret_type;
 }

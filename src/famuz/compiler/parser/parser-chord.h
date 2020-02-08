@@ -30,10 +30,10 @@
 /**
  * Parsing scale "harmonic-minor"
  */
-Expr *parse_chord(TokenScanner *scanner, Environment *exprs)
+Expr *parse_chord(TokenScanner *scanner, Environment *environment)
 {
     Token token = token_scanner_next(scanner);
-    Expr *expr = get_expr(exprs, E_CONST, &token);
+    Expr *expr = get_expr(environment, E_CONST, &token);
 
     expr->def.constant.type = TYPE_CHORD;
     expr->def.constant.value.chord = type_get_chord(token.lexeme);

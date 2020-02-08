@@ -30,10 +30,10 @@
 /**
  * Parsing optional identifier type "Rhythm : *"
  */
-Expr *parse_typing(Expr *typingExpr, TokenScanner *scanner, Environment *exprs)
+Expr *parse_typing(Expr *typingExpr, TokenScanner *scanner, Environment *environment)
 {
     Token token = token_scanner_next(scanner);
-    Expr *expr = parse_expression(PRECEDENCE_TYPE, scanner, exprs);
+    Expr *expr = parse_expression(PRECEDENCE_TYPE, scanner, environment);
     expr->ret_type = type_get_type(typingExpr->def.constant.value.identifier);
     return expr;
 }

@@ -95,8 +95,10 @@ void create_token_steps(Scanner *scanner, Token *token)
     position_update(&(token->pos), min, max, scanner->file_path);
 }
 
-int lex(char *content, char *file_path, Token *tokens)
+int lex(char *file_path, Token *tokens)
 {
+    char content[2048];
+    file_content(file_path, content);
     Scanner scanner = {.content = content, .file_path = file_path, .cur_index = 0, .length = strlen(content)};
     int index = 0;
     while (scanner_has_next(&scanner))
@@ -143,11 +145,9 @@ int lex(char *content, char *file_path, Token *tokens)
             break;
         case L_DURATION:
             scanner_next(&scanner);
-            printf("FAILURE");
             break;
         case L_REST:
             scanner_next(&scanner);
-            printf("FAILURE");
             break;
         case L_TAB:
         case L_SPACE:

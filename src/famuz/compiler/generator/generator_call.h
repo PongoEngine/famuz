@@ -26,8 +26,7 @@
 #include "../../util/assert.h"
 #include "../environment.h"
 
-Expr *generate_call(Expr *expr, Environment *exprs)
+Expr *generate_call(Expr *expr, Environment *environment)
 {
-    printf("\n\n----generate_call----\n\n");
     return expr;
 }

@@ -29,14 +29,14 @@
 /**
  * Parsing name "..."
  */
-Expr *parse_identifier(TokenScanner *scanner, Environment *exprs)
+Expr *parse_identifier(TokenScanner *scanner, Environment *environment)
 {
     Token token = token_scanner_next(scanner);
-    Expr *expr = get_expr(exprs, E_CONST, &token);
+    Expr *expr = get_expr(environment, E_CONST, &token);
 
     expr->def.constant.type = TYPE_IDENTIFIER;
     strcpy(expr->def.constant.value.identifier, token.lexeme);
-    expr->ret_type = expr_type_from_name(exprs, token.lexeme);
+    expr->ret_type = expr_type_from_name(environment, token.lexeme);
 
     return expr;
 }

@@ -37,18 +37,15 @@ void famuz_parse(char *file_path)
 {
     if (file_exists(file_path))
     {
-        char content[2048];
-        file_content(file_path, content);
         TokenScanner token_scanner;
-        token_scanner.length = lex(content, file_path, token_scanner.tokens);
+        token_scanner.length = lex(file_path, token_scanner.tokens);
         token_scanner.cur_index = 0;
         //
-        Environment exprs;
-        exprs.cur_index = 0;
+        Environment environment = {.cur_index = 0};
 
         while (token_scanner_has_next(&token_scanner))
         {
-            parse_expression(0, &token_scanner, &exprs);
+            parse_expression(0, &token_scanner, &environment);
         }
     }
 }

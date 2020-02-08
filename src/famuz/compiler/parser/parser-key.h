@@ -30,10 +30,10 @@
 /**
  * Parsing key "c#"
  */
-Expr *parse_key(TokenScanner *scanner, Environment *exprs)
+Expr *parse_key(TokenScanner *scanner, Environment *environment)
 {
     Token token = token_scanner_next(scanner);
-    Expr *expr = get_expr(exprs, E_CONST, &token);
+    Expr *expr = get_expr(environment, E_CONST, &token);
 
     expr->def.constant.type = TYPE_KEY;
     expr->def.constant.value.key = type_get_key(token.lexeme);
