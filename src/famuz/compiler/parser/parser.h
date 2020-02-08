@@ -27,7 +27,6 @@
 #include "../environment.h"
 
 struct Expr *parse_expression(int precedence, TokenScanner *scanner, Environment *environment);
-Expr *get_expr(Environment *environment, ExprDefType def_type, Token *token);
 
 #include "../expr/expr.h"
 #include "../token.h"
@@ -50,13 +49,7 @@ Expr *get_expr(Environment *environment, ExprDefType def_type, Token *token);
 #include "../../util/assert.h"
 #include "../environment.h"
 
-Expr *get_expr(Environment *environment, ExprDefType def_type, Token *token)
-{
-    Expr *expr = &(environment->exprs[environment->cur_index++]);
-    expr->def_type = def_type;
-    expr->pos = &(token->pos);
-    return expr;
-}
+
 
 struct Expr *parse_expression_prefix(TokenScanner *scanner, Environment *environment)
 {

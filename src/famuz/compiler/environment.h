@@ -51,3 +51,11 @@ Type expr_type_from_name(Environment *environment, char *name)
     Expr *expr = expr_from_name(environment, name);
     return expr == NULL ? (Type)-1 : expr->ret_type;
 }
+
+Expr *get_expr(Environment *environment, ExprDefType def_type, Token *token)
+{
+    Expr *expr = &(environment->exprs[environment->cur_index++]);
+    expr->def_type = def_type;
+    expr->pos = &(token->pos);
+    return expr;
+}

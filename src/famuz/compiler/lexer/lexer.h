@@ -31,8 +31,7 @@
 void create_token(TokenType type, Scanner *scanner, Token *token)
 {
     int min = scanner->cur_index;
-    char lexeme[2] = "\0";
-    lexeme[0] = scanner_next(scanner);
+    char lexeme[2] = {scanner_next(scanner), '\0'};
     int max = scanner->cur_index;
     token->type = type;
     strcpy(token->lexeme, lexeme);
@@ -153,7 +152,7 @@ void lex(char *file_path, TokenScanner *token_scanner)
         case L_TAB:
         case L_SPACE:
         case L_LINE:
-        case L_CARRAIGE:
+        case L_CARRIAGE:
         case L_TERMINATOR:
         case L_DELETE:
             scanner_consume_whitespace(&scanner);

@@ -46,7 +46,7 @@ typedef enum
     L_TAB = '\t',
     L_SPACE = ' ',
     L_LINE = '\n',
-    L_CARRAIGE = '\r',
+    L_CARRIAGE = '\r',
     L_TERMINATOR = '\0',
     L_DELETE = 127,
 
