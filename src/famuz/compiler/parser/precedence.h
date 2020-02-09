@@ -30,7 +30,7 @@
 
 int get_precedence(TokenScanner *scanner)
 {
-    TokenType t = token_scanner_peek(scanner).type;
+    TokenType t = token_scanner_peek(scanner)->type;
     switch (t)
     {
     case ASSIGNMENT:

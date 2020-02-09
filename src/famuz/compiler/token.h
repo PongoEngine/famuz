@@ -62,83 +62,17 @@ typedef struct
     int length;
 } TokenScanner;
 
-void print_token(Token *t)
-{
-    char *type;
-    switch (t->type)
-    {
-    case IDENTIFIER:
-        type = "IDENTIFIER";
-        break;
-    case COLON:
-        type = "COLON";
-        break;
-    case SCALE:
-        type = "SCALE";
-        break;
-    case CHORD:
-        type = "CHORD";
-        break;
-    case KEY:
-        type = "KEY";
-        break;
-    case WHITESPACE:
-        type = "WHITESPACE";
-        break;
-    case STEPS:
-        type = "STEPS";
-        break;
-    case RHYTHM:
-        type = "RHYTHM";
-        break;
-    case COMMENT:
-        type = "COMMENT";
-        break;
-    case ADD:
-        type = "ADD";
-        break;
-    case ASSIGNMENT:
-        type = "ASSIGNMENT";
-        break;
-    case LEFT_PARAM:
-        type = "LEFT_PARAM";
-        break;
-    case RIGHT_PARAM:
-        type = "RIGHT_PARAM";
-        break;
-    case LEFT_BRACKET:
-        type = "LEFT_BRACKET";
-        break;
-    case RIGHT_BRACKET:
-        type = "RIGHT_BRACKET";
-        break;
-    case COMMA:
-        type = "COMMA";
-        break;
-    case SLASH:
-        type = "SLASH";
-        break;
-    case FUNC:
-        type = "FUNC";
-        break;
-    case PRINT:
-        type = "PRINT";
-        break;
-    }
-    printf("{ %s, %s, %s }\n", t->pos.file, type, t->lexeme);
-}
-
 bool token_scanner_has_next(TokenScanner *scanner)
 {
     return scanner->cur_index < scanner->length;
 }
 
-Token token_scanner_next(TokenScanner *scanner)
+Token *token_scanner_next(TokenScanner *scanner)
 {
-    return scanner->tokens[scanner->cur_index++];
+    return &(scanner->tokens[scanner->cur_index++]);
 }
 
-Token token_scanner_peek(TokenScanner *scanner)
+Token *token_scanner_peek(TokenScanner *scanner)
 {
-    return scanner->tokens[scanner->cur_index];
+    return &(scanner->tokens[scanner->cur_index]);
 }

@@ -28,12 +28,12 @@
 #include "../environment.h"
 
 /**
- * Parsing optional identifier type "Rhythm : *"
+ * Parsing optional identifier type "* : Rhythm"
  */
-Expr *parse_typing(Expr *typingExpr, TokenScanner *scanner, Environment *environment)
+Expr *parse_typing(Expr *expr, TokenScanner *scanner, Environment *environment)
 {
-    Token token = token_scanner_next(scanner);
-    Expr *expr = parse_expression(PRECEDENCE_TYPE, scanner, environment);
-    expr->ret_type = type_get_type(typingExpr->def.constant.value.identifier);
+    token_scanner_next(scanner); //consume ':'
+    Token *token = token_scanner_next(scanner); //get type "ex: Rhythm"
+    expr->ret_type = type_get_type(token->lexeme);
     return expr;
 }

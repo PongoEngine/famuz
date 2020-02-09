@@ -65,6 +65,8 @@ Type constant_type_add(Type a, Type b)
         return -1;
     case TYPE_CHORD:
         return -1;
+    case TYPE_MONOMORPH:
+        return -1;
     }
     return -1;
 }

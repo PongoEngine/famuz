@@ -32,21 +32,21 @@
  */
 Expr *parse_block(TokenScanner *scanner, Environment *environment)
 {
-    Token token = token_scanner_next(scanner);
-    Expr *expr = create_block(environment_next_expr((environment)), E_BLOCK, &token);
+    Token *token = token_scanner_next(scanner);
+    Expr *expr = expr_block(environment_next_expr((environment)), token);
 
     expr->def.block.exprs = parse_expression(0, scanner, environment);
     Expr *last_expr = expr->def.block.exprs;
 
     int exprs_length = 1;
-    while (token_scanner_has_next(scanner) && token_scanner_peek(scanner).type != RIGHT_BRACKET)
+    while (token_scanner_has_next(scanner) && token_scanner_peek(scanner)->type != RIGHT_BRACKET)
     {
         parse_expression(0, scanner, environment);
         exprs_length++;
     }
     expr->def.block.exprs_length = exprs_length;
 
-    assert_that(token_scanner_has_next(scanner) && token_scanner_next(scanner).type == RIGHT_BRACKET, "EXPECTED RIGHT BRACKET");
+    assert_that(token_scanner_has_next(scanner) && token_scanner_next(scanner)->type == RIGHT_BRACKET, "EXPECTED RIGHT BRACKET");
     expr->ret_type = last_expr->ret_type;
     return expr;
 }

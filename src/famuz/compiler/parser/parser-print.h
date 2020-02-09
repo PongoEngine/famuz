@@ -35,11 +35,10 @@
  */
 Expr *parse_print(TokenScanner *scanner, Environment *environment)
 {
-    token_scanner_next(scanner);
-    token_scanner_next(scanner);
+    token_scanner_next(scanner); //consume "print"
+    token_scanner_next(scanner); //consume "("
     Expr *expr = parse_expression(0, scanner, environment);
-    Expr *gen = generate(expr, environment);
-    print(gen);
-    assert_that(token_scanner_has_next(scanner) && token_scanner_next(scanner).type == RIGHT_PARAM, "\nparse_print: EXPECTED RIGHT PARAM\n");
+    print(generate(expr, environment));
+    token_scanner_next(scanner); //consume ")"
     return expr;
 }

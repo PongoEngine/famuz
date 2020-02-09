@@ -202,7 +202,12 @@ Expr *generate_binop_add(Expr *left, Expr *right)
         }
         case TYPE_CHORD:
         {
-            assert_that(false, "\n-CANNOT DO C_CHORD-\n");
+            assert_that(false, "\n-CANNOT DO TYPE_CHORD-\n");
+            return left;
+        }
+        case TYPE_MONOMORPH:
+        {
+            assert_that(false, "\n-CANNOT DO TYPE_MONOMORPH-\n");
             return left;
         }
         }

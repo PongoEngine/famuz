@@ -71,38 +71,84 @@ typedef struct Expr {
     Type ret_type;
 } Expr;
 
-Expr *create_binop(Expr *expr, ExprDefType def_type, Token *token) {
-    expr->def_type = def_type;
+void expr_init_constant(Expr *expr, Type constant_type, Type return_type, Position *position) {
+    expr->def_type = E_CONST;
+    expr->def.constant.type = constant_type;
+    expr->ret_type = return_type;
+    expr->pos = position;
+}
+
+Expr *expr_binop(Expr *expr, Token *token) {
+    expr->def_type = E_BINOP;
     expr->pos = &(token->pos);
     return expr;
 }
 
-Expr *create_block(Expr *expr, ExprDefType def_type, Token *token) {
-    expr->def_type = def_type;
+Expr *expr_block(Expr *expr, Token *token) {
+    expr->def_type = E_BLOCK;
     expr->pos = &(token->pos);
     return expr;
 }
 
-Expr *create_call(Expr *expr, ExprDefType def_type, Token *token) {
-    expr->def_type = def_type;
+Expr *expr_call(Expr *expr, Token *token) {
+    expr->def_type = E_CALL;
     expr->pos = &(token->pos);
     return expr;
 }
 
-Expr *create_constant(Expr *expr, ExprDefType def_type, Token *token) {
-    expr->def_type = def_type;
+Expr *expr_function(Expr *expr, Token *token) {
+    expr->def_type = E_FUNC;
     expr->pos = &(token->pos);
     return expr;
 }
 
-Expr *create_function(Expr *expr, ExprDefType def_type, Token *token) {
-    expr->def_type = def_type;
+Expr *expr_parentheses(Expr *expr, Token *token) {
+    expr->def_type = E_PAREN;
     expr->pos = &(token->pos);
     return expr;
 }
 
-Expr *create_parentheses(Expr *expr, ExprDefType def_type, Token *token) {
-    expr->def_type = def_type;
+Expr *expr_var(Expr *expr, Position *position, Expr *e, char *identifier) {
+    expr->def_type = E_VAR;
+    expr->ret_type = e->ret_type;
+    expr->pos = position;
+    expr->def.var.e = e;
+    strcpy(expr->def.var.identifier, identifier);
+    return expr;
+}
+
+Expr *expr_constant_key(Expr *expr, Token *token) {
+    expr->def_type = E_CONST;
     expr->pos = &(token->pos);
+    return expr;
+}
+
+Expr *expr_constant_chord(Expr *expr, Token *token) {
+    expr->def_type = E_CONST;
+    expr->pos = &(token->pos);
+    return expr;
+}
+
+Expr *expr_constant_scale(Expr *expr, Token *token) {
+    expr->def_type = E_CONST;
+    expr->pos = &(token->pos);
+    return expr;
+}
+
+Expr *expr_constant_identifier(Expr *expr, Position *position, char *identifier) {
+    expr_init_constant(expr, TYPE_IDENTIFIER, TYPE_MONOMORPH, position);
+    strcpy(expr->def.constant.value.identifier, identifier);
+    return expr;
+}
+
+Expr *expr_constant_steps(Expr *expr, Token *token) {
+    expr->def_type = E_CONST;
+    expr->pos = &(token->pos);
+    return expr;
+}
+
+Expr *expr_constant_rhythm(Expr *expr, Position *position) {
+    expr_init_constant(expr, TYPE_RHYTHM, TYPE_RHYTHM, position);
+    //rhythm value gets assigned in parser
     return expr;
 }

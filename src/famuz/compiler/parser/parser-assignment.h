@@ -36,8 +36,6 @@ Expr *parse_assignment(Expr *left, TokenScanner *scanner, Environment *environme
     token_scanner_next(scanner);
     static char temp[SETTINGS_LEXEME_LENGTH];
     strcpy(temp, left->def.constant.value.identifier);
-    strcpy(left->def.var.identifier, temp);
-    left->def_type = E_VAR;
-    left->def.var.e = parse_expression(PRECEDENCE_ASSIGNMENT, scanner, environment);
-    return left;
+    Expr *e = parse_expression(PRECEDENCE_ASSIGNMENT, scanner, environment);;
+    return expr_var(left, left->pos, e, temp);
 }

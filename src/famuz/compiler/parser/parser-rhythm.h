@@ -47,11 +47,11 @@ void parse_rhythm_eat_rest(Scanner *scanner)
  */
 Expr *parse_rhythm(TokenScanner *scanner, Environment *environment)
 {
-    Token token = token_scanner_next(scanner);
-    Expr *expr = create_constant(environment_next_expr((environment)), E_CONST, &token);
+    Token *token = token_scanner_next(scanner);
+    Expr *expr = expr_constant_rhythm(environment_next_expr((environment)), &token->pos);
+    Rhythm *rhythm = &(expr->def.constant.value.rhythm);
 
-    expr->def.constant.type = TYPE_RHYTHM;
-    Scanner rhythm_scanner = {.content = token.lexeme, .cur_index = 0, .length = strlen(token.lexeme)};
+    Scanner rhythm_scanner = {.content = token->lexeme, .cur_index = 0, .length = strlen(token->lexeme)};
     int index = 0;
 
     while (scanner_has_next(&rhythm_scanner))
@@ -62,8 +62,8 @@ Expr *parse_rhythm(TokenScanner *scanner, Environment *environment)
             scanner_next(&rhythm_scanner);
             parse_rhythm_eat_duration(&rhythm_scanner);
             int duration = rhythm_scanner.cur_index - start;
-            expr->def.constant.value.rhythm.hits[index].start = start;
-            expr->def.constant.value.rhythm.hits[index].duration = duration;
+            rhythm->hits[index].start = start;
+            rhythm->hits[index].duration = duration;
             index++;
         }
         else if (scanner_peek(&rhythm_scanner) == '-')
@@ -76,7 +76,6 @@ Expr *parse_rhythm(TokenScanner *scanner, Environment *environment)
             scanner_next(&rhythm_scanner);
         }
     }
-    expr->def.constant.value.rhythm.length = index;
-    expr->ret_type = TYPE_RHYTHM;
+    rhythm->length = index;
     return expr;
 }

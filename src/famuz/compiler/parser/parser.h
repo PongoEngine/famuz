@@ -51,9 +51,9 @@ struct Expr *parse_expression(int precedence, TokenScanner *scanner, Environment
 
 struct Expr *parse_expression_prefix(TokenScanner *scanner, Environment *environment)
 {
-    Token token = token_scanner_peek(scanner);
+    Token *token = token_scanner_peek(scanner);
 
-    switch (token.type)
+    switch (token->type)
     {
     case IDENTIFIER:
         return parse_identifier(scanner, environment);
@@ -93,9 +93,9 @@ struct Expr *parse_expression_prefix(TokenScanner *scanner, Environment *environ
 
 struct Expr *parse_expression_infix(Expr *left, TokenScanner *scanner, Environment *environment)
 {
-    Token token = token_scanner_peek(scanner);
+    Token *token = token_scanner_peek(scanner);
 
-    switch (token.type)
+    switch (token->type)
     {
     case ADD:
         return parse_binop(left, scanner, environment);

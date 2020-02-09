@@ -100,6 +100,9 @@ void print(Expr *expr)
         case TYPE_CHORD:
             print_constant("TYPE_CHORD");
             break;
+        case TYPE_MONOMORPH:
+            print_constant("TYPE_MONOMORPH");
+            break;
         }
         break;
     }

@@ -1,4 +1,4 @@
-Rhythm : basicRhythm = x~~~ x--- x~~~ x~--
+basicRhythm : Rhythm = x~~~ x--- x~~~ x~--
 
 print(basicRhythm)
 

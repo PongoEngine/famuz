@@ -33,19 +33,19 @@
  */
 Expr *parse_call(Expr *left, TokenScanner *scanner, Environment *environment)
 {
-    Token token = token_scanner_next(scanner);
-    Expr *expr = create_call(environment_next_expr((environment)), E_CALL, &token);
+    Token *token = token_scanner_next(scanner);
+    Expr *expr = expr_call(environment_next_expr((environment)), token);
 
     expr->def.call.identifier = left->def.constant.value.identifier;
     Expr *param = parse_expression(PRECEDENCE_CALL, scanner, environment);
     int params_length = 0;
-    while (token_scanner_has_next(scanner) && token_scanner_peek(scanner).type != RIGHT_PARAM)
+    while (token_scanner_has_next(scanner) && token_scanner_peek(scanner)->type != RIGHT_PARAM)
     {
         token_scanner_next(scanner);
     }
     expr->def.call.params_length = params_length;
 
-    assert_that(token_scanner_has_next(scanner) && token_scanner_next(scanner).type == RIGHT_PARAM, "EXPECTED RIGHT PARAM");
+    assert_that(token_scanner_has_next(scanner) && token_scanner_next(scanner)->type == RIGHT_PARAM, "EXPECTED RIGHT PARAM");
 
     expr->ret_type = -1;
 

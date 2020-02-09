@@ -31,8 +31,8 @@
  * Parsing binary opertation "... + ..."
  */
 Expr *parse_binop(Expr *left, TokenScanner *scanner, Environment *environment) {
-    Token token = token_scanner_next(scanner);
-    Expr *expr = create_binop(environment_next_expr((environment)), E_BINOP, &token);
+    Token *token = token_scanner_next(scanner);
+    Expr *expr = expr_binop(environment_next_expr((environment)), token);
 
     expr->def.binop.e1 = left;
 

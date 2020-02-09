@@ -33,17 +33,17 @@
  */
 Expr *parse_func(TokenScanner *scanner, Environment *environment)
 {
-    Token token = token_scanner_next(scanner);
-    Expr *expr = create_function(environment_next_expr((environment)), E_FUNC, &token);
+    Token *token = token_scanner_next(scanner);
+    Expr *expr = expr_function(environment_next_expr((environment)), token);
 
     Expr *functionIdentifier = parse_identifier(scanner, environment);
     expr->def.function.identifier = functionIdentifier->def.constant.value.identifier;
-    assert_that(token_scanner_next(scanner).type == LEFT_PARAM, "\nparse_func :NOT LEFT PARENTHESES!\n");
-    while (token_scanner_peek(scanner).type != RIGHT_PARAM)
+    assert_that(token_scanner_next(scanner)->type == LEFT_PARAM, "\nparse_func :NOT LEFT PARENTHESES!\n");
+    while (token_scanner_peek(scanner)->type != RIGHT_PARAM)
     {
         token_scanner_next(scanner);
     }
-    assert_that(token_scanner_next(scanner).type == RIGHT_PARAM, "\nparse_func :NOT LEFT PARENTHESES!\n");
+    assert_that(token_scanner_next(scanner)->type == RIGHT_PARAM, "\nparse_func :NOT LEFT PARENTHESES!\n");
 
     // Expr *call = parse_expression(0, scanner, exprs);
     // expr_print(call, 0);

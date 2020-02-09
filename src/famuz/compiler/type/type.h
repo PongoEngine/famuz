@@ -50,7 +50,8 @@ typedef enum
     TYPE_KEY,
     TYPE_SCALED_KEY,
     TYPE_MUSIC,
-    TYPE_CHORD
+    TYPE_CHORD,
+    TYPE_MONOMORPH
 } Type;
 
 static const char RESERVED_TYPE[RESERVED_TYPE_COUNT][16] = {

@@ -33,11 +33,11 @@
  */
 Expr *parse_parentheses(TokenScanner *scanner, Environment *environment)
 {
-    Token token = token_scanner_next(scanner);
-    Expr *expr = create_parentheses(environment_next_expr((environment)), E_PAREN, &token);
+    Token *token = token_scanner_next(scanner);
+    Expr *expr = expr_parentheses(environment_next_expr((environment)), token);
 
     expr->def.parentheses.e = parse_expression(0, scanner, environment);
-    assert_that(token_scanner_has_next(scanner) && token_scanner_next(scanner).type == RIGHT_PARAM, "\nparse_parentheses: EXPECTED RIGHT PARAM\n");
+    assert_that(token_scanner_has_next(scanner) && token_scanner_next(scanner)->type == RIGHT_PARAM, "\nparse_parentheses: EXPECTED RIGHT PARAM\n");
     expr->ret_type = expr->def.parentheses.e->ret_type;
     return expr;
 }

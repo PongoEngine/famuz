@@ -31,11 +31,11 @@
  */
 Expr *parse_scale(TokenScanner *scanner, Environment *environment)
 {
-    Token token = token_scanner_next(scanner);
-    Expr *expr = create_constant(environment_next_expr((environment)), E_CONST, &token);
+    Token *token = token_scanner_next(scanner);
+    Expr *expr = expr_constant_scale(environment_next_expr((environment)), token);
 
     expr->def.constant.type = TYPE_SCALE;
-    expr->def.constant.value.scale = type_get_scale(token.lexeme);
+    expr->def.constant.value.scale = type_get_scale(token->lexeme);
     expr->ret_type = TYPE_SCALE;
 
     return expr;
