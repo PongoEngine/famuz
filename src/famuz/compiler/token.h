@@ -30,7 +30,6 @@ typedef enum
     IDENTIFIER = 1,
     COLON,
     SCALE,
-    CHORD,
     FUNC,
     PRINT,
     KEY,

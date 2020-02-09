@@ -129,12 +129,6 @@ Expr *expr_constant_key(Expr *expr, Token *token) {
     return expr;
 }
 
-Expr *expr_constant_chord(Expr *expr, Token *token) {
-    expr->def_type = E_CONST;
-    expr->pos = &(token->pos);
-    return expr;
-}
-
 Expr *expr_constant_scale(Expr *expr, Token *token) {
     expr->def_type = E_CONST;
     expr->pos = &(token->pos);

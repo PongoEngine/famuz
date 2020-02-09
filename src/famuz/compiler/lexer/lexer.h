@@ -50,10 +50,6 @@ TokenType word_type(char *str)
     {
         return SCALE;
     }
-    else if (type_is_chord(str))
-    {
-        return CHORD;
-    }
     else if (reserved_is_func(str))
     {
         return FUNC;

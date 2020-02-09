@@ -30,7 +30,6 @@ add_executable(famuz_c
         src/famuz/compiler/parser/parser-binop.h
         src/famuz/compiler/parser/parser-block.h
         src/famuz/compiler/parser/parser-call.h
-        src/famuz/compiler/parser/parser-chord.h
         src/famuz/compiler/parser/parser-func.h
         src/famuz/compiler/parser/parser-identifier.h
         src/famuz/compiler/parser/parser-key.h
@@ -42,7 +41,6 @@ add_executable(famuz_c
         src/famuz/compiler/parser/parser-typing.h
         src/famuz/compiler/parser/parser.h
         src/famuz/compiler/parser/precedence.h
-        src/famuz/compiler/type/type-chord.h
         src/famuz/compiler/type/type-harmony.h
         src/famuz/compiler/type/type-hit.h
         src/famuz/compiler/type/type-identifier.h

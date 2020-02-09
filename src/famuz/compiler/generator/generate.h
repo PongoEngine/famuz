@@ -71,7 +71,6 @@ Expr *generate_const(Expr *expr, Environment *environment)
     case TYPE_KEY:
     case TYPE_SCALED_KEY:
     case TYPE_MUSIC:
-    case TYPE_CHORD:
     case TYPE_MONOMORPH:
         return expr;
     }

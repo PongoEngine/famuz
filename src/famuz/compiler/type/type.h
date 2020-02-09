@@ -23,7 +23,7 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#define RESERVED_TYPE_COUNT 12
+#define RESERVED_TYPE_COUNT 11
 
 #include "../settings.h"
 #include "./type-scale.h"
@@ -35,7 +35,6 @@
 #include "./type-note.h"
 #include "./type-melody.h"
 #include "./type-harmony.h"
-#include "./type-chord.h"
 #include "./type-key.h"
 #include "./type-scaled-key.h"
 #include "./type-music.h"
@@ -52,7 +51,6 @@ typedef enum
     TYPE_KEY,
     TYPE_SCALED_KEY,
     TYPE_MUSIC,
-    TYPE_CHORD,
     TYPE_MONOMORPH
 } Type;
 
@@ -67,7 +65,6 @@ static const char RESERVED_TYPE[RESERVED_TYPE_COUNT][16] = {
     "Key",
     "ScaledKey",
     "Music",
-    "Chord",
     "Monomorph",
 };
 

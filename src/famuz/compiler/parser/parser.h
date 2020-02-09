@@ -44,7 +44,6 @@ struct Expr *parse_expression(int precedence, TokenScanner *scanner, Environment
 #include "./parser-identifier.h"
 #include "./parser-typing.h"
 #include "./parser-scale.h"
-#include "./parser-chord.h"
 #include "./parser-key.h"
 #include "./precedence.h"
 #include "../../util/assert.h"
@@ -62,8 +61,6 @@ struct Expr *parse_expression_prefix(TokenScanner *scanner, Environment *environ
         return parse_number(scanner, environment);
     case SCALE:
         return parse_scale(scanner, environment);
-    case CHORD:
-        return parse_chord(scanner, environment);
     case KEY:
         return parse_key(scanner, environment);
     case STEPS:
@@ -115,7 +112,6 @@ struct Expr *parse_expression_infix(Expr *left, TokenScanner *scanner, Environme
     case SLASH:
     case IDENTIFIER:
     case SCALE:
-    case CHORD:
     case KEY:
     case WHITESPACE:
     case STEPS:

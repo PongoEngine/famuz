@@ -125,9 +125,6 @@ void print(Expr *expr, Position *pos)
         case TYPE_MUSIC:
             print_constant("TYPE_MUSIC");
             break;
-        case TYPE_CHORD:
-            print_constant("TYPE_CHORD");
-            break;
         case TYPE_MONOMORPH:
             print_constant("TYPE_MONOMORPH");
             break;

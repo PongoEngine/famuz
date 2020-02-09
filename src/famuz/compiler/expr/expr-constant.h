@@ -36,7 +36,6 @@ typedef struct
         Key key;
         ScaledKey scaled_key;
         Music music;
-        Chord chord;
     } value;
     Type type;
 } EConstant;
@@ -65,8 +64,6 @@ Type constant_type_add(Type a, Type b)
         return (b == TYPE_MELODY || b == TYPE_HARMONY) ? TYPE_MUSIC : -1;
         ;
     case TYPE_MUSIC:
-        return -1;
-    case TYPE_CHORD:
         return -1;
     case TYPE_MONOMORPH:
         return -1;
