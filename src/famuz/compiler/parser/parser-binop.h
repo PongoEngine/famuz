@@ -30,21 +30,17 @@
 /**
  * Parsing binary opertation "... + ..."
  */
-Expr *parse_binop(Expr *left, TokenScanner *scanner, Environment *environment)
-{
+Expr *parse_binop(Expr *left, TokenScanner *scanner, Environment *environment) {
     Token token = token_scanner_next(scanner);
-    Expr *expr = get_expr(environment, E_BINOP, &token);
+    Expr *expr = create_binop(environment_next_expr((environment)), E_BINOP, &token);
 
     expr->def.binop.e1 = left;
 
-    if (assert_that(token_scanner_has_next(scanner), "Cannot parse binary expression"))
-    {
+    if (assert_that(token_scanner_has_next(scanner), "Cannot parse binary expression")) {
         Expr *right = parse_expression(PRECEDENCE_SUM, scanner, environment);
         expr->def.binop.e2 = right;
         expr->ret_type = right != NULL ? constant_type_add(left->ret_type, right->ret_type) : -1;
-    }
-    else
-    {
+    } else {
         expr->def.binop.e2 = NULL;
         expr->ret_type = -1;
     }

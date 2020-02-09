@@ -49,8 +49,6 @@ struct Expr *parse_expression(int precedence, TokenScanner *scanner, Environment
 #include "../../util/assert.h"
 #include "../environment.h"
 
-
-
 struct Expr *parse_expression_prefix(TokenScanner *scanner, Environment *environment)
 {
     Token token = token_scanner_peek(scanner);

@@ -62,7 +62,6 @@ add_executable(famuz_c
         src/famuz/compiler/settings.h
         src/famuz/compiler/token.h
         src/famuz/util/assert.h
-        src/famuz/util/expr-printer.h
         src/famuz/util/file-util.h
         src/famuz/util/printer.h
         src/famuz/util/string-util.h

@@ -31,7 +31,7 @@ typedef struct
     char *content;
     char *file_path;
     int cur_index;
-    int length;
+    unsigned long length;
 } Scanner;
 
 bool scanner_has_next(Scanner *scanner)

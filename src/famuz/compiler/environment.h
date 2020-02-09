@@ -46,16 +46,26 @@ Expr *expr_from_name(Environment *environment, char *name)
     return NULL;
 }
 
+Expr *expr_from_name2(Environment *environment, char *name)
+{
+    for (size_t i = 0; i < environment->cur_index; i++)
+    {
+        Expr *expr = &(environment->exprs[i]);
+        if (expr->def_type == E_VAR && strcmp(expr->def.var.identifier, name) == 0)
+        {
+            return expr;
+        }
+    }
+    return NULL;
+}
+
 Type expr_type_from_name(Environment *environment, char *name)
 {
-    Expr *expr = expr_from_name(environment, name);
+    Expr *expr = expr_from_name2(environment, name);
     return expr == NULL ? (Type)-1 : expr->ret_type;
 }
 
-Expr *get_expr(Environment *environment, ExprDefType def_type, Token *token)
+Expr *environment_next_expr(Environment *environment)
 {
-    Expr *expr = &(environment->exprs[environment->cur_index++]);
-    expr->def_type = def_type;
-    expr->pos = &(token->pos);
-    return expr;
+    return &(environment->exprs[environment->cur_index++]);
 }

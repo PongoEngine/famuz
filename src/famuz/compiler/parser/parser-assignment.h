@@ -24,36 +24,20 @@
 #include "./parser.h"
 #include "../scanner.h"
 #include "../../util/assert.h"
+#include "../settings.h"
 #include "./precedence.h"
 #include "../environment.h"
+#include <string.h>
 
 /**
  * Parsing assigning "... = ..."
  */
-Expr *parse_assignment(Expr *left, TokenScanner *scanner, Environment *environment)
-{
-    Token token = token_scanner_next(scanner);
-    Expr *expr = get_expr(environment, E_VAR, &token);
-
-    if (assert_that(left->def_type == E_CONST && left->def.constant.type == TYPE_IDENTIFIER, "NOT IDENTIFIER"))
-    {
-        expr->def.var.identifier = left->def.constant.value.identifier;
-        expr->ret_type = left->ret_type;
-    }
-
-    if (assert_that(token_scanner_has_next(scanner), "Cannot parse assignment expression"))
-    {
-        Expr *e = parse_expression(PRECEDENCE_ASSIGNMENT, scanner, environment);
-        if ((int)left->ret_type != -1 && left->ret_type != e->ret_type)
-        {
-        }
-        expr->def.var.e = e;
-        // expr->ret_type = expr->def.var.e != NULL ? expr->def.var.e->ret_type : -1;
-    }
-    else
-    {
-        expr->def.var.e = NULL;
-        expr->ret_type = -1;
-    }
-    return expr;
+Expr *parse_assignment(Expr *left, TokenScanner *scanner, Environment *environment) {
+    token_scanner_next(scanner);
+    static char temp[SETTINGS_LEXEME_LENGTH];
+    strcpy(temp, left->def.constant.value.identifier);
+    strcpy(left->def.var.identifier, temp);
+    left->def_type = E_VAR;
+    left->def.var.e = parse_expression(PRECEDENCE_ASSIGNMENT, scanner, environment);
+    return left;
 }

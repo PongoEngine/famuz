@@ -38,7 +38,8 @@ Expr *parse_print(TokenScanner *scanner, Environment *environment)
     token_scanner_next(scanner);
     token_scanner_next(scanner);
     Expr *expr = parse_expression(0, scanner, environment);
-    print(generate(expr, environment));
+    Expr *gen = generate(expr, environment);
+    print(gen);
     assert_that(token_scanner_has_next(scanner) && token_scanner_next(scanner).type == RIGHT_PARAM, "\nparse_print: EXPECTED RIGHT PARAM\n");
     return expr;
 }

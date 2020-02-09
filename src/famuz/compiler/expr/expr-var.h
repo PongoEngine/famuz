@@ -23,8 +23,10 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+#include "../settings.h"
+
 typedef struct
 {
     Expr *e;
-    char *identifier;
+    char identifier[SETTINGS_LEXEME_LENGTH];
 } EVar;

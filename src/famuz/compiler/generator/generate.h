@@ -22,8 +22,8 @@
 */
 
 #include "../expr/expr.h"
+#include "../type/type.h"
 #include "../environment.h"
-#include "../../util/expr-printer.h"
 
 static Expr generate_temp_expr;
 
@@ -42,12 +42,12 @@ Expr *generate_var(Expr *expr, Environment *environment)
     return generate(expr->def.var.e, environment);
 }
 
-Expr *generate_block(Expr *expr, Environment *environment)
+Expr *generate_block(Expr *expr)
 {
     return expr;
 }
 
-Expr *generate_function(Expr *expr, Environment *environment)
+Expr *generate_function(Expr *expr)
 {
     return expr;
 }
@@ -63,21 +63,13 @@ Expr *generate_const(Expr *expr, Environment *environment)
         return generate(ref, environment);
     }
     case TYPE_RHYTHM:
-        return expr;
     case TYPE_MELODY:
-        return expr;
     case TYPE_HARMONY:
-        return expr;
     case TYPE_STEPS:
-        return expr;
     case TYPE_SCALE:
-        return expr;
     case TYPE_KEY:
-        return expr;
     case TYPE_SCALED_KEY:
-        return expr;
     case TYPE_MUSIC:
-        return expr;
     case TYPE_CHORD:
         return expr;
     }
@@ -92,14 +84,14 @@ Expr *generate(Expr *expr, Environment *environment)
     case E_VAR:
         return generate_var(expr, environment);
     case E_CALL:
-        return generate_call(expr, environment);
+        return generate_call(expr);
     case E_BINOP:
         return generate_binop(expr, environment);
     case E_PAREN:
         return generate_parentheses(expr, environment);
     case E_BLOCK:
-        return generate_block(expr, environment);
+        return generate_block(expr);
     case E_FUNC:
-        return generate_function(expr, environment);
+        return generate_function(expr);
     }
 }

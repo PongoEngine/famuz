@@ -38,8 +38,7 @@ typedef struct Expr Expr;
 #include "./expr-function.h"
 #include "./expr-parentheses.h"
 
-typedef enum
-{
+typedef enum {
     E_CONST = 1,
     E_VAR,
     E_CALL,
@@ -49,8 +48,7 @@ typedef enum
     E_PAREN,
 } ExprDefType;
 
-typedef struct Expr
-{
+typedef struct Expr {
     union ExprDef {
         //A constant.
         EConstant constant;
@@ -72,3 +70,39 @@ typedef struct Expr
     ExprDefType def_type;
     Type ret_type;
 } Expr;
+
+Expr *create_binop(Expr *expr, ExprDefType def_type, Token *token) {
+    expr->def_type = def_type;
+    expr->pos = &(token->pos);
+    return expr;
+}
+
+Expr *create_block(Expr *expr, ExprDefType def_type, Token *token) {
+    expr->def_type = def_type;
+    expr->pos = &(token->pos);
+    return expr;
+}
+
+Expr *create_call(Expr *expr, ExprDefType def_type, Token *token) {
+    expr->def_type = def_type;
+    expr->pos = &(token->pos);
+    return expr;
+}
+
+Expr *create_constant(Expr *expr, ExprDefType def_type, Token *token) {
+    expr->def_type = def_type;
+    expr->pos = &(token->pos);
+    return expr;
+}
+
+Expr *create_function(Expr *expr, ExprDefType def_type, Token *token) {
+    expr->def_type = def_type;
+    expr->pos = &(token->pos);
+    return expr;
+}
+
+Expr *create_parentheses(Expr *expr, ExprDefType def_type, Token *token) {
+    expr->def_type = def_type;
+    expr->pos = &(token->pos);
+    return expr;
+}

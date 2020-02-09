@@ -26,7 +26,7 @@
 #include "../token.h"
 #include "../scanner.h"
 #include "../reserved.h"
-#include "./lexer-token.h"
+#include "../../util/file-util.h"
 
 void create_token(TokenType type, Scanner *scanner, Token *token)
 {
@@ -144,8 +144,6 @@ void lex(char *file_path, TokenScanner *token_scanner)
                 : scanner_next(&scanner);
             break;
         case L_DURATION:
-            scanner_next(&scanner);
-            break;
         case L_REST:
             scanner_next(&scanner);
             break;

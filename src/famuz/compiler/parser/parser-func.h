@@ -34,7 +34,7 @@
 Expr *parse_func(TokenScanner *scanner, Environment *environment)
 {
     Token token = token_scanner_next(scanner);
-    Expr *expr = get_expr(environment, E_FUNC, &token);
+    Expr *expr = create_function(environment_next_expr((environment)), E_FUNC, &token);
 
     Expr *functionIdentifier = parse_identifier(scanner, environment);
     expr->def.function.identifier = functionIdentifier->def.constant.value.identifier;

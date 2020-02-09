@@ -33,7 +33,7 @@
 Expr *parse_block(TokenScanner *scanner, Environment *environment)
 {
     Token token = token_scanner_next(scanner);
-    Expr *expr = get_expr(environment, E_BLOCK, &token);
+    Expr *expr = create_block(environment_next_expr((environment)), E_BLOCK, &token);
 
     expr->def.block.exprs = parse_expression(0, scanner, environment);
     Expr *last_expr = expr->def.block.exprs;

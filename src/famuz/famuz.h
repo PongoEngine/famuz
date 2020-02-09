@@ -23,15 +23,9 @@
 
 #include <stdio.h>
 #include <stdbool.h>
-#include "./util/file-util.h"
 #include "./compiler/lexer/lexer.h"
-#include "./compiler/token.h"
 #include "./compiler/environment.h"
-#include "./compiler/reserved.h"
-#include "./compiler/expr/expr.h"
 #include "./compiler/parser/parser.h"
-#include "./util/expr-printer.h"
-#include "./compiler/generator/generate.h"
 
 void famuz_parse(char *file_path)
 {
