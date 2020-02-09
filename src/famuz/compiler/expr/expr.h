@@ -27,6 +27,7 @@
 #include "../position.h"
 #include "../settings.h"
 #include "../type/type.h"
+#include "../util/assert.h"
 
 typedef struct Expr Expr;
 
@@ -110,7 +111,12 @@ Expr *expr_parentheses(Expr *expr, Token *token) {
 
 Expr *expr_var(Expr *expr, Position *position, Expr *e, char *identifier) {
     expr->def_type = E_VAR;
-    expr->ret_type = e->ret_type;
+    if(expr->ret_type == TYPE_MONOMORPH || expr->ret_type == e->ret_type) {
+        expr->ret_type = e->ret_type;
+    }
+    else {
+        assert_that(false, "Invalid Type\n");
+    }
     expr->pos = position;
     expr->def.var.e = e;
     strcpy(expr->def.var.identifier, identifier);
@@ -130,6 +136,12 @@ Expr *expr_constant_chord(Expr *expr, Token *token) {
 }
 
 Expr *expr_constant_scale(Expr *expr, Token *token) {
+    expr->def_type = E_CONST;
+    expr->pos = &(token->pos);
+    return expr;
+}
+
+Expr *expr_constant_number(Expr *expr, Token *token) {
     expr->def_type = E_CONST;
     expr->pos = &(token->pos);
     return expr;

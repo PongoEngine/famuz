@@ -210,6 +210,11 @@ Expr *generate_binop_add(Expr *left, Expr *right)
             assert_that(false, "\n-CANNOT DO TYPE_MONOMORPH-\n");
             return left;
         }
+        case TYPE_NUMBER:
+        {
+            assert_that(false, "\n-CANNOT DO TYPE_NUMBER-\n");
+            return left;
+        }
         }
     }
     else

@@ -30,6 +30,7 @@ typedef struct
 {
     char *content;
     char *file_path;
+    int cur_line;
     int cur_index;
     unsigned long length;
 } Scanner;
@@ -41,7 +42,11 @@ bool scanner_has_next(Scanner *scanner)
 
 char scanner_next(Scanner *scanner)
 {
-    return scanner->content[scanner->cur_index++];
+    char c = scanner->content[scanner->cur_index++];
+    if(c == '\n') {
+        scanner->cur_line += 1;
+    }
+    return c;
 }
 
 char scanner_peek(Scanner *scanner)
@@ -104,6 +109,17 @@ void scanner_consume_steps(Scanner *scanner, char *str)
         {
             str[index++] = c;
         }
+    }
+    str[index] = '\0';
+}
+
+void scanner_consume_number(Scanner *scanner, char *str)
+{
+    int index = 0;
+    while (scanner_has_next(scanner) && isdigit(scanner_peek(scanner)))
+    {
+        char c = scanner_next(scanner);
+        str[index++] = c;
     }
     str[index] = '\0';
 }

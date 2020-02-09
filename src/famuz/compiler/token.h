@@ -35,6 +35,7 @@ typedef enum
     PRINT,
     KEY,
     WHITESPACE,
+    NUMBER,
     STEPS,
     RHYTHM,
     COMMENT,

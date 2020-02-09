@@ -32,6 +32,7 @@ struct Expr *parse_expression(int precedence, TokenScanner *scanner, Environment
 #include "../token.h"
 #include "../scanner.h"
 #include "./parser-rhythm.h"
+#include "./parser-number.h"
 #include "./parser-steps.h"
 #include "./parser-binop.h"
 #include "./parser-func.h"
@@ -57,6 +58,8 @@ struct Expr *parse_expression_prefix(TokenScanner *scanner, Environment *environ
     {
     case IDENTIFIER:
         return parse_identifier(scanner, environment);
+    case NUMBER:
+        return parse_number(scanner, environment);
     case SCALE:
         return parse_scale(scanner, environment);
     case CHORD:
@@ -120,6 +123,7 @@ struct Expr *parse_expression_infix(Expr *left, TokenScanner *scanner, Environme
     case RHYTHM:
     case FUNC:
     case PRINT:
+    case NUMBER:
         return NULL;
     }
 }

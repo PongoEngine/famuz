@@ -38,7 +38,7 @@ Expr *parse_print(TokenScanner *scanner, Environment *environment)
     token_scanner_next(scanner); //consume "print"
     token_scanner_next(scanner); //consume "("
     Expr *expr = parse_expression(0, scanner, environment);
-    print(generate(expr, environment));
+    print(generate(expr, environment), expr->pos);
     token_scanner_next(scanner); //consume ")"
     return expr;
 }

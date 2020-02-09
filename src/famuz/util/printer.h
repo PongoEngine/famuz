@@ -30,7 +30,7 @@
 
 void print_position(Position *p)
 {
-    printf("%s: ", p->file);
+    printf("%s:%d: ", p->file, p->line);
 }
 
 void print_constant(char *str)
@@ -42,21 +42,38 @@ void print_hit(Hit *hit)
 {
     int start = hit->start;
     int duration = hit->duration;
-    printf("(%i,%i) ", start, duration);
+    printf("(%i,%i)", start, duration);
 }
 
 void print_rhythm(Rhythm *rhythm)
 {
     int length = rhythm->length;
-    printf("[ ");
+    printf("[");
     for (size_t i = 0; i < length; i++)
     {
         print_hit(&rhythm->hits[i]);
+        if(i != length-1) {
+            printf(", ");
+        }
     }
     printf("]");
 }
 
-void print(Expr *expr)
+void print_steps(Steps *steps)
+{
+    int length = steps->length;
+    printf("[");
+    for (size_t i = 0; i < length; i++)
+    {
+        printf("%d", steps->steps[i]);
+        if(i != length-1) {
+            printf(", ");
+        }
+    }
+    printf("]");
+}
+
+void print(Expr *expr, Position *pos)
 {
     if (expr == NULL)
         return;
@@ -69,9 +86,16 @@ void print(Expr *expr)
         case TYPE_IDENTIFIER:
             print_constant("TYPE_IDENTIFIER");
             break;
+        case TYPE_NUMBER:
+        {
+            print_position(pos);
+            printf("%i", expr->def.constant.value.number);
+            printf("\n");
+            break;
+        }
         case TYPE_RHYTHM:
         {
-            print_position(expr->pos);
+            print_position(pos);
             print_rhythm(&expr->def.constant.value.rhythm);
             printf("\n");
             break;
@@ -80,8 +104,12 @@ void print(Expr *expr)
             print_constant("TYPE_HARMONY");
             break;
         case TYPE_STEPS:
-            print_constant("TYPE_STEPS");
+        {
+            print_position(pos);
+            print_steps(&expr->def.constant.value.steps);
+            printf("\n");
             break;
+        }
         case TYPE_MELODY:
             print_constant("TYPE_MELODY");
             break;

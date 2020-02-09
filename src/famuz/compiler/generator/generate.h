@@ -62,6 +62,7 @@ Expr *generate_const(Expr *expr, Environment *environment)
         Expr *ref = expr_from_name(environment, name);
         return generate(ref, environment);
     }
+    case TYPE_NUMBER:
     case TYPE_RHYTHM:
     case TYPE_MELODY:
     case TYPE_HARMONY:

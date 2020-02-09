@@ -1,8 +1,6 @@
 #pragma once
 
 /*
- * MIT License
- *
  * Copyright (c) 2019 Jeremy Meltingtallow
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -21,28 +19,25 @@
  * COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+#include <stdlib.h>
+#include "./parser.h"
+#include "../scanner.h"
+#include "../../util/assert.h"
+#include "../environment.h"
+
+/**
+ * Parsing number "3493"
  */
-
-typedef struct
+Expr *parse_number(TokenScanner *scanner, Environment *environment)
 {
-    char *file;
-    int line;
-    int min;
-    int max;
-} Position;
+    Token *token = token_scanner_next(scanner);
+    Expr *expr = expr_constant_number(environment_next_expr((environment)), token);
 
-void position_update(Position *p, int line, int min, int max, char *file)
-{
-    p->file = file;
-    p->line = line;
-    p->min = min;
-    p->max = max;
-}
+    expr->def.constant.type = TYPE_NUMBER;
+    expr->def.constant.value.number = atoi(token->lexeme);
+    expr->ret_type = TYPE_NUMBER;
 
-void position_union(Position *a, Position *b, Position *u)
-{
-    u->file = a->file;
-    u->line = (a->line < b->line) ? a->line : b->line;
-    u->min = (a->min < b->min) ? a->min : b->min;
-    u->max = (a->max > b->max) ? a->max : b->max;
+    return expr;
 }

@@ -27,6 +27,7 @@ typedef struct
 {
     union {
         Identifier identifier;
+        Number number;
         Rhythm rhythm;
         Melody melody;
         Harmony harmony;
@@ -46,6 +47,8 @@ Type constant_type_add(Type a, Type b)
     {
     case TYPE_IDENTIFIER:
         return -1;
+    case TYPE_NUMBER:
+        return b == TYPE_NUMBER ? TYPE_NUMBER : -1;
     case TYPE_RHYTHM:
         return b == TYPE_STEPS ? TYPE_MELODY : -1;
     case TYPE_MELODY:

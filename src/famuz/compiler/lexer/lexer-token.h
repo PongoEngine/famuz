@@ -43,6 +43,8 @@ typedef enum
     L_DURATION = '~',
     L_REST = '-',
 
+    L_CARROT = '^',
+
     L_TAB = '\t',
     L_SPACE = ' ',
     L_LINE = '\n',

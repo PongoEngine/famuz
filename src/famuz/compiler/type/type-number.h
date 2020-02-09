@@ -23,67 +23,6 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#define RESERVED_TYPE_COUNT 12
-
 #include "../settings.h"
-#include "./type-scale.h"
-#include "./type-identifier.h"
-#include "./type-number.h"
-#include "./type-hit.h"
-#include "./type-rhythm.h"
-#include "./type-steps.h"
-#include "./type-note.h"
-#include "./type-melody.h"
-#include "./type-harmony.h"
-#include "./type-chord.h"
-#include "./type-key.h"
-#include "./type-scaled-key.h"
-#include "./type-music.h"
 
-typedef enum
-{
-    TYPE_IDENTIFIER = 1,
-    TYPE_NUMBER,
-    TYPE_RHYTHM,
-    TYPE_MELODY,
-    TYPE_HARMONY,
-    TYPE_STEPS,
-    TYPE_SCALE,
-    TYPE_KEY,
-    TYPE_SCALED_KEY,
-    TYPE_MUSIC,
-    TYPE_CHORD,
-    TYPE_MONOMORPH
-} Type;
-
-static const char RESERVED_TYPE[RESERVED_TYPE_COUNT][16] = {
-    "Identifier",
-    "Number",
-    "Rhythm",
-    "Melody",
-    "Harmony",
-    "Steps",
-    "Scale",
-    "Key",
-    "ScaledKey",
-    "Music",
-    "Chord",
-    "Monomorph",
-};
-
-Type type_get_type(char *str)
-{
-    for (int i = 0; i < RESERVED_TYPE_COUNT; i++)
-    {
-        if (strcmp(RESERVED_TYPE[i], str) == 0)
-        {
-            return (Type)(i + 1);
-        }
-    }
-    return (Type)-1;
-}
-
-bool type_is_type(char *str)
-{
-    return (int)type_get_type(str) != -1;
-}
+typedef int Number;
