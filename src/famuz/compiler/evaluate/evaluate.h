@@ -28,32 +28,32 @@
 
 static Expr generate_temp_expr;
 
-Expr *generate(Expr *expr, Environment *environment, Stack *stack);
+Expr *evaluate(Expr *expr, Environment *environment, Stack *stack);
 
 #include "evaluate_binop.h"
 #include "evaluate_call.h"
 
-Expr *generate_parentheses(Expr *expr, Environment *environment, Stack *stack)
+Expr *evaluate_parentheses(Expr *expr, Environment *environment, Stack *stack)
 {
-    return generate(expr->def.parentheses.e, environment, stack);
+    return evaluate(expr->def.parentheses.e, environment, stack);
 }
 
-Expr *generate_var(Expr *expr, Environment *environment, Stack *stack)
+Expr *evaluate_var(Expr *expr, Environment *environment, Stack *stack)
 {
-    return generate(expr->def.var.e, environment, stack);
+    return evaluate(expr->def.var.e, environment, stack);
 }
 
-Expr *generate_block(Expr *expr)
-{
-    return expr;
-}
-
-Expr *generate_function(Expr *expr)
+Expr *evaluate_block(Expr *expr)
 {
     return expr;
 }
 
-Expr *generate_const(Expr *expr, Environment *environment, Stack *stack)
+Expr *evaluate_function(Expr *expr)
+{
+    return expr;
+}
+
+Expr *evaluate_const(Expr *expr, Environment *environment, Stack *stack)
 {
     switch (expr->def.constant.type)
     {
@@ -61,7 +61,7 @@ Expr *generate_const(Expr *expr, Environment *environment, Stack *stack)
     {
         char *name = expr->def.constant.value.identifier;
         Expr *ref = environment_expr_from_name(environment, name);
-        return generate(ref, environment, stack);
+        return evaluate(ref, environment, stack);
     }
     case TYPE_NUMBER:
     case TYPE_RHYTHM:
@@ -77,23 +77,23 @@ Expr *generate_const(Expr *expr, Environment *environment, Stack *stack)
     }
 }
 
-Expr *generate(Expr *expr, Environment *environment, Stack *stack)
+Expr *evaluate(Expr *expr, Environment *environment, Stack *stack)
 {
     switch (expr->def_type)
     {
     case E_CONST:
-        return generate_const(expr, environment, stack);
+        return evaluate_const(expr, environment, stack);
     case E_VAR:
-        return generate_var(expr, environment, stack);
+        return evaluate_var(expr, environment, stack);
     case E_CALL:
-        return generate_call(expr);
+        return evaluate_call(expr);
     case E_BINOP:
-        return generate_binop(expr, environment, stack);
+        return evaluate_binop(expr, environment, stack);
     case E_PAREN:
-        return generate_parentheses(expr, environment, stack);
+        return evaluate_parentheses(expr, environment, stack);
     case E_BLOCK:
-        return generate_block(expr);
+        return evaluate_block(expr);
     case E_FUNC:
-        return generate_function(expr);
+        return evaluate_function(expr);
     }
 }

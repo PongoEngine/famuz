@@ -26,7 +26,7 @@
 #include "../../util/assert.h"
 #include "../environment.h"
 
-Expr *generate_call(Expr *expr)
+Expr *evaluate_call(Expr *expr)
 {
     return expr;
 }

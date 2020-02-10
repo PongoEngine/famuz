@@ -25,10 +25,11 @@
 #include "../expr/expr.h"
 #include "../position.h"
 #include "../environment.h"
+#include "../stack.h"
 #include "../../util/assert.h"
 #include "../../util/printer.h"
 
-Expr *prepare_binop_expr(ExprDefType def_type, Type constant_type, Position *p1, Position *p2)
+Expr *prepare_binop_expr(Stack *stack, ExprDefType def_type, Type constant_type, Position *p1, Position *p2)
 {
     generate_temp_expr.def_type = def_type;
     generate_temp_expr.ret_type = constant_type;
@@ -38,7 +39,7 @@ Expr *prepare_binop_expr(ExprDefType def_type, Type constant_type, Position *p1,
     return &generate_temp_expr;
 }
 
-Expr *prepare_expr(ExprDefType def_type, Type constant_type, Position *pos)
+Expr *prepare_expr(Stack *stack, ExprDefType def_type, Type constant_type, Position *pos)
 {
     generate_temp_expr.def_type = def_type;
     generate_temp_expr.ret_type = constant_type;
@@ -47,7 +48,7 @@ Expr *prepare_expr(ExprDefType def_type, Type constant_type, Position *pos)
     return &generate_temp_expr;
 }
 
-Expr *generate_binop_add_harmony(Expr *harmony, Expr *right)
+Expr *evaluate_binop_add_harmony(Stack *stack, Expr *harmony, Expr *right)
 {
     switch (right->def.constant.type)
     {
@@ -55,7 +56,7 @@ Expr *generate_binop_add_harmony(Expr *harmony, Expr *right)
     {
         Harmony *h = &(harmony->def.constant.value.harmony);
         ScaledKey *s_k = &(right->def.constant.value.scaled_key);
-        Expr *expr = prepare_binop_expr(E_CONST, TYPE_MUSIC, harmony->pos, right->pos);
+        Expr *expr = prepare_binop_expr(stack, E_CONST, TYPE_MUSIC, harmony->pos, right->pos);
         return expr;
     }
     default:
@@ -64,17 +65,17 @@ Expr *generate_binop_add_harmony(Expr *harmony, Expr *right)
     }
 }
 
-Expr *generate_binop_add_melody(Expr *melody, Expr *right)
+Expr *evaluate_binop_add_melody(Stack *stack, Expr *melody, Expr *right)
 {
     switch (right->def.constant.type)
     {
     case TYPE_SCALED_KEY:
     {
         Melody *m = &(melody->def.constant.value.melody);
-        Expr *harmony = prepare_expr(E_CONST, TYPE_HARMONY, melody->pos);
+        Expr *harmony = prepare_expr(stack, E_CONST, TYPE_HARMONY, melody->pos);
         harmony->def.constant.value.harmony.Melody[0] = m;
         harmony->def.constant.value.harmony.length = 1;
-        return generate_binop_add_harmony(harmony, right);
+        return evaluate_binop_add_harmony(stack, harmony, right);
     }
     default:
         assert_that(false, "WE FAILED MELODY GENERATION");
@@ -82,7 +83,7 @@ Expr *generate_binop_add_melody(Expr *melody, Expr *right)
     }
 }
 
-Expr *generate_binop_add_rhythm(Expr *rhythm, Expr *right)
+Expr *evaluate_binop_add_rhythm(Stack *stack, Expr *rhythm, Expr *right)
 {
     switch (right->def.constant.type)
     {
@@ -90,7 +91,7 @@ Expr *generate_binop_add_rhythm(Expr *rhythm, Expr *right)
     {
         Rhythm *r = &(rhythm->def.constant.value.rhythm);
         Steps *s = &(right->def.constant.value.steps);
-        Expr *expr_melody = prepare_binop_expr(E_CONST, TYPE_MELODY, rhythm->pos, right->pos);
+        Expr *expr_melody = prepare_binop_expr(stack, E_CONST, TYPE_MELODY, rhythm->pos, right->pos);
         expr_melody->def.constant.value.melody.length = r->length;
         for (size_t i = 0; i < r->length; i++)
         {
@@ -107,7 +108,7 @@ Expr *generate_binop_add_rhythm(Expr *rhythm, Expr *right)
     }
 }
 
-Expr *generate_binop_add_scale(Expr *scale, Expr *right)
+Expr *evaluate_binop_add_scale(Stack *stack, Expr *scale, Expr *right)
 {
     switch (right->def.constant.type)
     {
@@ -115,7 +116,7 @@ Expr *generate_binop_add_scale(Expr *scale, Expr *right)
         {
             Scale *s = &(scale->def.constant.value.scale);
             Key *k = &(right->def.constant.value.key);
-            Expr *expr = prepare_binop_expr(E_CONST, TYPE_SCALED_KEY, scale->pos, right->pos);
+            Expr *expr = prepare_binop_expr(stack, E_CONST, TYPE_SCALED_KEY, scale->pos, right->pos);
             expr->def.constant.value.scaled_key.scale = s;
             expr->def.constant.value.scaled_key.key = k;
             return expr;
@@ -126,13 +127,13 @@ Expr *generate_binop_add_scale(Expr *scale, Expr *right)
     }
 }
 
-Expr *generate_binop_add_number(Expr *number, Expr *right)
+Expr *evaluate_binop_add_number(Stack *stack, Expr *number, Expr *right)
 {
     switch (right->def.constant.type)
     {
         case TYPE_NUMBER:
         {
-            Expr *expr = prepare_binop_expr(E_CONST, TYPE_NUMBER, number->pos, right->pos);
+            Expr *expr = prepare_binop_expr(stack, E_CONST, TYPE_NUMBER, number->pos, right->pos);
             int a = number->def.constant.value.number;
             int b = right->def.constant.value.number;
             expr->def.constant.value.number = a + b;
@@ -144,13 +145,13 @@ Expr *generate_binop_add_number(Expr *number, Expr *right)
     }
 }
 
-Expr *generate_binop_add_key(Expr *key, Expr *right)
+Expr *evaluate_binop_add_key(Stack *stack, Expr *key, Expr *right)
 {
     switch (right->def.constant.type)
     {
     case TYPE_SCALE:
     {
-        return generate_binop_add_scale(right, key);
+        return evaluate_binop_add_scale(stack, right, key);
     }
     default:
         assert_that(false, "WE FAILED KEY GENERATION");
@@ -158,13 +159,13 @@ Expr *generate_binop_add_key(Expr *key, Expr *right)
     }
 }
 
-Expr *generate_binop_add_steps(Expr *steps, Expr *right)
+Expr *evaluate_binop_add_steps(Stack *stack, Expr *steps, Expr *right)
 {
     switch (right->def.constant.type)
     {
     case TYPE_RHYTHM:
     {
-        return generate_binop_add_rhythm(right, steps);
+        return evaluate_binop_add_rhythm(stack, right, steps);
     }
     default:
         assert_that(false, "WE FAILED STEPS GENERATION");
@@ -172,17 +173,17 @@ Expr *generate_binop_add_steps(Expr *steps, Expr *right)
     }
 }
 
-Expr *generate_binop_add_scaled_key(Expr *scaled_key, Expr *right)
+Expr *evaluate_binop_add_scaled_key(Stack *stack, Expr *scaled_key, Expr *right)
 {
     switch (right->def.constant.type)
     {
     case TYPE_MELODY:
     {
-        return generate_binop_add_melody(right, scaled_key);
+        return evaluate_binop_add_melody(stack, right, scaled_key);
     }
     case TYPE_HARMONY:
     {
-        return generate_binop_add_harmony(right, scaled_key);
+        return evaluate_binop_add_harmony(stack, right, scaled_key);
     }
     default:
         assert_that(false, "WE FAILED SCALED_KEY GENERATION");
@@ -190,7 +191,7 @@ Expr *generate_binop_add_scaled_key(Expr *scaled_key, Expr *right)
     }
 }
 
-Expr *generate_binop_add(Expr *left, Expr *right)
+Expr *evaluate_binop_add(Stack *stack, Expr *left, Expr *right)
 {
     switch (left->def.constant.type)
     {
@@ -200,21 +201,21 @@ Expr *generate_binop_add(Expr *left, Expr *right)
         return left;
     }
     case TYPE_RHYTHM:
-        return generate_binop_add_rhythm(left, right);
+        return evaluate_binop_add_rhythm(stack, left, right);
     case TYPE_MELODY:
-        return generate_binop_add_melody(left, right);
+        return evaluate_binop_add_melody(stack, left, right);
     case TYPE_HARMONY:
-        return generate_binop_add_harmony(left, right);
+        return evaluate_binop_add_harmony(stack, left, right);
     case TYPE_STEPS:
-        return generate_binop_add_steps(left, right);
+        return evaluate_binop_add_steps(stack, left, right);
     case TYPE_SCALE:
-        return generate_binop_add_scale(left, right);
+        return evaluate_binop_add_scale(stack, left, right);
     case TYPE_KEY:
-        return generate_binop_add_key(left, right);
+        return evaluate_binop_add_key(stack, left, right);
     case TYPE_SCALED_KEY:
-        return generate_binop_add_scaled_key(left, right);
+        return evaluate_binop_add_scaled_key(stack, left, right);
     case TYPE_NUMBER:
-        return generate_binop_add_number(left, right);
+        return evaluate_binop_add_number(stack, left, right);
     case TYPE_MUSIC:
     {
         assert_that(false, "\n-CANNOT DO TYPE_MUSIC-\n");
@@ -228,7 +229,7 @@ Expr *generate_binop_add(Expr *left, Expr *right)
     }
 }
 
-Expr *generate_binop_shift_left(Expr *left, Expr *right)
+Expr *evaluate_binop_shift_left(Expr *left, Expr *right)
 {
     switch (left->def.constant.type)
     {
@@ -254,7 +255,7 @@ int compare_hits(const void * a, const void * b)
     return (l - r);
 }
 
-Expr *generate_binop_shift_right(Expr *left, Expr *right)
+Expr *evaluate_binop_shift_right(Stack *stack, Expr *left, Expr *right)
 {
     switch (left->def.constant.type)
     {
@@ -265,7 +266,7 @@ Expr *generate_binop_shift_right(Expr *left, Expr *right)
                 case TYPE_NUMBER:
                 {
                     int shiftVal = right->def.constant.value.number;
-                    Expr *expr = prepare_binop_expr(E_CONST, TYPE_RHYTHM, left->pos, right->pos);
+                    Expr *expr = prepare_binop_expr(stack, E_CONST, TYPE_RHYTHM, left->pos, right->pos);
                     Rhythm *r = &left->def.constant.value.rhythm;
                     int length = r->length;
                     int duration = r->duration;
@@ -297,17 +298,17 @@ Expr *generate_binop_shift_right(Expr *left, Expr *right)
     }
 }
 
-Expr *generate_binop(Expr *expr, Environment *environment, Stack *stack)
+Expr *evaluate_binop(Expr *expr, Environment *environment, Stack *stack)
 {
     Expr *e1 = expr->def.binop.e1;
     Expr *e2 = expr->def.binop.e2;
 
-    Expr *left = generate(e1, environment, stack);
-    Expr *right = generate(e2, environment, stack);
+    Expr *left = evaluate(e1, environment, stack);
+    Expr *right = evaluate(e2, environment, stack);
 
     switch (expr->def.binop.type) {
-        case B_ADD: return generate_binop_add(left, right);
-        case B_SHIFT_LEFT: return generate_binop_shift_left(left, right);
-        case B_SHIFT_RIGHT: return generate_binop_shift_right(left, right);
+        case B_ADD: return evaluate_binop_add(stack, left, right);
+        case B_SHIFT_LEFT: return evaluate_binop_shift_left(left, right);
+        case B_SHIFT_RIGHT: return evaluate_binop_shift_right(stack, left, right);
     }
 }

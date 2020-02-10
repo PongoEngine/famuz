@@ -32,20 +32,10 @@ typedef struct
     int cur_index;
 } Stack;
 
-Expr *stack_expr_from_name(Stack *stack, char *name)
-{
-    for (size_t i = 0; i < stack->cur_index; i++)
-    {
-        Expr *expr = &(stack->exprs[i]);
-        if (expr->def_type == E_VAR && strcmp(expr->def.var.identifier, name) == 0)
-        {
-            return expr;
-        }
-    }
-    return NULL;
+Expr *stack_push(Stack *stack) {
+    return &stack->exprs[stack->cur_index++];
 }
 
-Expr *stack_next_expr(Stack *stack)
-{
-    return &(stack->exprs[stack->cur_index++]);
+Expr *stack_pop(Stack *stack) {
+    return &stack->exprs[stack->cur_index--];
 }
