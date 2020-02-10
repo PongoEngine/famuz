@@ -46,7 +46,9 @@ Expr *parse_block(TokenScanner *scanner, Environment *environment, Stack *stack)
     }
     expr->def.block.exprs_length = exprs_length;
 
-    assert_that(token_scanner_has_next(scanner) && token_scanner_next(scanner)->type == RIGHT_BRACKET, "EXPECTED RIGHT BRACKET");
+    Token *right_bracket = token_scanner_next(scanner);
+    assert_that(right_bracket->type == RIGHT_BRACKET, "EXPECTED RIGHT BRACKET");
     expr->ret_type = last_expr->ret_type;
+    position_union(expr->pos, &right_bracket->pos, expr->pos);
     return expr;
 }

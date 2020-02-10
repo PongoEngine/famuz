@@ -26,7 +26,6 @@
 #include "../token.h"
 #include "../scanner.h"
 #include "../reserved.h"
-#include "../../util/file-util.h"
 
 void create_token(TokenType type, Scanner *scanner, Token *token)
 {
@@ -37,7 +36,7 @@ void create_token(TokenType type, Scanner *scanner, Token *token)
     token->type = type;
     strcpy(token->lexeme, lexeme);
 
-    position_update(&(token->pos), line, min, max, scanner->file_path);
+    position_update(&(token->pos), line, min, max, scanner->file_path, scanner->content);
 }
 
 TokenType word_type(char *str)
@@ -71,7 +70,7 @@ void create_token_identifier(Scanner *scanner, Token *token)
     scanner_consume_identifier(scanner, token->lexeme);
     int max = scanner->cur_index;
     token->type = word_type(token->lexeme);
-    position_update(&(token->pos), line, min, max, scanner->file_path);
+    position_update(&(token->pos), line, min, max, scanner->file_path, scanner->content);
 }
 
 void create_token_rhythm(Scanner *scanner, Token *token)
@@ -81,7 +80,7 @@ void create_token_rhythm(Scanner *scanner, Token *token)
     scanner_consume_rhythm(scanner, token->lexeme);
     int max = scanner->cur_index;
     token->type = RHYTHM;
-    position_update(&(token->pos), line, min, max, scanner->file_path);
+    position_update(&(token->pos), line, min, max, scanner->file_path, scanner->content);
 }
 
 void create_token_steps(Scanner *scanner, Token *token)
@@ -92,7 +91,7 @@ void create_token_steps(Scanner *scanner, Token *token)
     scanner_consume_steps(scanner, token->lexeme);
     int max = scanner->cur_index;
     token->type = STEPS;
-    position_update(&(token->pos), line, min, max, scanner->file_path);
+    position_update(&(token->pos), line, min, max, scanner->file_path, scanner->content);
 }
 
 void create_token_shift_left(Scanner *scanner, Token *token)
@@ -104,7 +103,7 @@ void create_token_shift_left(Scanner *scanner, Token *token)
     token->lexeme[2] = '\0';
     int max = scanner->cur_index;
     token->type = SHIFT_LEFT;
-    position_update(&(token->pos), line, min, max, scanner->file_path);
+    position_update(&(token->pos), line, min, max, scanner->file_path, scanner->content);
 }
 
 void create_token_shift_right(Scanner *scanner, Token *token)
@@ -116,7 +115,7 @@ void create_token_shift_right(Scanner *scanner, Token *token)
     token->lexeme[2] = '\0';
     int max = scanner->cur_index;
     token->type = SHIFT_RIGHT;
-    position_update(&(token->pos), line, min, max, scanner->file_path);
+    position_update(&(token->pos), line, min, max, scanner->file_path, scanner->content);
 }
 
 void create_token_number(Scanner *scanner, Token *token)
@@ -126,13 +125,11 @@ void create_token_number(Scanner *scanner, Token *token)
     scanner_consume_number(scanner, token->lexeme);
     int max = scanner->cur_index;
     token->type = NUMBER;
-    position_update(&(token->pos), line, min, max, scanner->file_path);
+    position_update(&(token->pos), line, min, max, scanner->file_path, scanner->content);
 }
 
-void lex(char *file_path, TokenScanner *token_scanner)
+void lex(char *file_path, char *content, TokenScanner *token_scanner)
 {
-    char content[2048];
-    file_content(file_path, content);
     Scanner scanner = {.content = content, .file_path = file_path, .cur_index = 0, .cur_line = 1, .length = strlen(content)};
     int index = 0;
     Token *tokens = token_scanner->tokens;

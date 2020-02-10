@@ -27,11 +27,12 @@
 #include "../../util/assert.h"
 #include "./parser-identifier.h"
 #include "../environment.h"
+#include "../stack.h"
 
 /**
  * Parsing function "main(...)"
  */
-Expr *parse_func(TokenScanner *scanner, Environment *environment)
+Expr *parse_func(TokenScanner *scanner, Environment *environment, Stack *stack)
 {
     Token *token = token_scanner_next(scanner);
     Expr *expr = expr_function(environment_next_expr((environment)), token);
@@ -45,9 +46,12 @@ Expr *parse_func(TokenScanner *scanner, Environment *environment)
     }
     assert_that(token_scanner_next(scanner)->type == RIGHT_PARAM, "\nparse_func :NOT LEFT PARENTHESES!\n");
 
-    // Expr *call = parse_expression(0, scanner, exprs);
-    // expr_print(call, 0);
-    // Expr *body = parse_expression(0, scanner, exprs);
-    // expr_print(body, 0);
+    if(token_scanner_peek((scanner))->type == COLON) {
+        token_scanner_next(scanner);
+        parse_identifier(scanner, environment);
+    }
+    Expr *body = parse_expression(PRECEDENCE_CALL, scanner, environment, stack);
+
+    position_union(expr->pos, body->pos, expr->pos);
     return expr;
 }

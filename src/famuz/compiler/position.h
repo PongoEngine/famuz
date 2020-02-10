@@ -26,14 +26,16 @@
 typedef struct
 {
     char *file;
+    char *content;
     int line;
     int min;
     int max;
 } Position;
 
-void position_update(Position *p, int line, int min, int max, char *file)
+void position_update(Position *p, int line, int min, int max, char *file, char *content)
 {
     p->file = file;
+    p->content = content;
     p->line = line;
     p->min = min;
     p->max = max;
@@ -42,6 +44,7 @@ void position_update(Position *p, int line, int min, int max, char *file)
 void position_union(Position *a, Position *b, Position *u)
 {
     u->file = a->file;
+    u->content = a->content;
     u->line = (a->line < b->line) ? a->line : b->line;
     u->min = (a->min < b->min) ? a->min : b->min;
     u->max = (a->max > b->max) ? a->max : b->max;

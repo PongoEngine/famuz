@@ -42,6 +42,10 @@ Expr *environment_expr_from_name(Environment *environment, char *name)
         {
             return expr;
         }
+        else if (expr->def_type == E_FUNC && strcmp(expr->def.function.identifier, name) == 0)
+        {
+            return expr;
+        }
     }
     return NULL;
 }

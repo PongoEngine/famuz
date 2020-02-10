@@ -30,6 +30,7 @@
 #include "../../util/assert.h"
 #include "../../util/printer.h"
 
+static Position p;
 static Expr temp;
 
 int compare_hits(const void * a, const void * b)
@@ -44,8 +45,8 @@ Expr *prepare_binop_expr(ExprDefType def_type, Type constant_type, Position *p1,
     temp.def_type = def_type;
     temp.ret_type = constant_type;
     temp.def.constant.type = constant_type;
-//    position_union(p1, p2, generate_temp_expr.pos);
-    temp.pos = p1;
+    temp.pos = &p;
+    position_union(p1, p2, temp.pos);
     return &temp;
 }
 

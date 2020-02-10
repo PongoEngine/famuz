@@ -43,6 +43,7 @@ void evaluate_block(Expr *expr, Environment *environment, Stack *stack) {
 }
 
 void evaluate_function(Expr *expr, Environment *environment, Stack *stack) {
+    stack_push(stack, expr);
 }
 
 void evaluate_const(Expr *expr, Environment *environment, Stack *stack) {

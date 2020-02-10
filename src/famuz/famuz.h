@@ -27,13 +27,17 @@
 #include "./compiler/environment.h"
 #include "./compiler/stack.h"
 #include "./compiler/parser/parser.h"
+#include "../../util/file-util.h"
 
 void famuz_parse(char *file_path)
 {
     if (file_exists(file_path))
     {
         TokenScanner token_scanner;
-        lex(file_path, &token_scanner);
+        char content[2048];
+        file_content(file_path, content);
+
+        lex(file_path, content, &token_scanner);
 
          Environment environment = {.cur_index = 0};
          Stack stack;

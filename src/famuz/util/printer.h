@@ -93,6 +93,16 @@ void print_steps(Steps *steps)
     printf("]");
 }
 
+void print_file(Position *pos)
+{
+    int start = pos->min;
+    int end = pos->max;
+    printf("\n");
+    while(start < end) {
+        printf("%c", pos->content[start++]);
+    }
+}
+
 void print(Expr *expr, Position *pos)
 {
     if (expr == NULL)
@@ -157,6 +167,9 @@ void print(Expr *expr, Position *pos)
     }
     case E_FUNC:
     {
+        print_position(pos);
+        print_file(expr->pos);
+        printf("\n");
         break;
     }
     default:

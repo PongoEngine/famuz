@@ -36,11 +36,11 @@ struct Expr *parse_expression(int precedence, TokenScanner *scanner, Environment
 #include "./parser-number.h"
 #include "./parser-steps.h"
 #include "./parser-binop.h"
+#include "./parser-block.h"
 #include "./parser-func.h"
 #include "./parser-call.h"
 #include "./parser-parentheses.h"
 #include "./parser-print.h"
-#include "./parser-block.h"
 #include "./parser-assignment.h"
 #include "./parser-identifier.h"
 #include "./parser-typing.h"
@@ -73,7 +73,7 @@ struct Expr *parse_expression_prefix(TokenScanner *scanner, Environment *environ
     case LEFT_BRACKET:
         return parse_block(scanner, environment, stack);
     case FUNC:
-        return parse_func(scanner, environment);
+        return parse_func(scanner, environment, stack);
     case PRINT:
         return parse_print(scanner, environment, stack);
     case RIGHT_PARAM:
