@@ -45,6 +45,9 @@ typedef enum
 
     L_CARROT = '^',
 
+    L_LT = '<',
+    L_GT = '>',
+
     L_TAB = '\t',
     L_SPACE = ' ',
     L_LINE = '\n',

@@ -29,5 +29,6 @@
 typedef struct
 {
     Hit hits[SETTINGS_HIT_LENGTH];
+    int duration;
     int length;
 } Rhythm;

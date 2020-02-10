@@ -29,8 +29,8 @@ static Expr generate_temp_expr;
 
 Expr *generate(Expr *expr, Environment *environment);
 
-#include "./generator_binop.h"
-#include "./generator_call.h"
+#include "evaluate_binop.h"
+#include "evaluate_call.h"
 
 Expr *generate_parentheses(Expr *expr, Environment *environment)
 {

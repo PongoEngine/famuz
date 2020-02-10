@@ -28,11 +28,21 @@
 #include "../environment.h"
 
 /**
- * Parsing binary opertation "... + ..."
+ * Parsing binary operation "... + ..."
  */
 Expr *parse_binop(Expr *left, TokenScanner *scanner, Environment *environment) {
     Token *token = token_scanner_next(scanner);
     Expr *expr = expr_binop(environment_next_expr((environment)), token);
+
+    if(strcmp(token->lexeme, "+") == 0) {
+        expr->def.binop.type = B_ADD;
+    }
+    else if(strcmp(token->lexeme, "<<") == 0) {
+        expr->def.binop.type = B_SHIFT_LEFT;
+    }
+    else if(strcmp(token->lexeme, ">>") == 0) {
+        expr->def.binop.type = B_SHIFT_RIGHT;
+    }
 
     expr->def.binop.e1 = left;
 

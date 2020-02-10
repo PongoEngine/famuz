@@ -36,6 +36,8 @@ int get_precedence(TokenScanner *scanner)
     case ASSIGNMENT:
         return PRECEDENCE_ASSIGNMENT;
     case ADD:
+    case SHIFT_LEFT:
+    case SHIFT_RIGHT:
         return PRECEDENCE_SUM;
     case LEFT_PARAM:
         return PRECEDENCE_CALL;

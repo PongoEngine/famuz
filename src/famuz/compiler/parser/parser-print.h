@@ -22,7 +22,7 @@
 */
 
 #include <string.h>
-#include "../generator/generate.h"
+#include "compiler/evaluate/evaluate.h"
 #include "./parser.h"
 #include "../scanner.h"
 #include "../../util/assert.h"

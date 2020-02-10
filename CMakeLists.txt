@@ -6,7 +6,7 @@ set(CMAKE_C_STANDARD 11)
 include_directories(src/famuz)
 include_directories(src/famuz/compiler)
 include_directories(src/famuz/compiler/expr)
-include_directories(src/famuz/compiler/generator)
+include_directories(src/famuz/compiler/evaluate)
 include_directories(src/famuz/compiler/lexer)
 include_directories(src/famuz/compiler/parser)
 include_directories(src/famuz/compiler/type)
@@ -21,9 +21,9 @@ add_executable(famuz_c
         src/famuz/compiler/expr/expr-parentheses.h
         src/famuz/compiler/expr/expr-var.h
         src/famuz/compiler/expr/expr.h
-        src/famuz/compiler/generator/generate.h
-        src/famuz/compiler/generator/generator_binop.h
-        src/famuz/compiler/generator/generator_call.h
+        src/famuz/compiler/evaluate/evaluate.h
+        src/famuz/compiler/evaluate/evaluate_binop.h
+        src/famuz/compiler/evaluate/evaluate_call.h
         src/famuz/compiler/lexer/lexer-token.h
         src/famuz/compiler/lexer/lexer.h
         src/famuz/compiler/parser/parser-assignment.h

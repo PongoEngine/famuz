@@ -59,6 +59,26 @@ void print_rhythm(Rhythm *rhythm)
     printf("]");
 }
 
+void print_note(Note *note)
+{
+    print_hit(note->hit);
+    printf(": %i", note->step);
+}
+
+void print_melody(Melody *melody)
+{
+    int length = melody->length;
+    printf("[");
+    for (size_t i = 0; i < length; i++)
+    {
+        print_note(&melody->notes[i]);
+        if(i != length-1) {
+            printf(", ");
+        }
+    }
+    printf("]");
+}
+
 void print_steps(Steps *steps)
 {
     int length = steps->length;
@@ -111,8 +131,12 @@ void print(Expr *expr, Position *pos)
             break;
         }
         case TYPE_MELODY:
-            print_constant("TYPE_MELODY");
+        {
+            print_position(pos);
+            print_melody(&expr->def.constant.value.melody);
+            printf("\n");
             break;
+        }
         case TYPE_SCALE:
             print_constant("TYPE_SCALE");
             break;

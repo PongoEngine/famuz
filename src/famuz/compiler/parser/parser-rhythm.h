@@ -77,5 +77,6 @@ Expr *parse_rhythm(TokenScanner *scanner, Environment *environment)
         }
     }
     rhythm->length = index;
+    rhythm->duration = rhythm_scanner.length;
     return expr;
 }

@@ -26,6 +26,8 @@
 typedef enum
 {
     B_ADD = 1,
+    B_SHIFT_LEFT,
+    B_SHIFT_RIGHT,
 } BinopType;
 
 typedef struct

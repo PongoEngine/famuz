@@ -84,3 +84,34 @@ bool type_is_type(char *str)
 {
     return (int)type_get_type(str) != -1;
 }
+
+Type constant_type_add(Type a, Type b)
+{
+    switch (a)
+    {
+        case TYPE_IDENTIFIER:
+            return -1;
+        case TYPE_NUMBER:
+            return b == TYPE_NUMBER ? TYPE_NUMBER : -1;
+        case TYPE_RHYTHM:
+            return b == TYPE_STEPS ? TYPE_MELODY : -1;
+        case TYPE_MELODY:
+            return b == TYPE_SCALED_KEY ? TYPE_MUSIC : -1;
+        case TYPE_HARMONY:
+            return b == TYPE_SCALED_KEY ? TYPE_MUSIC : -1;
+        case TYPE_STEPS:
+            return b == TYPE_RHYTHM ? TYPE_MELODY : -1;
+        case TYPE_SCALE:
+            return b == TYPE_KEY ? TYPE_SCALED_KEY : -1;
+        case TYPE_KEY:
+            return b == TYPE_SCALE ? TYPE_SCALED_KEY : -1;
+        case TYPE_SCALED_KEY:
+            return (b == TYPE_MELODY || b == TYPE_HARMONY) ? TYPE_MUSIC : -1;
+            ;
+        case TYPE_MUSIC:
+            return -1;
+        case TYPE_MONOMORPH:
+            return -1;
+    }
+    return -1;
+}

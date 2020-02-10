@@ -95,6 +95,30 @@ void create_token_steps(Scanner *scanner, Token *token)
     position_update(&(token->pos), line, min, max, scanner->file_path);
 }
 
+void create_token_shift_left(Scanner *scanner, Token *token)
+{
+    int line = scanner->cur_line;
+    int min = scanner->cur_index;
+    token->lexeme[0] = scanner_next(scanner); //'<'
+    token->lexeme[1] = scanner_next(scanner); //'<'
+    token->lexeme[2] = '\0';
+    int max = scanner->cur_index;
+    token->type = SHIFT_LEFT;
+    position_update(&(token->pos), line, min, max, scanner->file_path);
+}
+
+void create_token_shift_right(Scanner *scanner, Token *token)
+{
+    int line = scanner->cur_line;
+    int min = scanner->cur_index;
+    token->lexeme[0] = scanner_next(scanner); //'>'
+    token->lexeme[1] = scanner_next(scanner); //'>'
+    token->lexeme[2] = '\0';
+    int max = scanner->cur_index;
+    token->type = SHIFT_RIGHT;
+    position_update(&(token->pos), line, min, max, scanner->file_path);
+}
+
 void create_token_number(Scanner *scanner, Token *token)
 {
     int line = scanner->cur_line;
@@ -155,6 +179,16 @@ void lex(char *file_path, TokenScanner *token_scanner)
         case L_FORWARD_SLASH:
             scanner_peek_double(&scanner) == '/'
                 ? scanner_consume_comment(&scanner)
+                : scanner_next(&scanner);
+            break;
+        case L_LT:
+            scanner_peek_double(&scanner) == '<'
+                ? create_token_shift_left(&scanner, &tokens[index++])
+                : scanner_next(&scanner);
+            break;
+        case L_GT:
+            scanner_peek_double(&scanner) == '>'
+                ? create_token_shift_right(&scanner, &tokens[index++])
                 : scanner_next(&scanner);
             break;
         case L_DURATION:

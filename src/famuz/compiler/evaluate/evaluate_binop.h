@@ -21,18 +21,20 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#include "./generate.h"
+#include "evaluate.h"
 #include "../expr/expr.h"
 #include "../position.h"
 #include "../environment.h"
 #include "../../util/assert.h"
+#include "../../util/printer.h"
 
 Expr *prepare_binop_expr(ExprDefType def_type, Type constant_type, Position *p1, Position *p2)
 {
     generate_temp_expr.def_type = def_type;
     generate_temp_expr.ret_type = constant_type;
     generate_temp_expr.def.constant.type = constant_type;
-    position_union(p1, p2, generate_temp_expr.pos);
+//    position_union(p1, p2, generate_temp_expr.pos);
+    generate_temp_expr.pos = p1;
     return &generate_temp_expr;
 }
 
@@ -109,18 +111,36 @@ Expr *generate_binop_add_scale(Expr *scale, Expr *right)
 {
     switch (right->def.constant.type)
     {
-    case TYPE_KEY:
-    {
-        Scale *s = &(scale->def.constant.value.scale);
-        Key *k = &(right->def.constant.value.key);
-        Expr *expr = prepare_binop_expr(E_CONST, TYPE_SCALED_KEY, scale->pos, right->pos);
-        expr->def.constant.value.scaled_key.scale = s;
-        expr->def.constant.value.scaled_key.key = k;
-        return expr;
+        case TYPE_KEY:
+        {
+            Scale *s = &(scale->def.constant.value.scale);
+            Key *k = &(right->def.constant.value.key);
+            Expr *expr = prepare_binop_expr(E_CONST, TYPE_SCALED_KEY, scale->pos, right->pos);
+            expr->def.constant.value.scaled_key.scale = s;
+            expr->def.constant.value.scaled_key.key = k;
+            return expr;
+        }
+        default:
+            assert_that(false, "WE FAILED SCALE GENERATION");
+            return scale;
     }
-    default:
-        assert_that(false, "WE FAILED SCALE GENERATION");
-        return scale;
+}
+
+Expr *generate_binop_add_number(Expr *number, Expr *right)
+{
+    switch (right->def.constant.type)
+    {
+        case TYPE_NUMBER:
+        {
+            Expr *expr = prepare_binop_expr(E_CONST, TYPE_NUMBER, number->pos, right->pos);
+            int a = number->def.constant.value.number;
+            int b = right->def.constant.value.number;
+            expr->def.constant.value.number = a + b;
+            return expr;
+        }
+        default:
+            assert_that(false, "WE FAILED NUMBER GENERATION");
+            return number;
     }
 }
 
@@ -172,49 +192,108 @@ Expr *generate_binop_add_scaled_key(Expr *scaled_key, Expr *right)
 
 Expr *generate_binop_add(Expr *left, Expr *right)
 {
-    if (assert_that(left->def_type == E_CONST && right->def_type == E_CONST, "CAN ONLY DO ARITHMETIC ON CONSTANTS"))
+    switch (left->def.constant.type)
     {
-        switch (left->def.constant.type)
-        {
-        case TYPE_IDENTIFIER:
-        {
-            assert_that(false, "\n-CANNOT DO TYPE_IDENTIFIER-\n");
-            return left;
-        }
-        case TYPE_RHYTHM:
-            return generate_binop_add_rhythm(left, right);
-        case TYPE_MELODY:
-            return generate_binop_add_melody(left, right);
-        case TYPE_HARMONY:
-            return generate_binop_add_harmony(left, right);
-        case TYPE_STEPS:
-            return generate_binop_add_steps(left, right);
-        case TYPE_SCALE:
-            return generate_binop_add_scale(left, right);
-        case TYPE_KEY:
-            return generate_binop_add_key(left, right);
-        case TYPE_SCALED_KEY:
-            return generate_binop_add_scaled_key(left, right);
-        case TYPE_MUSIC:
-        {
-            assert_that(false, "\n-CANNOT DO TYPE_MUSIC-\n");
-            return left;
-        }
-        case TYPE_MONOMORPH:
-        {
-            assert_that(false, "\n-CANNOT DO TYPE_MONOMORPH-\n");
-            return left;
-        }
-        case TYPE_NUMBER:
-        {
-            assert_that(false, "\n-CANNOT DO TYPE_NUMBER-\n");
-            return left;
-        }
-        }
-    }
-    else
+    case TYPE_IDENTIFIER:
     {
+        assert_that(false, "\n-CANNOT DO TYPE_IDENTIFIER-\n");
         return left;
+    }
+    case TYPE_RHYTHM:
+        return generate_binop_add_rhythm(left, right);
+    case TYPE_MELODY:
+        return generate_binop_add_melody(left, right);
+    case TYPE_HARMONY:
+        return generate_binop_add_harmony(left, right);
+    case TYPE_STEPS:
+        return generate_binop_add_steps(left, right);
+    case TYPE_SCALE:
+        return generate_binop_add_scale(left, right);
+    case TYPE_KEY:
+        return generate_binop_add_key(left, right);
+    case TYPE_SCALED_KEY:
+        return generate_binop_add_scaled_key(left, right);
+    case TYPE_NUMBER:
+        return generate_binop_add_number(left, right);
+    case TYPE_MUSIC:
+    {
+        assert_that(false, "\n-CANNOT DO TYPE_MUSIC-\n");
+        return left;
+    }
+    case TYPE_MONOMORPH:
+    {
+        assert_that(false, "\n-CANNOT DO TYPE_MONOMORPH-\n");
+        return left;
+    }
+    }
+}
+
+Expr *generate_binop_shift_left(Expr *left, Expr *right)
+{
+    switch (left->def.constant.type)
+    {
+        case TYPE_IDENTIFIER:
+        case TYPE_RHYTHM:
+        case TYPE_MELODY:
+        case TYPE_HARMONY:
+        case TYPE_STEPS:
+        case TYPE_SCALE:
+        case TYPE_KEY:
+        case TYPE_SCALED_KEY:
+        case TYPE_MUSIC:
+        case TYPE_MONOMORPH:
+        case TYPE_NUMBER:
+            return left;
+    }
+}
+
+int compare_hits(const void * a, const void * b)
+{
+    int l = ((Hit *)a)->start;
+    int r = ((Hit *)b)->start;
+    return (l - r);
+}
+
+Expr *generate_binop_shift_right(Expr *left, Expr *right)
+{
+    switch (left->def.constant.type)
+    {
+        case TYPE_IDENTIFIER:
+        case TYPE_RHYTHM: {
+            switch (right->def.constant.type)
+            {
+                case TYPE_NUMBER:
+                {
+                    int shiftVal = right->def.constant.value.number;
+                    Expr *expr = prepare_binop_expr(E_CONST, TYPE_RHYTHM, left->pos, right->pos);
+                    Rhythm *r = &left->def.constant.value.rhythm;
+                    int length = r->length;
+                    int duration = r->duration;
+                    Rhythm *new_r = &expr->def.constant.value.rhythm;
+                    for (int i = 0; i < length; i++) {
+                        new_r->hits[i].start = (r->hits[i].start + shiftVal) % duration;
+                        new_r->hits[i].duration = r->hits[i].duration;
+                    }
+                    qsort(new_r->hits, length, sizeof(Hit), compare_hits); //TODO: simplify sorting
+                    new_r->length = length;
+                    new_r->duration = duration;
+                    return expr;
+                }
+                default:
+                    assert_that(false, "WE FAILED SHIFT RIGHT GENERATION");
+                    return left;
+            }
+        }
+        case TYPE_MELODY:
+        case TYPE_HARMONY:
+        case TYPE_STEPS:
+        case TYPE_SCALE:
+        case TYPE_KEY:
+        case TYPE_SCALED_KEY:
+        case TYPE_MUSIC:
+        case TYPE_MONOMORPH:
+        case TYPE_NUMBER:
+            return left;
     }
 }
 
@@ -222,10 +301,13 @@ Expr *generate_binop(Expr *expr, Environment *environment)
 {
     Expr *e1 = expr->def.binop.e1;
     Expr *e2 = expr->def.binop.e2;
-//    BinopType type = expr->def.binop.type;
 
     Expr *left = generate(e1, environment);
     Expr *right = generate(e2, environment);
 
-    return generate_binop_add(left, right);
+    switch (expr->def.binop.type) {
+        case B_ADD: return generate_binop_add(left, right);
+        case B_SHIFT_LEFT: return generate_binop_shift_left(left, right);
+        case B_SHIFT_RIGHT: return generate_binop_shift_right(left, right);
+    }
 }

@@ -45,6 +45,8 @@ typedef enum
     LEFT_BRACKET,
     RIGHT_BRACKET,
     COMMA,
+    SHIFT_LEFT,
+    SHIFT_RIGHT,
     SLASH
 } TokenType;
 

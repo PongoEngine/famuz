@@ -1,16 +1,10 @@
 basicRhythm : Rhythm = x~~~ x--- x~~~ x~--
 
-shiftedRhythm = basicRhythm // --x~ ~~x- --x~ ~~x~
-shiftedRhythm2 = shiftedRhythm // --x~ ~~x- --x~ ~~x~
-shiftedRhythm3 = shiftedRhythm2 // --x~ ~~x- --x~ ~~x~
-shiftedRhythm4 = shiftedRhythm3 // --x~ ~~x- --x~ ~~x~
-
-coolNumber = 539484
-
 basicSteps : Steps = ^1 3 8 2
 
-print(basicRhythm)
-print(coolNumber)
+m : Melody = print(basicRhythm + basicSteps)
+print(m)
+//print((basicRhythm >> 3) + basicSteps)
 
 //Rhythm : func neptune(Steps: a, Steps: b, Steps: c) {
 //    x~~~ x--- x~~~ x~--
