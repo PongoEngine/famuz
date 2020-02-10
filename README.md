@@ -18,9 +18,9 @@ anything = print(basicRhythm + basicSteps)
 print(anything)
 print((basicRhythm >> 3))
 
-//func neptune(a :Steps, b :Steps, c :Steps) :Rhythm {
-//    x~~~ x--- x~~~ x~--
-//}
+func neptune(a :Steps, b :Steps, c :Steps) :Rhythm {
+    x~~~ x--- x~~~ x~--
+}
 
 a = 1
 b = 4
@@ -29,6 +29,7 @@ d = a + b + c
 
 result = print(d + 10000)
 print(result)
+print(neptune)
 ```
 
 ## Famuz Types
