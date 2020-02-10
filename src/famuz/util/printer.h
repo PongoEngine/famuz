@@ -61,8 +61,8 @@ void print_rhythm(Rhythm *rhythm)
 
 void print_note(Note *note)
 {
+    printf("%i:", note->step);
     print_hit(note->hit);
-    printf(": %i", note->step);
 }
 
 void print_melody(Melody *melody)

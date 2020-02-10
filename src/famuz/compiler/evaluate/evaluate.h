@@ -26,74 +26,70 @@
 #include "../environment.h"
 #include "../stack.h"
 
-static Expr generate_temp_expr;
-
-Expr *evaluate(Expr *expr, Environment *environment, Stack *stack);
+void evaluate(Expr *expr, Environment *environment, Stack *stack);
 
 #include "evaluate_binop.h"
 #include "evaluate_call.h"
 
-Expr *evaluate_parentheses(Expr *expr, Environment *environment, Stack *stack)
-{
-    return evaluate(expr->def.parentheses.e, environment, stack);
+void evaluate_parentheses(Expr *expr, Environment *environment, Stack *stack) {
+    evaluate(expr->def.parentheses.e, environment, stack);
 }
 
-Expr *evaluate_var(Expr *expr, Environment *environment, Stack *stack)
-{
-    return evaluate(expr->def.var.e, environment, stack);
+void evaluate_var(Expr *expr, Environment *environment, Stack *stack) {
+    evaluate(expr->def.var.e, environment, stack);
 }
 
-Expr *evaluate_block(Expr *expr)
-{
-    return expr;
+void evaluate_block(Expr *expr, Environment *environment, Stack *stack) {
 }
 
-Expr *evaluate_function(Expr *expr)
-{
-    return expr;
+void evaluate_function(Expr *expr, Environment *environment, Stack *stack) {
 }
 
-Expr *evaluate_const(Expr *expr, Environment *environment, Stack *stack)
-{
-    switch (expr->def.constant.type)
-    {
-    case TYPE_IDENTIFIER:
-    {
-        char *name = expr->def.constant.value.identifier;
-        Expr *ref = environment_expr_from_name(environment, name);
-        return evaluate(ref, environment, stack);
-    }
-    case TYPE_NUMBER:
-    case TYPE_RHYTHM:
-    case TYPE_MELODY:
-    case TYPE_HARMONY:
-    case TYPE_STEPS:
-    case TYPE_SCALE:
-    case TYPE_KEY:
-    case TYPE_SCALED_KEY:
-    case TYPE_MUSIC:
-    case TYPE_MONOMORPH:
-        return expr;
+void evaluate_const(Expr *expr, Environment *environment, Stack *stack) {
+    switch (expr->def.constant.type) {
+        case TYPE_IDENTIFIER: {
+            char *name = expr->def.constant.value.identifier;
+            Expr *ref = environment_expr_from_name(environment, name);
+            evaluate(ref, environment, stack);
+            break;
+        }
+        case TYPE_NUMBER:
+        case TYPE_RHYTHM:
+        case TYPE_MELODY:
+        case TYPE_HARMONY:
+        case TYPE_STEPS:
+        case TYPE_SCALE:
+        case TYPE_KEY:
+        case TYPE_SCALED_KEY:
+        case TYPE_MUSIC:
+        case TYPE_MONOMORPH:
+            stack_push(stack, expr);
+            break;
     }
 }
 
-Expr *evaluate(Expr *expr, Environment *environment, Stack *stack)
-{
-    switch (expr->def_type)
-    {
-    case E_CONST:
-        return evaluate_const(expr, environment, stack);
-    case E_VAR:
-        return evaluate_var(expr, environment, stack);
-    case E_CALL:
-        return evaluate_call(expr);
-    case E_BINOP:
-        return evaluate_binop(expr, environment, stack);
-    case E_PAREN:
-        return evaluate_parentheses(expr, environment, stack);
-    case E_BLOCK:
-        return evaluate_block(expr);
-    case E_FUNC:
-        return evaluate_function(expr);
+void evaluate(Expr *expr, Environment *environment, Stack *stack) {
+    switch (expr->def_type) {
+        case E_CONST:
+            evaluate_const(expr, environment, stack);
+            break;
+        case E_VAR:
+            evaluate_var(expr, environment, stack);
+            break;
+        case E_CALL:
+            evaluate_call(expr, environment, stack);
+            break;
+        case E_BINOP:
+            evaluate_binop(expr, environment, stack);
+            break;
+        case E_PAREN:
+            evaluate_parentheses(expr, environment, stack);
+            break;
+        case E_BLOCK:
+            evaluate_block(expr, environment, stack);
+            break;
+        case E_FUNC:
+            evaluate_function(expr, environment, stack);
+            break;
     }
 }

@@ -32,10 +32,15 @@ typedef struct
     int cur_index;
 } Stack;
 
-Expr *stack_push(Stack *stack) {
-    return &stack->exprs[stack->cur_index++];
+void stack_push(Stack *stack, Expr *expr) {
+    memcpy (&stack->exprs[stack->cur_index], expr, sizeof(Expr));
+    stack->cur_index++;
 }
 
 Expr *stack_pop(Stack *stack) {
-    return &stack->exprs[stack->cur_index--];
+    return &stack->exprs[--stack->cur_index];
+}
+
+Expr *stack_peek(Stack *stack) {
+    return &stack->exprs[stack->cur_index-1];
 }
