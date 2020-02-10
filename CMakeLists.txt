@@ -64,4 +64,4 @@ add_executable(famuz_c
         src/famuz/util/printer.h
         src/famuz/util/string-util.h
         src/famuz/famuz.h
-        src/main.c src/famuz/compiler/type/type-number.h src/famuz/compiler/parser/parser-number.h)
+        src/main.c src/famuz/compiler/type/type-number.h src/famuz/compiler/parser/parser-number.h src/famuz/compiler/stack.h)

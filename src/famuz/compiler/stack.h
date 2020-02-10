@@ -23,21 +23,20 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include <string.h>
 #include "./settings.h"
 #include "./expr/expr.h"
 
 typedef struct
 {
-    Expr exprs[SETTINGS_EXPRS_LENGTH];
+    Expr exprs[SETTINGS_STACK_LENGTH];
     int cur_index;
-} Environment;
+} Stack;
 
-Expr *environment_expr_from_name(Environment *environment, char *name)
+Expr *stack_expr_from_name(Stack *stack, char *name)
 {
-    for (size_t i = 0; i < environment->cur_index; i++)
+    for (size_t i = 0; i < stack->cur_index; i++)
     {
-        Expr *expr = &(environment->exprs[i]);
+        Expr *expr = &(stack->exprs[i]);
         if (expr->def_type == E_VAR && strcmp(expr->def.var.identifier, name) == 0)
         {
             return expr;
@@ -46,7 +45,7 @@ Expr *environment_expr_from_name(Environment *environment, char *name)
     return NULL;
 }
 
-Expr *environment_next_expr(Environment *environment)
+Expr *stack_next_expr(Stack *stack)
 {
-    return &(environment->exprs[environment->cur_index++]);
+    return &(stack->exprs[stack->cur_index++]);
 }

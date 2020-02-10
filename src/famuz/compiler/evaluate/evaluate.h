@@ -59,7 +59,7 @@ Expr *generate_const(Expr *expr, Environment *environment)
     case TYPE_IDENTIFIER:
     {
         char *name = expr->def.constant.value.identifier;
-        Expr *ref = expr_from_name(environment, name);
+        Expr *ref = environment_expr_from_name(environment, name);
         return generate(ref, environment);
     }
     case TYPE_NUMBER:
