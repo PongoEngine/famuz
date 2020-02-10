@@ -31,13 +31,13 @@
 /**
  * Parsing call "arp(...)"
  */
-Expr *parse_call(Expr *left, TokenScanner *scanner, Environment *environment)
+Expr *parse_call(Expr *left, TokenScanner *scanner, Environment *environment, Stack *stack)
 {
     Token *token = token_scanner_next(scanner);
     Expr *expr = expr_call(environment_next_expr((environment)), token);
 
     expr->def.call.identifier = left->def.constant.value.identifier;
-    Expr *param = parse_expression(PRECEDENCE_CALL, scanner, environment);
+    Expr *param = parse_expression(PRECEDENCE_CALL, scanner, environment, stack);
     int params_length = 0;
     while (token_scanner_has_next(scanner) && token_scanner_peek(scanner)->type != RIGHT_PARAM)
     {

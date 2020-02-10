@@ -26,11 +26,12 @@
 #include "../../util/assert.h"
 #include "./precedence.h"
 #include "../environment.h"
+#include "../stack.h"
 
 /**
  * Parsing binary operation "... + ..."
  */
-Expr *parse_binop(Expr *left, TokenScanner *scanner, Environment *environment) {
+Expr *parse_binop(Expr *left, TokenScanner *scanner, Environment *environment, Stack *stack) {
     Token *token = token_scanner_next(scanner);
     Expr *expr = expr_binop(environment_next_expr((environment)), token);
 
@@ -47,7 +48,7 @@ Expr *parse_binop(Expr *left, TokenScanner *scanner, Environment *environment) {
     expr->def.binop.e1 = left;
 
     if (assert_that(token_scanner_has_next(scanner), "Cannot parse binary expression")) {
-        Expr *right = parse_expression(PRECEDENCE_SUM, scanner, environment);
+        Expr *right = parse_expression(PRECEDENCE_SUM, scanner, environment, stack);
         expr->def.binop.e2 = right;
         expr->ret_type = right != NULL ? constant_type_add(left->ret_type, right->ret_type) : -1;
     } else {

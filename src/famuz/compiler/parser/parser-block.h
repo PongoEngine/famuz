@@ -30,18 +30,18 @@
 /**
  * Parsing blocks "{...}"
  */
-Expr *parse_block(TokenScanner *scanner, Environment *environment)
+Expr *parse_block(TokenScanner *scanner, Environment *environment, Stack *stack)
 {
     Token *token = token_scanner_next(scanner);
     Expr *expr = expr_block(environment_next_expr((environment)), token);
 
-    expr->def.block.exprs = parse_expression(0, scanner, environment);
+    expr->def.block.exprs = parse_expression(0, scanner, environment, stack);
     Expr *last_expr = expr->def.block.exprs;
 
     int exprs_length = 1;
     while (token_scanner_has_next(scanner) && token_scanner_peek(scanner)->type != RIGHT_BRACKET)
     {
-        parse_expression(0, scanner, environment);
+        parse_expression(0, scanner, environment, stack);
         exprs_length++;
     }
     expr->def.block.exprs_length = exprs_length;

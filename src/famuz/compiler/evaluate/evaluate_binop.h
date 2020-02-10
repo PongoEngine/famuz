@@ -297,13 +297,13 @@ Expr *generate_binop_shift_right(Expr *left, Expr *right)
     }
 }
 
-Expr *generate_binop(Expr *expr, Environment *environment)
+Expr *generate_binop(Expr *expr, Environment *environment, Stack *stack)
 {
     Expr *e1 = expr->def.binop.e1;
     Expr *e2 = expr->def.binop.e2;
 
-    Expr *left = generate(e1, environment);
-    Expr *right = generate(e2, environment);
+    Expr *left = generate(e1, environment, stack);
+    Expr *right = generate(e2, environment, stack);
 
     switch (expr->def.binop.type) {
         case B_ADD: return generate_binop_add(left, right);

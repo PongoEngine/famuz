@@ -31,14 +31,14 @@
 #include "../environment.h"
 
 /**
- * Parsing parens "(...)"
+ * Parsing print "print(...)"
  */
-Expr *parse_print(TokenScanner *scanner, Environment *environment)
+Expr *parse_print(TokenScanner *scanner, Environment *environment, Stack *stack)
 {
     token_scanner_next(scanner); //consume "print"
     token_scanner_next(scanner); //consume "("
-    Expr *expr = parse_expression(0, scanner, environment);
-    print(generate(expr, environment), expr->pos);
+    Expr *expr = parse_expression(0, scanner, environment, stack);
+    print(generate(expr, environment, stack), expr->pos);
     token_scanner_next(scanner); //consume ")"
     return expr;
 }

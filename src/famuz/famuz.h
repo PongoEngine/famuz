@@ -25,6 +25,7 @@
 #include <stdbool.h>
 #include "./compiler/lexer/lexer.h"
 #include "./compiler/environment.h"
+#include "./compiler/stack.h"
 #include "./compiler/parser/parser.h"
 
 void famuz_parse(char *file_path)
@@ -35,9 +36,10 @@ void famuz_parse(char *file_path)
         lex(file_path, &token_scanner);
 
          Environment environment = {.cur_index = 0};
+         Stack stack;
          while (token_scanner_has_next(&token_scanner))
          {
-             parse_expression(0, &token_scanner, &environment);
+             parse_expression(0, &token_scanner, &environment, &stack);
          }
     }
 }
