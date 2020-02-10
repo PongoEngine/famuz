@@ -16,18 +16,19 @@ basicSteps = ^1 3 8 2 >> 1
 
 anything = print(basicRhythm + basicSteps)
 print(anything)
-//print((basicRhythm >> 3) + basicSteps)
+print((basicRhythm >> 3))
 
 //func neptune(a :Steps, b :Steps, c :Steps) :Rhythm {
 //    x~~~ x--- x~~~ x~--
 //}
 
-//a = 1
-//b = 4
-//c = 3
-//d = a + b + c
+a = 1
+b = 4
+c = 3
+d = a + b + c
 
-//print(d + 10000)
+result = print(d + 10000)
+print(result)
 ```
 
 ## Famuz Types
