@@ -26,7 +26,7 @@ add_executable(famuz_c
         src/famuz/compiler/evaluate/evaluate_call.h
         src/famuz/compiler/lexer/lexer-token.h
         src/famuz/compiler/lexer/lexer.h
-        src/famuz/compiler/parser/parser-assignment.h
+        src/famuz/compiler/parser/parser-var.h
         src/famuz/compiler/parser/parser-binop.h
         src/famuz/compiler/parser/parser-block.h
         src/famuz/compiler/parser/parser-call.h

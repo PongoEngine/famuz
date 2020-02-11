@@ -33,21 +33,29 @@
  */
 Expr *parse_call(Expr *left, TokenScanner *scanner, Environment *environment, Stack *stack)
 {
-    Token *token = token_scanner_next(scanner);
-    Expr *expr = expr_call(environment_next_expr((environment)), token);
+    Token *token = token_scanner_next(scanner); //left parentheses
+    static char temp[SETTINGS_LEXEME_LENGTH];
+    strcpy(temp, left->def.constant.value.identifier);
+    Expr *expr = expr_call(left, &token->pos, temp);
 
-    expr->def.call.identifier = left->def.constant.value.identifier;
-    Expr *param = parse_expression(PRECEDENCE_CALL, scanner, environment, stack);
     int params_length = 0;
+    int assigned_pointer = false;
     while (token_scanner_has_next(scanner) && token_scanner_peek(scanner)->type != RIGHT_PARAM)
     {
-        token_scanner_next(scanner);
+        Expr *param = parse_expression(PRECEDENCE_CALL, scanner, environment, stack);
+        if(!assigned_pointer) {
+            expr->def.call.params = param;
+            assigned_pointer = true;
+        }
+        if(token_scanner_peek((scanner))->type == COMMA) {
+            token_scanner_next(scanner); //consume comma
+        }
+        params_length++;
     }
+
     expr->def.call.params_length = params_length;
-
     assert_that(token_scanner_has_next(scanner) && token_scanner_next(scanner)->type == RIGHT_PARAM, "EXPECTED RIGHT PARAM");
-
-    expr->ret_type = -1;
+    expr->ret_type = environment_type_from_name(environment, expr->def.call.identifier);
 
     return expr;
 }

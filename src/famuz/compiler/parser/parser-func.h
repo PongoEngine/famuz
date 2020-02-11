@@ -29,29 +29,55 @@
 #include "../environment.h"
 #include "../stack.h"
 
+void parse_func_params(TokenScanner *scanner, EFunction *func) {
+    int args_length = 0;
+    while (token_scanner_peek(scanner)->type != RIGHT_PARAM)
+    {
+        Token *param_name = token_scanner_next(scanner);
+        strcpy(func->params[args_length].name, param_name->lexeme);
+
+        if(token_scanner_peek((scanner))->type == COLON) {
+            token_scanner_next(scanner); //consume colon
+            Token *t = token_scanner_next(scanner);
+            func->params[args_length].ret_type = type_get_type(t->lexeme);
+        }
+        else {
+            func->params[args_length].ret_type = TYPE_MONOMORPH;
+        }
+
+        if(token_scanner_peek((scanner))->type == COMMA) {
+            token_scanner_next(scanner); //consume comma
+        }
+
+        args_length++;
+    }
+    func->args_length = args_length;
+    assert_that(token_scanner_next(scanner)->type == RIGHT_PARAM, "\nparse_func :NOT LEFT PARENTHESES!\n");
+}
+
+void parse_func_type(TokenScanner *scanner, Expr *expr) {
+    if(token_scanner_peek((scanner))->type == COLON) {
+        token_scanner_next(scanner); //consume colon
+        Token *t = token_scanner_next(scanner);
+        expr->ret_type = type_get_type(t->lexeme);
+    }
+}
+
 /**
  * Parsing function "main(...)"
  */
 Expr *parse_func(TokenScanner *scanner, Environment *environment, Stack *stack)
 {
-    Token *token = token_scanner_next(scanner);
-    Expr *expr = expr_function(environment_next_expr((environment)), token);
+    Token *token = token_scanner_next(scanner); //func
+    Token *id = token_scanner_next(scanner); //id (ex: main)
+    Expr *expr = expr_function(environment_next_expr((environment)), &token->pos, id->lexeme);
+    token_scanner_next(scanner); //consume left parentheses
 
-    Expr *functionIdentifier = parse_identifier(scanner, environment);
-    expr->def.function.identifier = functionIdentifier->def.constant.value.identifier;
-    assert_that(token_scanner_next(scanner)->type == LEFT_PARAM, "\nparse_func :NOT LEFT PARENTHESES!\n");
-    while (token_scanner_peek(scanner)->type != RIGHT_PARAM)
-    {
-        token_scanner_next(scanner);
-    }
-    assert_that(token_scanner_next(scanner)->type == RIGHT_PARAM, "\nparse_func :NOT LEFT PARENTHESES!\n");
+    parse_func_params(scanner, &expr->def.function);
+    parse_func_type(scanner, expr);
 
-    if(token_scanner_peek((scanner))->type == COLON) {
-        token_scanner_next(scanner);
-        parse_identifier(scanner, environment);
-    }
-    Expr *body = parse_expression(PRECEDENCE_CALL, scanner, environment, stack);
+    expr->def.function.body = parse_expression(PRECEDENCE_CALL, scanner, environment, stack);
 
-    position_union(expr->pos, body->pos, expr->pos);
+    position_union(expr->pos, expr->def.function.body->pos, expr->pos);
     return expr;
 }

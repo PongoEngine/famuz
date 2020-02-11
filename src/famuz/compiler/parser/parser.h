@@ -41,7 +41,7 @@ struct Expr *parse_expression(int precedence, TokenScanner *scanner, Environment
 #include "./parser-call.h"
 #include "./parser-parentheses.h"
 #include "./parser-print.h"
-#include "./parser-assignment.h"
+#include "parser-var.h"
 #include "./parser-identifier.h"
 #include "./parser-typing.h"
 #include "./parser-scale.h"
@@ -103,7 +103,7 @@ struct Expr *parse_expression_infix(Expr *left, TokenScanner *scanner, Environme
     case ADD:
         return parse_binop(left, scanner, environment, stack);
     case ASSIGNMENT:
-        return parse_assignment(left, scanner, environment, stack);
+        return parse_var(left, scanner, environment, stack);
     case LEFT_PARAM:
         return parse_call(left, scanner, environment, stack);
     case COLON:

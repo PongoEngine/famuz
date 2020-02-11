@@ -33,6 +33,6 @@ typedef struct
 {
     Parameter params[SETTINGS_PARAM_LENGTH];
     int args_length;
-    char *identifier;
+    char identifier[SETTINGS_LEXEME_LENGTH];
     Expr *body;
 } EFunction;

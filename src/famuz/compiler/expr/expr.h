@@ -91,15 +91,17 @@ Expr *expr_block(Expr *expr, Token *token) {
     return expr;
 }
 
-Expr *expr_call(Expr *expr, Token *token) {
+Expr *expr_call(Expr *expr, Position *position, char *identifier) {
     expr->def_type = E_CALL;
-    expr->pos = &(token->pos);
+    strcpy(expr->def.call.identifier, identifier);
+    expr->pos = position;
     return expr;
 }
 
-Expr *expr_function(Expr *expr, Token *token) {
+Expr *expr_function(Expr *expr, Position *position, char *identifier) {
     expr->def_type = E_FUNC;
-    expr->pos = &(token->pos);
+    strcpy(expr->def.function.identifier, identifier);
+    expr->pos = position;
     return expr;
 }
 

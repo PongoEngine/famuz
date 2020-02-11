@@ -50,6 +50,15 @@ Expr *environment_expr_from_name(Environment *environment, char *name)
     return NULL;
 }
 
+Type environment_type_from_name(Environment *environment, char *name)
+{
+    Expr *expr = environment_expr_from_name(environment, name);
+    if(expr != NULL) {
+        return expr->ret_type;
+    }
+    return -1;
+}
+
 Expr *environment_next_expr(Environment *environment)
 {
     return &(environment->exprs[environment->cur_index++]);

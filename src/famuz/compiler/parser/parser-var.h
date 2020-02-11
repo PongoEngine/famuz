@@ -30,9 +30,9 @@
 #include <string.h>
 
 /**
- * Parsing assigning "... = ..."
+ * Parsing var "... = ..."
  */
-Expr *parse_assignment(Expr *left, TokenScanner *scanner, Environment *environment, Stack *stack) {
+Expr *parse_var(Expr *left, TokenScanner *scanner, Environment *environment, Stack *stack) {
     token_scanner_next(scanner);
     static char temp[SETTINGS_LEXEME_LENGTH];
     strcpy(temp, left->def.constant.value.identifier);
