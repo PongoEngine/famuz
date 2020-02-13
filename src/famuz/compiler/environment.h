@@ -31,16 +31,26 @@
 typedef struct {
     int size;
     int capacity;
+    int id;
+    int parent;
     Expr *exprs;
 } Environment;
 
-void initialize(Environment *environment) {
+typedef struct {
+    int size;
+    int capacity;
+    Environment *environments;
+} Environments;
+
+void _environment_initialize(Environment *environment, int id, int parent) {
     environment->size = 0;
+    environment->parent = parent;
+    environment->id = id;
     environment->capacity = SETTINGS_ENVIRONMENT_INITIAL;
     environment->exprs = malloc(sizeof(Expr) * environment->capacity);
 }
 
-void resize(Environment *environment) {
+void _environment_resize(Environment *environment) {
     if (environment->size >= environment->capacity) {
         environment->capacity *= 2;
         environment->exprs = realloc(environment->exprs, environment->capacity * sizeof(Expr));
@@ -48,7 +58,7 @@ void resize(Environment *environment) {
 }
 
 Expr *environment_create(Environment *environment) {
-    resize(environment);
+    _environment_resize(environment);
     Expr expr;
     memcpy (&environment->exprs[environment->size++], &expr, sizeof(Expr));
     return &environment->exprs[environment->size - 1];
@@ -64,4 +74,26 @@ Expr *environment_find(Environment *environment, char *name) {
         }
     }
     return NULL;
+}
+
+void environments_initialize(Environments *environments) {
+    environments->size = 0;
+    environments->capacity = SETTINGS_ENVIRONMENT_INITIAL;
+    environments->environments = malloc(sizeof(Environment) * environments->capacity);
+}
+
+void _environments_resize(Environments *environments) {
+    if (environments->size >= environments->capacity) {
+        environments->capacity *= 2;
+        environments->environments = realloc(environments->environments, environments->capacity * sizeof(Environment));
+    }
+}
+
+Environment *environments_create(Environments *environments, int parent) {
+    _environments_resize(environments);
+    Environment environment;
+    int environment_id = environments->size;
+    _environment_initialize(&environment, environment_id, parent);
+    memcpy (&environments->environments[environments->size++], &environment, sizeof(Environment));
+    return &environments->environments[environments->size - 1];
 }

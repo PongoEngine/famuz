@@ -66,8 +66,7 @@ void parse_func_type(TokenScanner *scanner, Expr *expr) {
 /**
  * Parsing function "main(...)"
  */
-Expr *parse_func(TokenScanner *scanner, Environment *environment, Stack *stack)
-{
+Expr *parse_func(TokenScanner *scanner, Environment *environment, Environments *environments, Stack *stack) {
     Token *token = token_scanner_next(scanner); //func
     Token *id = token_scanner_next(scanner); //id (ex: main)
     Expr *expr = expr_function(environment_create(environment), &token->pos, id->lexeme);
@@ -76,7 +75,7 @@ Expr *parse_func(TokenScanner *scanner, Environment *environment, Stack *stack)
     parse_func_params(scanner, &expr->def.function);
     parse_func_type(scanner, expr);
 
-    expr->def.function.body = parse_expression(PRECEDENCE_CALL, scanner, environment, stack);
+    expr->def.function.body = parse_expression(PRECEDENCE_CALL, scanner, environment, environments, stack);
 
     position_union(expr->pos, expr->def.function.body->pos, expr->pos);
     return expr;

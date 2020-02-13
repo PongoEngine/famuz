@@ -31,8 +31,8 @@
 /**
  * Parsing call "arp(...)"
  */
-Expr *parse_call(Expr *left, TokenScanner *scanner, Environment *environment, Stack *stack)
-{
+Expr *
+parse_call(Expr *left, TokenScanner *scanner, Environment *environment, Environments *environments, Stack *stack) {
     Token *token = token_scanner_next(scanner); //left parentheses
     static char temp[SETTINGS_LEXEME_LENGTH];
     strcpy(temp, left->def.constant.value.identifier);
@@ -40,9 +40,8 @@ Expr *parse_call(Expr *left, TokenScanner *scanner, Environment *environment, St
 
     int params_length = 0;
     int assigned_pointer = false;
-    while (token_scanner_has_next(scanner) && token_scanner_peek(scanner)->type != RIGHT_PARAM)
-    {
-        Expr *param = parse_expression(PRECEDENCE_CALL, scanner, environment, stack);
+    while (token_scanner_has_next(scanner) && token_scanner_peek(scanner)->type != RIGHT_PARAM) {
+        Expr *param = parse_expression(PRECEDENCE_CALL, scanner, environment, environments, stack);
         if(!assigned_pointer) {
             expr->def.call.params = param;
             assigned_pointer = true;

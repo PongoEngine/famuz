@@ -31,13 +31,13 @@
 /**
  * Parsing parens "(...)"
  */
-Expr *parse_parentheses(TokenScanner *scanner, Environment *environment, Stack *stack)
-{
+Expr *parse_parentheses(TokenScanner *scanner, Environment *environment, Environments *environments, Stack *stack) {
     Token *token = token_scanner_next(scanner);
     Expr *expr = expr_parentheses(environment_create(environment), token);
 
-    expr->def.parentheses.e = parse_expression(0, scanner, environment, stack);
-    assert_that(token_scanner_has_next(scanner) && token_scanner_next(scanner)->type == RIGHT_PARAM, "\nparse_parentheses: EXPECTED RIGHT PARAM\n");
+    expr->def.parentheses.e = parse_expression(0, scanner, environment, environments, stack);
+    assert_that(token_scanner_has_next(scanner) && token_scanner_next(scanner)->type == RIGHT_PARAM,
+                "\nparse_parentheses: EXPECTED RIGHT PARAM\n");
     expr->ret_type = expr->def.parentheses.e->ret_type;
     return expr;
 }
