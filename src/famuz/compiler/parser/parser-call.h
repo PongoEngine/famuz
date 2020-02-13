@@ -32,7 +32,7 @@
  * Parsing call "arp(...)"
  */
 Expr *
-parse_call(Expr *left, TokenScanner *scanner, Environment *environment, Environments *environments, Stack *stack) {
+parse_call(Expr *left, TokenScanner *scanner, int env_id, Environments *environments, Stack *stack) {
     Token *token = token_scanner_next(scanner); //left parentheses
     static char temp[SETTINGS_LEXEME_LENGTH];
     strcpy(temp, left->def.constant.value.identifier);
@@ -41,8 +41,8 @@ parse_call(Expr *left, TokenScanner *scanner, Environment *environment, Environm
     int params_length = 0;
     int assigned_pointer = false;
     while (token_scanner_has_next(scanner) && token_scanner_peek(scanner)->type != RIGHT_PARAM) {
-        Expr *param = parse_expression(PRECEDENCE_CALL, scanner, environment, environments, stack);
-        if(!assigned_pointer) {
+        Expr *param = parse_expression(PRECEDENCE_CALL, scanner, env_id, environments, stack);
+        if (!assigned_pointer) {
             expr->def.call.params = param;
             assigned_pointer = true;
         }
@@ -55,7 +55,7 @@ parse_call(Expr *left, TokenScanner *scanner, Environment *environment, Environm
     expr->def.call.params_length = params_length;
     assert_that(token_scanner_has_next(scanner) && token_scanner_next(scanner)->type == RIGHT_PARAM,
                 "EXPECTED RIGHT PARAM");
-    Expr *function_def = environment_find(environment, expr->def.call.identifier);
+    Expr *function_def = environment_find(environments, env_id, expr->def.call.identifier);
     expr->ret_type = function_def == NULL ? -1 : function_def->ret_type;
 
     return expr;

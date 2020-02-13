@@ -29,17 +29,15 @@
 /**
  * Parsing steps "0 1 2 3"
  */
-Expr *parse_steps(TokenScanner *scanner, Environment *environment)
-{
+Expr *parse_steps(TokenScanner *scanner, Environments *environments, int env_id) {
     Token *token = token_scanner_next(scanner);
-    Expr *expr = expr_constant_steps(environment_create(environment), token);
+    Expr *expr = expr_constant_steps(environment_create_expr(environments, env_id), token);
 
     expr->def.constant.type = TYPE_STEPS;
     Scanner steps_scanner = {.content = token->lexeme, .cur_index = 0, .length = strlen(token->lexeme)};
     int index = 0;
 
-    while (scanner_has_next(&steps_scanner))
-    {
+    while (scanner_has_next(&steps_scanner)) {
         char c = scanner_next(&steps_scanner);
         int d = c - '0';
         expr->def.constant.value.steps.steps[index++] = d;

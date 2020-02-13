@@ -31,11 +31,11 @@
 /**
  * Parsing parens "(...)"
  */
-Expr *parse_parentheses(TokenScanner *scanner, Environment *environment, Environments *environments, Stack *stack) {
+Expr *parse_parentheses(TokenScanner *scanner, int env_id, Environments *environments, Stack *stack) {
     Token *token = token_scanner_next(scanner);
-    Expr *expr = expr_parentheses(environment_create(environment), token);
+    Expr *expr = expr_parentheses(environment_create_expr(environments, env_id), token);
 
-    expr->def.parentheses.e = parse_expression(0, scanner, environment, environments, stack);
+    expr->def.parentheses.e = parse_expression(0, scanner, env_id, environments, stack);
     assert_that(token_scanner_has_next(scanner) && token_scanner_next(scanner)->type == RIGHT_PARAM,
                 "\nparse_parentheses: EXPECTED RIGHT PARAM\n");
     expr->ret_type = expr->def.parentheses.e->ret_type;

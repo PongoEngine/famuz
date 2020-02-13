@@ -30,10 +30,9 @@
 /**
  * Parsing number "3493"
  */
-Expr *parse_number(TokenScanner *scanner, Environment *environment)
-{
+Expr *parse_number(TokenScanner *scanner, Environments *environments, int env_id) {
     Token *token = token_scanner_next(scanner);
-    Expr *expr = expr_constant_number(environment_create(environment), token);
+    Expr *expr = expr_constant_number(environment_create_expr(environments, env_id), token);
 
     expr->def.constant.type = TYPE_NUMBER;
     expr->def.constant.value.number = atoi(token->lexeme);

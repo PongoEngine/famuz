@@ -57,14 +57,16 @@ void _environment_resize(Environment *environment) {
     }
 }
 
-Expr *environment_create(Environment *environment) {
+Expr *environment_create_expr(Environments *environments, int env_id) {
+    Environment *environment = &environments->environments[env_id];
     _environment_resize(environment);
     Expr expr;
     memcpy (&environment->exprs[environment->size++], &expr, sizeof(Expr));
     return &environment->exprs[environment->size - 1];
 }
 
-Expr *environment_find(Environment *environment, char *name) {
+Expr *environment_find(Environments *environments, int env_id, char *name) {
+    Environment *environment = &environments->environments[env_id];
     for (int i = 0; i < environment->size; i++) {
         if (strcmp(environment->exprs[i].def.var.identifier, name) == 0) {
             return &environment->exprs[i];
@@ -89,11 +91,11 @@ void _environments_resize(Environments *environments) {
     }
 }
 
-Environment *environments_create(Environments *environments, int parent) {
+int environments_create_environment(Environments *environments, int parent) {
     _environments_resize(environments);
     Environment environment;
     int environment_id = environments->size;
     _environment_initialize(&environment, environment_id, parent);
     memcpy (&environments->environments[environments->size++], &environment, sizeof(Environment));
-    return &environments->environments[environments->size - 1];
+    return environments->size - 1;
 }

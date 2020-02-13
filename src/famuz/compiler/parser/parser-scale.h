@@ -29,10 +29,9 @@
 /**
  * Parsing scale "harmonic-minor"
  */
-Expr *parse_scale(TokenScanner *scanner, Environment *environment)
-{
+Expr *parse_scale(TokenScanner *scanner, Environments *environments, int env_id) {
     Token *token = token_scanner_next(scanner);
-    Expr *expr = expr_constant_scale(environment_create(environment), token);
+    Expr *expr = expr_constant_scale(environment_create_expr(environments, env_id), token);
 
     expr->def.constant.type = TYPE_SCALE;
     expr->def.constant.value.scale = type_get_scale(token->lexeme);

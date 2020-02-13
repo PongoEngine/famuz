@@ -32,9 +32,9 @@
  * Parsing binary operation "... + ..."
  */
 Expr *
-parse_binop(Expr *left, TokenScanner *scanner, Environment *environment, Environments *environments, Stack *stack) {
+parse_binop(Expr *left, TokenScanner *scanner, int env_id, Environments *environments, Stack *stack) {
     Token *token = token_scanner_next(scanner);
-    Expr *expr = expr_binop(environment_create(environment), token);
+    Expr *expr = expr_binop(environment_create_expr(environments, env_id), token);
 
     if (strcmp(token->lexeme, "+") == 0) {
         expr->def.binop.type = B_ADD;
@@ -47,7 +47,7 @@ parse_binop(Expr *left, TokenScanner *scanner, Environment *environment, Environ
     expr->def.binop.e1 = left;
 
     if (assert_that(token_scanner_has_next(scanner), "Cannot parse binary expression")) {
-        Expr *right = parse_expression(PRECEDENCE_SUM, scanner, environment, environments, stack);
+        Expr *right = parse_expression(PRECEDENCE_SUM, scanner, env_id, environments, stack);
         expr->def.binop.e2 = right;
         expr->ret_type = right != NULL ? constant_type_add(left->ret_type, right->ret_type) : -1;
     } else {

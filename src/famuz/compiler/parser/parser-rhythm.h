@@ -45,17 +45,15 @@ void parse_rhythm_eat_rest(Scanner *scanner)
 /**
  * Parsing rhythm "x~~~ x--- x~~~ x~--"
  */
-Expr *parse_rhythm(TokenScanner *scanner, Environment *environment)
-{
+Expr *parse_rhythm(TokenScanner *scanner, Environments *environments, int env_id) {
     Token *token = token_scanner_next(scanner);
-    Expr *expr = expr_constant_rhythm(environment_create(environment), &token->pos);
+    Expr *expr = expr_constant_rhythm(environment_create_expr(environments, env_id), &token->pos);
     Rhythm *rhythm = &(expr->def.constant.value.rhythm);
 
     Scanner rhythm_scanner = {.content = token->lexeme, .cur_index = 0, .length = strlen(token->lexeme)};
     int index = 0;
 
-    while (scanner_has_next(&rhythm_scanner))
-    {
+    while (scanner_has_next(&rhythm_scanner)) {
         if (scanner_peek(&rhythm_scanner) == 'x')
         {
             int start = rhythm_scanner.cur_index;

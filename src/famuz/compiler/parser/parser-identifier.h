@@ -29,8 +29,7 @@
 /**
  * Parsing name "..."
  */
-Expr *parse_identifier(TokenScanner *scanner, Environment *environment)
-{
+Expr *parse_identifier(TokenScanner *scanner, Environments *environments, int env_id) {
     Token *token = token_scanner_next(scanner);
-    return expr_constant_identifier(environment_create(environment), &token->pos, token->lexeme);
+    return expr_constant_identifier(environment_create_expr(environments, env_id), &token->pos, token->lexeme);
 }

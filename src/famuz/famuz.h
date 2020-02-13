@@ -41,11 +41,11 @@ void famuz_parse(char *file_path)
 
         Environments environments;
         environments_initialize(&environments);
-        Environment *environment = environments_create(&environments, -1);
+        int env_id = environments_create_environment(&environments, -1);
 
         Stack stack;
         while (token_scanner_has_next(&token_scanner)) {
-            parse_expression(0, &token_scanner, environment, &environments, &stack);
+            parse_expression(0, &token_scanner, env_id, &environments, &stack);
         }
     }
 }
