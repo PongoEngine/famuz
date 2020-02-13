@@ -326,10 +326,10 @@ void evaluate_binop_shift_right(Stack *stack, Expr *left, Expr *right)
     }
 }
 
-void evaluate_binop(Expr *expr, Environments *environments, int env_id, Stack *stack) {
+void evaluate_binop(Expr *expr, Environments *environments, int env_id, int expr_id, Stack *stack) {
     //pushing params to stack in reverse
-    evaluate(expr->def.binop.e2, environments, env_id, stack);
-    evaluate(expr->def.binop.e1, environments, env_id, stack);
+    evaluate(expr->def.binop.e2, environments, env_id, expr_id, stack);
+    evaluate(expr->def.binop.e1, environments, env_id, expr_id, stack);
 
     Expr *left = stack_pop(stack);
     Expr *right = stack_pop(stack);
