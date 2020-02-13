@@ -33,10 +33,10 @@
 /**
  * Parsing print "print(...)"
  */
-Expr *parse_print(TokenScanner *scanner, int env_id, Environments *environments, Stack *stack) {
+Expr *parse_print(TokenScanner *scanner, Environments *environments, int env_id, Stack *stack) {
     token_scanner_next(scanner); //consume "print"
     token_scanner_next(scanner); //consume "("
-    Expr *expr = parse_expression(0, scanner, env_id, environments, stack);
+    Expr *expr = parse_expression(0, scanner, environments, env_id, stack);
     evaluate(expr, environments, env_id, stack);
     print(stack_pop(stack), expr->pos);
     assert_that(stack->cur_index == 0, "Stack is not empty!");

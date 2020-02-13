@@ -32,10 +32,10 @@
 /**
  * Parsing var "... = ..."
  */
-Expr *parse_var(Expr *left, TokenScanner *scanner, int env_id, Environments *environments, Stack *stack) {
+Expr *parse_var(Expr *left, TokenScanner *scanner, Environments *environments, int env_id, Stack *stack) {
     token_scanner_next(scanner);
     static char temp[SETTINGS_LEXEME_LENGTH];
     strcpy(temp, left->def.constant.value.identifier);
-    Expr *e = parse_expression(PRECEDENCE_ASSIGNMENT, scanner, env_id, environments, stack);;
+    Expr *e = parse_expression(PRECEDENCE_ASSIGNMENT, scanner, environments, env_id, stack);;
     return expr_var(left, left->pos, e, temp);
 }

@@ -28,7 +28,7 @@
 #include "../stack.h"
 
 struct Expr *
-parse_expression(int precedence, TokenScanner *scanner, int env_id, Environments *environments,
+parse_expression(int precedence, TokenScanner *scanner, Environments *environments, int env_id,
                  Stack *stack);
 
 #include "../expr/expr.h"
@@ -53,7 +53,7 @@ parse_expression(int precedence, TokenScanner *scanner, int env_id, Environments
 #include "../environment.h"
 
 struct Expr *
-parse_expression_prefix(TokenScanner *scanner, int env_id, Environments *environments, Stack *stack) {
+parse_expression_prefix(TokenScanner *scanner, Environments *environments, int env_id, Stack *stack) {
     Token *token = token_scanner_peek(scanner);
 
     switch (token->type) {
@@ -70,13 +70,13 @@ parse_expression_prefix(TokenScanner *scanner, int env_id, Environments *environ
     case RHYTHM:
         return parse_rhythm(scanner, environments, env_id);
     case LEFT_PARAM:
-        return parse_parentheses(scanner, env_id, environments, stack);
+        return parse_parentheses(scanner, environments, env_id, stack);
     case LEFT_BRACKET:
-        return parse_block(scanner, env_id, environments, stack);
+        return parse_block(scanner, environments, env_id, stack);
     case FUNC:
-        return parse_func(scanner, env_id, environments, stack);
+        return parse_func(scanner, environments, env_id, stack);
     case PRINT:
-        return parse_print(scanner, env_id, environments, stack);
+        return parse_print(scanner, environments, env_id, stack);
     case RIGHT_PARAM:
     case RIGHT_BRACKET:
     case COMMA:
@@ -96,23 +96,23 @@ parse_expression_prefix(TokenScanner *scanner, int env_id, Environments *environ
 }
 
 struct Expr *
-parse_expression_infix(Expr *left, TokenScanner *scanner, int env_id, Environments *environments,
+parse_expression_infix(Expr *left, TokenScanner *scanner, Environments *environments, int env_id,
                        Stack *stack) {
     Token *token = token_scanner_peek(scanner);
 
     switch (token->type) {
         case ADD:
-            return parse_binop(left, scanner, env_id, environments, stack);
+            return parse_binop(left, scanner, environments, env_id, stack);
         case ASSIGNMENT:
-            return parse_var(left, scanner, env_id, environments, stack);
+            return parse_var(left, scanner, environments, env_id, stack);
         case LEFT_PARAM:
-            return parse_call(left, scanner, env_id, environments, stack);
+            return parse_call(left, scanner, environments, env_id, stack);
     case COLON:
         return parse_typing(left, scanner, env_id);
     case SHIFT_LEFT:
-        return parse_binop(left, scanner, env_id, environments, stack);
+        return parse_binop(left, scanner, environments, env_id, stack);
     case SHIFT_RIGHT:
-        return parse_binop(left, scanner, env_id, environments, stack);
+        return parse_binop(left, scanner, environments, env_id, stack);
     case RIGHT_PARAM:
     case LEFT_BRACKET:
     case RIGHT_BRACKET:
@@ -133,10 +133,10 @@ parse_expression_infix(Expr *left, TokenScanner *scanner, int env_id, Environmen
 }
 
 struct Expr *
-parse_expression(int precedence, TokenScanner *scanner, int env_id, Environments *environments,
+parse_expression(int precedence, TokenScanner *scanner, Environments *environments, int env_id,
                  Stack *stack) {
     if (token_scanner_has_next(scanner)) {
-        Expr *left = parse_expression_prefix(scanner, env_id, environments, stack);
+        Expr *left = parse_expression_prefix(scanner, environments, env_id, stack);
         if (!assert_that(left != NULL, "\nIN PARSE EXPRESSION LEFT IS NULL\n")) {
             if (token_scanner_has_next(scanner)) {
                 token_scanner_next(scanner);
@@ -147,7 +147,7 @@ parse_expression(int precedence, TokenScanner *scanner, int env_id, Environments
         bool has_next = token_scanner_has_next(scanner);
         while (has_next && precedence < get_precedence(scanner))
         {
-            left = parse_expression_infix(left, scanner, env_id, environments, stack);
+            left = parse_expression_infix(left, scanner, environments, env_id, stack);
             has_next = token_scanner_has_next(scanner);
         }
         return left;

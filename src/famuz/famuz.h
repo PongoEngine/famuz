@@ -45,7 +45,7 @@ void famuz_parse(char *file_path)
 
         Stack stack;
         while (token_scanner_has_next(&token_scanner)) {
-            parse_expression(0, &token_scanner, env_id, &environments, &stack);
+            parse_expression(0, &token_scanner, &environments, env_id, &stack);
         }
     }
 }

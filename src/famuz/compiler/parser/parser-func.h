@@ -66,18 +66,18 @@ void parse_func_type(TokenScanner *scanner, Expr *expr) {
 /**
  * Parsing function "main(...)"
  */
-Expr *parse_func(TokenScanner *scanner, int parent_env_id, Environments *environments, Stack *stack) {
+Expr *parse_func(TokenScanner *scanner, Environments *environments, int env_id, Stack *stack) {
 
     Token *token = token_scanner_next(scanner); //func
     Token *id = token_scanner_next(scanner); //id (ex: main)
-    Expr *expr = expr_function(environment_create_expr(environments, parent_env_id), &token->pos, id->lexeme);
+    Expr *expr = expr_function(environment_create_expr(environments, env_id), &token->pos, id->lexeme);
     token_scanner_next(scanner); //consume left parentheses
 
     parse_func_params(scanner, &expr->def.function);
     parse_func_type(scanner, expr);
 
 //    int env_id = environments_create_environment(environments, env_id);
-    expr->def.function.body = parse_expression(PRECEDENCE_CALL, scanner, parent_env_id, environments, stack);
+    expr->def.function.body = parse_expression(PRECEDENCE_CALL, scanner, environments, env_id, stack);
 
     position_union(expr->pos, expr->def.function.body->pos, expr->pos);
     return expr;
