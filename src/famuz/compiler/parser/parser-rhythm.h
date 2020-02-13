@@ -48,7 +48,7 @@ void parse_rhythm_eat_rest(Scanner *scanner)
 Expr *parse_rhythm(TokenScanner *scanner, Environment *environment)
 {
     Token *token = token_scanner_next(scanner);
-    Expr *expr = expr_constant_rhythm(environment_next_expr((environment)), &token->pos);
+    Expr *expr = expr_constant_rhythm(environment_create(environment), &token->pos);
     Rhythm *rhythm = &(expr->def.constant.value.rhythm);
 
     Scanner rhythm_scanner = {.content = token->lexeme, .cur_index = 0, .length = strlen(token->lexeme)};

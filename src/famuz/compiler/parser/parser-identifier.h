@@ -32,5 +32,5 @@
 Expr *parse_identifier(TokenScanner *scanner, Environment *environment)
 {
     Token *token = token_scanner_next(scanner);
-    return expr_constant_identifier(environment_next_expr((environment)), &token->pos, token->lexeme);
+    return expr_constant_identifier(environment_create(environment), &token->pos, token->lexeme);
 }

@@ -47,15 +47,17 @@ Expr *parse_call(Expr *left, TokenScanner *scanner, Environment *environment, St
             expr->def.call.params = param;
             assigned_pointer = true;
         }
-        if(token_scanner_peek((scanner))->type == COMMA) {
+        if (token_scanner_peek((scanner))->type == COMMA) {
             token_scanner_next(scanner); //consume comma
         }
         params_length++;
     }
 
     expr->def.call.params_length = params_length;
-    assert_that(token_scanner_has_next(scanner) && token_scanner_next(scanner)->type == RIGHT_PARAM, "EXPECTED RIGHT PARAM");
-    expr->ret_type = environment_type_from_name(environment, expr->def.call.identifier);
+    assert_that(token_scanner_has_next(scanner) && token_scanner_next(scanner)->type == RIGHT_PARAM,
+                "EXPECTED RIGHT PARAM");
+    Expr *function_def = environment_find(environment, expr->def.call.identifier);
+    expr->ret_type = function_def == NULL ? -1 : function_def->ret_type;
 
     return expr;
 }

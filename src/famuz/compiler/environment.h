@@ -23,43 +23,45 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+#include <stdlib.h>
 #include <string.h>
 #include "./settings.h"
 #include "./expr/expr.h"
 
-typedef struct
-{
-    Expr exprs[SETTINGS_EXPRS_LENGTH];
-    int cur_index;
+typedef struct {
+    int size;
+    int capacity;
+    Expr *exprs;
 } Environment;
 
-Expr *environment_expr_from_name(Environment *environment, char *name)
-{
-    for (size_t i = 0; i < environment->cur_index; i++)
-    {
-        Expr *expr = &(environment->exprs[i]);
-        if (expr->def_type == E_VAR && strcmp(expr->def.var.identifier, name) == 0)
-        {
-            return expr;
+void initialize(Environment *environment) {
+    environment->size = 0;
+    environment->capacity = SETTINGS_ENVIRONMENT_INITIAL;
+    environment->exprs = malloc(sizeof(Expr) * environment->capacity);
+}
+
+void resize(Environment *environment) {
+    if (environment->size >= environment->capacity) {
+        environment->capacity *= 2;
+        environment->exprs = realloc(environment->exprs, environment->capacity * sizeof(Expr));
+    }
+}
+
+Expr *environment_create(Environment *environment) {
+    resize(environment);
+    Expr expr;
+    memcpy (&environment->exprs[environment->size++], &expr, sizeof(Expr));
+    return &environment->exprs[environment->size - 1];
+}
+
+Expr *environment_find(Environment *environment, char *name) {
+    for (int i = 0; i < environment->size; i++) {
+        if (strcmp(environment->exprs[i].def.var.identifier, name) == 0) {
+            return &environment->exprs[i];
         }
-        else if (expr->def_type == E_FUNC && strcmp(expr->def.function.identifier, name) == 0)
-        {
-            return expr;
+        if (strcmp(environment->exprs[i].def.function.identifier, name) == 0) {
+            return &environment->exprs[i];
         }
     }
     return NULL;
-}
-
-Type environment_type_from_name(Environment *environment, char *name)
-{
-    Expr *expr = environment_expr_from_name(environment, name);
-    if(expr != NULL) {
-        return expr->ret_type;
-    }
-    return -1;
-}
-
-Expr *environment_next_expr(Environment *environment)
-{
-    return &(environment->exprs[environment->cur_index++]);
 }

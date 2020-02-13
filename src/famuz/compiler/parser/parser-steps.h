@@ -32,7 +32,7 @@
 Expr *parse_steps(TokenScanner *scanner, Environment *environment)
 {
     Token *token = token_scanner_next(scanner);
-    Expr *expr = expr_constant_steps(environment_next_expr((environment)), token);
+    Expr *expr = expr_constant_steps(environment_create(environment), token);
 
     expr->def.constant.type = TYPE_STEPS;
     Scanner steps_scanner = {.content = token->lexeme, .cur_index = 0, .length = strlen(token->lexeme)};

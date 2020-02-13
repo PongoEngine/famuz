@@ -39,11 +39,14 @@ void famuz_parse(char *file_path)
 
         lex(file_path, content, &token_scanner);
 
-         Environment environment = {.cur_index = 0};
-         Stack stack;
-         while (token_scanner_has_next(&token_scanner))
-         {
-             parse_expression(0, &token_scanner, &environment, &stack);
-         }
+//        Environments environments = {.cur_index = 0};
+        Environment environment;
+        initialize(&environment);
+//        create_environment(&environments, -1);
+
+        Stack stack;
+        while (token_scanner_has_next(&token_scanner)) {
+            parse_expression(0, &token_scanner, &environment, &stack);
+        }
     }
 }

@@ -33,7 +33,7 @@
  */
 Expr *parse_binop(Expr *left, TokenScanner *scanner, Environment *environment, Stack *stack) {
     Token *token = token_scanner_next(scanner);
-    Expr *expr = expr_binop(environment_next_expr((environment)), token);
+    Expr *expr = expr_binop(environment_create(environment), token);
 
     if(strcmp(token->lexeme, "+") == 0) {
         expr->def.binop.type = B_ADD;

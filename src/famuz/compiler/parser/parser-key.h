@@ -33,7 +33,7 @@
 Expr *parse_key(TokenScanner *scanner, Environment *environment)
 {
     Token *token = token_scanner_next(scanner);
-    Expr *expr = expr_constant_key(environment_next_expr((environment)), token);
+    Expr *expr = expr_constant_key(environment_create(environment), token);
 
     expr->def.constant.type = TYPE_KEY;
     expr->def.constant.value.key = type_get_key(token->lexeme);

@@ -50,7 +50,7 @@ void evaluate_const(Expr *expr, Environment *environment, Stack *stack) {
     switch (expr->def.constant.type) {
         case TYPE_IDENTIFIER: {
             char *name = expr->def.constant.value.identifier;
-            Expr *ref = environment_expr_from_name(environment, name);
+            Expr *ref = environment_find(environment, name);
             evaluate(ref, environment, stack);
             break;
         }

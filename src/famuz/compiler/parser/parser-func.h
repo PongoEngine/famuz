@@ -70,7 +70,7 @@ Expr *parse_func(TokenScanner *scanner, Environment *environment, Stack *stack)
 {
     Token *token = token_scanner_next(scanner); //func
     Token *id = token_scanner_next(scanner); //id (ex: main)
-    Expr *expr = expr_function(environment_next_expr((environment)), &token->pos, id->lexeme);
+    Expr *expr = expr_function(environment_create(environment), &token->pos, id->lexeme);
     token_scanner_next(scanner); //consume left parentheses
 
     parse_func_params(scanner, &expr->def.function);

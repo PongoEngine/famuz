@@ -33,7 +33,7 @@
 Expr *parse_number(TokenScanner *scanner, Environment *environment)
 {
     Token *token = token_scanner_next(scanner);
-    Expr *expr = expr_constant_number(environment_next_expr((environment)), token);
+    Expr *expr = expr_constant_number(environment_create(environment), token);
 
     expr->def.constant.type = TYPE_NUMBER;
     expr->def.constant.value.number = atoi(token->lexeme);
