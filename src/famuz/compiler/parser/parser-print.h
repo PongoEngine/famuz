@@ -37,7 +37,8 @@ Expr *parse_print(TokenScanner *scanner, Environments *environments, int env_id,
     token_scanner_next(scanner); //consume "print"
     token_scanner_next(scanner); //consume "("
     Expr *expr = parse_expression(0, scanner, environments, env_id, stack);
-    evaluate(expr, environments, env_id, -1, stack);
+    ExprLocation loc;
+    evaluate(expr, environments, env_id, &loc, stack);
     print(stack_pop(stack), expr->pos);
     assert_that(stack->cur_index == 0, "Stack is not empty!");
     token_scanner_next(scanner); //consume ")"

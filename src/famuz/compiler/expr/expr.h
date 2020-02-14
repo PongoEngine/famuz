@@ -31,6 +31,11 @@
 
 typedef struct Expr Expr;
 
+typedef struct {
+    int env_id;
+    int expr_id;
+} ExprLocation;
+
 #include "./expr-constant.h"
 #include "./expr-binop.h"
 #include "./expr-var.h"
