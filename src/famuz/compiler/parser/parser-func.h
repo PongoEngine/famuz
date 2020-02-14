@@ -77,9 +77,9 @@ Expr *parse_func(TokenScanner *scanner, Environments *environments, int parent_e
     parse_func_type(scanner, expr);
 
     int env_id = environments_create_environment(environments, parent_env_id);
-    expr->def.function.loc = &parse_expression(PRECEDENCE_CALL, scanner, environments, env_id, stack)->loc;
+    expr->def.function.body_loc = &parse_expression(PRECEDENCE_CALL, scanner, environments, env_id, stack)->loc;
 
-    Expr *body = environments_get_expr(environments, expr->def.function.loc);
+    Expr *body = environments_get_expr(environments, expr->def.function.body_loc);
     position_union(expr->pos, body->pos, expr->pos);
     return expr;
 }

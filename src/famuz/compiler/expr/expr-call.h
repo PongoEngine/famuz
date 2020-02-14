@@ -26,6 +26,6 @@
 typedef struct
 {
     char identifier[SETTINGS_LEXEME_LENGTH];
-    ExprLocation *loc;
+    ExprLocation *call_loc;
     int params_length;
 } ECall;

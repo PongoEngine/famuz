@@ -34,5 +34,5 @@ typedef struct
     Parameter params[SETTINGS_PARAM_LENGTH];
     int args_length;
     char identifier[SETTINGS_LEXEME_LENGTH];
-    ExprLocation *loc;
+    ExprLocation *body_loc;
 } EFunction;

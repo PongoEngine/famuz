@@ -33,12 +33,12 @@ void evaluate(Environments *environments, int env_id, ExprLocation *loc, Stack *
 
 void evaluate_parentheses(Environments *environments, int env_id, ExprLocation *loc, Stack *stack) {
     Expr *expr = environments_get_expr(environments, loc);
-    evaluate(environments, env_id, expr->def.parentheses.loc, stack);
+    evaluate(environments, env_id, expr->def.parentheses.expr_loc, stack);
 }
 
 void evaluate_var(Environments *environments, int env_id, ExprLocation *loc, Stack *stack) {
     Expr *expr = environments_get_expr(environments, loc);
-    evaluate(environments, env_id, expr->def.var.loc, stack);
+    evaluate(environments, env_id, expr->def.var.expr_loc, stack);
 }
 
 void evaluate_block(Environments *environments, int env_id, ExprLocation *loc, Stack *stack) {

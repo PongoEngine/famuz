@@ -25,6 +25,6 @@
 
 typedef struct
 {
-    ExprLocation *loc;
+    ExprLocation *block_loc;
     int exprs_length;
 } EBlock;

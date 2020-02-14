@@ -126,7 +126,7 @@ Expr *expr_var(Expr *expr, Position *position, Expr *e, char *identifier) {
         assert_that(false, "Invalid Type\n");
     }
     expr->pos = position;
-    expr->def.var.loc = &e->loc;
+    expr->def.var.expr_loc = &e->loc;
     strcpy(expr->def.var.identifier, identifier);
     return expr;
 }

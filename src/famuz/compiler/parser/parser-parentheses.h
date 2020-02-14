@@ -37,7 +37,7 @@ Expr *parse_parentheses(TokenScanner *scanner, Environments *environments, int e
 
     Expr *expr_p = parse_expression(0, scanner, environments, env_id, stack);
 
-    expr->def.parentheses.loc = &expr_p->loc;
+    expr->def.parentheses.expr_loc = &expr_p->loc;
     assert_that(token_scanner_has_next(scanner) && token_scanner_next(scanner)->type == RIGHT_PARAM,
                 "\nparse_parentheses: EXPECTED RIGHT PARAM\n");
     expr->ret_type = expr_p->ret_type;

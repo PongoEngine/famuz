@@ -34,7 +34,7 @@ Expr *parse_block(TokenScanner *scanner, Environments *environments, int env_id,
     Token *token = token_scanner_next(scanner);
     Expr *expr = expr_block(environment_create_expr(environments, env_id), token);
 
-    expr->def.block.loc = &parse_expression(0, scanner, environments, env_id, stack)->loc;
+    expr->def.block.block_loc = &parse_expression(0, scanner, environments, env_id, stack)->loc;
 //    Expr *last_expr = expr->def.block.exprs;
 
     int exprs_length = 1;

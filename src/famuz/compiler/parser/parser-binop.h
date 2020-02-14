@@ -44,14 +44,14 @@ parse_binop(Expr *left, TokenScanner *scanner, Environments *environments, int e
         expr->def.binop.type = B_SHIFT_RIGHT;
     }
 
-    expr->def.binop.loc1 = &left->loc;
+    expr->def.binop.expr_loc1 = &left->loc;
 
     if (assert_that(token_scanner_has_next(scanner), "Cannot parse binary expression")) {
         Expr *right = parse_expression(PRECEDENCE_SUM, scanner, environments, env_id, stack);
-        expr->def.binop.loc2 = &right->loc;
+        expr->def.binop.expr_loc2 = &right->loc;
         expr->ret_type = right != NULL ? constant_type_add(left->ret_type, right->ret_type) : -1;
     } else {
-        expr->def.binop.loc2 = NULL;
+        expr->def.binop.expr_loc2 = NULL;
         expr->ret_type = -1;
     }
     return expr;
