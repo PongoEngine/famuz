@@ -34,8 +34,8 @@ Expr *parse_block(TokenScanner *scanner, Environments *environments, int env_id,
     Token *token = token_scanner_next(scanner);
     Expr *expr = expr_block(environment_create_expr(environments, env_id), token);
 
-    expr->def.block.exprs = parse_expression(0, scanner, environments, env_id, stack);
-    Expr *last_expr = expr->def.block.exprs;
+    expr->def.block.loc = &parse_expression(0, scanner, environments, env_id, stack)->loc;
+//    Expr *last_expr = expr->def.block.exprs;
 
     int exprs_length = 1;
     while (token_scanner_has_next(scanner) && token_scanner_peek(scanner)->type != RIGHT_BRACKET) {
@@ -46,7 +46,7 @@ Expr *parse_block(TokenScanner *scanner, Environments *environments, int env_id,
 
     Token *right_bracket = token_scanner_next(scanner);
     assert_that(right_bracket->type == RIGHT_BRACKET, "EXPECTED RIGHT BRACKET");
-    expr->ret_type = last_expr->ret_type;
+//    expr->ret_type = last_expr->ret_type;
     position_union(expr->pos, &right_bracket->pos, expr->pos);
     return expr;
 }

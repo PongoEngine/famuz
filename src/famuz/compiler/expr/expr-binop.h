@@ -30,9 +30,8 @@ typedef enum
     B_SHIFT_RIGHT,
 } BinopType;
 
-typedef struct
-{
-    Expr *e1;
-    Expr *e2;
+typedef struct {
+    ExprLocation *loc1;
+    ExprLocation *loc2;
     BinopType type;
 } EBinop;

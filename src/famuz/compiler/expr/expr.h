@@ -73,6 +73,7 @@ typedef struct Expr {
 
     } def;
     Position *pos;
+    ExprLocation loc;
     ExprDefType def_type;
     Type ret_type;
 } Expr;
@@ -125,7 +126,7 @@ Expr *expr_var(Expr *expr, Position *position, Expr *e, char *identifier) {
         assert_that(false, "Invalid Type\n");
     }
     expr->pos = position;
-    expr->def.var.e = e;
+    expr->def.var.loc = &e->loc;
     strcpy(expr->def.var.identifier, identifier);
     return expr;
 }

@@ -43,7 +43,7 @@ parse_call(Expr *left, TokenScanner *scanner, Environments *environments, int en
     while (token_scanner_has_next(scanner) && token_scanner_peek(scanner)->type != RIGHT_PARAM) {
         Expr *param = parse_expression(PRECEDENCE_CALL, scanner, environments, env_id, stack);
         if (!assigned_pointer) {
-            expr->def.call.params = param;
+            expr->def.call.loc = &param->loc;
             assigned_pointer = true;
         }
         if (token_scanner_peek((scanner))->type == COMMA) {

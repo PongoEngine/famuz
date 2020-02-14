@@ -26,32 +26,36 @@
 #include "../environment.h"
 #include "../stack.h"
 
-void evaluate(Expr *expr, Environments *environments, int env_id, ExprLocation *loc, Stack *stack);
+void evaluate(Environments *environments, int env_id, ExprLocation *loc, Stack *stack);
 
 #include "evaluate_binop.h"
 #include "evaluate_call.h"
 
-void evaluate_parentheses(Expr *expr, Environments *environments, int env_id, ExprLocation *loc, Stack *stack) {
-    evaluate(expr->def.parentheses.e, environments, env_id, loc, stack);
+void evaluate_parentheses(Environments *environments, int env_id, ExprLocation *loc, Stack *stack) {
+    Expr *expr = environments_get_expr(environments, loc);
+    evaluate(environments, env_id, expr->def.parentheses.loc, stack);
 }
 
-void evaluate_var(Expr *expr, Environments *environments, int env_id, ExprLocation *loc, Stack *stack) {
-    evaluate(expr->def.var.e, environments, env_id, loc, stack);
+void evaluate_var(Environments *environments, int env_id, ExprLocation *loc, Stack *stack) {
+    Expr *expr = environments_get_expr(environments, loc);
+    evaluate(environments, env_id, expr->def.var.loc, stack);
 }
 
-void evaluate_block(Expr *expr, Environments *environments, int env_id, ExprLocation *loc, Stack *stack) {
+void evaluate_block(Environments *environments, int env_id, ExprLocation *loc, Stack *stack) {
 }
 
-void evaluate_function(Expr *expr, Environments *environments, int env_id, ExprLocation *loc, Stack *stack) {
+void evaluate_function(Environments *environments, int env_id, ExprLocation *loc, Stack *stack) {
+    Expr *expr = environments_get_expr(environments, loc);
     stack_push(stack, expr);
 }
 
-void evaluate_const(Expr *expr, Environments *environments, int env_id, ExprLocation *loc, Stack *stack) {
+void evaluate_const(Environments *environments, int env_id, ExprLocation *loc, Stack *stack) {
+    Expr *expr = environments_get_expr(environments, loc);
     switch (expr->def.constant.type) {
         case TYPE_IDENTIFIER: {
             char *name = expr->def.constant.value.identifier;
             Expr *ref = environment_find(environments, env_id, name);
-            evaluate(ref, environments, env_id, loc, stack);
+            evaluate(environments, env_id, &ref->loc, stack);
             break;
         }
         case TYPE_NUMBER:
@@ -69,28 +73,29 @@ void evaluate_const(Expr *expr, Environments *environments, int env_id, ExprLoca
     }
 }
 
-void evaluate(Expr *expr, Environments *environments, int env_id, ExprLocation *loc, Stack *stack) {
+void evaluate(Environments *environments, int env_id, ExprLocation *loc, Stack *stack) {
+    Expr *expr = environments_get_expr(environments, loc);
     switch (expr->def_type) {
         case E_CONST:
-            evaluate_const(expr, environments, env_id, loc, stack);
+            evaluate_const(environments, env_id, loc, stack);
             break;
         case E_VAR:
-            evaluate_var(expr, environments, env_id, loc, stack);
+            evaluate_var(environments, env_id, loc, stack);
             break;
         case E_CALL:
-            evaluate_call(expr, environments, env_id, stack);
+            evaluate_call(environments, env_id, loc, stack);
             break;
         case E_BINOP:
-            evaluate_binop(expr, environments, env_id, loc, stack);
+            evaluate_binop(environments, env_id, loc, stack);
             break;
         case E_PAREN:
-            evaluate_parentheses(expr, environments, env_id, loc, stack);
+            evaluate_parentheses(environments, env_id, loc, stack);
             break;
         case E_BLOCK:
-            evaluate_block(expr, environments, env_id, loc, stack);
+            evaluate_block(environments, env_id, loc, stack);
             break;
         case E_FUNC:
-            evaluate_function(expr, environments, env_id, loc, stack);
+            evaluate_function(environments, env_id, loc, stack);
             break;
     }
 }

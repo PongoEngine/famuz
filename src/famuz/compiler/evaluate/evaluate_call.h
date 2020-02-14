@@ -26,5 +26,5 @@
 #include "../../util/assert.h"
 #include "../environment.h"
 
-void evaluate_call(Expr *expr, Environments *environments, int env_id, Stack *stack) {
+void evaluate_call(Environments *environments, int env_id, ExprLocation *loc, Stack *stack) {
 }

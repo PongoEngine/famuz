@@ -25,5 +25,5 @@
 
 typedef struct
 {
-    Expr *e;
+    ExprLocation *loc;
 } EParentheses;

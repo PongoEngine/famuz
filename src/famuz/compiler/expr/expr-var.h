@@ -27,6 +27,6 @@
 
 typedef struct
 {
-    Expr *e;
+    ExprLocation *loc;
     char identifier[SETTINGS_LEXEME_LENGTH];
 } EVar;
