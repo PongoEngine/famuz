@@ -1,5 +1,7 @@
+import famuz.Famuz;
+
 class Main {
 	static function main() {
-		trace("Hello, world!");
+		Famuz.parse("./data/test2.famuz");
 	}
 }

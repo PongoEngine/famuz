@@ -20,3 +20,19 @@ package famuz;
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+
+import sys.io.File;
+import famuz.compiler.lexer.Lexer;
+import famuz.compiler.Token.TokenScanner;
+import famuz.compiler.Expr;
+import famuz.compiler.Type;
+
+class Famuz
+{
+    public static function parse(filePath :String) : Void
+    {
+        var content = File.getContent(filePath);
+        var tokens = Lexer.lex(filePath, content);
+        var tokenScanner = new TokenScanner(tokens);
+    }
+}

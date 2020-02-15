@@ -1,4 +1,4 @@
-package famuz.util;
+package famuz.compiler;
 
 /*
  * Copyright (c) 2020 Jeremy Meltingtallow
@@ -20,3 +20,35 @@ package famuz.util;
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+
+
+enum Scale
+{
+    SCALE_MAJOR;
+    SCALE_NATURAL_MINOR;
+    SCALE_MELODIC_MINOR;
+    SCALE_HARMONIC_MINOR;
+    INVALID;
+}
+
+enum abstract ReservedScale(String) from String 
+{
+    var Major = "major";
+    var NaturalMinor = "natural-minor";
+    var MelodicMinor = "melodic-minor";
+    var HarmonicMinor = "harmonic-minor";
+}
+
+class ScaleTools
+{
+    public static function getScale(reserved :ReservedScale) : Scale
+    {
+        return switch reserved {
+            case Major: SCALE_MAJOR;
+            case NaturalMinor: SCALE_NATURAL_MINOR;
+            case MelodicMinor: SCALE_MELODIC_MINOR;
+            case HarmonicMinor: SCALE_HARMONIC_MINOR;
+        }
+        return INVALID;
+    }
+}

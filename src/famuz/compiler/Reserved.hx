@@ -20,3 +20,16 @@ package famuz.compiler;
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+
+class Reserved
+{
+    public static function isFunc(str :String) : Bool
+    {
+        return str == "func";
+    }
+
+    public static function isPrint(str :String) : Bool
+    {
+        return str == "print";
+    }
+}

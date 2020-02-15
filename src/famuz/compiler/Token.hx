@@ -20,3 +20,72 @@ package famuz.compiler;
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+
+import famuz.compiler.Position;
+
+enum TokenType
+{
+    IDENTIFIER;
+    COLON;
+    SCALE;
+    FUNC;
+    PRINT;
+    KEY;
+    WHITESPACE;
+    NUMBER;
+    STEPS;
+    RHYTHM;
+    COMMENT;
+    ADD;
+    ASSIGNMENT;
+    LEFT_PARAM;
+    RIGHT_PARAM;
+    LEFT_BRACKET;
+    RIGHT_BRACKET;
+    COMMA;
+    SHIFT_LEFT;
+    SHIFT_RIGHT;
+    SLASH;
+}
+
+class Token
+{
+    public var type :TokenType;
+    public var lexeme :String;
+    public var pos :Position;
+
+    public function new(lexeme :String, type :TokenType, pos :Position) : Void
+    {
+        this.lexeme = lexeme;
+        this.type = type;
+        this.pos = pos;
+    }
+}
+
+class TokenScanner
+{
+    public var tokens :Array<Token>;
+    public var curIndex :Int;
+
+    public function new(tokens :Array<Token>) : Void
+    {
+        this.tokens = tokens;
+        this.curIndex = 0;
+    }
+
+    public function hasNext() : Bool
+    {
+        return this.curIndex < this.tokens.length;
+    }
+
+    public function next() : Token
+    {
+        return this.tokens[this.curIndex++];
+    }
+
+    public function peek() : Token
+    {
+        return this.tokens[this.curIndex];
+    }
+}
+

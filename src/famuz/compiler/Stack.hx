@@ -20,3 +20,26 @@ package famuz.compiler;
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+
+abstract Stack(Array<Expr>)
+{
+    public inline function new() : Void
+    {
+        this = [];
+    }
+
+    public inline function push(expr :Expr) : Void
+    {
+        this.push(expr);
+    }
+
+    public inline function pop() : Expr
+    {
+        return this.pop();
+    }
+
+    public inline function peek() : Expr
+    {
+        return this[this.length-1];
+    }
+}

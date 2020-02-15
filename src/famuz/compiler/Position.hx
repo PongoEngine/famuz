@@ -20,3 +20,30 @@ package famuz.compiler;
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+
+class Position
+{
+    public var file :String;
+    public var content :String;
+    public var line :Int;
+    public var min :Int;
+    public var max :Int;
+
+    public function new(line :Int, min :Int, max :Int, file :String, content :String) : Void
+    {
+        this.file = file;
+        this.content = content;
+        this.line = line;
+        this.min = min;
+        this.max = max;
+    }
+
+    public static function position_union(a :Position, b :Position, u :Position) : Void
+    {
+        u.file = a.file;
+        u.content = a.content;
+        u.line = (a.line < b.line) ? a.line : b.line;
+        u.min = (a.min < b.min) ? a.min : b.min;
+        u.max = (a.max > b.max) ? a.max : b.max;
+    }
+}

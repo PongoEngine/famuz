@@ -20,3 +20,36 @@ package famuz.util;
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+
+ import famuz.compiler.lexer.LexerToken;
+
+class StringUtil
+{
+    public static function isWhitespace(ch :String) : Bool
+    {
+        return ch == L_SPACE || ch == L_LINE || ch == L_TAB;
+    }
+
+    public static function isIdentifer(ch :String) : Bool
+    {
+        return ch != L_ADD && ch != L_FORWARD_SLASH &&
+            ch != L_TAB && ch != L_SPACE && ch != L_LINE &&
+            ch != L_LEFT_PARAM && ch != L_RIGHT_PARAM && ch != L_COMMA;
+    }
+
+    public static function isRhythm(ch :String) : Bool
+    {
+        return ch == L_HIT || ch == L_DURATION || ch == L_REST;
+    }
+
+    public static function isDigit(ch :String) : Bool
+    {
+        var code = ch.charCodeAt(0);
+        return code > 47 && code < 58;
+    }
+
+    public static function isEmpty(str :String) : Bool
+    {
+        return str == null || str.length == 0;
+    }
+}

@@ -2,3 +2,5 @@
 -D analyzer-optimize
 -main Main
 --interp
+# -hl hello.hl
+# -cmd hl hello.hl
