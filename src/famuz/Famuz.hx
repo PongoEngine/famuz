@@ -26,6 +26,8 @@ import famuz.compiler.lexer.Lexer;
 import famuz.compiler.Token.TokenScanner;
 import famuz.compiler.Expr;
 import famuz.compiler.Type;
+import famuz.compiler.parser.Parser;
+import famuz.compiler.parser.Precedence;
 
 class Famuz
 {

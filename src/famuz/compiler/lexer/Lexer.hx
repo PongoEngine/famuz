@@ -24,7 +24,7 @@ package famuz.compiler.lexer;
 import famuz.compiler.lexer.LexerToken;
 import famuz.compiler.Token;
 import famuz.compiler.Scanner;
-import famuz.compiler.Reserved;
+using famuz.compiler.Reserved;
 
 class Lexer
 {
@@ -105,8 +105,7 @@ class Lexer
         var lexeme = scanner.consumeIdentifier();
         var max = scanner.curIndex;
         var position = new Position(line, min, max, scanner.filepath, scanner.content);
-        // token.type = word_type(token.lexeme);
-        return new Token(lexeme, null, position);
+        return new Token(lexeme, wordType(lexeme), position);
     }
 
     public static function createTokenRhythm(scanner :Scanner) : Token
@@ -164,28 +163,18 @@ class Lexer
         return new Token(lexeme, NUMBER, position);
     }
 
-// TokenType word_type(char *str)
-// {
-//     if (type_is_key(str))
-//     {
-//         return KEY;
-//     }
-//     else if (type_is_scale(str))
-//     {
-//         return SCALE;
-//     }
-//     else if (reserved_is_func(str))
-//     {
-//         return FUNC;
-//     }
-//     else if (reserved_is_print(str))
-//     {
-//         return PRINT;
-//     }
-//     else
-//     {
-//         return IDENTIFIER;
-//     }
-// }
+    public static function wordType(str :String) : TokenType
+    {
+        if (str.isKey())
+            return KEY;
+        else if (str.isScale())
+            return SCALE;
+        else if (str.isFunc())
+            return FUNC;
+        else if (str.isPrint())
+            return PRINT;
+        else
+            return IDENTIFIER;
+    }
 
  }

@@ -21,6 +21,9 @@ package famuz.compiler;
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+import famuz.compiler.Scale;
+import famuz.compiler.Key;
+
 class Reserved
 {
     public static function isFunc(str :String) : Bool
@@ -31,5 +34,15 @@ class Reserved
     public static function isPrint(str :String) : Bool
     {
         return str == "print";
+    }
+
+    public static function isScale(str :String) : Bool
+    {
+        return ScaleTools.getScale(str) != INVALID;
+    }
+
+    public static function isKey(str :String) : Bool
+    {
+        return KeyTools.getKey(str) != INVALID;
     }
 }

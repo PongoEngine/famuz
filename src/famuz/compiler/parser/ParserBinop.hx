@@ -20,3 +20,13 @@ package famuz.compiler.parser;
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+
+import famuz.compiler.Token;
+
+class ParserBinop
+{
+    public static function parse(left :Expr, scanner :TokenScanner, environment :Environment) : Expr
+    {
+        return null;
+    }
+}

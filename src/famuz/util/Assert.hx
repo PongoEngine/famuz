@@ -20,3 +20,18 @@ package famuz.util;
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+
+import haxe.macro.Expr;
+import haxe.macro.ExprTools;
+
+class Assert
+{
+    public static function that(isTrue :Bool, msg :String) : Bool
+    {
+        if (!isTrue)
+        {
+            trace(msg);
+        }
+        return isTrue;
+    }
+}

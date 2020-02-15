@@ -1,3 +1,5 @@
+package famuz.compiler.parser;
+
 /*
  * Copyright (c) 2020 Jeremy Meltingtallow
  *
@@ -18,3 +20,30 @@
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+
+import famuz.compiler.Token;
+
+class Precedence
+{
+    private static inline var PRECEDENCE_ASSIGNMENT = 1;
+    private static inline var PRECEDENCE_SUM = 2;
+    private static inline var PRECEDENCE_CALL = 3;
+    private static inline var PRECEDENCE_TYPE = 4;
+
+    public static function getPrecedence(scanner :TokenScanner) : Int
+    {
+        switch (scanner.peek().type)
+        {
+            case ASSIGNMENT:
+                return PRECEDENCE_ASSIGNMENT;
+            case ADD, SHIFT_LEFT, SHIFT_RIGHT:
+                return PRECEDENCE_SUM;
+            case LEFT_PARAM:
+                return PRECEDENCE_CALL;
+            case COLON:
+                return PRECEDENCE_TYPE;
+            default:
+                return 0;
+        }
+    }
+}
