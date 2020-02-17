@@ -21,7 +21,7 @@ package famuz.compiler;
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import famuz.compiler.Environment;
+import famuz.compiler.Context;
 import famuz.compiler.Key;
 import famuz.compiler.Scale;
 
@@ -73,7 +73,7 @@ enum ExprDef {
 }
 
 typedef Expr = {
-    var env :Environment;
+    var context :Context;
     var def :ExprDef;
     var pos :Position;
     var ret :Type;

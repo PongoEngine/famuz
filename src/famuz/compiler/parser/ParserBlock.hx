@@ -29,24 +29,22 @@ using famuz.compiler.Position;
 
 class ParserBlock
 {
-    public static function parse(scanner :TokenScanner, environment :Environment) : Expr
+    public static function parse(scanner :TokenScanner, context :Context) : Expr
     {
         var token = scanner.next();
         var exprs :Array<Expr> = [];
-        environment = environment.createChild();
+        context = context.createChild();
 
         while (scanner.hasNext() && scanner.peek().type != RIGHT_BRACKET) {
-            exprs.push(Parser.parse(0, scanner, environment));
+            exprs.push(Parser.parse(0, scanner, context));
         }
-
-        trace(exprs);
 
         var rightBracket = scanner.next();
         Assert.that(rightBracket.type == RIGHT_BRACKET, "EXPECTED RIGHT BRACKET");
         var ret = exprs.length > 0 ? exprs[exprs.length-1].ret : TInvalid;
 
         return {
-            env: environment,
+            context: context,
             def: EBlock(exprs),
             pos: Position.union(token.pos, rightBracket.pos), 
             ret: ret

@@ -25,7 +25,7 @@ import famuz.compiler.Token;
 
 class ParserSteps
 {
-    public static function parse(scanner :TokenScanner, environment :Environment) : Expr
+    public static function parse(scanner :TokenScanner, context :Context) : Expr
     {
         var token = scanner.next();
         var stepsScanner = new Scanner(token.lexeme, token.pos.file);
@@ -38,7 +38,7 @@ class ParserSteps
         }
 
         return {
-            env: environment,
+            context: context,
             def: EConstant(CSteps(steps)),
             pos: token.pos,
             ret: TSteps

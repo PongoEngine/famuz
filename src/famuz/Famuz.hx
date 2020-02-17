@@ -21,7 +21,7 @@ package famuz;
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import famuz.compiler.Environment;
+import famuz.compiler.Context;
 import sys.io.File;
 import famuz.compiler.lexer.Lexer;
 import famuz.compiler.Token.TokenScanner;
@@ -34,7 +34,7 @@ class Famuz
         var content = File.getContent(filePath);
         var tokens = Lexer.lex(filePath, content);
         var tokenScanner = new TokenScanner(tokens);
-        var env = new Environment();
+        var env = new Context();
         while(tokenScanner.hasNext()) {
             Parser.parse(0, tokenScanner, env);
         }

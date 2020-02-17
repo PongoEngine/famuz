@@ -27,7 +27,7 @@ using famuz.compiler.Type.TypeTools;
 
 class ParserTyping
 {
-    public static function parse(left :Expr, scanner :TokenScanner, environment :Environment) : Expr
+    public static function parse(left :Expr, scanner :TokenScanner, context :Context) : Expr
     {
         scanner.next(); //consume ':'
         var token = scanner.next(); //get type "ex: Rhythm"

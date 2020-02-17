@@ -27,7 +27,7 @@ import famuz.util.Assert;
 
 class ParserRhythm
 {
-    public static function parse(scanner :TokenScanner, environment :Environment) : Expr
+    public static function parse(scanner :TokenScanner, context :Context) : Expr
     {
         var token = scanner.next();
         var rhythmScanner = new Scanner(token.lexeme, token.pos.file);
@@ -52,7 +52,7 @@ class ParserRhythm
         var duration = rhythmScanner.content.length;
 
         return {
-            env: environment,
+            context: context,
             def: EConstant(CRhythm(hits, duration)),
             pos: token.pos,
             ret: TRhythm

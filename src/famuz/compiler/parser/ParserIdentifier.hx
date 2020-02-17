@@ -25,11 +25,11 @@ import famuz.compiler.Token;
 
 class ParserIdentifier
 {
-    public static function parse(scanner :TokenScanner, environment :Environment) : Expr
+    public static function parse(scanner :TokenScanner, context :Context) : Expr
     {
         var token = scanner.next();
         return {
-            env: environment,
+            context: context,
             def: EConstant(CIdentifier(token.lexeme)),
             pos: token.pos,
             ret: TIdent

@@ -25,11 +25,11 @@ import famuz.compiler.Token;
 
 class ParserNumber
 {
-    public static function parse(scanner :TokenScanner, environment :Environment) : Expr
+    public static function parse(scanner :TokenScanner, context :Context) : Expr
     {
         var token = scanner.next();
         return {
-            env: environment,
+            context: context,
             def: EConstant(CNumber(Std.parseInt(token.lexeme))),
             pos: token.pos,
             ret: TNumber

@@ -29,7 +29,7 @@ using famuz.compiler.Type;
 
 class ParserCall
 {
-    public static function parse(left :Expr, scanner :TokenScanner, environment :Environment) : Expr
+    public static function parse(left :Expr, scanner :TokenScanner, context :Context) : Expr
     {
         var funcName = switch left.def {
             case EConstant(constant): {
@@ -44,7 +44,7 @@ class ParserCall
 
         var args :Array<Expr> = [];
         while (scanner.hasNext() && scanner.peek().type != RIGHT_PARAM) {
-            args.push(Parser.parse(PRECEDENCE_CALL, scanner, environment));
+            args.push(Parser.parse(PRECEDENCE_CALL, scanner, context));
             if (scanner.peek().type == COMMA) {
                 scanner.next(); //consume comma
             }
@@ -54,7 +54,7 @@ class ParserCall
         Assert.that(rightParam.type == RIGHT_PARAM, "EXPECTED RIGHT PARAM");
 
         return {
-            env :environment,
+            context: context,
             def: ECall(funcName, args),
             pos: Position.union(left.pos, rightParam.pos),
             ret: TInvalid

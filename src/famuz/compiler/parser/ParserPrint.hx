@@ -28,12 +28,12 @@ import famuz.compiler.evaluate.Evaluate;
 
 class ParserPrint
 {
-    public static function parse(scanner :TokenScanner, environment :Environment) : Expr
+    public static function parse(scanner :TokenScanner, context :Context) : Expr
     {
         var startPos = scanner.next().pos; //consume "print"
         scanner.next(); //consume "("
         var stack = new Stack();
-        var expr = Parser.parse(0, scanner, environment);
+        var expr = Parser.parse(0, scanner, context);
         Evaluate.evaluate(expr, stack);
         var endPos = scanner.next().pos; //consume ")"
 

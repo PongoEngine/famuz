@@ -25,36 +25,36 @@ import famuz.compiler.Expr.Parameter;
 
 class EvaluateCall
 {
-    public static function evaluate(identifier :String, args :Array<Expr>, environment :Environment, stack :Stack) : Void
+    public static function evaluate(identifier :String, args :Array<Expr>, context :Context, stack :Stack) : Void
     {
-        var func = environment.getExpr(identifier);
+        var func = context.getExpr(identifier);
         switch func.def {
             case EFunction(_, params, body): {
-                if(args.length == params.length && body.ret == func.ret) {
-                    wrap(body.env, createEnvWithArgs(args, params));
+                if(args.length == params.length) {
+                    wrap(body.context, createEnvWithArgs(args, params));
                     Evaluate.evaluate(body, stack);
-                    unwrap(body.env);
+                    unwrap(body.context);
                 }
             }
             case _: throw "Needs to be function";
         }
     }
 
-    private static function createEnvWithArgs(args: Array<Expr>, params :Array<Parameter>) : Environment
+    private static function createEnvWithArgs(args: Array<Expr>, params :Array<Parameter>) : Context
     {
-        var env = new Environment();
+        var context = new Context();
         for(i in 0...args.length) {
-            env.addExpr(params[i].name, args[i]);
+            context.addExpr(params[i].name, args[i]);
         }
-        return env;
+        return context;
     }
 
-    private static function wrap(env :Environment, newParent :Environment) {
-        newParent.parent = env.parent;
-        env.parent = newParent;
+    private static function wrap(ctx :Context, newContext :Context) {
+        newContext.parent = ctx.parent;
+        ctx.parent = newContext;
     }
 
-    private static function unwrap(env :Environment) {
-        env.parent = env.parent.parent;
+    private static function unwrap(context :Context) {
+        context.parent = context.parent.parent;
     }
 }

@@ -31,7 +31,7 @@ using famuz.compiler.Type.TypeTools;
 
 class ParserFunc
 {
-    public static function parse(scanner :TokenScanner, environment :Environment) : Expr
+    public static function parse(scanner :TokenScanner, context :Context) : Expr
     {
         var token = scanner.next(); //func
         var identifier = scanner.next().lexeme; //id (ex: main)
@@ -40,15 +40,15 @@ class ParserFunc
         var params = parseParams(scanner);
         var type = parseType(scanner);
 
-        var body = Parser.parse(PRECEDENCE_CALL, scanner, environment);
+        var body = Parser.parse(PRECEDENCE_CALL, scanner, context);
 
         var func :Expr = {
-            env: environment,
+            context: context,
             def: EFunction(identifier, params, body),
             pos: Position.union(token.pos, body.pos),
             ret: type
         };
-        environment.addExpr(identifier, func);
+        context.addExpr(identifier, func);
 
         return func;
     }

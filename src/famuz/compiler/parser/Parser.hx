@@ -41,10 +41,10 @@ using famuz.compiler.parser.Precedence;
 
 class Parser
 {
-    public static function parse(precedence :Int, scanner :TokenScanner, environment :Environment) : Expr
+    public static function parse(precedence :Int, scanner :TokenScanner, context :Context) : Expr
     {
         if (scanner.hasNext()) {
-            var left = parseExpressionPrefix(scanner, environment);
+            var left = parseExpressionPrefix(scanner, context);
             if (!Assert.that(left != null, "IN PARSE EXPRESSION LEFT IS NULL")) {
                 if (scanner.hasNext()) {
                     scanner.next();
@@ -54,7 +54,7 @@ class Parser
 
             while (scanner.hasNext() && precedence < scanner.getPrecedence())
             {
-                left = parseExpressionInfix(left, scanner, environment);
+                left = parseExpressionInfix(left, scanner, context);
             }
             return left;
         }
@@ -64,29 +64,29 @@ class Parser
         }
     }
 
-    private static function parseExpressionPrefix(scanner :TokenScanner, environment :Environment) : Expr
+    private static function parseExpressionPrefix(scanner :TokenScanner, context :Context) : Expr
     {
         return switch (scanner.peek().type) {
             case IDENTIFIER:
-                return ParserIdentifier.parse(scanner, environment);
+                return ParserIdentifier.parse(scanner, context);
             case NUMBER:
-                return ParserNumber.parse(scanner, environment);
+                return ParserNumber.parse(scanner, context);
             case SCALE:
-                return ParserScale.parse(scanner, environment);
+                return ParserScale.parse(scanner, context);
             case KEY:
-                return ParserKey.parse(scanner, environment);
+                return ParserKey.parse(scanner, context);
             case STEPS:
-                return ParserSteps.parse(scanner, environment);
+                return ParserSteps.parse(scanner, context);
             case RHYTHM:
-                return ParserRhythm.parse(scanner, environment);
+                return ParserRhythm.parse(scanner, context);
             case LEFT_PARAM:
-                return ParserParentheses.parse(scanner, environment);
+                return ParserParentheses.parse(scanner, context);
             case LEFT_BRACKET:
-                return ParserBlock.parse(scanner, environment);
+                return ParserBlock.parse(scanner, context);
             case FUNC:
-                return ParserFunc.parse(scanner, environment);
+                return ParserFunc.parse(scanner, context);
             case PRINT:
-                return ParserPrint.parse(scanner, environment);
+                return ParserPrint.parse(scanner, context);
             case RIGHT_PARAM, RIGHT_BRACKET, COMMA, SLASH, 
                 COMMENT, WHITESPACE, ADD, ASSIGNMENT, COLON, 
                 SHIFT_LEFT, SHIFT_RIGHT:
@@ -97,21 +97,21 @@ class Parser
         }
     }
     
-    private static function parseExpressionInfix(left :Expr, scanner :TokenScanner, environment :Environment) : Expr
+    private static function parseExpressionInfix(left :Expr, scanner :TokenScanner, context :Context) : Expr
     {
         return switch (scanner.peek().type) {
             case ADD:
-                return ParserBinop.parse(left, scanner, environment);
+                return ParserBinop.parse(left, scanner, context);
             case ASSIGNMENT:
-                return ParserVar.parse(left, scanner, environment);
+                return ParserVar.parse(left, scanner, context);
             case LEFT_PARAM:
-                return ParserCall.parse(left, scanner, environment);
+                return ParserCall.parse(left, scanner, context);
             case COLON:
-                return ParserTyping.parse(left, scanner, environment);
+                return ParserTyping.parse(left, scanner, context);
             case SHIFT_LEFT:
-                return ParserBinop.parse(left, scanner, environment);
+                return ParserBinop.parse(left, scanner, context);
             case SHIFT_RIGHT:
-                return ParserBinop.parse(left, scanner, environment);
+                return ParserBinop.parse(left, scanner, context);
             case RIGHT_PARAM, LEFT_BRACKET, RIGHT_BRACKET, COMMA, 
                 SLASH, IDENTIFIER, SCALE, KEY, WHITESPACE, STEPS, 
                 COMMENT, RHYTHM, FUNC, PRINT, NUMBER:

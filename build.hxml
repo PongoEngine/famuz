@@ -2,6 +2,3 @@
 -D analyzer-optimize
 -main Main
 --interp
-# -D eval-debugger
-# -hl hello.hl
-# -cmd hl hello.hl

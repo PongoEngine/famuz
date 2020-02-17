@@ -27,16 +27,16 @@ import famuz.compiler.parser.Parser;
 
 class ParserParentheses
 {
-    public static function parse(scanner :TokenScanner, environment :Environment) : Expr
+    public static function parse(scanner :TokenScanner, context :Context) : Expr
     {
         var token = scanner.next();
-        var expr = Parser.parse(0, scanner, environment);
+        var expr = Parser.parse(0, scanner, context);
 
         var rightParentheses = scanner.next();
         Assert.that(rightParentheses.type == RIGHT_PARAM, "EXPECTED RIGHT PARAM");
 
         return {
-            env: environment,
+            context: context,
             def: EParentheses(expr),
             pos: Position.union(token.pos, rightParentheses.pos),
             ret: expr.ret

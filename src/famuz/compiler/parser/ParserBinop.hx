@@ -30,7 +30,7 @@ using famuz.compiler.Type;
 
 class ParserBinop
 {
-    public static function parse(left :Expr, scanner :TokenScanner, environment :Environment) : Expr
+    public static function parse(left :Expr, scanner :TokenScanner, context :Context) : Expr
     {
         var token = scanner.next();
 
@@ -42,17 +42,17 @@ class ParserBinop
         }
 
         if (Assert.that(scanner.hasNext(), "Cannot parse binary expression")) {
-            var right = Parser.parse(PRECEDENCE_SUM, scanner, environment);
+            var right = Parser.parse(PRECEDENCE_SUM, scanner, context);
             var ret = right != null ? left.ret.add(right.ret) : TInvalid;
             return {
-                env: environment,
+                context: context,
                 def: EBinop(op, left, right),
                 pos: token.pos,
                 ret: ret
             };
         } else {
             return {
-                env: environment,
+                context: context,
                 def: EBinop(op, left, null),
                 pos: token.pos,
                 ret: TInvalid

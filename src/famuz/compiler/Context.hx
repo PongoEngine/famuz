@@ -1,4 +1,4 @@
-package famuz.util;
+package famuz.compiler;
 
 /*
  * Copyright (c) 2020 Jeremy Meltingtallow
@@ -20,3 +20,42 @@ package famuz.util;
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+
+import famuz.compiler.Expr;
+
+class Context
+{
+    public var parent :Context = null;
+
+    public function new() : Void
+    {
+        _map = new Map<String, Expr>();
+    }
+
+    public function addExpr(name :String, expr :Expr) : Void
+    {
+        _map.set(name, expr);
+    }
+
+    public function getExpr(name :String) : Expr
+    {
+        if(_map.exists(name)) {
+            return _map.get(name);
+        }
+        else if(this.parent != null) {
+            return this.parent.getExpr(name);
+        }
+        else {
+            return null;
+        }
+    }
+
+    public function createChild() : Context
+    {
+        var context = new Context();
+        context.parent = this;
+        return context;
+    }
+
+    private var _map :Map<String, Expr>;
+}

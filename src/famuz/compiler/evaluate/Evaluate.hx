@@ -31,7 +31,7 @@ class Evaluate
             case EConstant(constant): {
                 switch constant {
                     case CIdentifier(str): {
-                        evaluate(e.env.getExpr(str), stack);
+                        evaluate(e.context.getExpr(str), stack);
                     }
                     case _: stack.push(e);
                 }
@@ -39,13 +39,12 @@ class Evaluate
             case EVar(identifier, expr):
                 evaluate(expr, stack);
             case ECall(identifier, args): 
-                EvaluateCall.evaluate(identifier, args, e.env, stack);
+                EvaluateCall.evaluate(identifier, args, e.context, stack);
             case EBlock(exprs): if(exprs.length > 0) {
-                trace("we blocking!\n");
                 evaluate(exprs[exprs.length-1], stack);
             }
             case EBinop(type, e1, e2): 
-                EvaluateBinop.evaluate(type, e1, e2, e.env, stack);
+                EvaluateBinop.evaluate(type, e1, e2, e.context, stack);
             case EParentheses(expr): 
                 stack.push(expr);
             case EFunction(identifier, params, body): 

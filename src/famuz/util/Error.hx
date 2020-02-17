@@ -1,4 +1,4 @@
-package famuz.compiler;
+package famuz.util;
 
 /*
  * Copyright (c) 2020 Jeremy Meltingtallow
@@ -21,41 +21,7 @@ package famuz.compiler;
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import famuz.compiler.Expr;
-
-class Environment
+class Runti
 {
-    public var parent :Environment = null;
 
-    public function new() : Void
-    {
-        _map = new Map<String, Expr>();
-    }
-
-    public function addExpr(name :String, expr :Expr) : Void
-    {
-        _map.set(name, expr);
-    }
-
-    public function getExpr(name :String) : Expr
-    {
-        if(_map.exists(name)) {
-            return _map.get(name);
-        }
-        else if(this.parent != null) {
-            return this.parent.getExpr(name);
-        }
-        else {
-            return null;
-        }
-    }
-
-    public function createChild() : Environment
-    {
-        var env = new Environment();
-        env.parent = this;
-        return env;
-    }
-
-    private var _map :Map<String, Expr>;
 }

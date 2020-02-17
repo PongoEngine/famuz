@@ -1,37 +1,16 @@
-basicRhythm : Rhythm = (x~~~ x--- x~~~ x~--)
-print(basicRhythm)
-print(^1 3 8 2)
-
-print(1 + 2 + 400)
-
-basicSteps = ^1 3 8 2 >> 1
-print(basicSteps)
-
-anything = print(basicRhythm + basicSteps)
-print(anything)
-print(basicRhythm >> 4)
-
-//func neptune(alpha :Steps) :Steps {
-//    alpha
-//}
-
-a = 1
-b = 4
-c = 3
-d = a + b + c
-
-print(d)
-
-//swag = neptune(^1 3 8 2)
-
-result = print(1)
-print(result)
-//print(neptune)
-//print(swag)
-
-func adding() : Number {
+func adding(neptune :Number) : Number {
     omega = 22
-    3 + 100 + omega
+    hello = 3 + 100 + omega
+    {
+        alpha = 3
+    }
+    robot = {
+        sandwich = 42 + omega
+    }
+    //100 + hello + alpha
+    robot + neptune
 }
 
-print(adding())
+print(adding(100))
+
+//print(1)
