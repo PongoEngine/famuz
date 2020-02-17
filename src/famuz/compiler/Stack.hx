@@ -21,6 +21,7 @@ package famuz.compiler;
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+@:forward(length)
 abstract Stack(Array<Expr>)
 {
     public inline function new() : Void

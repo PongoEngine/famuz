@@ -20,3 +20,37 @@ package famuz.compiler.evaluate;
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+
+import famuz.compiler.evaluate.EvaluateBinop;
+
+class Evaluate
+{
+    public static function evaluate(e :Expr, stack :Stack) : Void
+    {
+        switch (e.def) {
+            case EConstant(constant): {
+                switch constant {
+                    case CIdentifier(str): {
+                        evaluate(e.env.getExpr(str), stack);
+                    }
+                    case _: stack.push(e);
+                }
+            }
+            case EVar(identifier, expr):
+                evaluate(expr, stack);
+            case ECall(identifier, args): 
+                EvaluateCall.evaluate(identifier, args, e.env, stack);
+            case EBlock(exprs): if(exprs.length > 0) {
+                trace("we blocking!\n");
+                evaluate(exprs[exprs.length-1], stack);
+            }
+            case EBinop(type, e1, e2): 
+                EvaluateBinop.evaluate(type, e1, e2, e.env, stack);
+            case EParentheses(expr): 
+                stack.push(expr);
+            case EFunction(identifier, params, body): 
+                stack.push(e);
+        }
+    }
+}
+

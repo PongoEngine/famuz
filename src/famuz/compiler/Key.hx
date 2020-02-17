@@ -43,7 +43,8 @@ enum Key
     INVALID;
 }
 
-enum abstract ReservedKey(String) from String {
+enum abstract ReservedKey(String) from String 
+{
     var C = "C";
     var C_SHARP = "C#";
     var Db = "Db";
@@ -67,7 +68,7 @@ class KeyTools
 {
     public static function getKey(reserved :ReservedKey) : Key
     {
-        return switch reserved {
+        var key = switch reserved {
             case C: KEY_C;
             case C_SHARP: KEY_C_SHARP;
             case Db: KEY_D_FLAT;
@@ -86,6 +87,6 @@ class KeyTools
             case Bb: KEY_B_FLAT;
             case B: KEY_B;
         }
-        return INVALID;
+        return key != null ? key : INVALID;
     }
 }

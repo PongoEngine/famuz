@@ -21,12 +21,75 @@ package famuz.compiler.parser;
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+import famuz.compiler.Expr.Parameter;
 import famuz.compiler.Token;
+import famuz.util.Assert;
+import famuz.compiler.parser.Precedence.*;
+import famuz.compiler.parser.Parser;
+using famuz.compiler.Type;
+using famuz.compiler.Type.TypeTools;
 
 class ParserFunc
 {
     public static function parse(scanner :TokenScanner, environment :Environment) : Expr
     {
-        return null;
+        var token = scanner.next(); //func
+        var identifier = scanner.next().lexeme; //id (ex: main)
+        scanner.next(); //consume left parentheses
+
+        var params = parseParams(scanner);
+        var type = parseType(scanner);
+
+        var body = Parser.parse(PRECEDENCE_CALL, scanner, environment);
+
+        var func :Expr = {
+            env: environment,
+            def: EFunction(identifier, params, body),
+            pos: Position.union(token.pos, body.pos),
+            ret: type
+        };
+        environment.addExpr(identifier, func);
+
+        return func;
+    }
+
+    private static function parseParams(scanner :TokenScanner) : Array<Parameter>
+    {
+        var params :Array<Parameter> = [];
+        while (scanner.peek().type != RIGHT_PARAM) {
+            var name = scanner.next();
+    
+            if(scanner.peek().type == COLON) {
+                scanner.next(); //consume colon
+                var type = scanner.next();
+                params.push({
+                    name: name.lexeme,
+                    type: TypeTools.getType(type.lexeme)
+                });
+            }
+            else {
+                params.push({
+                    name: name.lexeme,
+                    type: TMonomorph
+                });
+            }
+    
+            if(scanner.peek().type == COMMA) {
+                scanner.next(); //consume comma
+            }
+        }
+
+        Assert.that(scanner.next().type == RIGHT_PARAM, "\nparse_func :NOT LEFT PARENTHESES!\n");
+        return params;
+    }
+    
+    private static function parseType(scanner :TokenScanner) : Type
+    {
+        if(scanner.peek().type == COLON) {
+            scanner.next(); //consume colon
+            var t = scanner.next();
+            return TypeTools.getType(t.lexeme);
+        }
+        return TInvalid;
     }
 }

@@ -27,6 +27,12 @@ class ParserIdentifier
 {
     public static function parse(scanner :TokenScanner, environment :Environment) : Expr
     {
-        return null;
+        var token = scanner.next();
+        return {
+            env: environment,
+            def: EConstant(CIdentifier(token.lexeme)),
+            pos: token.pos,
+            ret: TIdent
+        };
     }
 }

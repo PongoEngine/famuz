@@ -21,12 +21,18 @@ package famuz.compiler.parser;
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+import haxe.Json;
 import famuz.compiler.Token;
+using famuz.compiler.Type.TypeTools;
 
 class ParserTyping
 {
     public static function parse(left :Expr, scanner :TokenScanner, environment :Environment) : Expr
     {
-        return null;
+        scanner.next(); //consume ':'
+        var token = scanner.next(); //get type "ex: Rhythm"
+        left.pos = Position.union(left.pos, token.pos);
+        left.ret = TypeTools.getType(token.lexeme);
+        return left;
     }
 }

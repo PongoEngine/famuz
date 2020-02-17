@@ -21,13 +21,11 @@ package famuz;
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+import famuz.compiler.Environment;
 import sys.io.File;
 import famuz.compiler.lexer.Lexer;
 import famuz.compiler.Token.TokenScanner;
-import famuz.compiler.Expr;
-import famuz.compiler.Type;
 import famuz.compiler.parser.Parser;
-import famuz.compiler.parser.Precedence;
 
 class Famuz
 {
@@ -36,5 +34,9 @@ class Famuz
         var content = File.getContent(filePath);
         var tokens = Lexer.lex(filePath, content);
         var tokenScanner = new TokenScanner(tokens);
+        var env = new Environment();
+        while(tokenScanner.hasNext()) {
+            Parser.parse(0, tokenScanner, env);
+        }
     }
 }

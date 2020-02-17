@@ -22,11 +22,34 @@ package famuz.compiler.parser;
  */
 
 import famuz.compiler.Token;
+import famuz.util.Assert;
+import famuz.compiler.parser.Parser;
+using famuz.compiler.Type;
+using famuz.compiler.Position;
 
 class ParserBlock
 {
     public static function parse(scanner :TokenScanner, environment :Environment) : Expr
     {
-        return null;
+        var token = scanner.next();
+        var exprs :Array<Expr> = [];
+        environment = environment.createChild();
+
+        while (scanner.hasNext() && scanner.peek().type != RIGHT_BRACKET) {
+            exprs.push(Parser.parse(0, scanner, environment));
+        }
+
+        trace(exprs);
+
+        var rightBracket = scanner.next();
+        Assert.that(rightBracket.type == RIGHT_BRACKET, "EXPECTED RIGHT BRACKET");
+        var ret = exprs.length > 0 ? exprs[exprs.length-1].ret : TInvalid;
+
+        return {
+            env: environment,
+            def: EBlock(exprs),
+            pos: Position.union(token.pos, rightBracket.pos), 
+            ret: ret
+        };
     }
 }

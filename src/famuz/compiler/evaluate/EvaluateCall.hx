@@ -20,3 +20,41 @@ package famuz.compiler.evaluate;
  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
+
+import famuz.compiler.Expr.Parameter;
+
+class EvaluateCall
+{
+    public static function evaluate(identifier :String, args :Array<Expr>, environment :Environment, stack :Stack) : Void
+    {
+        var func = environment.getExpr(identifier);
+        switch func.def {
+            case EFunction(_, params, body): {
+                if(args.length == params.length && body.ret == func.ret) {
+                    wrap(body.env, createEnvWithArgs(args, params));
+                    Evaluate.evaluate(body, stack);
+                    unwrap(body.env);
+                }
+            }
+            case _: throw "Needs to be function";
+        }
+    }
+
+    private static function createEnvWithArgs(args: Array<Expr>, params :Array<Parameter>) : Environment
+    {
+        var env = new Environment();
+        for(i in 0...args.length) {
+            env.addExpr(params[i].name, args[i]);
+        }
+        return env;
+    }
+
+    private static function wrap(env :Environment, newParent :Environment) {
+        newParent.parent = env.parent;
+        env.parent = newParent;
+    }
+
+    private static function unwrap(env :Environment) {
+        env.parent = env.parent.parent;
+    }
+}

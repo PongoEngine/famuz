@@ -22,11 +22,27 @@ package famuz.compiler.parser;
  */
 
 import famuz.compiler.Token;
+import famuz.compiler.parser.Precedence.*;
+import famuz.compiler.parser.Parser;
 
 class ParserVar
 {
     public static function parse(left :Expr, scanner :TokenScanner, environment :Environment) : Expr
     {
-        return null;
+        scanner.next(); //consume "="
+        var identifier = switch left.def {
+            case EConstant(constant): switch constant {
+                case CIdentifier(str): str;
+                case _: throw "invalid";
+            }
+            case _: throw "invalid";
+        }
+
+        var expr = Parser.parse(PRECEDENCE_ASSIGNMENT, scanner, environment);
+        left.def = EVar(identifier, expr);
+        left.pos = Position.union(left.pos, expr.pos);
+
+        environment.addExpr(identifier, left);
+        return left;
     }
 }

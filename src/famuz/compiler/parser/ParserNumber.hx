@@ -27,6 +27,12 @@ class ParserNumber
 {
     public static function parse(scanner :TokenScanner, environment :Environment) : Expr
     {
-        return null;
+        var token = scanner.next();
+        return {
+            env: environment,
+            def: EConstant(CNumber(Std.parseInt(token.lexeme))),
+            pos: token.pos,
+            ret: TNumber
+        };
     }
 }

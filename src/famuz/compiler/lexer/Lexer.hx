@@ -165,16 +165,21 @@ class Lexer
 
     public static function wordType(str :String) : TokenType
     {
-        if (str.isKey())
+        if (str.isKey()) {
             return KEY;
-        else if (str.isScale())
+        }
+        else if (str.isScale()) {
             return SCALE;
-        else if (str.isFunc())
+        }
+        else if (str.isFunc()) {
             return FUNC;
-        else if (str.isPrint())
+        }
+        else if (str.isPrint()) {
             return PRINT;
-        else
+        }
+        else {
             return IDENTIFIER;
+        }
     }
 
  }

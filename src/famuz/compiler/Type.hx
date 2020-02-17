@@ -21,6 +21,7 @@ package famuz.compiler;
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+@:using(famuz.compiler.Type.TypeTools)
 enum Type
 {
     TIdent;
@@ -78,7 +79,7 @@ class TypeTools
 
     public static function getType(r :ReservedType) : Type
     {
-        return switch (r) {
+        var type = switch (r) {
             case Harmony: THarmony;
             case Key: TKey;
             case Melody: TMelody;
@@ -89,7 +90,7 @@ class TypeTools
             case ScaledKey: TScaledKey;
             case Steps: TSteps;
         }
-        return TInvalid;
+        return type != null ? type : TInvalid;
     }
 
 }

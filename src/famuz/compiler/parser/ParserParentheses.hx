@@ -22,11 +22,24 @@ package famuz.compiler.parser;
  */
 
 import famuz.compiler.Token;
+import famuz.util.Assert;
+import famuz.compiler.parser.Parser;
 
 class ParserParentheses
 {
     public static function parse(scanner :TokenScanner, environment :Environment) : Expr
     {
-        return null;
+        var token = scanner.next();
+        var expr = Parser.parse(0, scanner, environment);
+
+        var rightParentheses = scanner.next();
+        Assert.that(rightParentheses.type == RIGHT_PARAM, "EXPECTED RIGHT PARAM");
+
+        return {
+            env: environment,
+            def: EParentheses(expr),
+            pos: Position.union(token.pos, rightParentheses.pos),
+            ret: expr.ret
+        };
     }
 }

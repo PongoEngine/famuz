@@ -25,10 +25,10 @@ import famuz.compiler.Token;
 
 class Precedence
 {
-    private static inline var PRECEDENCE_ASSIGNMENT = 1;
-    private static inline var PRECEDENCE_SUM = 2;
-    private static inline var PRECEDENCE_CALL = 3;
-    private static inline var PRECEDENCE_TYPE = 4;
+    public static inline var PRECEDENCE_ASSIGNMENT = 1;
+    public static inline var PRECEDENCE_SUM = 2;
+    public static inline var PRECEDENCE_CALL = 3;
+    public static inline var PRECEDENCE_TYPE = 4;
 
     public static function getPrecedence(scanner :TokenScanner) : Int
     {

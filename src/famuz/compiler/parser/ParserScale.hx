@@ -22,11 +22,20 @@ package famuz.compiler.parser;
  */
 
 import famuz.compiler.Token;
+import famuz.compiler.Scale.ScaleTools;
 
 class ParserScale
 {
     public static function parse(scanner :TokenScanner, environment :Environment) : Expr
     {
-        return null;
+        var token = scanner.next();
+        var scale = ScaleTools.getScale(token.lexeme);
+
+        return {
+            env: environment,
+            def: EConstant(CScale(scale)),
+            pos: token.pos,
+            ret: TScale
+        };
     }
 }

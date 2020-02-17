@@ -21,12 +21,42 @@ package famuz.compiler.parser;
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+import famuz.compiler.Expr.BinopType;
 import famuz.compiler.Token;
+import famuz.util.Assert;
+import famuz.compiler.parser.Precedence.*;
+import famuz.compiler.parser.Parser;
+using famuz.compiler.Type;
 
 class ParserBinop
 {
     public static function parse(left :Expr, scanner :TokenScanner, environment :Environment) : Expr
     {
-        return null;
+        var token = scanner.next();
+
+        var op :BinopType = switch token.lexeme {
+            case "+": B_ADD;
+            case "<<": B_SHIFT_LEFT;
+            case ">>": B_SHIFT_RIGHT;
+            case _: throw "Invalid operation";
+        }
+
+        if (Assert.that(scanner.hasNext(), "Cannot parse binary expression")) {
+            var right = Parser.parse(PRECEDENCE_SUM, scanner, environment);
+            var ret = right != null ? left.ret.add(right.ret) : TInvalid;
+            return {
+                env: environment,
+                def: EBinop(op, left, right),
+                pos: token.pos,
+                ret: ret
+            };
+        } else {
+            return {
+                env: environment,
+                def: EBinop(op, left, null),
+                pos: token.pos,
+                ret: TInvalid
+            };
+        }
     }
 }

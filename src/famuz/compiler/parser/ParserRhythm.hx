@@ -21,12 +21,57 @@ package famuz.compiler.parser;
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+import famuz.compiler.Expr.Hit;
 import famuz.compiler.Token;
+import famuz.util.Assert;
 
 class ParserRhythm
 {
     public static function parse(scanner :TokenScanner, environment :Environment) : Expr
     {
-        return null;
+        var token = scanner.next();
+        var rhythmScanner = new Scanner(token.lexeme, token.pos.file);
+        var hits :Array<Hit> = [];
+
+        while (rhythmScanner.hasNext()) {
+            if (rhythmScanner.peek() == 'x') {
+                var start = rhythmScanner.curIndex;
+                rhythmScanner.next(); //consume "x"
+                eatDuration(rhythmScanner);
+                var duration = rhythmScanner.curIndex - start;
+                hits.push({start:start, duration: duration});
+            }
+            else if (rhythmScanner.peek() == '-') {
+                eatRest(rhythmScanner);
+            }
+            else {
+                Assert.that(false, "INVALID RHYTHM");
+                rhythmScanner.next();
+            }
+        }
+        var duration = rhythmScanner.content.length;
+
+        return {
+            env: environment,
+            def: EConstant(CRhythm(hits, duration)),
+            pos: token.pos,
+            ret: TRhythm
+        };
+    }
+
+    private static function eatDuration(scanner :Scanner) : Void
+    {
+        while (scanner.hasNext() && scanner.peek() == '~')
+        {
+            scanner.next();
+        }
+    }
+
+    private static function eatRest(scanner :Scanner) : Void
+    {
+        while (scanner.hasNext() && scanner.peek() == '-')
+        {
+            scanner.next();
+        }
     }
 }

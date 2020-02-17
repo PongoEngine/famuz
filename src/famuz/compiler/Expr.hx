@@ -21,6 +21,7 @@ package famuz.compiler;
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+import famuz.compiler.Environment;
 import famuz.compiler.Key;
 import famuz.compiler.Scale;
 
@@ -68,10 +69,11 @@ enum ExprDef {
     //Parentheses (e).
     EParentheses(expr :Expr);
     //A function declaration.
-    EFunction(identifier :String, params :Array<Parameter>);
+    EFunction(identifier :String, params :Array<Parameter>, body :Expr);
 }
 
 typedef Expr = {
+    var env :Environment;
     var def :ExprDef;
     var pos :Position;
     var ret :Type;

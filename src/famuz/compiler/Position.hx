@@ -23,11 +23,11 @@ package famuz.compiler;
 
 class Position
 {
-    public var file :String;
-    public var content :String;
     public var line :Int;
     public var min :Int;
     public var max :Int;
+    public var file :String;
+    public var content :String;
 
     public function new(line :Int, min :Int, max :Int, file :String, content :String) : Void
     {
@@ -38,12 +38,14 @@ class Position
         this.max = max;
     }
 
-    public static function position_union(a :Position, b :Position, u :Position) : Void
+    public static function union(a :Position, b :Position) : Position
     {
-        u.file = a.file;
-        u.content = a.content;
-        u.line = (a.line < b.line) ? a.line : b.line;
-        u.min = (a.min < b.min) ? a.min : b.min;
-        u.max = (a.max > b.max) ? a.max : b.max;
+        return new Position(
+            (a.line < b.line) ? a.line : b.line,
+            (a.min < b.min) ? a.min : b.min,
+            (a.max > b.max) ? a.max : b.max,
+            a.file,
+            a.content
+        );
     }
 }

@@ -22,11 +22,42 @@ package famuz.compiler.parser;
  */
 
 import famuz.compiler.Token;
+import famuz.util.Assert;
+import famuz.compiler.parser.Precedence.*;
+import famuz.compiler.parser.Parser;
+using famuz.compiler.Type;
 
 class ParserCall
 {
     public static function parse(left :Expr, scanner :TokenScanner, environment :Environment) : Expr
     {
-        return null;
+        var funcName = switch left.def {
+            case EConstant(constant): {
+                switch constant {
+                    case CIdentifier(str): str;
+                    case _: "Invalid funcName";
+                }
+            }
+            case _: "Invalid funcName";
+        }
+        scanner.next(); //left parentheses
+
+        var args :Array<Expr> = [];
+        while (scanner.hasNext() && scanner.peek().type != RIGHT_PARAM) {
+            args.push(Parser.parse(PRECEDENCE_CALL, scanner, environment));
+            if (scanner.peek().type == COMMA) {
+                scanner.next(); //consume comma
+            }
+        }
+
+        var rightParam = scanner.next();
+        Assert.that(rightParam.type == RIGHT_PARAM, "EXPECTED RIGHT PARAM");
+
+        return {
+            env :environment,
+            def: ECall(funcName, args),
+            pos: Position.union(left.pos, rightParam.pos),
+            ret: TInvalid
+        };
     }
 }

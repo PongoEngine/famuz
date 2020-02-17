@@ -35,7 +35,7 @@ class Scanner
     {
         this.content = content;
         this.filepath = filepath;
-        this.curLine = 0;
+        this.curLine = 1;
         this.curIndex = 0;
     }
 

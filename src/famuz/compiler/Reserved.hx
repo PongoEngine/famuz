@@ -43,6 +43,7 @@ class Reserved
 
     public static function isKey(str :String) : Bool
     {
-        return KeyTools.getKey(str) != INVALID;
+        var key = KeyTools.getKey(str);
+        return key != INVALID;
     }
 }

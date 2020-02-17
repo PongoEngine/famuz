@@ -22,11 +22,20 @@ package famuz.compiler.parser;
  */
 
 import famuz.compiler.Token;
+import famuz.compiler.Key.KeyTools;
 
 class ParserKey
 {
     public static function parse(scanner :TokenScanner, environment :Environment) : Expr
     {
-        return null;
+        var token = scanner.next();
+        var key = KeyTools.getKey(token.lexeme);
+
+        return {
+            env: environment,
+            def: EConstant(CKey(key)),
+            pos: token.pos,
+            ret: TKey
+        };
     }
 }

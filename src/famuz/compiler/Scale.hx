@@ -43,12 +43,12 @@ class ScaleTools
 {
     public static function getScale(reserved :ReservedScale) : Scale
     {
-        return switch reserved {
+        var scale = switch reserved {
             case Major: SCALE_MAJOR;
             case NaturalMinor: SCALE_NATURAL_MINOR;
             case MelodicMinor: SCALE_MELODIC_MINOR;
             case HarmonicMinor: SCALE_HARMONIC_MINOR;
         }
-        return INVALID;
+        return scale != null ? scale : INVALID;
     }
 }

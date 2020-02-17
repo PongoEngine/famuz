@@ -27,6 +27,21 @@ class ParserSteps
 {
     public static function parse(scanner :TokenScanner, environment :Environment) : Expr
     {
-        return null;
+        var token = scanner.next();
+        var stepsScanner = new Scanner(token.lexeme, token.pos.file);
+        var steps = [];
+
+        while (stepsScanner.hasNext()) {
+            var c = stepsScanner.next();
+            var d = Std.parseInt(c);
+            steps.push(d);
+        }
+
+        return {
+            env: environment,
+            def: EConstant(CSteps(steps)),
+            pos: token.pos,
+            ret: TSteps
+        };
     }
 }
