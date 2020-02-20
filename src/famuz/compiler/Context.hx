@@ -27,7 +27,8 @@ class Context
 {
     public var parent :Context = null;
 
-    public function new() : Void
+    @:allow(famuz.Famuz)
+    private function new() : Void
     {
         _map = new Map<String, Expr>();
     }

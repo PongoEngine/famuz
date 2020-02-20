@@ -29,14 +29,14 @@ using famuz.compiler.Position;
 
 class ParserBlock
 {
-    public static function parse(scanner :TokenScanner, context :Context) : Expr
+    public static function parse(parser :Parser, scanner :TokenScanner, context :Context) : Expr
     {
         var token = scanner.next();
         var exprs :Array<Expr> = [];
         context = context.createChild();
 
         while (scanner.hasNext() && scanner.peek().type != RIGHT_BRACKET) {
-            exprs.push(Parser.parse(0, scanner, context));
+            exprs.push(parser.parse(0, scanner, context));
         }
 
         var rightBracket = scanner.next();

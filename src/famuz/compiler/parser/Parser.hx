@@ -41,10 +41,17 @@ using famuz.compiler.parser.Precedence;
 
 class Parser
 {
-    public static function parse(precedence :Int, scanner :TokenScanner, context :Context) : Expr
+    public var errors (default, null):Array<{msg :String, pos :Position}>;
+
+    public function new() : Void
+    {
+        this.errors = [];
+    }
+
+    public function parse(precedence :Int, scanner :TokenScanner, context :Context) : Expr
     {
         if (scanner.hasNext()) {
-            var left = parseExpressionPrefix(scanner, context);
+            var left = parseExpressionPrefix(this, scanner, context);
             if (!Assert.that(left != null, "IN PARSE EXPRESSION LEFT IS NULL")) {
                 if (scanner.hasNext()) {
                     scanner.next();
@@ -54,7 +61,7 @@ class Parser
 
             while (scanner.hasNext() && precedence < scanner.getPrecedence())
             {
-                left = parseExpressionInfix(left, scanner, context);
+                left = parseExpressionInfix(this, left, scanner, context);
             }
             return left;
         }
@@ -64,7 +71,18 @@ class Parser
         }
     }
 
-    private static function parseExpressionPrefix(scanner :TokenScanner, context :Context) : Expr
+    public function assert<T>(that :Bool, success :() -> T, failure: () -> T, failureMsg :String, pos :Position) : T
+    {
+        return switch that {
+            case true: success();
+            case false: {
+                this.errors.push({msg: failureMsg, pos: pos});
+                failure();
+            }
+        }
+    }
+
+    private static function parseExpressionPrefix(parser :Parser, scanner :TokenScanner, context :Context) : Expr
     {
         return switch (scanner.peek().type) {
             case IDENTIFIER:
@@ -80,13 +98,13 @@ class Parser
             case RHYTHM:
                 return ParserRhythm.parse(scanner, context);
             case LEFT_PARAM:
-                return ParserParentheses.parse(scanner, context);
+                return ParserParentheses.parse(parser, scanner, context);
             case LEFT_BRACKET:
-                return ParserBlock.parse(scanner, context);
+                return ParserBlock.parse(parser, scanner, context);
             case FUNC:
-                return ParserFunc.parse(scanner, context);
+                return ParserFunc.parse(parser, scanner, context);
             case PRINT:
-                return ParserPrint.parse(scanner, context);
+                return ParserPrint.parse(parser, scanner, context);
             case RIGHT_PARAM, RIGHT_BRACKET, COMMA, SLASH, 
                 COMMENT, WHITESPACE, ADD, ASSIGNMENT, COLON, 
                 SHIFT_LEFT, SHIFT_RIGHT:
@@ -97,21 +115,21 @@ class Parser
         }
     }
     
-    private static function parseExpressionInfix(left :Expr, scanner :TokenScanner, context :Context) : Expr
+    private static function parseExpressionInfix(parser :Parser, left :Expr, scanner :TokenScanner, context :Context) : Expr
     {
         return switch (scanner.peek().type) {
             case ADD:
-                return ParserBinop.parse(left, scanner, context);
+                return ParserBinop.parse(parser, left, scanner, context);
             case ASSIGNMENT:
-                return ParserVar.parse(left, scanner, context);
+                return ParserVar.parse(parser, left, scanner, context);
             case LEFT_PARAM:
-                return ParserCall.parse(left, scanner, context);
+                return ParserCall.parse(parser, left, scanner, context);
             case COLON:
                 return ParserTyping.parse(left, scanner, context);
             case SHIFT_LEFT:
-                return ParserBinop.parse(left, scanner, context);
+                return ParserBinop.parse(parser, left, scanner, context);
             case SHIFT_RIGHT:
-                return ParserBinop.parse(left, scanner, context);
+                return ParserBinop.parse(parser, left, scanner, context);
             case RIGHT_PARAM, LEFT_BRACKET, RIGHT_BRACKET, COMMA, 
                 SLASH, IDENTIFIER, SCALE, KEY, WHITESPACE, STEPS, 
                 COMMENT, RHYTHM, FUNC, PRINT, NUMBER:

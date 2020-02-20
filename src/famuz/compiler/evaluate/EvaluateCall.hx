@@ -25,13 +25,14 @@ import famuz.compiler.Expr.Parameter;
 
 class EvaluateCall
 {
-    public static function evaluate(identifier :String, args :Array<Expr>, context :Context, stack :Stack) : Void
+    public static function evaluate(identifier :String, args :Array<Expr>, pos :Position, context :Context, stack :Stack) : Void
     {
         var func = context.getExpr(identifier);
+
         switch func.def {
             case EFunction(_, params, body): {
                 if(args.length == params.length) {
-                    wrap(body.context, createEnvWithArgs(args, params));
+                    wrap(body.context, createEnvWithArgs(args, params, context));
                     Evaluate.evaluate(body, stack);
                     unwrap(body.context);
                 }
@@ -40,9 +41,9 @@ class EvaluateCall
         }
     }
 
-    private static function createEnvWithArgs(args: Array<Expr>, params :Array<Parameter>) : Context
+    private static function createEnvWithArgs(args: Array<Expr>, params :Array<Parameter>, context :Context) : Context
     {
-        var context = new Context();
+        var context = context.createChild();
         for(i in 0...args.length) {
             context.addExpr(params[i].name, args[i]);
         }

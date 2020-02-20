@@ -43,4 +43,10 @@ abstract Stack(Array<Expr>)
     {
         return this[this.length-1];
     }
+
+    @:arrayAccess
+    public inline function get(index :Int) : Expr
+    {
+        return this[index];
+    }
 }

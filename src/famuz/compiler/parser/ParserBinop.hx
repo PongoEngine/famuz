@@ -21,16 +21,16 @@ package famuz.compiler.parser;
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+import famuz.compiler.Expr;
 import famuz.compiler.Expr.BinopType;
 import famuz.compiler.Token;
-import famuz.util.Assert;
 import famuz.compiler.parser.Precedence.*;
 import famuz.compiler.parser.Parser;
 using famuz.compiler.Type;
 
 class ParserBinop
 {
-    public static function parse(left :Expr, scanner :TokenScanner, context :Context) : Expr
+    public static function parse(parser :Parser, left :Expr, scanner :TokenScanner, context :Context) : Expr
     {
         var token = scanner.next();
 
@@ -40,23 +40,19 @@ class ParserBinop
             case ">>": B_SHIFT_RIGHT;
             case _: throw "Invalid operation";
         }
-
-        if (Assert.that(scanner.hasNext(), "Cannot parse binary expression")) {
-            var right = Parser.parse(PRECEDENCE_SUM, scanner, context);
-            var ret = right != null ? left.ret.add(right.ret) : TInvalid;
-            return {
-                context: context,
-                def: EBinop(op, left, right),
-                pos: token.pos,
-                ret: ret
-            };
-        } else {
-            return {
-                context: context,
-                def: EBinop(op, left, null),
-                pos: token.pos,
-                ret: TInvalid
-            };
-        }
+        
+        var right = parser.parse(PRECEDENCE_SUM, scanner, context);
+        return parser.assert(right != null, () -> {
+            context: context,
+            def: EBinop(op, left, right),
+            pos: Position.union(left.pos, right.pos),
+            ret: left.ret.add(right.ret)
+        }, () -> {
+            context: context,
+            def: EBinop(op, left, null),
+            pos: Position.union(left.pos, token.pos),
+            ret: TInvalid
+        }, "Missing right expression.", 
+        Position.union(left.pos, token.pos));
     }
 }

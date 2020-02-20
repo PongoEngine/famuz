@@ -31,6 +31,7 @@ class EvaluateBinop
 {
     public static function evaluate(binop :BinopType, e1 :Expr, e2 :Expr, context :Context, stack :Stack) : Void
     {
+
         Evaluate.evaluate(e2, stack);
         Evaluate.evaluate(e1, stack);
 
@@ -43,7 +44,7 @@ class EvaluateBinop
             case [B_ADD, TSteps, TRhythm]: addRhythmSteps(right, left, context, stack);
             case [B_SHIFT_RIGHT, TRhythm, TNumber]: shiftRightRhythm(left, right, context, stack);
             case [B_SHIFT_RIGHT, TSteps, TNumber]: shiftRightSteps(left, right, context, stack);
-            case _: throw "Invalid";
+            case _: throw "invalid";
         }
     }
 
@@ -51,7 +52,7 @@ class EvaluateBinop
     {
         stack.push({
             context: context,
-            def: EConstant(CNumber(copyNumber(left) + copyNumber(right))),
+            def: EConstant(CNumber(copyNumber(left, stack) + copyNumber(right, stack))),
             pos: Position.union(left.pos, right.pos),
             ret: TNumber
         });
@@ -59,8 +60,8 @@ class EvaluateBinop
 
     private static function addRhythmSteps(rhythm :Expr, steps :Expr, context :Context, stack :Stack) : Void
     {
-        var r = copyRhythm(rhythm);
-        var m :Array<Note> = copySteps(steps).mapi((index, item) -> {
+        var r = copyRhythm(rhythm, stack);
+        var m :Array<Note> = copySteps(steps, stack).mapi((index, item) -> {
             return {step: item, hit: r.hits[index % r.hits.length]};
         });
         stack.push({
@@ -73,9 +74,9 @@ class EvaluateBinop
 
     private static function shiftRightRhythm(rhythm :Expr, number :Expr, context :Context, stack :Stack) : Void
     {
-        var r = copyRhythm(rhythm);
+        var r = copyRhythm(rhythm, stack);
         var duration = r.duration;
-        var n = copyNumber(number);
+        var n = copyNumber(number, stack);
         r.hits.map(r -> r.start = (r.start + n) % duration);
         r.hits.sort((a,b) -> a.start - b.start);
         stack.push({
@@ -88,7 +89,7 @@ class EvaluateBinop
 
     private static function shiftRightSteps(steps :Expr, number :Expr, context :Context, stack :Stack) : Void
     {
-        var shiftedSteps = copySteps(steps).map(s -> s + copyNumber(number));
+        var shiftedSteps = copySteps(steps, stack).map(s -> s + copyNumber(number, stack));
         stack.push({
             context: context,
             def: EConstant(CSteps(shiftedSteps)),
@@ -97,29 +98,29 @@ class EvaluateBinop
         });
     }
 
-    private static function copyNumber(e :Expr) : Int
+    private static function copyNumber(e :Expr, stack :Stack) : Int
     {
         return switch e.def {
             case EConstant(constant): switch constant {
                 case CNumber(value): value;
-                case _: throw "err";
+                case _: throw "invalid";
             }
-            case _: throw "err";
+            case _: throw "invalid";
         }
     }
 
-    private static function copySteps(e :Expr) : Array<Int>
+    private static function copySteps(e :Expr, stack :Stack) : Array<Int>
     {
         return switch e.def {
             case EConstant(constant): switch constant {
                 case CSteps(steps): steps.copy();
-                case _: throw "err";
+                case _: throw "Expected Steps.";
             }
-            case _: throw "err";
+            case _: throw "Expected Steps.";
         }
     }
 
-    private static function copyRhythm(e :Expr) : {hits: Array<Hit>, duration :Int}
+    private static function copyRhythm(e :Expr, stack :Stack) : {hits: Array<Hit>, duration :Int}
     {
         return switch e.def {
             case EConstant(constant): switch constant {
@@ -127,9 +128,9 @@ class EvaluateBinop
                     hits: hits.copy(),
                     duration: duration
                 };
-                case _: throw "err";
+                case _: throw "Expected Rhythm.";
             }
-            case _: throw "err";
+            case _: throw "Expected Rhythm";
         }
     }
 }

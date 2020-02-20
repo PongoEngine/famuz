@@ -28,13 +28,16 @@ import famuz.compiler.evaluate.Evaluate;
 
 class ParserPrint
 {
-    public static function parse(scanner :TokenScanner, context :Context) : Expr
+    public static function parse(parser :Parser, scanner :TokenScanner, context :Context) : Expr
     {
         var startPos = scanner.next().pos; //consume "print"
         scanner.next(); //consume "("
         var stack = new Stack();
-        var expr = Parser.parse(0, scanner, context);
-        Evaluate.evaluate(expr, stack);
+        var expr = parser.parse(0, scanner, context);
+
+        if(parser.errors.length == 0) {
+            Evaluate.evaluate(expr, stack);
+        }
         var endPos = scanner.next().pos; //consume ")"
 
         if(stack.length > 0) {
@@ -50,7 +53,6 @@ class ParserPrint
                 case _: print(getValue(poppedExpr), Position.union(startPos, endPos));
             }
         }
-
         Assert.that(stack.length == 0, "Stack is not empty!");
 
         return expr;

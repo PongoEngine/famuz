@@ -1,16 +1,14 @@
-func adding(neptune :Number) : Number {
-    omega = 22
-    hello = 3 + 100 + omega
-    {
-        alpha = 3
-    }
-    robot = {
-        sandwich = 42 + omega
-    }
-    //100 + hello + alpha
-    robot + neptune
+func _robot(val :Number) : Number
+{
+    grand = 42
+    val + 230
 }
 
-print(adding(100))
+func great(hello :Number) : Number
+{
+    _robot(hello) + 190
+}
 
-//print(1)
+
+r = 5 + print(great(90))
+print(r)

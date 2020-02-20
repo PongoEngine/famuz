@@ -35,8 +35,10 @@ class Famuz
         var tokens = Lexer.lex(filePath, content);
         var tokenScanner = new TokenScanner(tokens);
         var env = new Context();
+        var parser = new Parser();
+
         while(tokenScanner.hasNext()) {
-            Parser.parse(0, tokenScanner, env);
+            parser.parse(0, tokenScanner, env);
         }
     }
 }
