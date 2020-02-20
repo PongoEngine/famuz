@@ -21,7 +21,7 @@ package famuz;
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import famuz.compiler.Stack;
+import famuz.compiler.Expr.ExprStack;
 import famuz.compiler.evaluate.Evaluate;
 import famuz.compiler.Context;
 import sys.io.File;
@@ -46,7 +46,7 @@ class Famuz
         var main = env.getExpr("main");
         switch main.def {
             case EFunction(identifier, params, body):
-                Evaluate.evaluate(body, new Stack());
+                Evaluate.evaluate(body, new ExprStack());
             case _: 
                 throw "Main must be a function!";
         }

@@ -24,13 +24,14 @@ package famuz.compiler.evaluate;
 import famuz.compiler.Expr.Hit;
 import famuz.compiler.Expr.Note;
 import famuz.compiler.Expr.BinopType;
+import famuz.compiler.Expr.ExprStack;
 
 using Lambda;
 using famuz.compiler.evaluate.EvaluateBinop.NumberTools;
 
 class EvaluateBinop
 {
-    public static function evaluate(binop :BinopType, e1 :Expr, e2 :Expr, context :Context, stack :Stack) : Void
+    public static function evaluate(binop :BinopType, e1 :Expr, e2 :Expr, context :Context, stack :ExprStack) : Void
     {
 
         Evaluate.evaluate(e2, stack);
@@ -50,7 +51,7 @@ class EvaluateBinop
         }
     }
 
-    private static function addNumbers(left :Expr, right :Expr, context :Context, stack :Stack) : Void
+    private static function addNumbers(left :Expr, right :Expr, context :Context, stack :ExprStack) : Void
     {
         stack.push({
             context: context,
@@ -60,7 +61,7 @@ class EvaluateBinop
         });
     }
 
-    private static function addRhythmSteps(rhythm :Expr, steps :Expr, context :Context, stack :Stack) : Void
+    private static function addRhythmSteps(rhythm :Expr, steps :Expr, context :Context, stack :ExprStack) : Void
     {
         var r = copyRhythm(rhythm, stack);
         var m :Array<Note> = copySteps(steps, stack).mapi((index, item) -> {
@@ -74,7 +75,7 @@ class EvaluateBinop
         });
     }
 
-    private static function shiftRhythm(rhythm :Expr, number :Expr, context :Context, stack :Stack, isLeft :Bool) : Void
+    private static function shiftRhythm(rhythm :Expr, number :Expr, context :Context, stack :ExprStack, isLeft :Bool) : Void
         {
             var r = copyRhythm(rhythm, stack);
             var duration = r.duration;
@@ -89,7 +90,7 @@ class EvaluateBinop
             });
         }
 
-    private static function shiftRightSteps(steps :Expr, number :Expr, context :Context, stack :Stack) : Void
+    private static function shiftRightSteps(steps :Expr, number :Expr, context :Context, stack :ExprStack) : Void
     {
         var shiftedSteps = copySteps(steps, stack).map(s -> s + copyNumber(number, stack));
         stack.push({
@@ -100,7 +101,7 @@ class EvaluateBinop
         });
     }
 
-    private static function copyNumber(e :Expr, stack :Stack) : Int
+    private static function copyNumber(e :Expr, stack :ExprStack) : Int
     {
         return switch e.def {
             case EConstant(constant): switch constant {
@@ -111,7 +112,7 @@ class EvaluateBinop
         }
     }
 
-    private static function copySteps(e :Expr, stack :Stack) : Array<Int>
+    private static function copySteps(e :Expr, stack :ExprStack) : Array<Int>
     {
         return switch e.def {
             case EConstant(constant): switch constant {
@@ -122,7 +123,7 @@ class EvaluateBinop
         }
     }
 
-    private static function copyRhythm(e :Expr, stack :Stack) : {hits: Array<Hit>, duration :Int}
+    private static function copyRhythm(e :Expr, stack :ExprStack) : {hits: Array<Hit>, duration :Int}
     {
         return switch e.def {
             case EConstant(constant): switch constant {

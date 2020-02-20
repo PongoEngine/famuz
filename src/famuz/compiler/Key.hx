@@ -21,6 +21,8 @@ package famuz.compiler;
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+import famuz.compiler.Reserved.ReservedKey;
+
 enum Key
 {
     KEY_C;
@@ -41,27 +43,6 @@ enum Key
     KEY_B_FLAT;
     KEY_B;
     INVALID;
-}
-
-enum abstract ReservedKey(String) from String 
-{
-    var C = "C";
-    var C_SHARP = "C#";
-    var Db = "Db";
-    var D = "D";
-    var D_SHARP = "D#";
-    var Eb = "Eb";
-    var E = "E";
-    var F = "F";
-    var F_SHARP = "F#";
-    var Gb = "Gb";
-    var G = "G";
-    var G_SHARP = "G#";
-    var Ab = "Ab";
-    var A = "A";
-    var A_SHARP = "A#";
-    var Bb = "Bb";
-    var B = "B";
 }
 
 class KeyTools

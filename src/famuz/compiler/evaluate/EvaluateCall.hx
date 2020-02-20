@@ -22,10 +22,11 @@ package famuz.compiler.evaluate;
  */
 
 import famuz.compiler.Expr.Parameter;
+import famuz.compiler.Expr.ExprStack;
 
 class EvaluateCall
 {
-    public static function evaluate(identifier :String, args :Array<Expr>, pos :Position, context :Context, stack :Stack) : Void
+    public static function evaluate(identifier :String, args :Array<Expr>, pos :Position, context :Context, stack :ExprStack) : Void
     {
         var func = context.getExpr(identifier);
 

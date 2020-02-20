@@ -21,6 +21,8 @@ package famuz.compiler;
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+import famuz.compiler.Reserved.ReservedType;
+
 @:using(famuz.compiler.Type.TypeTools)
 enum Type
 {
@@ -36,18 +38,6 @@ enum Type
     TMusic;
     TMonomorph;
     TInvalid;
-}
-
-enum abstract ReservedType(String) from String {
-    var Number = "Number";
-    var Rhythm = "Rhythm";
-    var Melody = "Melody";
-    var Harmony = "Harmony";
-    var Steps = "Steps";
-    var Scale = "Scale";
-    var Key = "Key";
-    var ScaledKey = "ScaledKey";
-    var Music = "Music";
 }
 
 class TypeTools

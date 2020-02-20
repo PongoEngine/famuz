@@ -21,6 +21,7 @@ package famuz.compiler;
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+import famuz.compiler.Reserved.ReservedScale;
 
 enum Scale
 {
@@ -29,14 +30,6 @@ enum Scale
     SCALE_MELODIC_MINOR;
     SCALE_HARMONIC_MINOR;
     INVALID;
-}
-
-enum abstract ReservedScale(String) from String 
-{
-    var Major = "major";
-    var NaturalMinor = "natural-minor";
-    var MelodicMinor = "melodic-minor";
-    var HarmonicMinor = "harmonic-minor";
 }
 
 class ScaleTools

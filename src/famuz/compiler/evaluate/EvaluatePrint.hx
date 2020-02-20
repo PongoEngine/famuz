@@ -21,9 +21,11 @@ package famuz.compiler.evaluate;
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+import famuz.compiler.Expr.ExprStack;
+
 class EvaluatePrint
 {
-    public static function evaluate(expr :Expr, context :Context, stack :Stack) : Void
+    public static function evaluate(expr :Expr, context :Context, stack :ExprStack) : Void
     {
         Evaluate.evaluate(expr, stack);
 

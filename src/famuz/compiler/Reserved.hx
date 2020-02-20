@@ -47,3 +47,45 @@ class Reserved
         return key != INVALID;
     }
 }
+
+enum abstract ReservedType(String) from String 
+{
+    var Number = "Number";
+    var Rhythm = "Rhythm";
+    var Melody = "Melody";
+    var Harmony = "Harmony";
+    var Steps = "Steps";
+    var Scale = "Scale";
+    var Key = "Key";
+    var ScaledKey = "ScaledKey";
+    var Music = "Music";
+}
+
+enum abstract ReservedScale(String) from String 
+{
+    var Major = "major";
+    var NaturalMinor = "natural-minor";
+    var MelodicMinor = "melodic-minor";
+    var HarmonicMinor = "harmonic-minor";
+}
+
+enum abstract ReservedKey(String) from String 
+{
+    var C = "C";
+    var C_SHARP = "C#";
+    var Db = "Db";
+    var D = "D";
+    var D_SHARP = "D#";
+    var Eb = "Eb";
+    var E = "E";
+    var F = "F";
+    var F_SHARP = "F#";
+    var Gb = "Gb";
+    var G = "G";
+    var G_SHARP = "G#";
+    var Ab = "Ab";
+    var A = "A";
+    var A_SHARP = "A#";
+    var Bb = "Bb";
+    var B = "B";
+}

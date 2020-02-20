@@ -22,7 +22,7 @@ package famuz.compiler;
  */
 
 import famuz.compiler.lexer.LexerToken;
-using famuz.util.StringUtil;
+using famuz.compiler.Scanner.ScannerTools;
 
 class Scanner
 {
@@ -120,5 +120,31 @@ class Scanner
             str += this.next();
         }
         return str;
+    }
+}
+
+class ScannerTools
+{
+    public static function isWhitespace(ch :String) : Bool
+    {
+        return ch == L_SPACE || ch == L_LINE || ch == L_TAB;
+    }
+
+    public static function isIdentifer(ch :String) : Bool
+    {
+        return ch != L_ADD && ch != L_FORWARD_SLASH &&
+            ch != L_TAB && ch != L_SPACE && ch != L_LINE &&
+            ch != L_LEFT_PARAM && ch != L_RIGHT_PARAM && ch != L_COMMA;
+    }
+
+    public static function isRhythm(ch :String) : Bool
+    {
+        return ch == L_HIT || ch == L_DURATION || ch == L_REST;
+    }
+
+    public static function isDigit(ch :String) : Bool
+    {
+        var code = ch.charCodeAt(0);
+        return code > 47 && code < 58;
     }
 }

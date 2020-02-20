@@ -80,3 +80,33 @@ typedef Expr = {
     var pos :Position;
     var ret :Type;
 }
+
+@:forward(length)
+abstract ExprStack(Array<Expr>)
+{
+    public inline function new() : Void
+    {
+        this = [];
+    }
+
+    public inline function push(expr :Expr) : Void
+    {
+        this.push(expr);
+    }
+
+    public inline function pop() : Expr
+    {
+        return this.pop();
+    }
+
+    public inline function peek() : Expr
+    {
+        return this[this.length-1];
+    }
+
+    @:arrayAccess
+    public inline function get(index :Int) : Expr
+    {
+        return this[index];
+    }
+}

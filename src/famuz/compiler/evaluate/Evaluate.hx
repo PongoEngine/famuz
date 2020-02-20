@@ -23,10 +23,11 @@ package famuz.compiler.evaluate;
 
 import famuz.compiler.evaluate.EvaluateBinop;
 import famuz.compiler.evaluate.EvaluatePrint;
+import famuz.compiler.Expr.ExprStack;
 
 class Evaluate
 {
-    public static function evaluate(e :Expr, stack :Stack) : Void
+    public static function evaluate(e :Expr, stack :ExprStack) : Void
     {
         switch (e.def) {
             case EConstant(constant): {
