@@ -14,11 +14,15 @@ func cool() :Number
     great(400)
 }
 
+steps = \1 2 3 4
+rhythm = \x--- x--- x--- x---
+
 key :Key = C
 scale :Scale = major
 
 r = 5 + print(cool())
 
 func main() {
-    print(key + scale)
+    print(steps + rhythm) +
+    print(scale + key)
 }

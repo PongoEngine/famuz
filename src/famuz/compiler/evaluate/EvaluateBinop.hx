@@ -42,10 +42,12 @@ class EvaluateBinop
 
         switch [binop, left.ret, right.ret] {
             case [B_ADD, TNumber, TNumber]: addNumbers(left, right, context, stack);
-            case [B_ADD, TRhythm, TSteps]: addRhythmSteps(left, right, context, stack);
-            case [B_ADD, TSteps, TRhythm]: addRhythmSteps(right, left, context, stack);
-            case [B_ADD, TKey, TScale]: addKeyScale(left, right, context, stack);
-            case [B_ADD, TScale, TKey]: addKeyScale(right, left, context, stack);
+            case [B_ADD, TRhythm, TSteps]: addRhythmToSteps(left, right, context, stack);
+            case [B_ADD, TSteps, TRhythm]: addRhythmToSteps(right, left, context, stack);
+            case [B_ADD, TKey, TScale]: addKeyToScale(left, right, context, stack);
+            case [B_ADD, TScale, TKey]: addKeyToScale(right, left, context, stack);
+            case [B_ADD, TMelody, TScaledKey]: addMelodyToScaledKey(left, right, context, stack);
+            case [B_ADD, TScaledKey, TMelody]: addMelodyToScaledKey(left, right, context, stack);
             case [B_SHIFT_RIGHT, TRhythm, TNumber]: shiftRhythm(left, right, context, stack, false);
             case [B_SHIFT_LEFT, TRhythm, TNumber]: shiftRhythm(left, right, context, stack, true);
             case [B_SHIFT_RIGHT, TSteps, TNumber]: shiftRightSteps(left, right, context, stack);
@@ -63,17 +65,27 @@ class EvaluateBinop
         });
     }
 
-    private static function addKeyScale(key :Expr, scale :Expr, context :Context, stack :ExprStack) : Void
+    private static function addMelodyToScaledKey(melody :Expr, addMelodyToScaledKey :Expr, context :Context, stack :ExprStack) : Void
+    {
+        // stack.push({
+        //     context: context,
+        //     def: EConstant(CScaledKey(copyScale(scale), copyKey(key))),
+        //     pos: Position.union(key.pos, scale.pos),
+        //     ret: TNumber
+        // });
+    }
+
+    private static function addKeyToScale(key :Expr, scale :Expr, context :Context, stack :ExprStack) : Void
     {
         stack.push({
             context: context,
             def: EConstant(CScaledKey(copyScale(scale), copyKey(key))),
             pos: Position.union(key.pos, scale.pos),
-            ret: TNumber
+            ret: TScaledKey
         });
     }
 
-    private static function addRhythmSteps(rhythm :Expr, steps :Expr, context :Context, stack :ExprStack) : Void
+    private static function addRhythmToSteps(rhythm :Expr, steps :Expr, context :Context, stack :ExprStack) : Void
     {
         var r = copyRhythm(rhythm);
         var m :Array<Note> = copySteps(steps).mapi((index, item) -> {
@@ -83,7 +95,7 @@ class EvaluateBinop
             context: context,
             def: EConstant(CMelody(m)),
             pos: Position.union(rhythm.pos, steps.pos),
-            ret: TSteps
+            ret: TMelody
         });
     }
 
