@@ -1,14 +1,21 @@
-func _robot(val :Number) : Number
+func robot(val)
 {
     grand = 42
-    val + 230
+    val + 290
 }
 
-func great(hello :Number) : Number
+func great(hello :Number)
 {
-    _robot(hello) + 190
+    robot(hello) + 190
 }
 
+func cool() :Number
+{
+    great(400)
+}
 
-r = 5 + print(great(90))
-print(r)
+r = 5 + print(cool())
+
+func main() {
+    r
+}

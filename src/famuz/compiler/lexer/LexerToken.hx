@@ -37,11 +37,10 @@ enum abstract LexerToken(String) to String from String
 
     var L_ADD = "+";
     var L_FORWARD_SLASH = "/";
+    var L_BACKWARD_SLASH = "\\";
 
     var L_DURATION = "~";
     var L_REST = "-";
-
-    var L_CARROT = "^";
 
     var L_LT = "<";
     var L_GT = ">";

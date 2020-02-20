@@ -22,6 +22,7 @@ package famuz.compiler.evaluate;
  */
 
 import famuz.compiler.evaluate.EvaluateBinop;
+import famuz.compiler.evaluate.EvaluatePrint;
 
 class Evaluate
 {
@@ -48,6 +49,8 @@ class Evaluate
                 EvaluateBinop.evaluate(type, e1, e2, e.context, stack);
             case EParentheses(expr): 
                 stack.push(expr);
+            case EPrint(expr): 
+                EvaluatePrint.evaluate(expr, e.context, stack);
             case EFunction(identifier, params, body): 
                 stack.push(e);
         }

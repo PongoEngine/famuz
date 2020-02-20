@@ -68,6 +68,8 @@ enum ExprDef {
     EBinop(type :BinopType, e1 :Expr, e2 :Expr);
     //Parentheses (e).
     EParentheses(expr :Expr);
+    //Print print(e).
+    EPrint(expr :Expr);
     //A function declaration.
     EFunction(identifier :String, params :Array<Parameter>, body :Expr);
 }

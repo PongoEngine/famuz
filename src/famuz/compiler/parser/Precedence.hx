@@ -1,4 +1,4 @@
-package famuz;
+package famuz.compiler.parser;
 
 /*
  * Copyright (c) 2020 Jeremy Meltingtallow
@@ -21,34 +21,29 @@ package famuz;
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import famuz.compiler.Stack;
-import famuz.compiler.evaluate.Evaluate;
-import famuz.compiler.Context;
-import sys.io.File;
-import famuz.compiler.lexer.Lexer;
-import famuz.compiler.Token.TokenScanner;
-import famuz.compiler.parser.Parser;
+import famuz.compiler.Token;
 
-class Famuz
+class Precedence
 {
-    public static function parse(filePath :String) : Void
+    public static inline var PRECEDENCE_ASSIGNMENT = 1;
+    public static inline var PRECEDENCE_SUM = 2;
+    public static inline var PRECEDENCE_CALL = 3;
+    public static inline var PRECEDENCE_TYPE = 4;
+
+    public static function getPrecedence(scanner :TokenScanner) : Int
     {
-        var content = File.getContent(filePath);
-        var tokens = Lexer.lex(filePath, content);
-        var tokenScanner = new TokenScanner(tokens);
-        var env = new Context();
-        var parser = new Parser();
-
-        while(tokenScanner.hasNext()) {
-            parser.parse(0, tokenScanner, env);
-        }
-
-        var main = env.getExpr("main");
-        switch main.def {
-            case EFunction(identifier, params, body):
-                Evaluate.evaluate(body, new Stack());
-            case _: 
-                throw "Main must be a function!";
+        switch (scanner.peek().type)
+        {
+            case ASSIGNMENT:
+                return PRECEDENCE_ASSIGNMENT;
+            case ADD, SHIFT_LEFT, SHIFT_RIGHT:
+                return PRECEDENCE_SUM;
+            case LEFT_PARAM:
+                return PRECEDENCE_CALL;
+            case COLON:
+                return PRECEDENCE_TYPE;
+            default:
+                return 0;
         }
     }
 }

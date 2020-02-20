@@ -37,14 +37,6 @@ class Lexer
             var lexerToken :LexerToken = scanner.peek();
             switch (lexerToken)
             {
-                case L_HIT:
-                {
-                    var db = scanner.peekDouble();
-                    var token = (db == L_REST || db == L_DURATION || db == L_SPACE)
-                        ? createTokenRhythm(scanner)
-                        : createTokenIdentifier(scanner);
-                    tokens.push(token);
-                }
                 case L_ASSIGNMENT:
                     tokens.push(createToken(ASSIGNMENT, scanner));
                 case L_COLON:
@@ -61,8 +53,13 @@ class Lexer
                     tokens.push(createToken(COMMA, scanner));
                 case L_ADD:
                     tokens.push(createToken(ADD, scanner));
-                case L_CARROT:
-                    tokens.push(createTokenSteps(scanner));
+                case L_BACKWARD_SLASH: {
+                    var db = scanner.peekDouble();
+                    var token = (db == L_HIT || db == L_REST)
+                        ? createTokenRhythm(scanner)
+                        : createTokenSteps(scanner);
+                    tokens.push(token);
+                }
                 case L_FORWARD_SLASH:
                     scanner.peekDouble() == '/'
                         ? scanner.consumeComment()
@@ -110,6 +107,7 @@ class Lexer
 
     public static function createTokenRhythm(scanner :Scanner) : Token
     {
+        scanner.next(); //consume \
         var line = scanner.curLine;
         var min = scanner.curIndex;
         var lexeme = scanner.consumeRhythm();
@@ -120,7 +118,7 @@ class Lexer
 
     public static function createTokenSteps(scanner :Scanner) : Token
     {
-        scanner.next(); //consume ^
+        scanner.next(); //consume \
         var line = scanner.curLine;
         var min = scanner.curIndex;
         var lexeme = scanner.consumeSteps();

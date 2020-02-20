@@ -26,6 +26,7 @@ import famuz.compiler.Expr.Note;
 import famuz.compiler.Expr.BinopType;
 
 using Lambda;
+using famuz.compiler.evaluate.EvaluateBinop.NumberTools;
 
 class EvaluateBinop
 {
@@ -42,7 +43,8 @@ class EvaluateBinop
             case [B_ADD, TNumber, TNumber]: addNumbers(left, right, context, stack);
             case [B_ADD, TRhythm, TSteps]: addRhythmSteps(left, right, context, stack);
             case [B_ADD, TSteps, TRhythm]: addRhythmSteps(right, left, context, stack);
-            case [B_SHIFT_RIGHT, TRhythm, TNumber]: shiftRightRhythm(left, right, context, stack);
+            case [B_SHIFT_RIGHT, TRhythm, TNumber]: shiftRhythm(left, right, context, stack, false);
+            case [B_SHIFT_LEFT, TRhythm, TNumber]: shiftRhythm(left, right, context, stack, true);
             case [B_SHIFT_RIGHT, TSteps, TNumber]: shiftRightSteps(left, right, context, stack);
             case _: throw "invalid";
         }
@@ -72,20 +74,20 @@ class EvaluateBinop
         });
     }
 
-    private static function shiftRightRhythm(rhythm :Expr, number :Expr, context :Context, stack :Stack) : Void
-    {
-        var r = copyRhythm(rhythm, stack);
-        var duration = r.duration;
-        var n = copyNumber(number, stack);
-        r.hits.map(r -> r.start = (r.start + n) % duration);
-        r.hits.sort((a,b) -> a.start - b.start);
-        stack.push({
-            context: context,
-            def: EConstant(CRhythm(r.hits, r.duration)),
-            pos: Position.union(rhythm.pos, number.pos),
-            ret: TSteps
-        });
-    }
+    private static function shiftRhythm(rhythm :Expr, number :Expr, context :Context, stack :Stack, isLeft :Bool) : Void
+        {
+            var r = copyRhythm(rhythm, stack);
+            var duration = r.duration;
+            var n = copyNumber(number, stack) * (isLeft ? -1 : 1);
+            r.hits.map(r -> r.start = (r.start + n).mod(duration));
+            r.hits.sort((a,b) -> a.start - b.start);
+            stack.push({
+                context: context,
+                def: EConstant(CRhythm(r.hits, r.duration)),
+                pos: Position.union(rhythm.pos, number.pos),
+                ret: TSteps
+            });
+        }
 
     private static function shiftRightSteps(steps :Expr, number :Expr, context :Context, stack :Stack) : Void
     {
@@ -133,4 +135,12 @@ class EvaluateBinop
             case _: throw "Expected Rhythm";
         }
     }
+}
+
+class NumberTools
+{
+    public static function mod(number :Int, amount :Int) : Int 
+    {
+        return ((number % amount) + amount) % amount;
+    };
 }

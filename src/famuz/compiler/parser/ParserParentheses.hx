@@ -29,10 +29,9 @@ class ParserParentheses
 {
     public static function parse(parser :Parser, scanner :TokenScanner, context :Context) : Expr
     {
-        var token = scanner.next();
+        var token = scanner.next(); // (
         var expr = parser.parse(0, scanner, context);
-
-        var rightParentheses = scanner.next();
+        var rightParentheses = scanner.next(); // )
         Assert.that(rightParentheses.type == RIGHT_PARAM, "EXPECTED RIGHT PARAM");
 
         return {
