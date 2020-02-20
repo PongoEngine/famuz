@@ -35,7 +35,12 @@ class Context
 
     public function addExpr(name :String, expr :Expr) : Void
     {
-        _map.set(name, expr);
+        if(_map.exists(name)) {
+            throw '"${name}" already exists.';
+        }
+        else {
+            _map.set(name, expr);
+        }
     }
 
     public function getExpr(name :String) : Expr

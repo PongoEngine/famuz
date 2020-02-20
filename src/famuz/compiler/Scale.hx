@@ -23,6 +23,7 @@ package famuz.compiler;
 
 import famuz.compiler.Reserved.ReservedScale;
 
+@:using(famuz.compiler.Scale.ScaleTools)
 enum Scale
 {
     SCALE_MAJOR;
@@ -34,6 +35,17 @@ enum Scale
 
 class ScaleTools
 {
+    public static function toString(scale :Scale) : String
+    {
+        return switch scale {
+            case SCALE_MAJOR: "major";
+            case SCALE_NATURAL_MINOR: "natural-minor";
+            case SCALE_MELODIC_MINOR: "melodic-minor";
+            case SCALE_HARMONIC_MINOR: "harmonic-minor";
+            case INVALID: "Invalid";
+        }
+    }
+
     public static function getScale(reserved :ReservedScale) : Scale
     {
         var scale = switch reserved {

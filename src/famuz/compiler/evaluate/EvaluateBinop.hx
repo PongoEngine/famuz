@@ -44,6 +44,8 @@ class EvaluateBinop
             case [B_ADD, TNumber, TNumber]: addNumbers(left, right, context, stack);
             case [B_ADD, TRhythm, TSteps]: addRhythmSteps(left, right, context, stack);
             case [B_ADD, TSteps, TRhythm]: addRhythmSteps(right, left, context, stack);
+            case [B_ADD, TKey, TScale]: addKeyScale(left, right, context, stack);
+            case [B_ADD, TScale, TKey]: addKeyScale(right, left, context, stack);
             case [B_SHIFT_RIGHT, TRhythm, TNumber]: shiftRhythm(left, right, context, stack, false);
             case [B_SHIFT_LEFT, TRhythm, TNumber]: shiftRhythm(left, right, context, stack, true);
             case [B_SHIFT_RIGHT, TSteps, TNumber]: shiftRightSteps(left, right, context, stack);
@@ -55,16 +57,26 @@ class EvaluateBinop
     {
         stack.push({
             context: context,
-            def: EConstant(CNumber(copyNumber(left, stack) + copyNumber(right, stack))),
+            def: EConstant(CNumber(copyNumber(left) + copyNumber(right))),
             pos: Position.union(left.pos, right.pos),
+            ret: TNumber
+        });
+    }
+
+    private static function addKeyScale(key :Expr, scale :Expr, context :Context, stack :ExprStack) : Void
+    {
+        stack.push({
+            context: context,
+            def: EConstant(CScaledKey(copyScale(scale), copyKey(key))),
+            pos: Position.union(key.pos, scale.pos),
             ret: TNumber
         });
     }
 
     private static function addRhythmSteps(rhythm :Expr, steps :Expr, context :Context, stack :ExprStack) : Void
     {
-        var r = copyRhythm(rhythm, stack);
-        var m :Array<Note> = copySteps(steps, stack).mapi((index, item) -> {
+        var r = copyRhythm(rhythm);
+        var m :Array<Note> = copySteps(steps).mapi((index, item) -> {
             return {step: item, hit: r.hits[index % r.hits.length]};
         });
         stack.push({
@@ -77,9 +89,9 @@ class EvaluateBinop
 
     private static function shiftRhythm(rhythm :Expr, number :Expr, context :Context, stack :ExprStack, isLeft :Bool) : Void
         {
-            var r = copyRhythm(rhythm, stack);
+            var r = copyRhythm(rhythm);
             var duration = r.duration;
-            var n = copyNumber(number, stack) * (isLeft ? -1 : 1);
+            var n = copyNumber(number) * (isLeft ? -1 : 1);
             r.hits.map(r -> r.start = (r.start + n).mod(duration));
             r.hits.sort((a,b) -> a.start - b.start);
             stack.push({
@@ -92,7 +104,7 @@ class EvaluateBinop
 
     private static function shiftRightSteps(steps :Expr, number :Expr, context :Context, stack :ExprStack) : Void
     {
-        var shiftedSteps = copySteps(steps, stack).map(s -> s + copyNumber(number, stack));
+        var shiftedSteps = copySteps(steps).map(s -> s + copyNumber(number));
         stack.push({
             context: context,
             def: EConstant(CSteps(shiftedSteps)),
@@ -101,7 +113,7 @@ class EvaluateBinop
         });
     }
 
-    private static function copyNumber(e :Expr, stack :ExprStack) : Int
+    private static function copyNumber(e :Expr) : Int
     {
         return switch e.def {
             case EConstant(constant): switch constant {
@@ -112,7 +124,7 @@ class EvaluateBinop
         }
     }
 
-    private static function copySteps(e :Expr, stack :ExprStack) : Array<Int>
+    private static function copySteps(e :Expr) : Array<Int>
     {
         return switch e.def {
             case EConstant(constant): switch constant {
@@ -123,7 +135,29 @@ class EvaluateBinop
         }
     }
 
-    private static function copyRhythm(e :Expr, stack :ExprStack) : {hits: Array<Hit>, duration :Int}
+    private static function copyKey(e :Expr) : Key
+    {
+        return switch e.def {
+            case EConstant(constant): switch constant {
+                case CKey(key): key;
+                case _: throw "Expected Steps.";
+            }
+            case _: throw "Expected Steps.";
+        }
+    }
+
+    private static function copyScale(e :Expr) : Scale
+    {
+        return switch e.def {
+            case EConstant(constant): switch constant {
+                case CScale(scale): scale;
+                case _: throw "Expected Steps.";
+            }
+            case _: throw "Expected Steps.";
+        }
+    }
+
+    private static function copyRhythm(e :Expr) : {hits: Array<Hit>, duration :Int}
     {
         return switch e.def {
             case EConstant(constant): switch constant {

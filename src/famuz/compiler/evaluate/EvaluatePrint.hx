@@ -65,11 +65,11 @@ class EvaluatePrint
                 case CSteps(steps):
                     steps;
                 case CScale(scale):
-                    scale;
+                    scale.toString();
                 case CKey(key):
-                    key;
+                    key.toString();
                 case CScaledKey(scale, key):
-                    {scale: scale, key: key};
+                    {scale: scale.toString(), key: key.toString()};
                 case CMusic:
                     "Music";
             }

@@ -23,6 +23,7 @@ package famuz.compiler;
 
 import famuz.compiler.Reserved.ReservedKey;
 
+@:using(famuz.compiler.Key.KeyTools)
 enum Key
 {
     KEY_C;
@@ -47,6 +48,30 @@ enum Key
 
 class KeyTools
 {
+    public static function toString(key :Key) : String
+    {
+        return switch key {
+            case KEY_C: "C";
+            case KEY_C_SHARP: "C#";
+            case KEY_D_FLAT: "Db";
+            case KEY_D: "D";
+            case KEY_D_SHARP: "D#";
+            case KEY_E_FLAT: "Eb";
+            case KEY_E: "E";
+            case KEY_F: "F";
+            case KEY_F_SHARP: "F#";
+            case KEY_G_FLAT: "Gb";
+            case KEY_G: "G";
+            case KEY_G_SHARP: "G#";
+            case KEY_A_FLAT: "Ab";
+            case KEY_A: "A";
+            case KEY_A_SHARP: "A#";
+            case KEY_B_FLAT: "Bb";
+            case KEY_B: "B";
+            case INVALID: "INVALID";
+        }
+    }
+
     public static function getKey(reserved :ReservedKey) : Key
     {
         var key = switch reserved {
