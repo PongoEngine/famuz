@@ -52,7 +52,7 @@ enum Constant
     CScale(scale :Scale);
     CKey(key :Key);
     CScaledKey(scale :Scale, key :Key);
-    CMusic;
+    CMusic(music :Int);
 }
 
 enum ExprDef {

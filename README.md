@@ -9,27 +9,35 @@ Famuz is a programming language that compiles to Midi. The goal of this project 
 ## Simple Example
 
 ``` javascript
-basicRhythm : Rhythm = x~~~ x--- x~~~ x~--
-print(basicRhythm)
-
-basicSteps = ^1 3 8 2 >> 1
-
-anything = print(basicRhythm + basicSteps)
-print(anything)
-print((basicRhythm >> 3))
-
-func neptune(a :Steps, b :Steps, c :Steps) :Rhythm {
-    x~~~ x--- x~~~ x~--
+func robot(val)
+{
+    grand = 42
+    val + 290
 }
 
-a = 1
-b = 4
-c = 3
-d = a + b + c
+func great(hello :Number)
+{
+    robot(hello) + 190
+}
 
-result = print(d + 10000)
-print(result)
-print(neptune)
+func cool() :Number
+{
+    great(400)
+}
+
+steps = \1 2 3 4
+rhythm = \x--- x--- x--- x---
+
+key :Key = C
+scale :Scale = major
+
+r = 5 + print(cool())
+
+func main() {
+    melody = print(steps + rhythm)
+    scaledKey = print(scale + key)
+    melody + scaledKey
+}
 ```
 
 ## Famuz Types

@@ -23,6 +23,7 @@ scale :Scale = major
 r = 5 + print(cool())
 
 func main() {
-    print(steps + rhythm) +
-    print(scale + key)
+    melody = print(steps + rhythm)
+    scaledKey = print(scale + key)
+    melody + scaledKey
 }

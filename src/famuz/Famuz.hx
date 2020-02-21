@@ -21,6 +21,8 @@ package famuz;
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+import famuz.compiler.Expr;
+import famuz.compiler.Expr.Constant;
 import famuz.compiler.Expr.ExprStack;
 import famuz.compiler.evaluate.Evaluate;
 import famuz.compiler.Context;
@@ -28,10 +30,12 @@ import sys.io.File;
 import famuz.compiler.lexer.Lexer;
 import famuz.compiler.Token.TokenScanner;
 import famuz.compiler.parser.Parser;
+import haxe.ds.Option;
+import famuz.compiler.Position;
 
 class Famuz
 {
-    public static function parse(filePath :String) : Void
+    public static function compile(filePath :String) : Evaluation
     {
         var content = File.getContent(filePath);
         var tokens = Lexer.lex(filePath, content);
@@ -44,11 +48,40 @@ class Famuz
         }
 
         var main = env.getExpr("main");
-        switch main.def {
-            case EFunction(identifier, params, body):
-                Evaluate.evaluate(body, new ExprStack());
+        var music = switch main.def {
+            case EFunction(identifier, params, body): {
+                var stack = new ExprStack();
+                Evaluate.evaluate(body, stack);
+                var expr = stack.pop();
+                parser.assert(expr.ret == TMusic, () -> {
+                    parser.assert(stack.length == 0, () -> {
+                        Some(getMusic(expr));
+                    }, () -> None, "Compilation Error", expr.pos);
+                }, () -> None, "Main function must produce music.", expr.pos);
+            }
             case _: 
-                throw "Main must be a function!";
+                throw None;
+        }
+
+        return {
+            music: music,
+            errors: parser.errors
+        };
+    }
+
+    private static function getMusic(e :Expr) : Int
+    {
+        return switch e.def {
+            case EConstant(constant): switch constant {
+                case CMusic(val): val;
+                case _: throw "Expected Steps.";
+            }
+            case _: throw "Expected Steps.";
         }
     }
+}
+
+typedef Evaluation = {
+    music: Option<Int>,
+    errors: Array<{msg :String, pos :Position}>
 }

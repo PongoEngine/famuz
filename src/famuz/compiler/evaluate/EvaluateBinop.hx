@@ -47,7 +47,7 @@ class EvaluateBinop
             case [B_ADD, TKey, TScale]: addKeyToScale(left, right, context, stack);
             case [B_ADD, TScale, TKey]: addKeyToScale(right, left, context, stack);
             case [B_ADD, TMelody, TScaledKey]: addMelodyToScaledKey(left, right, context, stack);
-            case [B_ADD, TScaledKey, TMelody]: addMelodyToScaledKey(left, right, context, stack);
+            case [B_ADD, TScaledKey, TMelody]: addMelodyToScaledKey(right, left, context, stack);
             case [B_SHIFT_RIGHT, TRhythm, TNumber]: shiftRhythm(left, right, context, stack, false);
             case [B_SHIFT_LEFT, TRhythm, TNumber]: shiftRhythm(left, right, context, stack, true);
             case [B_SHIFT_RIGHT, TSteps, TNumber]: shiftRightSteps(left, right, context, stack);
@@ -65,14 +65,14 @@ class EvaluateBinop
         });
     }
 
-    private static function addMelodyToScaledKey(melody :Expr, addMelodyToScaledKey :Expr, context :Context, stack :ExprStack) : Void
+    private static function addMelodyToScaledKey(melody :Expr, scaledKey :Expr, context :Context, stack :ExprStack) : Void
     {
-        // stack.push({
-        //     context: context,
-        //     def: EConstant(CScaledKey(copyScale(scale), copyKey(key))),
-        //     pos: Position.union(key.pos, scale.pos),
-        //     ret: TNumber
-        // });
+        stack.push({
+            context: context,
+            def: EConstant(CMusic(-1)),
+            pos: Position.union(melody.pos, scaledKey.pos),
+            ret: TMusic
+        });
     }
 
     private static function addKeyToScale(key :Expr, scale :Expr, context :Context, stack :ExprStack) : Void
@@ -130,9 +130,9 @@ class EvaluateBinop
         return switch e.def {
             case EConstant(constant): switch constant {
                 case CNumber(value): value;
-                case _: throw "invalid";
+                case _: throw "Expected Number";
             }
-            case _: throw "invalid";
+            case _: throw "Expected Number";
         }
     }
 
@@ -152,9 +152,9 @@ class EvaluateBinop
         return switch e.def {
             case EConstant(constant): switch constant {
                 case CKey(key): key;
-                case _: throw "Expected Steps.";
+                case _: throw "Expected Key.";
             }
-            case _: throw "Expected Steps.";
+            case _: throw "Expected Key.";
         }
     }
 
@@ -163,7 +163,18 @@ class EvaluateBinop
         return switch e.def {
             case EConstant(constant): switch constant {
                 case CScale(scale): scale;
-                case _: throw "Expected Steps.";
+                case _: throw "Expected Scale.";
+            }
+            case _: throw "Expected Scale.";
+        }
+    }
+
+    private static function copyMelody(e :Expr) : Array<Note>
+    {
+        return switch e.def {
+            case EConstant(constant): switch constant {
+                case CMelody(melody): melody.copy();
+                case _: throw "Expected Melody.";
             }
             case _: throw "Expected Steps.";
         }

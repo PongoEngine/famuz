@@ -70,7 +70,7 @@ class EvaluatePrint
                     key.toString();
                 case CScaledKey(scale, key):
                     {scale: scale.toString(), key: key.toString()};
-                case CMusic:
+                case CMusic(music):
                     "Music";
             }
             case _: throw "invalid getValue";
