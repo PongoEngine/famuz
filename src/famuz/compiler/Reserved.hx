@@ -21,8 +21,8 @@ package famuz.compiler;
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import famuz.compiler.Scale;
-import famuz.compiler.Key;
+import famuz.compiler.theory.Scale;
+import famuz.compiler.theory.Key;
 
 class Reserved
 {
@@ -50,42 +50,43 @@ class Reserved
 
 enum abstract ReservedType(String) from String 
 {
-    var Number = "Number";
-    var Rhythm = "Rhythm";
-    var Melody = "Melody";
-    var Harmony = "Harmony";
-    var Steps = "Steps";
-    var Scale = "Scale";
-    var Key = "Key";
-    var ScaledKey = "ScaledKey";
-    var Music = "Music";
+    var ReservedNumber = "Number";
+    var ReservedRhythm = "Rhythm";
+    var ReservedMelody = "Melody";
+    var ReservedHarmony = "Harmony";
+    var ReservedSteps = "Steps";
+    var ReservedScale = "Scale";
+    var ReservedKey = "Key";
+    var ReservedScaledKey = "ScaledKey";
+    var ReservedMusic = "Music";
 }
 
 enum abstract ReservedScale(String) from String 
 {
-    var Major = "major";
-    var NaturalMinor = "natural-minor";
-    var MelodicMinor = "melodic-minor";
-    var HarmonicMinor = "harmonic-minor";
+    var ReservedMajor = "major";
+    var ReservedNaturalMinor = "natural-minor";
+    var ReservedMelodicMinor = "melodic-minor";
+    var ReservedHarmonicMinor = "harmonic-minor";
+    var ReservedChromatic = "chromatic";
 }
 
 enum abstract ReservedKey(String) from String 
 {
-    var C = "C";
-    var C_SHARP = "C#";
-    var Db = "Db";
-    var D = "D";
-    var D_SHARP = "D#";
-    var Eb = "Eb";
-    var E = "E";
-    var F = "F";
-    var F_SHARP = "F#";
-    var Gb = "Gb";
-    var G = "G";
-    var G_SHARP = "G#";
-    var Ab = "Ab";
-    var A = "A";
-    var A_SHARP = "A#";
-    var Bb = "Bb";
-    var B = "B";
+    var ReservedC = "C";
+    var ReservedC_SHARP = "C#";
+    var ReservedDb = "Db";
+    var ReservedD = "D";
+    var ReservedD_SHARP = "D#";
+    var ReservedEb = "Eb";
+    var ReservedE = "E";
+    var ReservedF = "F";
+    var ReservedF_SHARP = "F#";
+    var ReservedGb = "Gb";
+    var ReservedG = "G";
+    var ReservedG_SHARP = "G#";
+    var ReservedAb = "Ab";
+    var ReservedA = "A";
+    var ReservedA_SHARP = "A#";
+    var ReservedBb = "Bb";
+    var ReservedB = "B";
 }

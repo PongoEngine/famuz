@@ -22,7 +22,7 @@ package famuz.compiler.parser;
  */
 
 import famuz.compiler.Token;
-import famuz.compiler.Key.KeyTools;
+import famuz.compiler.theory.Key.KeyTools;
 
 class ParserKey
 {

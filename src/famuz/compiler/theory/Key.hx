@@ -1,5 +1,3 @@
-package famuz.compiler;
-
 /*
  * Copyright (c) 2020 Jeremy Meltingtallow
  *
@@ -21,28 +19,29 @@ package famuz.compiler;
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+package famuz.compiler.theory;
 import famuz.compiler.Reserved.ReservedKey;
 
-@:using(famuz.compiler.Key.KeyTools)
+@:using(famuz.compiler.theory.Key.KeyTools)
 enum Key
 {
-    KEY_C;
-    KEY_C_SHARP;
-    KEY_D_FLAT;
-    KEY_D;
-    KEY_D_SHARP;
-    KEY_E_FLAT;
-    KEY_E;
-    KEY_F;
-    KEY_F_SHARP;
-    KEY_G_FLAT;
-    KEY_G;
-    KEY_G_SHARP;
-    KEY_A_FLAT;
-    KEY_A;
-    KEY_A_SHARP;
-    KEY_B_FLAT;
-    KEY_B;
+    C;
+    C_SHARP;
+    D_FLAT;
+    D;
+    D_SHARP;
+    E_FLAT;
+    E;
+    F;
+    F_SHARP;
+    G_FLAT;
+    G;
+    G_SHARP;
+    A_FLAT;
+    A;
+    A_SHARP;
+    B_FLAT;
+    B;
     INVALID;
 }
 
@@ -51,47 +50,54 @@ class KeyTools
     public static function toString(key :Key) : String
     {
         return switch key {
-            case KEY_C: "C";
-            case KEY_C_SHARP: "C#";
-            case KEY_D_FLAT: "Db";
-            case KEY_D: "D";
-            case KEY_D_SHARP: "D#";
-            case KEY_E_FLAT: "Eb";
-            case KEY_E: "E";
-            case KEY_F: "F";
-            case KEY_F_SHARP: "F#";
-            case KEY_G_FLAT: "Gb";
-            case KEY_G: "G";
-            case KEY_G_SHARP: "G#";
-            case KEY_A_FLAT: "Ab";
-            case KEY_A: "A";
-            case KEY_A_SHARP: "A#";
-            case KEY_B_FLAT: "Bb";
-            case KEY_B: "B";
+            case C: "C";
+            case C_SHARP: "C#";
+            case D_FLAT: "Db";
+            case D: "D";
+            case D_SHARP: "D#";
+            case E_FLAT: "Eb";
+            case E: "E";
+            case F: "F";
+            case F_SHARP: "F#";
+            case G_FLAT: "Gb";
+            case G: "G";
+            case G_SHARP: "G#";
+            case A_FLAT: "Ab";
+            case A: "A";
+            case A_SHARP: "A#";
+            case B_FLAT: "Bb";
+            case B: "B";
             case INVALID: "INVALID";
+        }
+    }
+
+    public static function toInt(key :Key) : Int
+    {
+        return switch key {
+            case _: -1;
         }
     }
 
     public static function getKey(reserved :ReservedKey) : Key
     {
         var key = switch reserved {
-            case C: KEY_C;
-            case C_SHARP: KEY_C_SHARP;
-            case Db: KEY_D_FLAT;
-            case D: KEY_D;
-            case D_SHARP: KEY_D_SHARP;
-            case Eb: KEY_E_FLAT;
-            case E: KEY_E;
-            case F: KEY_F;
-            case F_SHARP: KEY_F_SHARP;
-            case Gb: KEY_G_FLAT;
-            case G: KEY_G;
-            case G_SHARP: KEY_G_SHARP;
-            case Ab: KEY_A_FLAT;
-            case A: KEY_A;
-            case A_SHARP: KEY_A_SHARP;
-            case Bb: KEY_B_FLAT;
-            case B: KEY_B;
+            case ReservedC: C;
+            case ReservedC_SHARP: C_SHARP;
+            case ReservedDb: D_FLAT;
+            case ReservedD: D;
+            case ReservedD_SHARP: D_SHARP;
+            case ReservedEb: E_FLAT;
+            case ReservedE: E;
+            case ReservedF: F;
+            case ReservedF_SHARP: F_SHARP;
+            case ReservedGb: G_FLAT;
+            case ReservedG: G;
+            case ReservedG_SHARP: G_SHARP;
+            case ReservedAb: A_FLAT;
+            case ReservedA: A;
+            case ReservedA_SHARP: A_SHARP;
+            case ReservedBb: B_FLAT;
+            case ReservedB: B;
         }
         return key != null ? key : INVALID;
     }

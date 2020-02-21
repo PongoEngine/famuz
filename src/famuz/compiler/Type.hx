@@ -70,15 +70,15 @@ class TypeTools
     public static function getType(r :ReservedType) : Type
     {
         var type = switch (r) {
-            case Harmony: THarmony;
-            case Key: TKey;
-            case Melody: TMelody;
-            case Music: TMusic;
-            case Number: TNumber;
-            case Rhythm: TRhythm;
-            case Scale: TScale;
-            case ScaledKey: TScaledKey;
-            case Steps: TSteps;
+            case ReservedHarmony: THarmony;
+            case ReservedKey: TKey;
+            case ReservedMelody: TMelody;
+            case ReservedMusic: TMusic;
+            case ReservedNumber: TNumber;
+            case ReservedRhythm: TRhythm;
+            case ReservedScale: TScale;
+            case ReservedScaledKey: TScaledKey;
+            case ReservedSteps: TSteps;
         }
         return type != null ? type : TInvalid;
     }

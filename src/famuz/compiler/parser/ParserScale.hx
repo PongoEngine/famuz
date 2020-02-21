@@ -22,7 +22,7 @@ package famuz.compiler.parser;
  */
 
 import famuz.compiler.Token;
-import famuz.compiler.Scale.ScaleTools;
+import famuz.compiler.theory.Scale.ScaleTools;
 
 class ParserScale
 {

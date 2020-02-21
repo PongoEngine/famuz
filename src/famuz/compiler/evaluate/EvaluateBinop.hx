@@ -25,6 +25,8 @@ import famuz.compiler.Expr.Hit;
 import famuz.compiler.Expr.Note;
 import famuz.compiler.Expr.BinopType;
 import famuz.compiler.Expr.ExprStack;
+import famuz.compiler.theory.Scale;
+import famuz.compiler.theory.Key;
 
 using Lambda;
 using famuz.compiler.evaluate.EvaluateBinop.NumberTools;
@@ -158,7 +160,7 @@ class EvaluateBinop
         }
     }
 
-    private static function copyScale(e :Expr) : Scale
+    private static function copyScale(e :Expr) : ScaleType
     {
         return switch e.def {
             case EConstant(constant): switch constant {

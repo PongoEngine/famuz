@@ -22,8 +22,8 @@ package famuz.compiler;
  */
 
 import famuz.compiler.Context;
-import famuz.compiler.Key;
-import famuz.compiler.Scale;
+import famuz.compiler.theory.Key;
+import famuz.compiler.theory.Scale;
 
 enum BinopType
 {
@@ -49,9 +49,9 @@ enum Constant
     CMelody(notes :Array<Note>);
     CHarmony(melodies :Array<Array<Note>>);
     CSteps(steps :Array<Int>);
-    CScale(scale :Scale);
+    CScale(type :ScaleType);
     CKey(key :Key);
-    CScaledKey(scale :Scale, key :Key);
+    CScaledKey(type :ScaleType, key :Key);
     CMusic(music :Int);
 }
 
