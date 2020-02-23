@@ -21,8 +21,8 @@ package famuz.compiler.parser;
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import famuz.compiler.Expr.Hit;
 import famuz.compiler.Token;
+import famuz.compiler.theory.Hit;
 import famuz.util.Assert;
 
 class ParserRhythm
@@ -39,7 +39,7 @@ class ParserRhythm
                 rhythmScanner.next(); //consume "x"
                 eatDuration(rhythmScanner);
                 var duration = rhythmScanner.curIndex - start;
-                hits.push({start:start, duration: duration});
+                hits.push(new Hit(start, duration));
             }
             else if (rhythmScanner.peek() == '-') {
                 eatRest(rhythmScanner);

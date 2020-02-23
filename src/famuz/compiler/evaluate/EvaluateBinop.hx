@@ -21,12 +21,13 @@ package famuz.compiler.evaluate;
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import famuz.compiler.Expr.Hit;
-import famuz.compiler.Expr.Note;
 import famuz.compiler.Expr.BinopType;
 import famuz.compiler.Expr.ExprStack;
 import famuz.compiler.theory.Scale;
 import famuz.compiler.theory.Key;
+import famuz.compiler.theory.Step;
+import famuz.compiler.theory.Hit;
+import famuz.compiler.theory.SteppedHit;
 
 using Lambda;
 using famuz.compiler.evaluate.EvaluateBinop.NumberTools;
@@ -90,8 +91,8 @@ class EvaluateBinop
     private static function addRhythmToSteps(rhythm :Expr, steps :Expr, context :Context, stack :ExprStack) : Void
     {
         var r = copyRhythm(rhythm);
-        var m :Array<Note> = copySteps(steps).mapi((index, item) -> {
-            return {step: item, hit: r.hits[index % r.hits.length]};
+        var m :Array<SteppedHit> = copySteps(steps).mapi((index, item) -> {
+            return new SteppedHit(item, r.hits[index % r.hits.length]);
         });
         stack.push({
             context: context,
@@ -118,7 +119,7 @@ class EvaluateBinop
 
     private static function shiftRightSteps(steps :Expr, number :Expr, context :Context, stack :ExprStack) : Void
     {
-        var shiftedSteps = copySteps(steps).map(s -> s + copyNumber(number));
+        var shiftedSteps = copySteps(steps).map(s -> s + Step.step(copyNumber(number)));
         stack.push({
             context: context,
             def: EConstant(CSteps(shiftedSteps)),
@@ -138,7 +139,7 @@ class EvaluateBinop
         }
     }
 
-    private static function copySteps(e :Expr) : Array<Int>
+    private static function copySteps(e :Expr) : Array<Step>
     {
         return switch e.def {
             case EConstant(constant): switch constant {
@@ -171,7 +172,7 @@ class EvaluateBinop
         }
     }
 
-    private static function copyMelody(e :Expr) : Array<Note>
+    private static function copyMelody(e :Expr) : Array<SteppedHit>
     {
         return switch e.def {
             case EConstant(constant): switch constant {

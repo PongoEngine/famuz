@@ -22,7 +22,7 @@
 package famuz.compiler.theory;
 
 @:notNull
-extern abstract Note(Int)
+abstract Note(Int)
 {
     inline public function new(val :Int)
     {
@@ -31,7 +31,7 @@ extern abstract Note(Int)
 
     public inline static function note(val :Int) : Note return new Note(val);
 
-    inline public function toInt() : Int return this;
+    public function toInt() : Int return this;
 
     //Unary
     @:op(A++) static function increment(a :Note) : Note;

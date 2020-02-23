@@ -24,6 +24,9 @@ package famuz.compiler;
 import famuz.compiler.Context;
 import famuz.compiler.theory.Key;
 import famuz.compiler.theory.Scale;
+import famuz.compiler.theory.Step;
+import famuz.compiler.theory.Hit;
+import famuz.compiler.theory.SteppedHit;
 
 enum BinopType
 {
@@ -38,17 +41,14 @@ typedef Parameter =
     var type :Type;
 }
 
-typedef Hit = {start :Int, duration :Int};
-typedef Note = {step :Int, hit :Hit};
-
 enum Constant
 {
     CIdentifier(str :String);
     CNumber(value :Int);
     CRhythm(hits :Array<Hit>, duration :Int);
-    CMelody(notes :Array<Note>);
-    CHarmony(melodies :Array<Array<Note>>);
-    CSteps(steps :Array<Int>);
+    CMelody(notes :Array<SteppedHit>);
+    CHarmony(melodies :Array<Array<SteppedHit>>);
+    CSteps(steps :Array<Step>);
     CScale(type :ScaleType);
     CKey(key :Key);
     CScaledKey(type :ScaleType, key :Key);

@@ -1,5 +1,3 @@
-package famuz.compiler.parser;
-
 /*
  * Copyright (c) 2020 Jeremy Meltingtallow
  *
@@ -21,28 +19,16 @@ package famuz.compiler.parser;
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import famuz.compiler.theory.Step;
-import famuz.compiler.Token;
+package famuz.compiler.theory;
 
-class ParserSteps
+class SteppedHit
 {
-    public static function parse(scanner :TokenScanner, context :Context) : Expr
+    public var step : Step;
+    public var hit : Hit;
+
+    public function new(step :Step, hit :Hit) : Void
     {
-        var token = scanner.next();
-        var stepsScanner = new Scanner(token.lexeme, token.pos.file);
-        var steps :Array<Step> = [];
-
-        while (stepsScanner.hasNext()) {
-            var c = stepsScanner.next();
-            var d = Step.step(Std.parseInt(c));
-            steps.push(d);
-        }
-
-        return {
-            context: context,
-            def: EConstant(CSteps(steps)),
-            pos: token.pos,
-            ret: TSteps
-        };
+        this.step = step;
+        this.hit = hit;
     }
 }
