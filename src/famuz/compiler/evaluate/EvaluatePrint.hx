@@ -36,9 +36,9 @@ class EvaluatePrint
                 for(i in printExpr.pos.min...printExpr.pos.max) {
                     str += printExpr.pos.content.charAt(i);
                 }
-                print(str, printExpr.pos);
+                print(str, expr.pos);
             }
-            case _: print(getValue(printExpr), printExpr.pos);
+            case _: print(getValue(printExpr), expr.pos);
         }
         stack.push(printExpr);
     }
@@ -71,7 +71,7 @@ class EvaluatePrint
                 case CScaledKey(scale, key):
                     {scale: scale.toString(), key: key.toString()};
                 case CMusic(music):
-                    "Music";
+                    music.map(n -> '${n.note}-(${n.hit.start},${n.hit.duration})');
             }
             case _: throw "invalid getValue";
         }

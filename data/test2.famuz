@@ -18,12 +18,14 @@ steps = \1 2 3 4
 rhythm = \x--- x--- x--- x---
 
 key :Key = C
-scale :Scale = major
+scale :Scale = natural-minor
 
 r = 5 + print(cool())
 
 func main() {
-    melody = print(steps + rhythm)
-    scaledKey = print(scale + key)
-    melody + scaledKey
+    melody = steps + rhythm
+    scaledKey = scale + key
+    m = melody + scaledKey
+    r = m + m
+    print(r)
 }

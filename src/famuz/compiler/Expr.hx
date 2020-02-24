@@ -27,6 +27,7 @@ import famuz.compiler.theory.Scale;
 import famuz.compiler.theory.Step;
 import famuz.compiler.theory.Hit;
 import famuz.compiler.theory.SteppedHit;
+import famuz.compiler.theory.NotedHit;
 
 enum BinopType
 {
@@ -49,10 +50,10 @@ enum Constant
     CMelody(notes :Array<SteppedHit>);
     CHarmony(melodies :Array<Array<SteppedHit>>);
     CSteps(steps :Array<Step>);
-    CScale(type :ScaleType);
+    CScale(type :Scale);
     CKey(key :Key);
-    CScaledKey(type :ScaleType, key :Key);
-    CMusic(music :Int);
+    CScaledKey(scale :Scale, key :Key);
+    CMusic(music :Array<NotedHit>);
 }
 
 enum ExprDef {

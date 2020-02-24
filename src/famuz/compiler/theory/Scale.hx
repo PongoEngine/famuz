@@ -23,49 +23,9 @@ package famuz.compiler.theory;
 import famuz.compiler.theory.Key;
 import famuz.compiler.Reserved.ReservedScale;
 
-@:notNull
-@:forward(length)
-abstract Scale(Array<Note>)
-{
-    public function new(root :Key, type :ScaleType) : Void
-    {
-        this = switch (type) {
-            case MAJOR: fromSteps(root, [WHOLE,WHOLE,HALF,WHOLE,WHOLE,WHOLE]);
-            case NATURAL_MINOR: fromSteps(root, [WHOLE,HALF,WHOLE,WHOLE,HALF,WHOLE]);
-            case HARMONIC_MINOR: fromSteps(root, [WHOLE,HALF,WHOLE,WHOLE,HALF,WHOLE+HALF]);
-            case MELODIC_MINOR: fromSteps(root, [WHOLE,HALF,WHOLE,WHOLE,WHOLE,WHOLE]);
-            case CHROMATIC: fromSteps(root, [HALF,HALF,HALF,HALF,HALF,HALF,HALF,HALF,HALF,HALF,HALF]);
-            case INVALID: [];
-        }
-    }
-
-    public function getNote(step :Step, octave :Octave) : Note
-    {
-        var step = step.toInt();
-        var octave = octave.toInt();
-
-        var offsetOctave :Int = Math.floor(step / this.length);
-        var rangedStep :Int = step - (offsetOctave*this.length);
-        var note :Int = this[rangedStep].toInt() + (12 * (offsetOctave+octave));
-
-        return new Note(note);
-    }
-
-    private static function fromSteps(root :Key, steps :Array<Interval>) : Array<Note>
-    {
-        var root = root.toInt();
-        var arra = [new Note(root)];
-        for(step in steps) {
-            root = root + step;
-            arra.push(new Note(root));
-        }
-        return arra;
-    }
-}
-
 @:enum
 @:using(famuz.compiler.theory.Scale.ScaleTools)
-abstract ScaleType(Int)
+abstract Scale(Int)
 {
     var MAJOR = 0;
     var NATURAL_MINOR = 1;
@@ -75,18 +35,15 @@ abstract ScaleType(Int)
     var INVALID = 5;
 }
 
-@:enum
-abstract Interval(Int) to Int
-{
-    var HALF = 1;
-    var WHOLE = 2;
-
-    @:op(A + B) static function addition(a :Interval, b :Interval) : Interval;
-}
-
 class ScaleTools
 {
-    public static function toString(scale :ScaleType) : String
+    public static var MAJOR_SEMITONES (default, null) = [0,2,4,5,7,9,11];
+    public static var NATURAL_MINOR_SEMITONES (default, null) = [0,2,3,5,7,8,10];
+    public static var MELODIC_MINOR_SEMITONES (default, null) = [0,2,3,5,7,8,11];
+    public static var HARMONIC_MINOR_SEMITONES (default, null) = [0,2,3,5,7,9,11];
+    public static var CHROMATIC_SEMITONES (default, null) = [0,1,2,3,4,5,6,7,8,9,10,11];
+
+    public static function toString(scale :Scale) : String
     {
         return switch scale {
             case MAJOR: "major";
@@ -98,7 +55,31 @@ class ScaleTools
         }
     }
 
-    public static function getScale(reserved :ReservedScale) : ScaleType
+    public static function length(scale :Scale) : Int
+    {
+        return switch scale {
+            case MAJOR: MAJOR_SEMITONES.length;
+            case NATURAL_MINOR: NATURAL_MINOR_SEMITONES.length;
+            case MELODIC_MINOR: MELODIC_MINOR_SEMITONES.length;
+            case HARMONIC_MINOR: HARMONIC_MINOR_SEMITONES.length;
+            case CHROMATIC: CHROMATIC_SEMITONES.length;
+            case INVALID: -1;
+        }
+    }
+
+    public static function steppedValue(scale :Scale, root :Key, index :Int) : Int
+    {
+        return switch scale {
+            case MAJOR: MAJOR_SEMITONES[index] + root.toInt();
+            case NATURAL_MINOR: NATURAL_MINOR_SEMITONES[index] + root.toInt();
+            case MELODIC_MINOR: MELODIC_MINOR_SEMITONES[index] + root.toInt();
+            case HARMONIC_MINOR: HARMONIC_MINOR_SEMITONES[index] + root.toInt();
+            case CHROMATIC: CHROMATIC_SEMITONES[index] + root.toInt();
+            case INVALID: -1;
+        }
+    }
+
+    public static function getScale(reserved :ReservedScale) : Scale
     {
         var scale = switch reserved {
             case ReservedMajor: MAJOR;

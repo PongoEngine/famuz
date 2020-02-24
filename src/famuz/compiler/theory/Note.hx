@@ -20,6 +20,7 @@
  */
 
 package famuz.compiler.theory;
+using famuz.util.MathTools;
 
 @:notNull
 abstract Note(Int)
@@ -29,9 +30,22 @@ abstract Note(Int)
         this = val;
     }
 
-    public inline static function note(val :Int) : Note return new Note(val);
-
+    public static function create(root :Key, scale :Scale, step :Step, octave :Octave) : Note
+    {
+        var rangedStep = new Step(step.toInt().mod(scale.length()));
+        var realOctave = new Octave(Math.floor(step.toInt() / scale.length())) + octave;
+        var value = scale.steppedValue(root, rangedStep.toInt()) + 12 * realOctave.toInt();
+        return new Note(value);
+    }
+    
     public function toInt() : Int return this;
+
+    public function toString() : String
+    {
+        var v = this%12;
+        var o = Math.floor(this/12);
+        return PRETTY_NOTES[v]+o;
+    }
 
     //Unary
     @:op(A++) static function increment(a :Note) : Note;
@@ -51,4 +65,7 @@ abstract Note(Int)
     @:op(A <= B) static function lessThanOrEqual(a :Note, b :Note) : Bool;
     @:op(A > B) static function greaterThan(a :Note, b :Note) : Bool;
     @:op(A >= B) static function greaterThanOrEqual(a :Note, b :Note) : Bool;
+
+    private static var PRETTY_NOTES = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+    // private static var PRETTY_NOTES = ["C", "C#/Db", "D", "D#/Eb", "E", "F", "F#/Gb", "G", "G#/Ab", "A", "A#/Bb", "B"];
 }

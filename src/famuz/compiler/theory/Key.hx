@@ -74,7 +74,24 @@ class KeyTools
     public static function toInt(key :Key) : Int
     {
         return switch key {
-            case _: -1;
+            case A: 21;
+            case A_SHARP: 22;
+            case B_FLAT: 22;
+            case B: 23;
+            case C: 24;
+            case C_SHARP: 25;
+            case D_FLAT: 25;
+            case D: 26;
+            case D_SHARP: 27;
+            case E_FLAT: 27;
+            case E: 28;
+            case F: 29;
+            case F_SHARP: 30;
+            case G_FLAT: 30;
+            case G: 31;
+            case G_SHARP: 32;
+            case A_FLAT: 32;
+            case INVALID: -1;
         }
     }
 

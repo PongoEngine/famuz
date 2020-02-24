@@ -20,6 +20,7 @@
  */
 
 import famuz.Famuz;
+import famuz.compiler.midi.Midi;
 
 class Main {
 	static function main() {
@@ -27,8 +28,10 @@ class Main {
 			Sys.print(v+ "");
 		}
 		var evaluation = Famuz.compile("./data/test2.famuz");
-		trace("\n\n------------------------------\n\n");
-		trace(evaluation);
-		trace("\n\n------------------------------\n");
+
+		switch [evaluation.errors.length, evaluation.music] {
+			case [0, Some(m)]: Midi.create(m);
+			case _:
+		}
 	}
 }

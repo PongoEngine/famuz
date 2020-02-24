@@ -21,17 +21,17 @@ package famuz;
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import famuz.compiler.Expr;
-import famuz.compiler.Expr.Constant;
-import famuz.compiler.Expr.ExprStack;
-import famuz.compiler.evaluate.Evaluate;
-import famuz.compiler.Context;
 import sys.io.File;
-import famuz.compiler.lexer.Lexer;
-import famuz.compiler.Token.TokenScanner;
-import famuz.compiler.parser.Parser;
 import haxe.ds.Option;
+import famuz.compiler.Expr;
+import famuz.compiler.Expr.ExprStack;
 import famuz.compiler.Position;
+import famuz.compiler.Context;
+import famuz.compiler.Token.TokenScanner;
+import famuz.compiler.lexer.Lexer;
+import famuz.compiler.evaluate.Evaluate;
+import famuz.compiler.parser.Parser;
+import famuz.compiler.theory.NotedHit;
 
 class Famuz
 {
@@ -69,7 +69,7 @@ class Famuz
         };
     }
 
-    private static function getMusic(e :Expr) : Int
+    private static function getMusic(e :Expr) : Array<NotedHit>
     {
         return switch e.def {
             case EConstant(constant): switch constant {
@@ -82,6 +82,6 @@ class Famuz
 }
 
 typedef Evaluation = {
-    music: Option<Int>,
+    music: Option<Array<NotedHit>>,
     errors: Array<{msg :String, pos :Position}>
 }

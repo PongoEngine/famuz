@@ -21,16 +21,19 @@ package famuz.compiler.evaluate;
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+import famuz.compiler.theory.NotedHit;
+import famuz.compiler.theory.Octave;
 import famuz.compiler.Expr.BinopType;
 import famuz.compiler.Expr.ExprStack;
 import famuz.compiler.theory.Scale;
 import famuz.compiler.theory.Key;
+import famuz.compiler.theory.Note;
 import famuz.compiler.theory.Step;
 import famuz.compiler.theory.Hit;
 import famuz.compiler.theory.SteppedHit;
 
 using Lambda;
-using famuz.compiler.evaluate.EvaluateBinop.NumberTools;
+using famuz.util.MathTools;
 
 class EvaluateBinop
 {
@@ -51,6 +54,7 @@ class EvaluateBinop
             case [B_ADD, TScale, TKey]: addKeyToScale(right, left, context, stack);
             case [B_ADD, TMelody, TScaledKey]: addMelodyToScaledKey(left, right, context, stack);
             case [B_ADD, TScaledKey, TMelody]: addMelodyToScaledKey(right, left, context, stack);
+            case [B_ADD, TMusic, TMusic]: addMusic(left, right, context, stack);
             case [B_SHIFT_RIGHT, TRhythm, TNumber]: shiftRhythm(left, right, context, stack, false);
             case [B_SHIFT_LEFT, TRhythm, TNumber]: shiftRhythm(left, right, context, stack, true);
             case [B_SHIFT_RIGHT, TSteps, TNumber]: shiftRightSteps(left, right, context, stack);
@@ -68,11 +72,43 @@ class EvaluateBinop
         });
     }
 
-    private static function addMelodyToScaledKey(melody :Expr, scaledKey :Expr, context :Context, stack :ExprStack) : Void
+    private static function addMusic(left :Expr, right :Expr, context :Context, stack :ExprStack) : Void
     {
+        var m1 = copyMusic(left);
+        var m2 = copyMusic(right);
+        var m2Offset = m1.length == 0
+            ? 0
+            : m1[m1.length-1].hit.start + m1[m1.length-1].hit.duration;
+        var m3 = m1.map(n -> new NotedHit(n.note, new Hit(n.hit.start, n.hit.duration)));
+        for(nh in m2) {
+            var n = new NotedHit(nh.note, new Hit(nh.hit.start, nh.hit.duration));
+            n.hit.start += m2Offset;
+            m3.push(n);
+        }
+
         stack.push({
             context: context,
-            def: EConstant(CMusic(-1)),
+            def: EConstant(CMusic(m3)),
+            pos: Position.union(left.pos, right.pos),
+            ret: TMusic
+        });
+    }
+
+    private static function addMelodyToScaledKey(melody :Expr, scaledKey :Expr, context :Context, stack :ExprStack) : Void
+    {
+        var m = copyMelody(melody);
+        var sk = copyScaledKey(scaledKey);
+        var scale = sk.scale;
+        var key = sk.key;
+
+        var music = m.map(steppedHit -> {
+            var n = Note.create(key, scale, steppedHit.step, new Octave(0));
+            return new NotedHit(n, steppedHit.hit);
+        });
+
+        stack.push({
+            context: context,
+            def: EConstant(CMusic(music)),
             pos: Position.union(melody.pos, scaledKey.pos),
             ret: TMusic
         });
@@ -150,6 +186,17 @@ class EvaluateBinop
         }
     }
 
+    private static function copyMusic(e :Expr) : Array<NotedHit>
+    {
+        return switch e.def {
+            case EConstant(constant): switch constant {
+                case CMusic(music): music;
+                case _: throw "Expected Music.";
+            }
+            case _: throw "Expected Music.";
+        }
+    }
+
     private static function copyKey(e :Expr) : Key
     {
         return switch e.def {
@@ -161,11 +208,22 @@ class EvaluateBinop
         }
     }
 
-    private static function copyScale(e :Expr) : ScaleType
+    private static function copyScale(e :Expr) : Scale
     {
         return switch e.def {
             case EConstant(constant): switch constant {
                 case CScale(scale): scale;
+                case _: throw "Expected Scale.";
+            }
+            case _: throw "Expected Scale.";
+        }
+    }
+
+    private static function copyScaledKey(e :Expr) : {scale:Scale, key:Key}
+    {
+        return switch e.def {
+            case EConstant(constant): switch constant {
+                case CScaledKey(scale, key): {scale:scale, key:key};
                 case _: throw "Expected Scale.";
             }
             case _: throw "Expected Scale.";
@@ -196,12 +254,4 @@ class EvaluateBinop
             case _: throw "Expected Rhythm";
         }
     }
-}
-
-class NumberTools
-{
-    public static function mod(number :Int, amount :Int) : Int 
-    {
-        return ((number % amount) + amount) % amount;
-    };
 }
