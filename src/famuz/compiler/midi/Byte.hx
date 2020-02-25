@@ -21,48 +21,10 @@
 
 package famuz.compiler.midi;
 
-import haxe.io.BytesOutput;
-import sys.io.File;
-
-abstract Writer(BytesOutput)
+abstract Byte(Int) from Int
 {
-    public function new() : Void
+    public inline function new(val :Int) : Void
     {
-        this = new BytesOutput();
-        this.bigEndian = true;
-    }
-
-    public inline function addBytes(bytes :Array<Int>) : Void
-    {
-        for(byte in bytes) {
-            this.writeByte(byte);
-        }
-    }
-
-    public inline function addByte(byte :Int) : Void
-    {
-        this.writeByte(byte);
-    }
-
-    public function addEvent(event :Event) : Void
-    {
-        switch event {
-            case Midi(m): switch m {
-                case NoteOff(channel, note, velocity):
-                case NoteOn(channel, note, velocity):
-                case PolyphonicPressure(channel, note, pressure):
-                case Controller(channel, controller, value):
-                case ProgramChange(channel, program):
-                case ChannelPressure(channel, pressure):
-                case PitchBend(channel, lsb, msb):
-            }
-            case Meta(m): switch m {
-            }
-        }
-    }
-
-    public inline function save(path :String) : Void
-    {
-        File.saveBytes(path, this.getBytes());
+        this = val;
     }
 }

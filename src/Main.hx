@@ -22,6 +22,7 @@
 import famuz.Famuz;
 import famuz.compiler.midi.Midi;
 
+
 class Main {
 	static function main() {
 		haxe.Log.trace = function(v:Dynamic, ?infos:haxe.PosInfos) {
