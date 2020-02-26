@@ -81,7 +81,7 @@ class ScaleTools
 
     public static function getScale(reserved :ReservedScale) : Scale
     {
-        var scale = switch reserved {
+        var scale : Null<Scale>= switch reserved {
             case ReservedMajor: MAJOR;
             case ReservedNaturalMinor: NATURAL_MINOR;
             case ReservedMelodicMinor: MELODIC_MINOR;

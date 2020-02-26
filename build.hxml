@@ -1,9 +1,6 @@
 -cp src
 -D analyzer-optimize
 -main Main
---interp
-# -cpp cpp
-# -hl out/main.c
-# -cmd gcc -O3 -o myapp -std=c11 -I out out/main.c -lhl
-# -hl output.hl
-# -cmd hl output.hl
+-cpp cpp
+-D HXCPP_M64
+-cmd ./cpp/Main ./data/HelloWorld.famuz

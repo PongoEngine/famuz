@@ -19,14 +19,16 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+import haxe.io.Path;
 import famuz.Famuz;
 import famuz.compiler.midi.Midi;
 
 
 class Main {
 	static function main() {
-		var source = "./data/HelloWorld.famuz";
-		var output = "HelloWorld.mid";
+		var source = Sys.args()[0];
+		var path = new Path(source);
+		var output = path.file + ".mid";
 
 		haxe.Log.trace = function(v:Dynamic, ?infos:haxe.PosInfos) {
 			Sys.print(v+ "");
