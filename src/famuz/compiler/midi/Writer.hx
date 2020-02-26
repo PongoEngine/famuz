@@ -50,6 +50,16 @@ abstract Writer(BytesOutput)
         this.writeByte(byte);
     }
 
+    public inline function addInt16(int :Int) : Void
+    {
+        this.writeInt16(int);
+    }
+
+    public inline function addInt24(int :Int) : Void
+    {
+        this.writeInt24(int);
+    }
+
     public inline function addInt32(int :Int) : Void
     {
         this.writeInt32(int);

@@ -47,7 +47,7 @@ enum Constant
     CIdentifier(str :String);
     CNumber(value :Int);
     CRhythm(hits :Array<Hit>, duration :Int);
-    CMelody(notes :Array<SteppedHit>);
+    CMelody(notes :Array<SteppedHit>, duration :Int);
     CHarmony(melodies :Array<Array<SteppedHit>>);
     CSteps(steps :Array<Step>);
     CScale(type :Scale);

@@ -58,8 +58,8 @@ class EvaluatePrint
                     value;
                 case CRhythm(hits, duration):
                     '${hits.map(h -> '(${h.start},${h.duration})')}, ${duration}';
-                case CMelody(notes):
-                    notes.map(n -> '${n.step}-(${n.hit.start},${n.hit.duration})');
+                case CMelody(notes, duration):
+                    notes.map(n -> '${n.step}-(${n.hit.start},${n.hit.duration}), ${duration}');
                 case CHarmony(melodies):
                     melodies;
                 case CSteps(steps):

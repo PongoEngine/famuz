@@ -292,7 +292,7 @@ enum MetaEvent
      * in this track. In format 2, each track should begin with at least one 
      * initial tempo (and time signature) event.
      */
-    Tempo(tt1 :Byte, tt2 :Byte, tt3 :Byte);
+    Tempo(bpm :Int);
 
     /**
      * SMPTE offset

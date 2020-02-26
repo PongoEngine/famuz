@@ -25,13 +25,16 @@ import famuz.compiler.midi.Midi;
 
 class Main {
 	static function main() {
+		var source = "./data/HelloWorld.famuz";
+		var output = "HelloWorld.mid";
+
 		haxe.Log.trace = function(v:Dynamic, ?infos:haxe.PosInfos) {
 			Sys.print(v+ "");
 		}
-		var evaluation = Famuz.compile("./data/test2.famuz");
+		var evaluation = Famuz.compile(source);
 
 		switch [evaluation.errors.length, evaluation.music] {
-			case [0, Some(m)]: Midi.create(m);
+			case [0, Some(m)]: Midi.create(m, output);
 			case _:
 		}
 	}

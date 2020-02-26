@@ -1,0 +1,22 @@
+steps1 = \2 1 0 1 2 2 2
+steps2 = \1 1 1 2 4 4
+steps3 = \2 1 1 2 1 0
+rhythm1 = \x-x-x-x-x-x-x~~-
+rhythm2 = \x-x-x---x-x-x~~-
+rhythm3 = \x-x-x-x-x-x-x-
+rhythm4 = \x-x-x-x-x-x~~~~~
+
+phrase1 = steps1 + rhythm1
+phrase2 = steps2 + rhythm2
+phrase3 = steps1 + rhythm3
+phrase4 = steps3 + rhythm4
+
+maryLittleLamb = phrase1 + phrase2 + phrase3 + phrase4
+
+key :Key = G
+scale :Scale = melodic-minor
+
+func main() {
+    scaledKey = scale + key
+    maryLittleLamb + scaledKey
+}

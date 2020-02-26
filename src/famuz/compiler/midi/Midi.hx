@@ -28,34 +28,24 @@ import famuz.compiler.midi.Writer;
 
 class Midi
 {
-    public static function create(music :Array<NotedHit>) : Void
+    public static function create(music :Array<NotedHit>, path :String) : Void
     {
         var writer = new Writer();
-        writer.addBuffer(createHeader());
-        writer.addBuffer(createTrack(info()));
-        writer.save("robot2.mid");
+        writer.addBuffer(createHeader(2));
+        writer.addBuffer(createTrack(info(60)));
+        writer.addBuffer(createTrack(buildMusic(music)));
+        writer.save(path);
     }
 
-    private static function createHeader() : Bytes
+    private static function createHeader(trackLength :Int) : Bytes
     {
         var w = new Writer();
         w.addBytes([0x4D,0x54,0x68,0x64]); //MThd
         w.addBytes([0x00,0x00,0x00,0x06]); //length
         w.addBytes([0x00,0x01]); //format
-        w.addBytes([0x00,0x01]); //tracks
+        w.addInt16(trackLength); //tracks
         w.addBytes([0x00,0x60]); //96 ppqn, metrical time
         return w.bytes();
-    }
-
-    private static function info() : Bytes
-    {
-        var ti = new Writer();
-        createEvent(ti, 0x00, Meta(TimeSignature(0x04,0x02,0x18,0x08)));
-        createEvent(ti, 0x00, Meta(KeySignature(0x02, 0x00)));
-        createEvent(ti, 0x00, Meta(Tempo(0x0F, 0x42, 0x40)));
-        createEvent(ti, 0x01, Meta(Copyright("Famuz 2020")));
-        createEvent(ti, 0x01, Meta(EndOfTrack));
-        return ti.bytes();
     }
 
     private static function createTrack(data :Bytes) : Bytes
@@ -65,6 +55,44 @@ class Midi
         w.addInt32(data.length);
         w.addBuffer(data);
         return w.bytes();
+    }
+
+    private static function info(bpm :Int) : Bytes
+    {
+        var ti = new Writer();
+        createEvent(ti, 0x00, Meta(TimeSignature(0x04,0x02,0x18,0x08)));
+        createEvent(ti, 0x00, Meta(KeySignature(0x02, 0x00)));
+        createEvent(ti, 0x00, Meta(Tempo(bpm)));
+        createEvent(ti, 0x01, Meta(Copyright("Famuz 2020")));
+        createEvent(ti, 0x01, Meta(EndOfTrack));
+        return ti.bytes();
+    }
+
+    private static function buildMusic(music :Array<NotedHit>) : Bytes
+    {
+        var ti = new Writer();
+        createEvent(ti, 0x00, Midi(ProgramChange(0, 0x0c)));
+        var noteMsgs = [];
+        for(m in music) {
+            noteMsgs.push(new NoteMsg(m.hit.start, m.note.toInt(), true));
+            noteMsgs.push(new NoteMsg((m.hit.start  + m.hit.duration), m.note.toInt(), false));
+        }
+        noteMsgs.sort((a, b) -> a.dt - b.dt);
+        var lastDt = 0;
+        for(n in noteMsgs) {
+            var dt :Int = (n.dt - lastDt);
+            if(n.isOn) {
+                createEvent(ti, dt, Midi(NoteOn(0, n.note, 127)));
+            }
+            else {
+                createEvent(ti, dt, Midi(NoteOff(0, n.note, 127)));
+            }
+            lastDt = n.dt;
+
+        }
+        createEvent(ti, 0x01, Meta(EndOfTrack));
+
+        return ti.bytes();
     }
 
     public static function createEvent(w :Writer, delta :Byte, event :Event) : Void
@@ -127,8 +155,9 @@ class Midi
                     w.addBytes([0xFF, 0x00, 0x02, ss1, ss2]);
                 case SequenceNumber2:
                     w.addBytes([0xFF, 0x00, 0x00]);
-                case Tempo(tt1, tt2, tt3):
-                    w.addBytes([0xFF, 0x51, 0x03, tt1, tt2, tt3]);
+                case Tempo(bpm):
+                    w.addBytes([0xFF, 0x51, 0x03]);
+                    w.addInt24(Math.floor(60000000 / bpm));
                 case SmpteOffset(hr, mn, se, fr, ff):
                     w.addBytes([0xFF, 0x54, 0x05, hr, mn, se, fr, ff]);
                 case TimeSignature(nn, dd, cc, bb):
@@ -149,5 +178,19 @@ class Midi
                     w.addBytes([0xFF, 0x2F, 0x00]);
             }
         }
+    }
+}
+
+private class NoteMsg
+{
+    public var dt :Int;
+    public var note :Int;
+    public var isOn :Bool;
+
+    public function new(dt :Int, note :Int, isOn :Bool) : Void
+    {
+        this.dt = dt * 16;
+        this.note = note;
+        this.isOn = isOn;
     }
 }

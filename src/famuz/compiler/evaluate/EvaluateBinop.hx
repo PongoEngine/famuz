@@ -54,6 +54,7 @@ class EvaluateBinop
             case [B_ADD, TScale, TKey]: addKeyToScale(right, left, context, stack);
             case [B_ADD, TMelody, TScaledKey]: addMelodyToScaledKey(left, right, context, stack);
             case [B_ADD, TScaledKey, TMelody]: addMelodyToScaledKey(right, left, context, stack);
+            case [B_ADD, TMelody, TMelody]: addMelody(left, right, context, stack);
             case [B_ADD, TMusic, TMusic]: addMusic(left, right, context, stack);
             case [B_SHIFT_RIGHT, TRhythm, TNumber]: shiftRhythm(left, right, context, stack, false);
             case [B_SHIFT_LEFT, TRhythm, TNumber]: shiftRhythm(left, right, context, stack, true);
@@ -94,6 +95,26 @@ class EvaluateBinop
         });
     }
 
+    private static function addMelody(left :Expr, right :Expr, context :Context, stack :ExprStack) : Void
+    {
+        var m1 = copyMelody(left);
+        var m2 = copyMelody(right);
+
+        var m3Hits = m1.steppedHits.map(n -> new SteppedHit(n.step, new Hit(n.hit.start, n.hit.duration)));
+        for(nh in m2.steppedHits) {
+            var n = new SteppedHit(nh.step, new Hit(nh.hit.start, nh.hit.duration));
+            n.hit.start += m1.duration;
+            m3Hits.push(n);
+        }
+
+        stack.push({
+            context: context,
+            def: EConstant(CMelody(m3Hits, m1.duration + m2.duration)),
+            pos: Position.union(left.pos, right.pos),
+            ret: TMelody
+        });
+    }
+
     private static function addMelodyToScaledKey(melody :Expr, scaledKey :Expr, context :Context, stack :ExprStack) : Void
     {
         var m = copyMelody(melody);
@@ -101,8 +122,8 @@ class EvaluateBinop
         var scale = sk.scale;
         var key = sk.key;
 
-        var music = m.map(steppedHit -> {
-            var n = Note.create(key, scale, steppedHit.step, new Octave(0));
+        var music = m.steppedHits.map(steppedHit -> {
+            var n = Note.create(key, scale, steppedHit.step, new Octave(1));
             return new NotedHit(n, steppedHit.hit);
         });
 
@@ -132,7 +153,7 @@ class EvaluateBinop
         });
         stack.push({
             context: context,
-            def: EConstant(CMelody(m)),
+            def: EConstant(CMelody(m, r.duration)),
             pos: Position.union(rhythm.pos, steps.pos),
             ret: TMelody
         });
@@ -230,11 +251,14 @@ class EvaluateBinop
         }
     }
 
-    private static function copyMelody(e :Expr) : Array<SteppedHit>
+    private static function copyMelody(e :Expr) : {steppedHits: Array<SteppedHit>, duration :Int}
     {
         return switch e.def {
             case EConstant(constant): switch constant {
-                case CMelody(melody): melody.copy();
+                case CMelody(melody, duration): {
+                    steppedHits: melody.copy(),
+                    duration: duration
+                };
                 case _: throw "Expected Melody.";
             }
             case _: throw "Expected Steps.";
