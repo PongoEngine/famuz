@@ -32,31 +32,37 @@ abstract Writer(BytesOutput)
         this.bigEndian = true;
     }
 
-    public inline function addBytes(bytes :Array<Int>) : Void
+    public inline function addBytes(bytes :Array<Byte>) : Void
     {
         for(byte in bytes) {
             this.writeByte(byte);
         }
     }
 
-    public inline function addByte(byte :Int) : Void
+    public inline function addByte(byte :Byte) : Void
     {
         this.writeByte(byte);
     }
 
-    public function addEvent(event :Event) : Void
+    public function addEvent(delta :Byte, event :Event) : Void
     {
         switch event {
             case Midi(m): switch m {
                 case NoteOff(channel, note, velocity):
                 case NoteOn(channel, note, velocity):
-                case PolyphonicPressure(channel, note, pressure):
+                case NoteAfterTouch(channel, note, pressure):
                 case Controller(channel, controller, value):
                 case ProgramChange(channel, program):
-                case ChannelPressure(channel, pressure):
+                case ChannelAfterTouch(channel, pressure):
                 case PitchBend(channel, lsb, msb):
             }
             case Meta(m): switch m {
+                case EndOfTrack:
+                    this.writeByte(delta);
+                    this.writeByte(0xFF);
+                    this.writeByte(0x2F);
+                    this.writeByte(0x00);
+                case _:
             }
         }
     }

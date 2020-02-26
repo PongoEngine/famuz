@@ -27,5 +27,6 @@ func main() {
     scaledKey = scale + key
     m = melody + scaledKey
     r = m + m
+    
     print(r)
 }

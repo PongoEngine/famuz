@@ -1,5 +1,3 @@
-//https://www.mixagesoftware.com/en/midikit/help/HTML/midi_events.html
-
 /*
  * Copyright (c) 2020 Jeremy Meltingtallow
  *
@@ -23,7 +21,6 @@
 
 package famuz.compiler.midi;
 
-@:using(famuz.compiler.midi.Event.EventTools)
 enum Event
 {
     Midi(m :MidiEvent);
@@ -38,6 +35,8 @@ enum Event
  * channel it corresponds to, the type of event it is and one or two event type 
  * specific values. Below is a detailed description of each type of MIDI event 
  * and how it is used.
+ * 
+ * https://www.mixagesoftware.com/en/midikit/help/HTML/midi_events.html
  */
 enum MidiEvent
 {
@@ -54,7 +53,7 @@ enum MidiEvent
      * and the velocity is usually ignored, but is sometimes used to adjust the 
      * slope of an instrument's release phase.
      */
-    NoteOff(channel :Byte, note :Byte, velocity :Byte);
+    NoteOff(c :Byte, noteNumber :Byte, velocity :Byte);
 
     /**
      * Note On Event
@@ -68,12 +67,22 @@ enum MidiEvent
      * instruments musical pitch and the velocity is usually used to specify the 
      * instruments playback volume and intensity.
      */
-    NoteOn(channel :Byte, note :Byte, velocity :Byte);
+    NoteOn(c :Byte, noteNumber :Byte, velocity :Byte);
 
     /**
+     * Note Aftertouch Event
      * 
+     * 0xAc noteNumber, amount
+     * 
+     * The Note Aftertouch Event is used to indicate a pressure change on one of 
+     * the currently pressed MIDI keys. It has two parameters. The note number 
+     * of which key's pressure is changing and the aftertouch value which 
+     * specifies amount of pressure being applied (0 = no pressure, 127 = full 
+     * pressure). Note Aftertouch is used for extra expression of particular 
+     * notes, often introducing or increasing some type of modulation during the 
+     * instrument's sustain phase
      */
-    PolyphonicPressure(channel :Byte, note :Byte, pressure :Byte);
+    NoteAfterTouch(c :Byte, noteNumber :Byte, amount :Byte);
 
     /**
      * Controller Event
@@ -88,7 +97,7 @@ enum MidiEvent
      * 
      * https://www.mixagesoftware.com/en/midikit/help/HTML/controllers.html
      */
-    Controller(channel :Byte, controller :Byte, value :Byte);
+    Controller(c :Byte, controllernumber :Byte, value :Byte);
 
     /**
      * Program Change Event
@@ -100,12 +109,19 @@ enum MidiEvent
      * event takes only one parameter, the program number of the new 
      * instrument/patch.
      */
-    ProgramChange(channel :Byte, program:Byte);
+    ProgramChange(c :Byte, programNumber:Byte);
 
     /**
+     * Channel Aftertouch Event
      * 
+     * 0xDc amount
+     * 
+     * The Channel Aftertouch Event is similar to the Note Aftertouch message, 
+     * except it effects all keys currently pressed on the specific MIDI 
+     * channel. This type of event takes only one parameter, the aftertouch 
+     * amount (0 = no pressure, 127 = full pressure).
      */
-    ChannelPressure(channel :Byte, pressure :Byte);
+    ChannelAfterTouch(c :Byte, amount :Byte);
 
     /**
      * Pitch Bend Event
@@ -124,9 +140,31 @@ enum MidiEvent
      * range may vary from instrument to instrument, but is usually +/-2 
      * semi-tones.
      */
-    PitchBend(channel :Byte, lsb :Byte, msb :Byte);
+    PitchBend(c :Byte, lsb :Byte, msb :Byte);
 }
 
+/**
+ * The following events occur within MIDI tracks and specify various kinds of 
+ * information and actions. They may appear at any time within the track. Those 
+ * which provide general information for which time is not relevant usually 
+ * appear at the start of the track with Time zero, but this is not a 
+ * requirement.
+ * 
+ * Many of these meta-events include a text string argument. Strings in MIDI 
+ * files can be extremely long, theoretically as many as 228-1 characters. The 
+ * length of the text is stored as a series of bytes which is called a variable 
+ * length quantity. Only the first 7 bits of each byte is significant 
+ * (right-justified; sort of like an ASCII byte). So, if you have a 32-bit 
+ * value, you have to unpack it into a series of 7-bit bytes (ie, as if you were 
+ * going to transmit it over midi in a SYSEX message). Of course, you will have 
+ * a variable number of bytes depending upon your value. To indicate which is 
+ * the last byte of the series, you leave bit #7 clear. In all of the preceding 
+ * bytes, you set bit #7. So, if a value is between 0-127, it can be represented 
+ * as one byte. The largest value allowed is 0FFFFFFF, which translates to 4 
+ * bytes variable length.
+ * 
+ * https://www.mixagesoftware.com/en/midikit/help/HTML/meta_events.html
+ */
 enum MetaEvent
 {
     /**
@@ -378,23 +416,4 @@ enum MetaEvent
      * track.
      */
     EndOfTrack;
-}
-
-class EventTools
-{
-    public static function length(e :Event) : Int
-    {
-        return switch e {
-            case Midi(m): switch m {
-                case NoteOff(channel, note, velocity): 3;
-                case NoteOn(channel, note, velocity): 3;
-                case PolyphonicPressure(channel, note, pressure): 3;
-                case Controller(channel, controller, value): 3;
-                case ProgramChange(channel, program): 2;
-                case ChannelPressure(channel, pressure): 2;
-                case PitchBend(channel, lsb, msb): 3;
-            }
-            case Meta(m): -1;
-        }
-    }
 }

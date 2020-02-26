@@ -21,7 +21,7 @@
 
 package famuz.compiler.midi;
 
-abstract Byte(Int) from Int
+abstract Byte(Int) from Int to Int
 {
     public inline function new(val :Int) : Void
     {
