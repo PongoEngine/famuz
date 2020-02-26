@@ -21,6 +21,7 @@
 
 package famuz.compiler.midi;
 
+import haxe.io.Bytes;
 import haxe.io.BytesOutput;
 import sys.io.File;
 
@@ -39,36 +40,28 @@ abstract Writer(BytesOutput)
         }
     }
 
+    public inline function addBuffer(buf :Bytes) : Void
+    {
+        this.writeBytes(buf, 0, buf.length);
+    }
+
     public inline function addByte(byte :Byte) : Void
     {
         this.writeByte(byte);
     }
 
-    public function addEvent(delta :Byte, event :Event) : Void
+    public inline function addInt32(int :Int) : Void
     {
-        switch event {
-            case Midi(m): switch m {
-                case NoteOff(channel, note, velocity):
-                case NoteOn(channel, note, velocity):
-                case NoteAfterTouch(channel, note, pressure):
-                case Controller(channel, controller, value):
-                case ProgramChange(channel, program):
-                case ChannelAfterTouch(channel, pressure):
-                case PitchBend(channel, lsb, msb):
-            }
-            case Meta(m): switch m {
-                case EndOfTrack:
-                    this.writeByte(delta);
-                    this.writeByte(0xFF);
-                    this.writeByte(0x2F);
-                    this.writeByte(0x00);
-                case _:
-            }
-        }
+        this.writeInt32(int);
     }
 
     public inline function save(path :String) : Void
     {
         File.saveBytes(path, this.getBytes());
+    }
+
+    public inline function bytes() : Bytes
+    {
+        return this.getBytes();
     }
 }
