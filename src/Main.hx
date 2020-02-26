@@ -27,6 +27,7 @@ import famuz.compiler.midi.Midi;
 class Main {
 	static function main() {
 		var source = Sys.args()[0];
+		var start = Sys.time();
 		var path = new Path(source);
 		var output = path.file + ".mid";
 
@@ -39,5 +40,8 @@ class Main {
 			case [0, Some(m)]: Midi.create(m, output);
 			case _:
 		}
+		var end = Sys.time();
+		var time = Math.floor((end - start) * 1000000) / 1000000;
+		trace('\nCompiled ${source} in ${time} seconds.\n');
 	}
 }
