@@ -31,9 +31,9 @@ import famuz.compiler.theory.NotedHit;
 
 enum BinopType
 {
-    B_ADD;
-    B_SHIFT_LEFT;
-    B_SHIFT_RIGHT;
+    ADD;
+    SHIFT_LEFT;
+    SHIFT_RIGHT;
 }
 
 typedef Parameter =

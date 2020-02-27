@@ -25,8 +25,6 @@ import famuz.compiler.theory.NotedHit;
 import famuz.compiler.theory.Octave;
 import famuz.compiler.Expr.BinopType;
 import famuz.compiler.Expr.ExprStack;
-import famuz.compiler.theory.Scale;
-import famuz.compiler.theory.Key;
 import famuz.compiler.theory.Note;
 import famuz.compiler.theory.Step;
 import famuz.compiler.theory.Hit;
@@ -48,18 +46,18 @@ class EvaluateBinop
         var right = stack.pop();
 
         switch [binop, left.ret, right.ret] {
-            case [B_ADD, TNumber, TNumber]: addNumbers(left, right, context, stack);
-            case [B_ADD, TRhythm, TSteps]: addRhythmToSteps(left, right, context, stack);
-            case [B_ADD, TSteps, TRhythm]: addRhythmToSteps(right, left, context, stack);
-            case [B_ADD, TKey, TScale]: addKeyToScale(left, right, context, stack);
-            case [B_ADD, TScale, TKey]: addKeyToScale(right, left, context, stack);
-            case [B_ADD, TMelody, TScaledKey]: addMelodyToScaledKey(left, right, context, stack);
-            case [B_ADD, TScaledKey, TMelody]: addMelodyToScaledKey(right, left, context, stack);
-            case [B_ADD, TMelody, TMelody]: addMelody(left, right, context, stack);
-            case [B_ADD, TMusic, TMusic]: addMusic(left, right, context, stack);
-            case [B_SHIFT_RIGHT, TRhythm, TNumber]: shiftRhythm(left, right, context, stack, false);
-            case [B_SHIFT_LEFT, TRhythm, TNumber]: shiftRhythm(left, right, context, stack, true);
-            case [B_SHIFT_RIGHT, TSteps, TNumber]: shiftRightSteps(left, right, context, stack);
+            case [ADD, TNumber, TNumber]: addNumbers(left, right, context, stack);
+            case [ADD, TRhythm, TSteps]: addRhythmToSteps(left, right, context, stack);
+            case [ADD, TSteps, TRhythm]: addRhythmToSteps(right, left, context, stack);
+            case [ADD, TKey, TScale]: addKeyToScale(left, right, context, stack);
+            case [ADD, TScale, TKey]: addKeyToScale(right, left, context, stack);
+            case [ADD, TMelody, TScaledKey]: addMelodyToScaledKey(left, right, context, stack);
+            case [ADD, TScaledKey, TMelody]: addMelodyToScaledKey(right, left, context, stack);
+            case [ADD, TMelody, TMelody]: addMelody(left, right, context, stack);
+            case [ADD, TMusic, TMusic]: addMusic(left, right, context, stack);
+            case [SHIFT_RIGHT, TRhythm, TNumber]: shiftRhythm(left, right, context, stack, false);
+            case [SHIFT_LEFT, TRhythm, TNumber]: shiftRhythm(left, right, context, stack, true);
+            case [SHIFT_RIGHT, TSteps, TNumber]: shiftRightSteps(left, right, context, stack);
             case _: throw "invalid";
         }
     }
@@ -161,19 +159,19 @@ class EvaluateBinop
     }
 
     private static function shiftRhythm(rhythm :Expr, number :Expr, context :Context, stack :ExprStack, isLeft :Bool) : Void
-        {
-            var r = rhythm.copyRhythm();
-            var duration = r.duration;
-            var n = number.copyNumber() * (isLeft ? -1 : 1);
-            r.hits.map(r -> r.start = (r.start + n).mod(duration));
-            r.hits.sort((a,b) -> a.start - b.start);
-            stack.push({
-                context: context,
-                def: EConstant(CRhythm(r.hits, r.duration)),
-                pos: Position.union(rhythm.pos, number.pos),
-                ret: TSteps
-            });
-        }
+    {
+        var r = rhythm.copyRhythm();
+        var duration = r.duration;
+        var n = number.copyNumber() * (isLeft ? -1 : 1);
+        r.hits.map(r -> r.start = (r.start + n).mod(duration));
+        r.hits.sort((a,b) -> a.start - b.start);
+        stack.push({
+            context: context,
+            def: EConstant(CRhythm(r.hits, r.duration)),
+            pos: Position.union(rhythm.pos, number.pos),
+            ret: TSteps
+        });
+    }
 
     private static function shiftRightSteps(steps :Expr, number :Expr, context :Context, stack :ExprStack) : Void
     {

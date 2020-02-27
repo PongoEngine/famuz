@@ -51,6 +51,7 @@ class Reserved
 enum abstract ReservedType(String) from String 
 {
     var ReservedNumber = "Number";
+    var ReservedBool = "Bool";
     var ReservedRhythm = "Rhythm";
     var ReservedMelody = "Melody";
     var ReservedHarmony = "Harmony";

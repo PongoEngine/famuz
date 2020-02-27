@@ -28,6 +28,7 @@ enum Type
 {
     TIdent;
     TNumber;
+    TBool;
     TRhythm;
     TMelody;
     THarmony;
@@ -62,7 +63,7 @@ class TypeTools
                 return b == TScale ? TScaledKey : TInvalid;
             case TScaledKey:
                 return (b == TMelody || b == THarmony) ? TMusic : TInvalid;
-            case TIdent, TMusic, TMonomorph, TInvalid:
+            case TIdent, TMusic, TBool, TMonomorph, TInvalid:
                 return TInvalid;
         }
     }
@@ -70,6 +71,7 @@ class TypeTools
     public static function getType(r :ReservedType) : Type
     {
         var type = switch (r) {
+            case ReservedBool: TBool;
             case ReservedHarmony: THarmony;
             case ReservedKey: TKey;
             case ReservedMelody: TMelody;

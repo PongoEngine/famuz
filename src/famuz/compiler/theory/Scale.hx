@@ -37,11 +37,11 @@ abstract Scale(Int)
 
 class ScaleTools
 {
-    public static var MAJOR_SEMITONES (default, null) = [0,2,4,5,7,9,11];
-    public static var NATURAL_MINOR_SEMITONES (default, null) = [0,2,3,5,7,8,10];
-    public static var MELODIC_MINOR_SEMITONES (default, null) = [0,2,3,5,7,8,11];
-    public static var HARMONIC_MINOR_SEMITONES (default, null) = [0,2,3,5,7,9,11];
-    public static var CHROMATIC_SEMITONES (default, null) = [0,1,2,3,4,5,6,7,8,9,10,11];
+    private static var MAJOR_SEMITONES (default, null) = [0,2,4,5,7,9,11];
+    private static var NATURAL_MINOR_SEMITONES (default, null) = [0,2,3,5,7,8,10];
+    private static var MELODIC_MINOR_SEMITONES (default, null) = [0,2,3,5,7,8,11];
+    private static var HARMONIC_MINOR_SEMITONES (default, null) = [0,2,3,5,7,9,11];
+    private static var CHROMATIC_SEMITONES (default, null) = [0,1,2,3,4,5,6,7,8,9,10,11];
 
     public static function toString(scale :Scale) : String
     {

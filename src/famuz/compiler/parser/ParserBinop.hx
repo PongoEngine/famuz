@@ -35,9 +35,9 @@ class ParserBinop
         var token = scanner.next();
 
         var op :BinopType = switch token.lexeme {
-            case "+": B_ADD;
-            case "<<": B_SHIFT_LEFT;
-            case ">>": B_SHIFT_RIGHT;
+            case "+": ADD;
+            case "<<": SHIFT_LEFT;
+            case ">>": SHIFT_RIGHT;
             case _: throw "Invalid operation";
         }
         

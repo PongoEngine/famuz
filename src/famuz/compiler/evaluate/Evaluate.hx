@@ -39,7 +39,7 @@ class Evaluate
                     case _: stack.push(e);
                 }
             }
-            case EVar(identifier, expr):
+            case EVar(_, expr):
                 evaluate(expr, stack);
             case ECall(identifier, args): 
                 EvaluateCall.evaluate(identifier, args, e.pos, e.context, stack);
@@ -52,7 +52,7 @@ class Evaluate
                 stack.push(expr);
             case EPrint(expr): 
                 EvaluatePrint.evaluate(expr, e.context, stack);
-            case EFunction(identifier, params, body): 
+            case EFunction(_, _, _): 
                 stack.push(e);
         }
     }
