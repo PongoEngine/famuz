@@ -73,6 +73,7 @@ class EvaluatePrint
                 case CMusic(music):
                     music.map(n -> '${n.note}-(${n.hit.start},${n.hit.duration})');
             }
+            case EArrayDecl(values): values.map(getValue);
             case _: throw "invalid getValue";
         }
     }

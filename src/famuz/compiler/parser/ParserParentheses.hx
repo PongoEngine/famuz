@@ -32,7 +32,7 @@ class ParserParentheses
         var token = scanner.next(); // (
         var expr = parser.parse(0, scanner, context);
         var rightParentheses = scanner.next(); // )
-        Assert.that(rightParentheses.type == RIGHT_PARAM, "EXPECTED RIGHT PARAM");
+        Assert.that(rightParentheses.type == RIGHT_PARENTHESES, "EXPECTED RIGHT PARENTHESES");
 
         return {
             context: context,

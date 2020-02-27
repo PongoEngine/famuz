@@ -31,22 +31,6 @@ extern abstract Step(Int)
 
     inline public function toInt() : Int return this;
 
-    //Unary
-    @:op(A++) static function increment(a :Step) : Step;
-    @:op(A--) static function decrement(a :Step) : Step;
-
     //Arithmetic with Step
-    @:op(A % B) static function modulo(a :Step, b :Step) : Step;
-    @:op(A * B) static function multiplication(a :Step, b :Step) : Step;
-    @:op(A / B) static inline function divideByStep(a :Step, b :Step) : Step return cast Math.floor(a.toInt()/b.toInt());
     @:op(A + B) static function addition(a :Step, b :Step) : Step;
-    @:op(A - B) static function subtraction(a :Step, b :Step) : Step;
-
-    //Comparison with Step
-    @:op(A == B) static function equal(a :Step, b :Step) : Bool;
-    @:op(A != B) static function notEqual(a :Step, b :Step) : Bool;
-    @:op(A < B) static function lessThan(a :Step, b :Step) : Bool;
-    @:op(A <= B) static function lessThanOrEqual(a :Step, b :Step) : Bool;
-    @:op(A > B) static function greaterThan(a :Step, b :Step) : Bool;
-    @:op(A >= B) static function greaterThanOrEqual(a :Step, b :Step) : Bool;
 }

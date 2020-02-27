@@ -35,18 +35,18 @@ class ParserBlock
         var exprs :Array<Expr> = [];
         context = context.createChild();
 
-        while (scanner.hasNext() && scanner.peek().type != RIGHT_BRACKET) {
+        while (scanner.hasNext() && scanner.peek().type != RIGHT_BRACE) {
             exprs.push(parser.parse(0, scanner, context));
         }
 
-        var rightBracket = scanner.next();
-        Assert.that(rightBracket.type == RIGHT_BRACKET, "EXPECTED RIGHT BRACKET");
+        var rightBrace = scanner.next();
+        Assert.that(rightBrace.type == RIGHT_BRACE, "EXPECTED RIGHT BRACKET");
         var ret = exprs.length > 0 ? exprs[exprs.length-1].ret : TInvalid;
 
         return {
             context: context,
             def: EBlock(exprs),
-            pos: Position.union(token.pos, rightBracket.pos), 
+            pos: Position.union(token.pos, rightBrace.pos), 
             ret: ret
         };
     }

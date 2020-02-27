@@ -59,6 +59,8 @@ enum Constant
 enum ExprDef {
     //A constant.
     EConstant(constant :Constant);
+    //An array declaration [el].
+    EArrayDecl(values:Array<Expr>);
     //Variable declaration.
     EVar(identifier :String, expr :Expr);
     //A call e(params).

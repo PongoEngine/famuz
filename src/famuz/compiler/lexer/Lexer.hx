@@ -37,46 +37,46 @@ class Lexer
             var lexerToken :LexerToken = scanner.peek();
             switch (lexerToken)
             {
-                case L_ASSIGNMENT:
+                case ASSIGNMENT:
                     tokens.push(createToken(ASSIGNMENT, scanner));
-                case L_COLON:
+                case COLON:
                     tokens.push(createToken(COLON, scanner));
-                case L_LEFT_PARAM:
-                    tokens.push(createToken(LEFT_PARAM, scanner));
-                case L_RIGHT_PARAM:
-                    tokens.push(createToken(RIGHT_PARAM, scanner));
-                case L_LEFT_BRACKET:
+                case LEFT_PARENTHESES:
+                    tokens.push(createToken(LEFT_PARENTHESES, scanner));
+                case RIGHT_PARENTHESES:
+                    tokens.push(createToken(RIGHT_PARENTHESES, scanner));
+                case LEFT_BRACE:
+                    tokens.push(createToken(LEFT_BRACE, scanner));
+                case RIGHT_BRACE:
+                    tokens.push(createToken(RIGHT_BRACE, scanner));
+                case LEFT_BRACKET:
                     tokens.push(createToken(LEFT_BRACKET, scanner));
-                case L_RIGHT_BRACKET:
+                case RIGHT_BRACKET:
                     tokens.push(createToken(RIGHT_BRACKET, scanner));
-                case L_COMMA:
+                case COMMA:
                     tokens.push(createToken(COMMA, scanner));
-                case L_ADD:
+                case ADD:
                     tokens.push(createToken(ADD, scanner));
-                case L_BACKWARD_SLASH: {
-                    var db = scanner.peekDouble();
-                    var token = (db == L_HIT || db == L_REST)
-                        ? createTokenRhythm(scanner)
-                        : createTokenSteps(scanner);
-                    tokens.push(token);
+                case BACKWARD_SLASH: {
+                    tokens.push(createTokenRhythm(scanner));
                 }
-                case L_FORWARD_SLASH:
+                case FORWARD_SLASH:
                     scanner.peekDouble() == '/'
                         ? scanner.consumeComment()
                         : scanner.next();
-                case L_LT:
+                case LT:
                     scanner.peekDouble() == '<'
                         ? tokens.push(createTokenShiftLeft(scanner))
                         : scanner.next();
-                case L_GT:
+                case GT:
                     scanner.peekDouble() == '>'
                         ? tokens.push(createTokenShiftRight(scanner))
                         : scanner.next();
-                case L_DURATION, L_REST:
+                case DURATION, REST:
                     scanner.next();
-                case L_TAB, L_SPACE, L_LINE:
+                case TAB, SPACE, LINE:
                     scanner.consumeWhitespace();
-                case L_ZERO, L_ONE, L_TWO, L_THREE, L_FOUR, L_FIVE, L_SIX, L_SEVEN, L_EIGHT, L_NINE:
+                case ZERO, ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE:
                     tokens.push(createTokenNumber(scanner));
                 default:
                     tokens.push(createTokenIdentifier(scanner));
@@ -114,17 +114,6 @@ class Lexer
         var max = scanner.curIndex;
         var position = new Position(line, min, max, scanner.filepath, scanner.content);
         return new Token(lexeme, RHYTHM, position);
-    }
-
-    public static function createTokenSteps(scanner :Scanner) : Token
-    {
-        scanner.next(); //consume \
-        var line = scanner.curLine;
-        var min = scanner.curIndex;
-        var lexeme = scanner.consumeSteps();
-        var max = scanner.curIndex;
-        var position = new Position(line, min, max, scanner.filepath, scanner.content);
-        return new Token(lexeme, STEPS, position);
     }
 
     public static function createTokenShiftLeft(scanner :Scanner) : Token

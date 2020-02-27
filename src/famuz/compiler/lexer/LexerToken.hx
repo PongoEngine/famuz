@@ -21,42 +21,45 @@ package famuz.compiler.lexer;
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-enum abstract LexerToken(String) to String from String
+enum abstract LexerToken(String) from String
 {
-    var L_COLON = ":";
+    var COLON = ":";
 
-    var L_HIT = "x";
+    var HIT = "x";
 
-    var L_LEFT_BRACKET = "{";
-    var L_RIGHT_BRACKET = "}";
+    var LEFT_BRACE = "{";
+    var RIGHT_BRACE = "}";
 
-    var L_LEFT_PARAM = "(";
-    var L_RIGHT_PARAM = ")";
-    var L_COMMA = ";";
-    var L_ASSIGNMENT = "=";
+    var LEFT_BRACKET = "[";
+    var RIGHT_BRACKET = "]";
 
-    var L_ADD = "+";
-    var L_FORWARD_SLASH = "/";
-    var L_BACKWARD_SLASH = "\\";
+    var LEFT_PARENTHESES = "(";
+    var RIGHT_PARENTHESES = ")";
+    var COMMA = ",";
+    var ASSIGNMENT = "=";
 
-    var L_DURATION = "~";
-    var L_REST = "-";
+    var ADD = "+";
+    var FORWARD_SLASH = "/";
+    var BACKWARD_SLASH = "\\";
 
-    var L_LT = "<";
-    var L_GT = ">";
+    var DURATION = "~";
+    var REST = "-";
 
-    var L_TAB = "\t";
-    var L_SPACE = " ";
-    var L_LINE = "\n";
+    var LT = "<";
+    var GT = ">";
 
-    var L_ZERO = "0";
-    var L_ONE = "1";
-    var L_TWO = "2";
-    var L_THREE = "3";
-    var L_FOUR = "4";
-    var L_FIVE = "5";
-    var L_SIX = "6";
-    var L_SEVEN = "7";
-    var L_EIGHT = "8";
-    var L_NINE = "9";
+    var TAB = "\t";
+    var SPACE = " ";
+    var LINE = "\n";
+
+    var ZERO = "0";
+    var ONE = "1";
+    var TWO = "2";
+    var THREE = "3";
+    var FOUR = "4";
+    var FIVE = "5";
+    var SIX = "6";
+    var SEVEN = "7";
+    var EIGHT = "8";
+    var NINE = "9";
 }

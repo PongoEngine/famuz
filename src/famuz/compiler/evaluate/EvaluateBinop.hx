@@ -47,8 +47,6 @@ class EvaluateBinop
 
         switch [binop, left.ret, right.ret] {
             case [ADD, TNumber, TNumber]: addNumbers(left, right, context, stack);
-            case [ADD, TRhythm, TSteps]: addRhythmToSteps(left, right, context, stack);
-            case [ADD, TSteps, TRhythm]: addRhythmToSteps(right, left, context, stack);
             case [ADD, TKey, TScale]: addKeyToScale(left, right, context, stack);
             case [ADD, TScale, TKey]: addKeyToScale(right, left, context, stack);
             case [ADD, TMelody, TScaledKey]: addMelodyToScaledKey(left, right, context, stack);
@@ -57,7 +55,6 @@ class EvaluateBinop
             case [ADD, TMusic, TMusic]: addMusic(left, right, context, stack);
             case [SHIFT_RIGHT, TRhythm, TNumber]: shiftRhythm(left, right, context, stack, false);
             case [SHIFT_LEFT, TRhythm, TNumber]: shiftRhythm(left, right, context, stack, true);
-            case [SHIFT_RIGHT, TSteps, TNumber]: shiftRightSteps(left, right, context, stack);
             case _: throw "invalid";
         }
     }
@@ -169,18 +166,7 @@ class EvaluateBinop
             context: context,
             def: EConstant(CRhythm(r.hits, r.duration)),
             pos: Position.union(rhythm.pos, number.pos),
-            ret: TSteps
-        });
-    }
-
-    private static function shiftRightSteps(steps :Expr, number :Expr, context :Context, stack :ExprStack) : Void
-    {
-        var shiftedSteps = steps.copySteps().map(s -> s + Step.step(number.copyNumber()));
-        stack.push({
-            context: context,
-            def: EConstant(CSteps(shiftedSteps)),
-            pos: Position.union(steps.pos, number.pos),
-            ret: TSteps
+            ret: TRhythm
         });
     }
 }

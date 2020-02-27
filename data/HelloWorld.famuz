@@ -17,6 +17,6 @@ key :Key = G
 scale :Scale = melodic-minor
 
 func main() {
-    scaledKey = scale + key
-    maryLittleLamb + scaledKey
+    alpha = 22
+    print([3, 100, 30, 33, 100, alpha])
 }

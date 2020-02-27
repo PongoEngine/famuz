@@ -32,7 +32,6 @@ enum Type
     TRhythm;
     TMelody;
     THarmony;
-    TSteps;
     TScale;
     TKey;
     TScaledKey;
@@ -49,21 +48,17 @@ class TypeTools
         {
             case TNumber:
                 return b == TNumber ? TNumber : TInvalid;
-            case TRhythm:
-                return b == TSteps ? TMelody : TInvalid;
             case TMelody:
                 return b == TScaledKey ? TMusic : TInvalid;
             case THarmony:
                 return b == TScaledKey ? TMusic : TInvalid;
-            case TSteps:
-                return b == TRhythm ? TMelody : TInvalid;
             case TScale:
                 return b == TKey ? TScaledKey : TInvalid;
             case TKey:
                 return b == TScale ? TScaledKey : TInvalid;
             case TScaledKey:
                 return (b == TMelody || b == THarmony) ? TMusic : TInvalid;
-            case TIdent, TMusic, TBool, TMonomorph, TInvalid:
+            case TIdent, TMusic, TBool, TMonomorph, TInvalid, TRhythm:
                 return TInvalid;
         }
     }
@@ -80,7 +75,6 @@ class TypeTools
             case ReservedRhythm: TRhythm;
             case ReservedScale: TScale;
             case ReservedScaledKey: TScaledKey;
-            case ReservedSteps: TSteps;
         }
         return type != null ? type : TInvalid;
     }

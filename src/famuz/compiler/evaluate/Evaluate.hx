@@ -52,6 +52,8 @@ class Evaluate
                 stack.push(expr);
             case EPrint(expr): 
                 EvaluatePrint.evaluate(expr, e.context, stack);
+            case EArrayDecl(_): 
+                stack.push(e);
             case EFunction(_, _, _): 
                 stack.push(e);
         }

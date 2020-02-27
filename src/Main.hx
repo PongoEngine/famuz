@@ -26,7 +26,8 @@ import famuz.compiler.midi.Midi;
 
 class Main {
 	static function main() {
-		var source = Sys.args()[0];
+		// var source = Sys.args()[0];
+		var source = "./data/HelloWorld.famuz";
 		var start = Sys.time();
 		var path = new Path(source);
 		var output = path.file + ".mid";

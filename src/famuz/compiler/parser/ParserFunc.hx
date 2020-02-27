@@ -56,7 +56,7 @@ class ParserFunc
     private static function parseParams(scanner :TokenScanner) : Array<Parameter>
     {
         var params :Array<Parameter> = [];
-        while (scanner.peek().type != RIGHT_PARAM) {
+        while (scanner.peek().type != RIGHT_PARENTHESES) {
             var name = scanner.next();
     
             if(scanner.peek().type == COLON) {
@@ -79,7 +79,7 @@ class ParserFunc
             }
         }
 
-        Assert.that(scanner.next().type == RIGHT_PARAM, "\nparse_func :NOT LEFT PARENTHESES!\n");
+        Assert.that(scanner.next().type == RIGHT_PARENTHESES, "\nparse_func :NOT LEFT PARENTHESES!\n");
         return params;
     }
     

@@ -43,7 +43,7 @@ class ParserCall
         scanner.next(); //left parentheses
 
         var args :Array<Expr> = [];
-        while (scanner.hasNext() && scanner.peek().type != RIGHT_PARAM) {
+        while (scanner.hasNext() && scanner.peek().type != RIGHT_PARENTHESES) {
             args.push(parser.parse(PRECEDENCE_CALL, scanner, context));
             if (scanner.peek().type == COMMA) {
                 scanner.next(); //consume comma
@@ -51,7 +51,7 @@ class ParserCall
         }
 
         var rightParam = scanner.next();
-        Assert.that(rightParam.type == RIGHT_PARAM, "EXPECTED RIGHT PARAM");
+        Assert.that(rightParam.type == RIGHT_PARENTHESES, "EXPECTED RIGHT PARAM");
 
         return {
             context: context,

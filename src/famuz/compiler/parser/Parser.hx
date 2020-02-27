@@ -34,7 +34,6 @@ import famuz.compiler.parser.ParserParentheses;
 import famuz.compiler.parser.ParserPrint;
 import famuz.compiler.parser.ParserRhythm;
 import famuz.compiler.parser.ParserScale;
-import famuz.compiler.parser.ParserSteps;
 import famuz.compiler.parser.ParserTyping;
 import famuz.compiler.parser.ParserVar;
 import haxe.ds.Option;
@@ -94,19 +93,19 @@ class Parser
                 return ParserScale.parse(scanner, context);
             case KEY:
                 return ParserKey.parse(scanner, context);
-            case STEPS:
-                return ParserSteps.parse(scanner, context);
             case RHYTHM:
                 return ParserRhythm.parse(scanner, context);
-            case LEFT_PARAM:
+            case LEFT_PARENTHESES:
                 return ParserParentheses.parse(parser, scanner, context);
-            case LEFT_BRACKET:
+            case LEFT_BRACE:
                 return ParserBlock.parse(parser, scanner, context);
+            case LEFT_BRACKET:
+                return ParserArray.parse(parser, scanner, context);
             case FUNC:
                 return ParserFunc.parse(parser, scanner, context);
             case PRINT:
                 return ParserPrint.parse(parser, scanner, context);
-            case RIGHT_PARAM, RIGHT_BRACKET, COMMA, SLASH, 
+            case RIGHT_PARENTHESES, RIGHT_BRACE, RIGHT_BRACKET, COMMA, SLASH, 
                 COMMENT, WHITESPACE, ADD, ASSIGNMENT, COLON, 
                 SHIFT_LEFT, SHIFT_RIGHT:
                 {
@@ -123,7 +122,7 @@ class Parser
                 return ParserBinop.parse(parser, left, scanner, context);
             case ASSIGNMENT:
                 return ParserVar.parse(parser, left, scanner, context);
-            case LEFT_PARAM:
+            case LEFT_PARENTHESES:
                 return ParserCall.parse(parser, left, scanner, context);
             case COLON:
                 return ParserTyping.parse(left, scanner, context);
@@ -131,8 +130,8 @@ class Parser
                 return ParserBinop.parse(parser, left, scanner, context);
             case SHIFT_RIGHT:
                 return ParserBinop.parse(parser, left, scanner, context);
-            case RIGHT_PARAM, LEFT_BRACKET, RIGHT_BRACKET, COMMA, 
-                SLASH, IDENTIFIER, SCALE, KEY, WHITESPACE, STEPS, 
+            case RIGHT_PARENTHESES, LEFT_BRACE, RIGHT_BRACE, LEFT_BRACKET, RIGHT_BRACKET, COMMA, 
+                SLASH, IDENTIFIER, SCALE, KEY, WHITESPACE, 
                 COMMENT, RHYTHM, FUNC, PRINT, NUMBER:
                 null;
         }

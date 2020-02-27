@@ -21,28 +21,37 @@ package famuz.compiler.parser;
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import famuz.compiler.theory.Step;
+import famuz.compiler.Expr.Parameter;
 import famuz.compiler.Token;
+import famuz.util.Assert;
+import famuz.compiler.parser.Precedence.*;
+import famuz.compiler.parser.Parser;
+using famuz.compiler.Type;
+using famuz.compiler.Type.TypeTools;
 
-class ParserSteps
+class ParserArray
 {
-    public static function parse(scanner :TokenScanner, context :Context) : Expr
+    public static function parse(parser :Parser, scanner :TokenScanner, context :Context) : Expr
     {
-        var token = scanner.next();
-        var stepsScanner = new Scanner(token.lexeme, token.pos.file);
-        var steps :Array<Step> = [];
+        var token = scanner.next(); //[
+        var exprs :Array<Expr> = [];
 
-        while (stepsScanner.hasNext()) {
-            var c = stepsScanner.next();
-            var d = Step.step(Std.parseInt(c));
-            steps.push(d);
+        while (scanner.hasNext() && scanner.peek().type != RIGHT_BRACKET) {
+            exprs.push(parser.parse(0, scanner, context));
+            if(scanner.peek().type == COMMA) {
+                scanner.next();
+            }
         }
+
+        var rightBrace = scanner.next();
+        Assert.that(rightBrace.type == RIGHT_BRACKET, "EXPECTED RIGHT BRACKET");
+        var ret = exprs.length > 0 ? exprs[0].ret : TMonomorph;
 
         return {
             context: context,
-            def: EConstant(CSteps(steps)),
-            pos: token.pos,
-            ret: TSteps
+            def: EArrayDecl(exprs),
+            pos: Position.union(token.pos, rightBrace.pos), 
+            ret: ret
         };
     }
 }

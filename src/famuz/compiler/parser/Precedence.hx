@@ -38,7 +38,7 @@ class Precedence
                 return PRECEDENCE_ASSIGNMENT;
             case ADD, SHIFT_LEFT, SHIFT_RIGHT:
                 return PRECEDENCE_SUM;
-            case LEFT_PARAM:
+            case LEFT_PARENTHESES:
                 return PRECEDENCE_CALL;
             case COLON:
                 return PRECEDENCE_TYPE;

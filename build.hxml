@@ -1,6 +1,7 @@
 -cp src
 -D analyzer-optimize
 -main Main
--cpp cpp
--D HXCPP_M64
--cmd ./cpp/Main ./data/HelloWorld.famuz
+--interp
+# -cpp cpp
+# -D HXCPP_M64
+# -cmd ./cpp/Main ./data/HelloWorld.famuz

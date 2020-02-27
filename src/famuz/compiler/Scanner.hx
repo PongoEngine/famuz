@@ -92,9 +92,9 @@ class Scanner
     public function consumeRhythm() : String
     {
         var str = "";
-        while(this.hasNext() && (this.peek().isRhythm() || this.peek() == L_SPACE)) {
+        while(this.hasNext() && (this.peek().isRhythm() || this.peek() == SPACE)) {
             var c = this.next();
-            if(c != L_SPACE) {
+            if(c != SPACE) {
                 str += c;
             }
         }
@@ -104,9 +104,9 @@ class Scanner
     public function consumeSteps() : String
     {
         var str = "";
-        while(this.hasNext() && (this.peek().isDigit() || this.peek() == L_SPACE)) {
+        while(this.hasNext() && (this.peek().isDigit() || this.peek() == SPACE)) {
             var c = this.next();
-            if(c != L_SPACE) {
+            if(c != SPACE) {
                 str += c;
             }
         }
@@ -127,19 +127,17 @@ class ScannerTools
 {
     public static function isWhitespace(ch :String) : Bool
     {
-        return ch == L_SPACE || ch == L_LINE || ch == L_TAB;
+        return ch == SPACE || ch == LINE || ch == TAB;
     }
 
     public static function isIdentifer(ch :String) : Bool
     {
-        return ch != L_ADD && ch != L_FORWARD_SLASH &&
-            ch != L_TAB && ch != L_SPACE && ch != L_LINE &&
-            ch != L_LEFT_PARAM && ch != L_RIGHT_PARAM && ch != L_COMMA;
+        return isAlphaNumericUnderscore(ch);
     }
 
     public static function isRhythm(ch :String) : Bool
     {
-        return ch == L_HIT || ch == L_DURATION || ch == L_REST;
+        return ch == HIT || ch == DURATION || ch == REST;
     }
 
     public static function isDigit(ch :String) : Bool
@@ -147,4 +145,17 @@ class ScannerTools
         var code = ch.charCodeAt(0);
         return code > 47 && code < 58;
     }
+
+    public static function isAlphaNumericUnderscore(str :String) {
+        var code :Int;
+      
+        code = str.charCodeAt(0);
+        if (!(code == 95) && // _
+        !(code > 47 && code < 58) && // numeric (0-9)
+        !(code > 64 && code < 91) && // upper alpha (A-Z)
+        !(code > 96 && code < 123)) { // lower alpha (a-z)
+            return false;
+        }
+        return true;
+      }
 }
