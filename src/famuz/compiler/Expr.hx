@@ -111,3 +111,100 @@ abstract ExprStack(Array<Expr>)
         return this[index];
     }
 }
+
+class ExprTools
+{
+    public static function copyNumber(e :Expr) : Int
+    {
+        return switch e.def {
+            case EConstant(constant): switch constant {
+                case CNumber(value): value;
+                case _: throw "Expected Number";
+            }
+            case _: throw "Expected Number";
+        }
+    }
+
+    public static function copySteps(e :Expr) : Array<Step>
+    {
+        return switch e.def {
+            case EConstant(constant): switch constant {
+                case CSteps(steps): steps.copy();
+                case _: throw "Expected Steps.";
+            }
+            case _: throw "Expected Steps.";
+        }
+    }
+
+    public static function copyMusic(e :Expr) : Array<NotedHit>
+    {
+        return switch e.def {
+            case EConstant(constant): switch constant {
+                case CMusic(music): music;
+                case _: throw "Expected Music.";
+            }
+            case _: throw "Expected Music.";
+        }
+    }
+
+    public static function copyKey(e :Expr) : Key
+    {
+        return switch e.def {
+            case EConstant(constant): switch constant {
+                case CKey(key): key;
+                case _: throw "Expected Key.";
+            }
+            case _: throw "Expected Key.";
+        }
+    }
+
+    public static function copyScale(e :Expr) : Scale
+    {
+        return switch e.def {
+            case EConstant(constant): switch constant {
+                case CScale(scale): scale;
+                case _: throw "Expected Scale.";
+            }
+            case _: throw "Expected Scale.";
+        }
+    }
+
+    public static function copyScaledKey(e :Expr) : {scale:Scale, key:Key}
+    {
+        return switch e.def {
+            case EConstant(constant): switch constant {
+                case CScaledKey(scale, key): {scale:scale, key:key};
+                case _: throw "Expected Scale.";
+            }
+            case _: throw "Expected Scale.";
+        }
+    }
+
+    public static function copyMelody(e :Expr) : {steppedHits: Array<SteppedHit>, duration :Int}
+    {
+        return switch e.def {
+            case EConstant(constant): switch constant {
+                case CMelody(melody, duration): {
+                    steppedHits: melody.copy(),
+                    duration: duration
+                };
+                case _: throw "Expected Melody.";
+            }
+            case _: throw "Expected Steps.";
+        }
+    }
+
+    public static function copyRhythm(e :Expr) : {hits: Array<Hit>, duration :Int}
+    {
+        return switch e.def {
+            case EConstant(constant): switch constant {
+                case CRhythm(hits, duration): {
+                    hits: hits.copy(),
+                    duration: duration
+                };
+                case _: throw "Expected Rhythm.";
+            }
+            case _: throw "Expected Rhythm";
+        }
+    }
+}
