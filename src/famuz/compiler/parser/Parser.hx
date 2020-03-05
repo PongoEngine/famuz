@@ -71,17 +71,6 @@ class Parser
         }
     }
 
-    public function assert<T>(that :Bool, success :() -> T, failure: () -> T, failureMsg :String, pos :Position) : T
-    {
-        return switch that {
-            case true: success();
-            case false: {
-                this.errors.push({msg: failureMsg, pos: pos});
-                failure();
-            }
-        }
-    }
-
     private static function parseExpressionPrefix(parser :Parser, scanner :TokenScanner, context :Context) : Expr
     {
         return switch (scanner.peek().type) {
@@ -135,7 +124,6 @@ class Parser
             case RIGHT_PARENTHESES, LEFT_BRACE, RIGHT_BRACE, RIGHT_BRACKET, COMMA, 
                 SLASH, IDENTIFIER, SCALE, KEY, WHITESPACE, 
                 COMMENT, RHYTHM, FUNC, PRINT, NUMBER:
-				trace("\n\n\n" + scanner.peek().type + "\n\n\n");
                 null;
         }
     }

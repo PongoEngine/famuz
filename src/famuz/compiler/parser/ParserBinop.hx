@@ -42,17 +42,11 @@ class ParserBinop
         }
         
         var right = parser.parse(PRECEDENCE_SUM, scanner, context);
-        return parser.assert(right != null, () -> {
-            context: context,
-            def: EBinop(op, left, right),
-            pos: Position.union(left.pos, right.pos),
-            ret: left.ret.add(right.ret)
-        }, () -> {
-            context: context,
-            def: EBinop(op, left, null),
-            pos: Position.union(left.pos, token.pos),
-            ret: TInvalid
-        }, "Missing right expression.", 
-        Position.union(left.pos, token.pos));
+		return {
+			context: context,
+			def: EBinop(op, left, right),
+			pos: Position.union(left.pos, right.pos),
+			ret: left.ret.add(right.ret)
+		};
     }
 }

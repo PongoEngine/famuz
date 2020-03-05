@@ -20,5 +20,6 @@ scale :Scale = melodic-minor
 func main() {
     alpha = 122
     gamma = 222
-    print([3, 100, 30, 33, 100, alpha, 333, gamma][0])
+    arra = [3, 100, 30, 33, 100, alpha, 333, gamma]
+    print(arra[0] + 4 + arra[2])
 }

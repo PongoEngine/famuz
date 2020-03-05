@@ -23,32 +23,6 @@ package famuz.compiler;
 
 import famuz.compiler.Position;
 
-enum TokenType
-{
-    IDENTIFIER;
-    COLON;
-    SCALE;
-    FUNC;
-    PRINT;
-    KEY;
-    WHITESPACE;
-    NUMBER;
-    RHYTHM;
-    COMMENT;
-    ADD;
-    ASSIGNMENT;
-    LEFT_PARENTHESES;
-    RIGHT_PARENTHESES;
-    LEFT_BRACE;
-    RIGHT_BRACE;
-    LEFT_BRACKET;
-    RIGHT_BRACKET;
-    COMMA;
-    SHIFT_LEFT;
-    SHIFT_RIGHT;
-    SLASH;
-}
-
 class Token
 {
     public var type :TokenType;
@@ -90,3 +64,27 @@ class TokenScanner
     }
 }
 
+enum TokenType {
+	IDENTIFIER;
+	COLON;
+	SCALE;
+	FUNC;
+	PRINT;
+	KEY;
+	WHITESPACE;
+	NUMBER;
+	RHYTHM;
+	COMMENT;
+	ADD;
+	ASSIGNMENT;
+	LEFT_PARENTHESES;
+	RIGHT_PARENTHESES;
+	LEFT_BRACE;
+	RIGHT_BRACE;
+	LEFT_BRACKET;
+	RIGHT_BRACKET;
+	COMMA;
+	SHIFT_LEFT;
+	SHIFT_RIGHT;
+	SLASH;
+}
