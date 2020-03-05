@@ -56,30 +56,136 @@ enum Constant
     CMusic(music :Array<NotedHit>);
 }
 
+enum Unop
+{
+	/**
+	 * ++
+	 */
+    OpIncrement; 
+    
+    /**
+	 * --
+     */
+    OpDecrement;
+    
+    /**
+	 * !
+     */
+    OpNot;
+    
+    /**
+	 * -
+     */
+    OpNeg;
+}
+
+typedef ObjectField = 
+{
+    /**
+	 * The field expression.
+     */
+    expr :Expr,
+
+	/**
+	 * The name of the field.
+	 */
+	field:String
+}
+
+typedef Case =
+{
+    /**
+	 * The expression of the case, if available.
+     */
+    expr:Expr,
+
+	/**
+	 * The value expressions of the case.
+	 */
+	values:Array<Expr>
+} 
+
 enum ExprDef {
-    //A constant.
+
+    /**
+	 * A constant.
+     */
     EConstant(constant :Constant);
-	//Array access e1[e2].
+
+	/**
+	 * Represents a switch expression with related cases and an optional. 
+     * default case if edef != null.
+	 */
+	ESwitch(e:Expr, cases:Array<Case>, edef:Null<Expr>);
+
+	/**
+	 * An object declaration.
+	 */
+	EObjectDecl(fields:Array<ObjectField>);
+    
+	/**
+	 * Array access e1[e2].
+	 */
 	EArray(e1:Expr, e2:Expr);
-    //An array declaration [el].
+    
+    /**
+	 * An array declaration [el].
+     */
     EArrayDecl(values:Array<Expr>);
-    //Variable declaration.
+    
+    /**
+	 * Variable declaration.
+     */
     EVar(identifier :String, expr :Expr);
-    //A call e(params).
+    
+    /**
+	 * A call e(params).
+     */
     ECall(identifier :String, args :Array<Expr>);
-    //A block of expressions {exprs}.
+    
+    /**
+	 * A block of expressions {exprs}.
+     */
     EBlock(expr :Array<Expr>);
-	//Aif(econd) ethen else eelse expression.
+    
+    /**
+	 * Aif(econd) ethen else eelse expression.
+     */
     EIf(econd:Expr, ethen:Expr, eelse:Expr);
-    //A (econd) ? eif : eelse expression.
+
+	/**
+	 * An unary operator op on e:
+     * 
+	 * e++ (op = OpIncrement, postFix = true) e-- (op = OpDecrement, postFix = 
+     * true) ++e (op = OpIncrement, postFix = false) --e (op = OpDecrement, 
+     * postFix = false) -e (op = OpNeg, postFix = false) !e (op = OpNot, postFix 
+     * = false) ~e (op = OpNegBits, postFix = false)
+	 */
+	EUnop(op:Unop, postFix:Bool, e:Expr);
+    
+    /**
+	 * A (econd) ? eif : eelse expression.
+     */
     ETernary(econd:Expr, eif:Expr, eelse:Expr);
-    //Binary operator e1 op e2.
+    
+    /**
+	 * Binary operator e1 op e2.
+     */
     EBinop(type :BinopType, e1 :Expr, e2 :Expr);
-    //Parentheses (e).
+    
+    /**
+	 * Parentheses (e).
+     */
     EParentheses(expr :Expr);
-    //Print print(e).
+    
+    /**
+	 * Print print(e).
+     */
     EPrint(expr :Expr);
-    //A function declaration.
+    
+    /**
+	 * A function declaration.
+     */
     EFunction(identifier :String, params :Array<Parameter>, body :Expr);
 }
 
