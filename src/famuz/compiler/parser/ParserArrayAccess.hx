@@ -22,31 +22,21 @@ package famuz.compiler.parser;
  */
 
 import famuz.compiler.Token;
+import famuz.compiler.parser.Parser;
 
-class Precedence
+class ParserArrayAccess
 {
-    public static inline var PRECEDENCE_ASSIGNMENT = 1;
-    public static inline var PRECEDENCE_SUM = 2;
-	public static inline var PRECEDENCE_CALL = 3;
-	public static inline var PRECEDENCE_ARRAY = 3;
-    public static inline var PRECEDENCE_TYPE = 4;
-
-    public static function getPrecedence(scanner :TokenScanner) : Int
-    {
-        switch (scanner.peek().type)
-        {
-            case ASSIGNMENT:
-                return PRECEDENCE_ASSIGNMENT;
-            case ADD, SHIFT_LEFT, SHIFT_RIGHT:
-                return PRECEDENCE_SUM;
-			case LEFT_PARENTHESES:
-                return PRECEDENCE_CALL;
-			case LEFT_BRACKET:
-				return PRECEDENCE_ARRAY;
-            case COLON:
-                return PRECEDENCE_TYPE;
-            default:
-                return 0;
-        }
-    }
+	public static function parse(parser:Parser, left:Expr, scanner:TokenScanner, context:Context):Expr 
+	{
+		var leftBracket = scanner.next(); // consume "["
+		var expr = parser.parse(0, scanner, context);
+        var rightBracket = scanner.next(); // consume "]"
+        
+		return {
+			context: context,
+			def: EArray(left, expr),
+			pos: Position.union(leftBracket.pos, rightBracket.pos),
+			ret: TMonomorph
+        };
+	}
 }

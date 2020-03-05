@@ -12,6 +12,7 @@ phrase3 = steps1 + rhythm3
 phrase4 = steps3 + rhythm4
 
 maryLittleLamb = phrase1 + phrase2 + phrase3 + phrase4
+//coool
 
 key :Key = G
 scale :Scale = melodic-minor
@@ -19,5 +20,5 @@ scale :Scale = melodic-minor
 func main() {
     alpha = 122
     gamma = 222
-    print([3, 100, 30, 33, 100, alpha, 333, gamma])
+    print([3, 100, 30, 33, 100, alpha, 333, gamma][0])
 }

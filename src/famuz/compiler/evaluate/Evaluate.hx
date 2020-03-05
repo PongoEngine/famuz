@@ -24,6 +24,7 @@ package famuz.compiler.evaluate;
 import famuz.compiler.evaluate.EvaluateBinop;
 import famuz.compiler.evaluate.EvaluatePrint;
 import famuz.compiler.Expr.ExprStack;
+using famuz.compiler.Expr.ExprTools;
 
 class Evaluate
 {
@@ -38,6 +39,13 @@ class Evaluate
                     }
                     case _: stack.push(e);
                 }
+            }
+			case EArray(e1, e2): {
+                evaluate(e1, stack);
+				var r = stack.pop().copyArray();
+                evaluate(e2, stack);
+                var n = stack.pop().copyNumber();
+                stack.push(r[n]);
             }
             case EVar(_, expr):
                 evaluate(expr, stack);

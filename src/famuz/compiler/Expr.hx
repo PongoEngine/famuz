@@ -59,6 +59,8 @@ enum Constant
 enum ExprDef {
     //A constant.
     EConstant(constant :Constant);
+	//Array access e1[e2].
+	EArray(e1:Expr, e2:Expr);
     //An array declaration [el].
     EArrayDecl(values:Array<Expr>);
     //Variable declaration.
@@ -124,6 +126,14 @@ class ExprTools
                 case _: throw "Expected Number";
             }
             case _: throw "Expected Number";
+        }
+    }
+
+    public static function copyArray(e :Expr) : Array<Expr>
+    {
+        return switch e.def {
+			case EArrayDecl(values): values;
+            case _: throw "Expected Array";
         }
     }
 

@@ -36,6 +36,7 @@ import famuz.compiler.parser.ParserRhythm;
 import famuz.compiler.parser.ParserScale;
 import famuz.compiler.parser.ParserTyping;
 import famuz.compiler.parser.ParserVar;
+import famuz.compiler.parser.ParserArrayAccess;
 using famuz.compiler.parser.Precedence;
 
 class Parser
@@ -51,7 +52,7 @@ class Parser
     {
         if (scanner.hasNext()) {
             var left = parseExpressionPrefix(this, scanner, context);
-            if (!Assert.that(left != null, "IN PARSE EXPRESSION LEFT IS NULL")) {
+            if (!Assert.that(left != null, "IN PARSE EXPRESSION LEFT IS NULL\n")) {
                 if (scanner.hasNext()) {
                     scanner.next();
                 }
@@ -123,15 +124,18 @@ class Parser
                 return ParserVar.parse(parser, left, scanner, context);
             case LEFT_PARENTHESES:
                 return ParserCall.parse(parser, left, scanner, context);
+			case LEFT_BRACKET:
+				return ParserArrayAccess.parse(parser, left, scanner, context);
             case COLON:
                 return ParserTyping.parse(left, scanner, context);
             case SHIFT_LEFT:
                 return ParserBinop.parse(parser, left, scanner, context);
             case SHIFT_RIGHT:
                 return ParserBinop.parse(parser, left, scanner, context);
-            case RIGHT_PARENTHESES, LEFT_BRACE, RIGHT_BRACE, LEFT_BRACKET, RIGHT_BRACKET, COMMA, 
+            case RIGHT_PARENTHESES, LEFT_BRACE, RIGHT_BRACE, RIGHT_BRACKET, COMMA, 
                 SLASH, IDENTIFIER, SCALE, KEY, WHITESPACE, 
                 COMMENT, RHYTHM, FUNC, PRINT, NUMBER:
+				trace("\n\n\n" + scanner.peek().type + "\n\n\n");
                 null;
         }
     }
