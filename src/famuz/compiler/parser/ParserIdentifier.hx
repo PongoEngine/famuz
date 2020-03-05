@@ -32,7 +32,7 @@ class ParserIdentifier
             context: context,
             def: EConstant(CIdentifier(token.lexeme)),
             pos: token.pos,
-            ret: TIdent
+            ret: TMonomorph
         };
     }
 }

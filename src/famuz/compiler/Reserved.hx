@@ -54,7 +54,6 @@ enum abstract ReservedType(String) from String
     var ReservedBool = "Bool";
     var ReservedRhythm = "Rhythm";
     var ReservedMelody = "Melody";
-    var ReservedHarmony = "Harmony";
     var ReservedScale = "Scale";
     var ReservedKey = "Key";
     var ReservedScaledKey = "ScaledKey";

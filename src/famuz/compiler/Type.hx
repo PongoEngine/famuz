@@ -26,12 +26,10 @@ import famuz.compiler.Reserved.ReservedType;
 @:using(famuz.compiler.Type.TypeTools)
 enum Type
 {
-    TIdent;
     TNumber;
     TBool;
     TRhythm;
     TMelody;
-    THarmony;
     TScale;
     TKey;
     TScaledKey;
@@ -50,15 +48,13 @@ class TypeTools
                 return b == TNumber ? TNumber : TInvalid;
             case TMelody:
                 return b == TScaledKey ? TMusic : TInvalid;
-            case THarmony:
-                return b == TScaledKey ? TMusic : TInvalid;
             case TScale:
                 return b == TKey ? TScaledKey : TInvalid;
             case TKey:
                 return b == TScale ? TScaledKey : TInvalid;
             case TScaledKey:
-                return (b == TMelody || b == THarmony) ? TMusic : TInvalid;
-            case TIdent, TMusic, TBool, TMonomorph, TInvalid, TRhythm:
+                return b == TMelody ? TMusic : TInvalid;
+            case TMusic, TBool, TMonomorph, TInvalid, TRhythm:
                 return TInvalid;
         }
     }
@@ -67,7 +63,6 @@ class TypeTools
     {
         var type = switch (r) {
             case ReservedBool: TBool;
-            case ReservedHarmony: THarmony;
             case ReservedKey: TKey;
             case ReservedMelody: TMelody;
             case ReservedMusic: TMusic;
