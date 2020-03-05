@@ -25,7 +25,6 @@ import famuz.compiler.Token;
 import famuz.util.Assert;
 import famuz.compiler.parser.Precedence.*;
 import famuz.compiler.parser.Parser;
-using famuz.compiler.Type;
 
 class ParserCall
 {

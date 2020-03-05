@@ -17,6 +17,7 @@ key :Key = G
 scale :Scale = melodic-minor
 
 func main() {
-    alpha = 22
-    print([3, 100, 30, 33, 100, alpha])
+    alpha = 122
+    gamma = 222
+    print([3, 100, 30, 33, 100, alpha, 333, gamma])
 }

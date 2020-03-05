@@ -21,7 +21,6 @@ package famuz.compiler.parser;
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import haxe.Json;
 import famuz.compiler.Token;
 using famuz.compiler.Type.TypeTools;
 

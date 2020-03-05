@@ -52,8 +52,19 @@ class Evaluate
                 stack.push(expr);
             case EPrint(expr): 
                 EvaluatePrint.evaluate(expr, e.context, stack);
-            case EArrayDecl(_): 
-                stack.push(e);
+            case EArrayDecl(values): {
+                var vals = [];
+                for(v in values) {
+                    evaluate(v, stack);
+                    vals.push(stack.pop());
+                }
+                stack.push({
+                    context :e.context,
+                    def :EArrayDecl(vals),
+                    pos :e.pos,
+                    ret :e.ret
+                });
+            }
             case EFunction(_, _, _): 
                 stack.push(e);
         }

@@ -21,13 +21,10 @@ package famuz.compiler.parser;
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import famuz.compiler.Expr.Parameter;
 import famuz.compiler.Token;
 import famuz.util.Assert;
-import famuz.compiler.parser.Precedence.*;
 import famuz.compiler.parser.Parser;
 using famuz.compiler.Type;
-using famuz.compiler.Type.TypeTools;
 
 class ParserArray
 {

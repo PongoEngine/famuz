@@ -36,7 +36,6 @@ import famuz.compiler.parser.ParserRhythm;
 import famuz.compiler.parser.ParserScale;
 import famuz.compiler.parser.ParserTyping;
 import famuz.compiler.parser.ParserVar;
-import haxe.ds.Option;
 using famuz.compiler.parser.Precedence;
 
 class Parser
