@@ -69,6 +69,10 @@ enum ExprDef {
     ECall(identifier :String, args :Array<Expr>);
     //A block of expressions {exprs}.
     EBlock(expr :Array<Expr>);
+	//Aif(econd) ethen else eelse expression.
+    EIf(econd:Expr, ethen:Expr, eelse:Expr);
+    //A (econd) ? eif : eelse expression.
+    ETernary(econd:Expr, eif:Expr, eelse:Expr);
     //Binary operator e1 op e2.
     EBinop(type :BinopType, e1 :Expr, e2 :Expr);
     //Parentheses (e).

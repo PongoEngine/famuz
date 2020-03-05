@@ -74,26 +74,28 @@ class Parser
     private static function parseExpressionPrefix(parser :Parser, scanner :TokenScanner, context :Context) : Expr
     {
         return switch (scanner.peek().type) {
+            case IF:
+                null;
             case IDENTIFIER:
-                return ParserIdentifier.parse(scanner, context);
+                ParserIdentifier.parse(scanner, context);
             case NUMBER:
-                return ParserNumber.parse(scanner, context);
+                ParserNumber.parse(scanner, context);
             case SCALE:
-                return ParserScale.parse(scanner, context);
+                ParserScale.parse(scanner, context);
             case KEY:
-                return ParserKey.parse(scanner, context);
+                ParserKey.parse(scanner, context);
             case RHYTHM:
-                return ParserRhythm.parse(scanner, context);
+                ParserRhythm.parse(scanner, context);
             case LEFT_PARENTHESES:
-                return ParserParentheses.parse(parser, scanner, context);
+                ParserParentheses.parse(parser, scanner, context);
             case LEFT_BRACE:
-                return ParserBlock.parse(parser, scanner, context);
+                ParserBlock.parse(parser, scanner, context);
             case LEFT_BRACKET:
-                return ParserArray.parse(parser, scanner, context);
+                ParserArray.parse(parser, scanner, context);
             case FUNC:
-                return ParserFunc.parse(parser, scanner, context);
+                ParserFunc.parse(parser, scanner, context);
             case PRINT:
-                return ParserPrint.parse(parser, scanner, context);
+                ParserPrint.parse(parser, scanner, context);
             case RIGHT_PARENTHESES, RIGHT_BRACE, RIGHT_BRACKET, COMMA, SLASH, 
                 COMMENT, WHITESPACE, ADD, ASSIGNMENT, COLON, 
                 SHIFT_LEFT, SHIFT_RIGHT:
@@ -121,7 +123,7 @@ class Parser
                 return ParserBinop.parse(parser, left, scanner, context);
             case SHIFT_RIGHT:
                 return ParserBinop.parse(parser, left, scanner, context);
-            case RIGHT_PARENTHESES, LEFT_BRACE, RIGHT_BRACE, RIGHT_BRACKET, COMMA, 
+            case IF, RIGHT_PARENTHESES, LEFT_BRACE, RIGHT_BRACE, RIGHT_BRACKET, COMMA, 
                 SLASH, IDENTIFIER, SCALE, KEY, WHITESPACE, 
                 COMMENT, RHYTHM, FUNC, PRINT, NUMBER:
                 null;

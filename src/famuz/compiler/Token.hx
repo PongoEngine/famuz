@@ -87,4 +87,5 @@ enum TokenType {
 	SHIFT_LEFT;
 	SHIFT_RIGHT;
 	SLASH;
+	IF;
 }

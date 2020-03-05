@@ -54,6 +54,8 @@ class Evaluate
             case EBlock(exprs): if(exprs.length > 0) {
                 evaluate(exprs[exprs.length-1], stack);
             }
+            case EIf(econd, ethen, eelse):
+			case ETernary(econd, eif, eelse):
             case EBinop(type, e1, e2): 
                 EvaluateBinop.evaluate(type, e1, e2, e.context, stack);
             case EParentheses(expr): 
