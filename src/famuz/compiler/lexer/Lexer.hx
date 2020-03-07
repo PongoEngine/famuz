@@ -37,25 +37,25 @@ class Lexer
             switch (lexerToken)
             {
                 case ASSIGNMENT:
-                    tokens.push(createToken(ASSIGNMENT, scanner));
+                    tokens.push(createToken(ASSIGNMENT, 1, scanner));
                 case COLON:
-                    tokens.push(createToken(COLON, scanner));
+                    tokens.push(createToken(COLON, 1, scanner));
                 case LEFT_PARENTHESES:
-                    tokens.push(createToken(LEFT_PARENTHESES, scanner));
+                    tokens.push(createToken(LEFT_PARENTHESES, 1, scanner));
                 case RIGHT_PARENTHESES:
-                    tokens.push(createToken(RIGHT_PARENTHESES, scanner));
+                    tokens.push(createToken(RIGHT_PARENTHESES, 1, scanner));
                 case LEFT_BRACE:
-                    tokens.push(createToken(LEFT_BRACE, scanner));
+                    tokens.push(createToken(LEFT_BRACE, 1, scanner));
                 case RIGHT_BRACE:
-                    tokens.push(createToken(RIGHT_BRACE, scanner));
+                    tokens.push(createToken(RIGHT_BRACE, 1, scanner));
                 case LEFT_BRACKET:
-                    tokens.push(createToken(LEFT_BRACKET, scanner));
+                    tokens.push(createToken(LEFT_BRACKET, 1, scanner));
                 case RIGHT_BRACKET:
-                    tokens.push(createToken(RIGHT_BRACKET, scanner));
+                    tokens.push(createToken(RIGHT_BRACKET, 1, scanner));
                 case COMMA:
-                    tokens.push(createToken(COMMA, scanner));
+                    tokens.push(createToken(COMMA, 1, scanner));
                 case ADD:
-                    tokens.push(createToken(ADD, scanner));
+                    tokens.push(createToken(ADD, 1, scanner));
                 case BACKWARD_SLASH: {
                     tokens.push(createTokenRhythm(scanner));
                 }
@@ -65,11 +65,11 @@ class Lexer
                         : scanner.next();
                 case LT:
                     scanner.peekDouble() == '<'
-                        ? tokens.push(createTokenShiftLeft(scanner))
+                        ? tokens.push(createToken(SHIFT_LEFT, 2, scanner))
                         : scanner.next();
                 case GT:
                     scanner.peekDouble() == '>'
-                        ? tokens.push(createTokenShiftRight(scanner))
+                        ? tokens.push(createToken(SHIFT_RIGHT, 2, scanner))
                         : scanner.next();
                 case DURATION, REST:
                     scanner.next();
@@ -84,11 +84,13 @@ class Lexer
         return tokens;
     }
 
-    public static function createToken(type :PunctuatorType, scanner :Scanner) : Token
+    public static function createToken(type :PunctuatorType, length :Int, scanner :Scanner) : Token
     {
         var line = scanner.curLine;
         var min = scanner.curIndex;
-        var lexeme = scanner.next();
+        for(i in 0...length) {
+            scanner.next();
+        }
         var max = scanner.curIndex;
         var pos = new Position(line, min, max, scanner.filepath, scanner.content);
         return new Token(TTPunctuator(type), pos);
@@ -115,38 +117,15 @@ class Lexer
         return new Token(TTRhythm(lexeme), position);
     }
 
-    public static function createTokenShiftLeft(scanner :Scanner) : Token
-    {
-        var line = scanner.curLine;
-        var min = scanner.curIndex;
-        var lexeme = "";
-        lexeme += scanner.next(); //'<'
-        lexeme += scanner.next(); //'<'
-        var max = scanner.curIndex;
-        var position = new Position(line, min, max, scanner.filepath, scanner.content);
-        return new Token(TTPunctuator(SHIFT_LEFT), position);
-    }
-
-    public static function createTokenShiftRight(scanner :Scanner) : Token
-    {
-        var line = scanner.curLine;
-        var min = scanner.curIndex;
-        var lexeme = "";
-        lexeme += scanner.next(); //'>'
-        lexeme += scanner.next(); //'>'
-        var max = scanner.curIndex;
-        var position = new Position(line, min, max, scanner.filepath, scanner.content);
-        return new Token(TTPunctuator(SHIFT_RIGHT), position);
-    }
-
     public static function createTokenNumber(scanner :Scanner) : Token
     {
         var line = scanner.curLine;
         var min = scanner.curIndex;
         var lexeme = scanner.consumeNumber();
+        var num = Std.parseInt(lexeme);
         var max = scanner.curIndex;
         var position = new Position(line, min, max, scanner.filepath, scanner.content);
-        return new Token(TTNumber(lexeme), position);
+        return new Token(TTNumber(num), position);
     }
 
     public static function wordType(str :String) : TokenType

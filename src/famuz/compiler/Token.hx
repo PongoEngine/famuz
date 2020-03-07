@@ -101,7 +101,7 @@ enum TokenType
     TTScale(scale :Scale);
     TTKey(key :Key);
     TTType(type :Type);
-    TTNumber(str :String);
+    TTNumber(num :Int);
     TTRhythm(str :String);
 }
 
