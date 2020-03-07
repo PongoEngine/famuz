@@ -91,7 +91,7 @@ class Lexer
         var lexeme = scanner.next();
         var max = scanner.curIndex;
         var pos = new Position(line, min, max, scanner.filepath, scanner.content);
-        return new Token(lexeme, TTPunctuator(type), pos);
+        return new Token(TTPunctuator(type), pos);
     }
 
     public static function createTokenIdentifier(scanner :Scanner) : Token
@@ -101,7 +101,7 @@ class Lexer
         var lexeme = scanner.consumeIdentifier();
         var max = scanner.curIndex;
         var position = new Position(line, min, max, scanner.filepath, scanner.content);
-        return new Token(lexeme, wordType(lexeme), position);
+        return new Token(wordType(lexeme), position);
     }
 
     public static function createTokenRhythm(scanner :Scanner) : Token
@@ -112,7 +112,7 @@ class Lexer
         var lexeme = scanner.consumeRhythm();
         var max = scanner.curIndex;
         var position = new Position(line, min, max, scanner.filepath, scanner.content);
-        return new Token(lexeme, TTRhythm(lexeme), position);
+        return new Token(TTRhythm(lexeme), position);
     }
 
     public static function createTokenShiftLeft(scanner :Scanner) : Token
@@ -124,7 +124,7 @@ class Lexer
         lexeme += scanner.next(); //'<'
         var max = scanner.curIndex;
         var position = new Position(line, min, max, scanner.filepath, scanner.content);
-        return new Token(lexeme, TTPunctuator(SHIFT_LEFT), position);
+        return new Token(TTPunctuator(SHIFT_LEFT), position);
     }
 
     public static function createTokenShiftRight(scanner :Scanner) : Token
@@ -136,7 +136,7 @@ class Lexer
         lexeme += scanner.next(); //'>'
         var max = scanner.curIndex;
         var position = new Position(line, min, max, scanner.filepath, scanner.content);
-        return new Token(lexeme, TTPunctuator(SHIFT_RIGHT), position);
+        return new Token(TTPunctuator(SHIFT_RIGHT), position);
     }
 
     public static function createTokenNumber(scanner :Scanner) : Token
@@ -146,7 +146,7 @@ class Lexer
         var lexeme = scanner.consumeNumber();
         var max = scanner.curIndex;
         var position = new Position(line, min, max, scanner.filepath, scanner.content);
-        return new Token(lexeme, TTNumber(lexeme), position);
+        return new Token(TTNumber(lexeme), position);
     }
 
     public static function wordType(str :String) : TokenType

@@ -33,7 +33,7 @@ class ParserFunc
     public static function parse(scanner :TokenScanner, context :Context) : Expr
     {
         var token = scanner.next(); //func
-        var identifier = scanner.next().lexeme; //id (ex: main)
+        var identifier = scanner.next().getIdentifier(); //id (ex: main)
         scanner.next(); //consume left parentheses
 
         var params = parseParams(scanner);
@@ -62,13 +62,13 @@ class ParserFunc
                 scanner.next(); //consume colon
                 var token = scanner.next();
                 params.push({
-                    name: name.lexeme,
+                    name: name.getIdentifier(),
                     type: token.getType()
                 });
             }
             else {
                 params.push({
-                    name: name.lexeme,
+                    name: name.getIdentifier(),
                     type: TMonomorph
                 });
             }

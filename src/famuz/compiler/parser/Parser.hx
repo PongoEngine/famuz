@@ -94,11 +94,11 @@ class Parser
                 case PRINT: ParserPrint.parse(scanner, context);
                 case IF: parseConsume(scanner);
             }
-            case TTIdentifier(str): ParserIdentifier.parse(scanner, context);
+            case TTIdentifier(str): ParserIdentifier.parse(scanner, context, str);
             case TTScale(scale): ParserScale.parse(scanner, context, scale);
             case TTKey(key): ParserKey.parse(scanner, context, key);
-            case TTNumber(str): ParserNumber.parse(scanner, context);
-            case TTRhythm(str): ParserRhythm.parse(scanner, context);
+            case TTNumber(str): ParserNumber.parse(scanner, context, str);
+            case TTRhythm(str): ParserRhythm.parse(scanner, context, str);
             case TTType(type): parseConsume(scanner);
         }
     }
@@ -109,7 +109,7 @@ class Parser
             case TTPunctuator(type):
                 switch type {
                     case COLON: ParserTyping.parse(left, scanner, context);
-                    case ADD: ParserBinop.parse(left, scanner, context);
+                    case ADD: ParserBinop.parse(left, scanner, context, type);
                     case ASSIGNMENT: ParserVar.parse(left, scanner, context);
                     case LEFT_PARENTHESES: ParserCall.parse(left, scanner, context);
                     case RIGHT_PARENTHESES: null;
@@ -117,8 +117,8 @@ class Parser
                     case RIGHT_BRACE: null;
                     case LEFT_BRACKET: ParserArrayAccess.parse(left, scanner, context);
                     case RIGHT_BRACKET: null;
-                    case SHIFT_LEFT: ParserBinop.parse(left, scanner, context);
-                    case SHIFT_RIGHT: ParserBinop.parse(left, scanner, context);
+                    case SHIFT_LEFT: ParserBinop.parse(left, scanner, context, type);
+                    case SHIFT_RIGHT: ParserBinop.parse(left, scanner, context, type);
                     case SLASH: null;
                     case COMMA: null;
                 }

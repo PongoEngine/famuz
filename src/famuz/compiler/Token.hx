@@ -28,12 +28,10 @@ import famuz.compiler.theory.Scale;
 class Token
 {
     public var type :TokenType;
-    public var lexeme :String;
     public var pos :Position;
 
-    public function new(lexeme :String, type :TokenType, pos :Position) : Void
+    public function new(type :TokenType, pos :Position) : Void
     {
-        this.lexeme = lexeme;
         this.type = type;
         this.pos = pos;
     }
@@ -55,6 +53,14 @@ class Token
     {
         return switch this.type {
             case TTType(type): type;
+            case _: throw "Error";
+        }
+    }
+
+    public function getIdentifier() : String
+    {
+        return switch this.type {
+            case TTIdentifier(str): str;
             case _: throw "Error";
         }
     }

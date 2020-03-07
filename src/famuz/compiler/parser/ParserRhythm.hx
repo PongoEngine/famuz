@@ -27,10 +27,10 @@ import famuz.util.Assert;
 
 class ParserRhythm
 {
-    public static function parse(scanner :TokenScanner, context :Context) : Expr
+    public static function parse(scanner :TokenScanner, context :Context, rhythm :String) : Expr
     {
         var token = scanner.next();
-        var rhythmScanner = new Scanner(token.lexeme, token.pos.file);
+        var rhythmScanner = new Scanner(rhythm, token.pos.file);
         var hits :Array<Hit> = [];
 
         while (rhythmScanner.hasNext()) {

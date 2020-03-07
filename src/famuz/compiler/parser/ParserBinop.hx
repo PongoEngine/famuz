@@ -30,14 +30,14 @@ using famuz.compiler.Type;
 
 class ParserBinop
 {
-    public static function parse(left :Expr, scanner :TokenScanner, context :Context) : Expr
+    public static function parse(left :Expr, scanner :TokenScanner, context :Context, punctuator :PunctuatorType) : Expr
     {
         var token = scanner.next();
 
-        var op :BinopType = switch token.lexeme {
-            case "+": ADD;
-            case "<<": SHIFT_LEFT;
-            case ">>": SHIFT_RIGHT;
+        var op :BinopType = switch punctuator {
+            case PunctuatorType.ADD: ADD;
+            case PunctuatorType.SHIFT_LEFT: SHIFT_LEFT;
+            case PunctuatorType.SHIFT_RIGHT: SHIFT_RIGHT;
             case _: throw "Invalid operation";
         }
         
