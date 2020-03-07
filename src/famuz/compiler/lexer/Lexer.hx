@@ -24,7 +24,6 @@ package famuz.compiler.lexer;
 import famuz.compiler.lexer.LexerToken;
 import famuz.compiler.Token;
 import famuz.compiler.Scanner;
-using famuz.compiler.Reserved;
 
 class Lexer
 {
@@ -152,21 +151,45 @@ class Lexer
 
     public static function wordType(str :String) : TokenType
     {
-        if (str.isKey()) {
-            return TTKey(str);
-        }
-        else if (str.isScale()) {
-            return TTScale(str);
-        }
-        else if (str.isFunc()) {
-            return TTKeyword(FUNC);
-        }
-        else if (str.isPrint()) {
-            return TTKeyword(PRINT);
-        }
-        else {
-            return TTIdentifier(str);
+        return switch str {
+            //keyword
+            case "func": TTKeyword(FUNC);
+            case "print": TTKeyword(PRINT);
+            case "if": TTKeyword(IF);
+            //type
+            case "Number": TTType(TNumber);
+            case "Bool": TTType(TBool);
+            case "Rhythm": TTType(TRhythm);
+            case "Melody": TTType(TMelody);
+            case "Scale": TTType(TScale);
+            case "Key": TTType(TKey);
+            case "ScaledKey": TTType(TScaledKey);
+            case "Music": TTType(TMusic);
+            //scale
+            case "major": TTScale(MAJOR);
+            case "natural-minor": TTScale(NATURAL_MINOR);
+            case "melodic-minor": TTScale(MELODIC_MINOR);
+            case "harmonic-minor": TTScale(HARMONIC_MINOR);
+            case "chromatic": TTScale(CHROMATIC);
+            //key
+            case "C": TTKey(C);
+            case "C#": TTKey(C_SHARP);
+            case "Db": TTKey(D_FLAT);
+            case "D": TTKey(D);
+            case "D#": TTKey(D_SHARP);
+            case "Eb": TTKey(E_FLAT);
+            case "E": TTKey(E);
+            case "F": TTKey(F);
+            case "F#": TTKey(F_SHARP);
+            case "Gb": TTKey(G_FLAT);
+            case "G": TTKey(G);
+            case "G#": TTKey(G_SHARP);
+            case "Ab": TTKey(A_FLAT);
+            case "A": TTKey(A);
+            case "A#": TTKey(A_SHARP);
+            case "Bb": TTKey(B_FLAT);
+            case "B": TTKey(B);
+            default: TTIdentifier(str);
         }
     }
-
- }
+}

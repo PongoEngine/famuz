@@ -22,7 +22,6 @@ package famuz.compiler.parser;
  */
 
 import famuz.compiler.Token;
-using famuz.compiler.Type.TypeTools;
 
 class ParserTyping
 {
@@ -31,7 +30,7 @@ class ParserTyping
         scanner.next(); //consume ':'
         var token = scanner.next(); //get type "ex: Rhythm"
         left.pos = Position.union(left.pos, token.pos);
-        left.ret = TypeTools.getType(token.lexeme);
+        left.ret = token.getType();
         return left;
     }
 }

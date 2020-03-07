@@ -21,7 +21,6 @@
 
 package famuz.compiler.theory;
 import famuz.compiler.theory.Key;
-import famuz.compiler.Reserved.ReservedScale;
 
 @:enum
 @:using(famuz.compiler.theory.Scale.ScaleTools)
@@ -32,7 +31,6 @@ abstract Scale(Int)
     var HARMONIC_MINOR = 2;
     var MELODIC_MINOR = 3;
     var CHROMATIC = 4;
-    var INVALID = 5;
 }
 
 class ScaleTools
@@ -51,7 +49,6 @@ class ScaleTools
             case MELODIC_MINOR: "melodic-minor";
             case HARMONIC_MINOR: "harmonic-minor";
             case CHROMATIC: "chomatic";
-            case INVALID: "Invalid";
         }
     }
 
@@ -63,7 +60,6 @@ class ScaleTools
             case MELODIC_MINOR: MELODIC_MINOR_SEMITONES.length;
             case HARMONIC_MINOR: HARMONIC_MINOR_SEMITONES.length;
             case CHROMATIC: CHROMATIC_SEMITONES.length;
-            case INVALID: -1;
         }
     }
 
@@ -75,19 +71,6 @@ class ScaleTools
             case MELODIC_MINOR: MELODIC_MINOR_SEMITONES[index] + root.toInt();
             case HARMONIC_MINOR: HARMONIC_MINOR_SEMITONES[index] + root.toInt();
             case CHROMATIC: CHROMATIC_SEMITONES[index] + root.toInt();
-            case INVALID: -1;
         }
-    }
-
-    public static function getScale(reserved :ReservedScale) : Scale
-    {
-        var scale : Null<Scale>= switch reserved {
-            case ReservedMajor: MAJOR;
-            case ReservedNaturalMinor: NATURAL_MINOR;
-            case ReservedMelodicMinor: MELODIC_MINOR;
-            case ReservedHarmonicMinor: HARMONIC_MINOR;
-            case ReservedChromatic: CHROMATIC;
-        }
-        return scale != null ? scale : INVALID;
     }
 }

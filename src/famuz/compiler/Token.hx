@@ -22,6 +22,8 @@ package famuz.compiler;
  */
 
 import famuz.compiler.Position;
+import famuz.compiler.theory.Key;
+import famuz.compiler.theory.Scale;
 
 class Token
 {
@@ -47,6 +49,14 @@ class Token
     public inline function isNotPunctuator(punctuator: PunctuatorType) : Bool
     {
         return !isPunctuator(punctuator);
+    }
+
+    public function getType() : Type
+    {
+        return switch this.type {
+            case TTType(type): type;
+            case _: throw "Error";
+        }
     }
 }
 
@@ -82,8 +92,9 @@ enum TokenType
     TTPunctuator(type :PunctuatorType);
     TTKeyword(type :KeywordType);
     TTIdentifier(str :String);
-    TTScale(str :String);
-    TTKey(str :String);
+    TTScale(scale :Scale);
+    TTKey(key :Key);
+    TTType(type :Type);
     TTNumber(str :String);
     TTRhythm(str :String);
 }

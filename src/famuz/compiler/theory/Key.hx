@@ -20,7 +20,6 @@
  */
 
 package famuz.compiler.theory;
-import famuz.compiler.Reserved.ReservedKey;
 
 @:using(famuz.compiler.theory.Key.KeyTools)
 enum Key
@@ -42,7 +41,6 @@ enum Key
     A_SHARP;
     B_FLAT;
     B;
-    INVALID;
 }
 
 class KeyTools
@@ -67,7 +65,6 @@ class KeyTools
             case A_SHARP: "A#";
             case B_FLAT: "Bb";
             case B: "B";
-            case INVALID: "INVALID";
         }
     }
 
@@ -91,31 +88,6 @@ class KeyTools
             case G: 31;
             case G_SHARP: 32;
             case A_FLAT: 32;
-            case INVALID: -1;
         }
-    }
-
-    public static function getKey(reserved :ReservedKey) : Key
-    {
-        var key = switch reserved {
-            case ReservedC: C;
-            case ReservedC_SHARP: C_SHARP;
-            case ReservedDb: D_FLAT;
-            case ReservedD: D;
-            case ReservedD_SHARP: D_SHARP;
-            case ReservedEb: E_FLAT;
-            case ReservedE: E;
-            case ReservedF: F;
-            case ReservedF_SHARP: F_SHARP;
-            case ReservedGb: G_FLAT;
-            case ReservedG: G;
-            case ReservedG_SHARP: G_SHARP;
-            case ReservedAb: A_FLAT;
-            case ReservedA: A;
-            case ReservedA_SHARP: A_SHARP;
-            case ReservedBb: B_FLAT;
-            case ReservedB: B;
-        }
-        return key != null ? key : INVALID;
     }
 }

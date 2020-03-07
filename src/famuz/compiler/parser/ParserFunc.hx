@@ -27,7 +27,6 @@ import famuz.util.Assert;
 import famuz.compiler.parser.Precedence.*;
 import famuz.compiler.parser.Parser;
 using famuz.compiler.Type;
-using famuz.compiler.Type.TypeTools;
 
 class ParserFunc
 {
@@ -61,10 +60,10 @@ class ParserFunc
     
             if(scanner.peek().isPunctuator(COLON)) {
                 scanner.next(); //consume colon
-                var type = scanner.next();
+                var token = scanner.next();
                 params.push({
                     name: name.lexeme,
-                    type: TypeTools.getType(type.lexeme)
+                    type: token.getType()
                 });
             }
             else {
@@ -88,7 +87,7 @@ class ParserFunc
         if(scanner.peek().isPunctuator(COLON)) {
             scanner.next(); //consume colon
             var t = scanner.next();
-            return TypeTools.getType(t.lexeme);
+            return t.getType();
         }
         return TInvalid;
     }

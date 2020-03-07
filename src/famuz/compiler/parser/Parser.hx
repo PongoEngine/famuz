@@ -95,10 +95,11 @@ class Parser
                 case IF: parseConsume(scanner);
             }
             case TTIdentifier(str): ParserIdentifier.parse(scanner, context);
-            case TTScale(str): ParserScale.parse(scanner, context);
-            case TTKey(str): ParserKey.parse(scanner, context);
+            case TTScale(scale): ParserScale.parse(scanner, context, scale);
+            case TTKey(key): ParserKey.parse(scanner, context, key);
             case TTNumber(str): ParserNumber.parse(scanner, context);
             case TTRhythm(str): ParserRhythm.parse(scanner, context);
+            case TTType(type): parseConsume(scanner);
         }
     }
     
@@ -127,6 +128,7 @@ class Parser
             case TTKey(str): null;
             case TTNumber(str): null;
             case TTRhythm(str): null;
+            case TTType(type): null;
         }
     }
 }

@@ -22,14 +22,13 @@ package famuz.compiler.parser;
  */
 
 import famuz.compiler.Token;
-import famuz.compiler.theory.Scale.ScaleTools;
+import famuz.compiler.theory.Scale;
 
 class ParserScale
 {
-    public static function parse(scanner :TokenScanner, context :Context) : Expr
+    public static function parse(scanner :TokenScanner, context :Context, scale :Scale) : Expr
     {
         var token = scanner.next();
-        var scale = ScaleTools.getScale(token.lexeme);
 
         return {
             context: context,

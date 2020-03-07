@@ -21,8 +21,6 @@ package famuz.compiler;
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import famuz.compiler.Reserved.ReservedType;
-
 @:using(famuz.compiler.Type.TypeTools)
 enum Type
 {
@@ -58,20 +56,4 @@ class TypeTools
                 return TInvalid;
         }
     }
-
-    public static function getType(r :ReservedType) : Type
-    {
-        var type = switch (r) {
-            case ReservedBool: TBool;
-            case ReservedKey: TKey;
-            case ReservedMelody: TMelody;
-            case ReservedMusic: TMusic;
-            case ReservedNumber: TNumber;
-            case ReservedRhythm: TRhythm;
-            case ReservedScale: TScale;
-            case ReservedScaledKey: TScaledKey;
-        }
-        return type != null ? type : TInvalid;
-    }
-
 }
