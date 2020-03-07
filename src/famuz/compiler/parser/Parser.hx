@@ -67,7 +67,7 @@ class Parser
     private static function parseConsume(scanner :TokenScanner) : Expr
     {
         scanner.next();
-        return null;
+        return EMPTY_EXPR;
     }
 
     private static function parseExpressionPrefix(scanner :TokenScanner, context :Context) : Expr
@@ -112,23 +112,25 @@ class Parser
                     case ADD: ParserBinop.parse(left, scanner, context, type);
                     case ASSIGNMENT: ParserVar.parse(left, scanner, context);
                     case LEFT_PARENTHESES: ParserCall.parse(left, scanner, context);
-                    case RIGHT_PARENTHESES: null;
-                    case LEFT_BRACE: null;
-                    case RIGHT_BRACE: null;
+                    case RIGHT_PARENTHESES: EMPTY_EXPR;
+                    case LEFT_BRACE: EMPTY_EXPR;
+                    case RIGHT_BRACE: EMPTY_EXPR;
                     case LEFT_BRACKET: ParserArrayAccess.parse(left, scanner, context);
-                    case RIGHT_BRACKET: null;
+                    case RIGHT_BRACKET: EMPTY_EXPR;
                     case SHIFT_LEFT: ParserBinop.parse(left, scanner, context, type);
                     case SHIFT_RIGHT: ParserBinop.parse(left, scanner, context, type);
-                    case SLASH: null;
-                    case COMMA: null;
+                    case SLASH: EMPTY_EXPR;
+                    case COMMA: EMPTY_EXPR;
                 }
-            case TTKeyword(type): null;
-            case TTIdentifier(str): null;
-            case TTScale(str): null;
-            case TTKey(str): null;
-            case TTNumber(str): null;
-            case TTRhythm(str): null;
-            case TTType(type): null;
+            case TTKeyword(type): EMPTY_EXPR;
+            case TTIdentifier(str): EMPTY_EXPR;
+            case TTScale(str): EMPTY_EXPR;
+            case TTKey(str): EMPTY_EXPR;
+            case TTNumber(str): EMPTY_EXPR;
+            case TTRhythm(str): EMPTY_EXPR;
+            case TTType(type): EMPTY_EXPR;
         }
     }
+
+    private static var EMPTY_EXPR :Expr = null;
 }
