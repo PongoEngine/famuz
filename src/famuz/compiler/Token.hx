@@ -39,7 +39,7 @@ class Token
     public function isPunctuator(punctuator: PunctuatorType) : Bool
     {
         return switch this.type {
-            case Punctuator(type): type == punctuator;
+            case TTPunctuator(type): type == punctuator;
             case _: false;
         }
     }
@@ -79,13 +79,13 @@ class TokenScanner
 
 enum TokenType 
 {
-    Punctuator(type :PunctuatorType);
-    Keyword(type :KeywordType);
-    Identifier(str :String);
-    Scale(str :String);
-    Key(str :String);
-    Number(str :String);
-    Rhythm(str :String);
+    TTPunctuator(type :PunctuatorType);
+    TTKeyword(type :KeywordType);
+    TTIdentifier(str :String);
+    TTScale(str :String);
+    TTKey(str :String);
+    TTNumber(str :String);
+    TTRhythm(str :String);
 }
 
 enum PunctuatorType 

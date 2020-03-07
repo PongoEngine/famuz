@@ -92,7 +92,7 @@ class Lexer
         var lexeme = scanner.next();
         var max = scanner.curIndex;
         var pos = new Position(line, min, max, scanner.filepath, scanner.content);
-        return new Token(lexeme, Punctuator(type), pos);
+        return new Token(lexeme, TTPunctuator(type), pos);
     }
 
     public static function createTokenIdentifier(scanner :Scanner) : Token
@@ -113,7 +113,7 @@ class Lexer
         var lexeme = scanner.consumeRhythm();
         var max = scanner.curIndex;
         var position = new Position(line, min, max, scanner.filepath, scanner.content);
-        return new Token(lexeme, Rhythm(lexeme), position);
+        return new Token(lexeme, TTRhythm(lexeme), position);
     }
 
     public static function createTokenShiftLeft(scanner :Scanner) : Token
@@ -125,7 +125,7 @@ class Lexer
         lexeme += scanner.next(); //'<'
         var max = scanner.curIndex;
         var position = new Position(line, min, max, scanner.filepath, scanner.content);
-        return new Token(lexeme, Punctuator(SHIFT_LEFT), position);
+        return new Token(lexeme, TTPunctuator(SHIFT_LEFT), position);
     }
 
     public static function createTokenShiftRight(scanner :Scanner) : Token
@@ -137,7 +137,7 @@ class Lexer
         lexeme += scanner.next(); //'>'
         var max = scanner.curIndex;
         var position = new Position(line, min, max, scanner.filepath, scanner.content);
-        return new Token(lexeme, Punctuator(SHIFT_RIGHT), position);
+        return new Token(lexeme, TTPunctuator(SHIFT_RIGHT), position);
     }
 
     public static function createTokenNumber(scanner :Scanner) : Token
@@ -147,25 +147,25 @@ class Lexer
         var lexeme = scanner.consumeNumber();
         var max = scanner.curIndex;
         var position = new Position(line, min, max, scanner.filepath, scanner.content);
-        return new Token(lexeme, Number(lexeme), position);
+        return new Token(lexeme, TTNumber(lexeme), position);
     }
 
     public static function wordType(str :String) : TokenType
     {
         if (str.isKey()) {
-            return Key(str);
+            return TTKey(str);
         }
         else if (str.isScale()) {
-            return Scale(str);
+            return TTScale(str);
         }
         else if (str.isFunc()) {
-            return Keyword(FUNC);
+            return TTKeyword(FUNC);
         }
         else if (str.isPrint()) {
-            return Keyword(PRINT);
+            return TTKeyword(PRINT);
         }
         else {
-            return Identifier(str);
+            return TTIdentifier(str);
         }
     }
 

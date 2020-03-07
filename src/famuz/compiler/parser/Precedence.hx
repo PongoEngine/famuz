@@ -35,7 +35,7 @@ class Precedence
     {
         return switch (scanner.peek().type)
         {
-            case Punctuator(type): {
+            case TTPunctuator(type): {
                 switch type {
                     case ASSIGNMENT:
                         PRECEDENCE_ASSIGNMENT;

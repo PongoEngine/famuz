@@ -73,7 +73,7 @@ class Parser
     private static function parseExpressionPrefix(scanner :TokenScanner, context :Context) : Expr
     {
         return switch (scanner.peek().type) {
-            case Punctuator(type):
+            case TTPunctuator(type):
                 switch type {
                     case COLON: parseConsume(scanner);
                     case ADD: parseConsume(scanner);
@@ -89,23 +89,23 @@ class Parser
                     case SLASH: parseConsume(scanner);
                     case COMMA: parseConsume(scanner);
                 }
-            case Keyword(type): switch type {
+            case TTKeyword(type): switch type {
                 case FUNC: ParserFunc.parse(scanner, context);
                 case PRINT: ParserPrint.parse(scanner, context);
                 case IF: parseConsume(scanner);
             }
-            case Identifier(str): ParserIdentifier.parse(scanner, context);
-            case Scale(str): ParserScale.parse(scanner, context);
-            case Key(str): ParserKey.parse(scanner, context);
-            case Number(str): ParserNumber.parse(scanner, context);
-            case Rhythm(str): ParserRhythm.parse(scanner, context);
+            case TTIdentifier(str): ParserIdentifier.parse(scanner, context);
+            case TTScale(str): ParserScale.parse(scanner, context);
+            case TTKey(str): ParserKey.parse(scanner, context);
+            case TTNumber(str): ParserNumber.parse(scanner, context);
+            case TTRhythm(str): ParserRhythm.parse(scanner, context);
         }
     }
     
     private static function parseExpressionInfix(left :Expr, scanner :TokenScanner, context :Context) : Expr
     {
         return switch (scanner.peek().type) {
-            case Punctuator(type):
+            case TTPunctuator(type):
                 switch type {
                     case COLON: ParserTyping.parse(left, scanner, context);
                     case ADD: ParserBinop.parse(left, scanner, context);
@@ -121,12 +121,12 @@ class Parser
                     case SLASH: null;
                     case COMMA: null;
                 }
-            case Keyword(type): null;
-            case Identifier(str): null;
-            case Scale(str): null;
-            case Key(str): null;
-            case Number(str): null;
-            case Rhythm(str): null;
+            case TTKeyword(type): null;
+            case TTIdentifier(str): null;
+            case TTScale(str): null;
+            case TTKey(str): null;
+            case TTNumber(str): null;
+            case TTRhythm(str): null;
         }
     }
 }
