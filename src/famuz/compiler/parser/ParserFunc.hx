@@ -31,7 +31,7 @@ using famuz.compiler.Type.TypeTools;
 
 class ParserFunc
 {
-    public static function parse(parser :Parser, scanner :TokenScanner, context :Context) : Expr
+    public static function parse(scanner :TokenScanner, context :Context) : Expr
     {
         var token = scanner.next(); //func
         var identifier = scanner.next().lexeme; //id (ex: main)
@@ -40,7 +40,7 @@ class ParserFunc
         var params = parseParams(scanner);
         var type = parseType(scanner);
 
-        var body = parser.parse(PRECEDENCE_CALL, scanner, context);
+        var body = Parser.parse(PRECEDENCE_CALL, scanner, context);
 
         var func :Expr = {
             context: context,
@@ -56,10 +56,10 @@ class ParserFunc
     private static function parseParams(scanner :TokenScanner) : Array<Parameter>
     {
         var params :Array<Parameter> = [];
-        while (scanner.peek().type != RIGHT_PARENTHESES) {
+        while (scanner.peek().isNotPunctuator(RIGHT_PARENTHESES)) {
             var name = scanner.next();
     
-            if(scanner.peek().type == COLON) {
+            if(scanner.peek().isPunctuator(COLON)) {
                 scanner.next(); //consume colon
                 var type = scanner.next();
                 params.push({
@@ -74,18 +74,18 @@ class ParserFunc
                 });
             }
     
-            if(scanner.peek().type == COMMA) {
+            if(scanner.peek().isPunctuator(COMMA)) {
                 scanner.next(); //consume comma
             }
         }
 
-        Assert.that(scanner.next().type == RIGHT_PARENTHESES, "\nparse_func :NOT LEFT PARENTHESES!\n");
+        Assert.that(scanner.next().isPunctuator(RIGHT_PARENTHESES), "\nparse_func :NOT LEFT PARENTHESES!\n");
         return params;
     }
     
     private static function parseType(scanner :TokenScanner) : Type
     {
-        if(scanner.peek().type == COLON) {
+        if(scanner.peek().isPunctuator(COLON)) {
             scanner.next(); //consume colon
             var t = scanner.next();
             return TypeTools.getType(t.lexeme);

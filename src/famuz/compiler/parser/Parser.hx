@@ -41,17 +41,10 @@ using famuz.compiler.parser.Precedence;
 
 class Parser
 {
-    public var errors (default, null):Array<{msg :String, pos :Position}>;
-
-    public function new() : Void
-    {
-        this.errors = [];
-    }
-
-    public function parse(precedence :Int, scanner :TokenScanner, context :Context) : Expr
+    public static function parse(precedence :Int, scanner :TokenScanner, context :Context) : Expr
     {
         if (scanner.hasNext()) {
-            var left = parseExpressionPrefix(this, scanner, context);
+            var left = parseExpressionPrefix(scanner, context);
             if (!Assert.that(left != null, "IN PARSE EXPRESSION LEFT IS NULL\n")) {
                 if (scanner.hasNext()) {
                     scanner.next();
@@ -61,7 +54,7 @@ class Parser
 
             while (scanner.hasNext() && precedence < scanner.getPrecedence())
             {
-                left = parseExpressionInfix(this, left, scanner, context);
+                left = parseExpressionInfix(left, scanner, context);
             }
             return left;
         }
@@ -71,62 +64,69 @@ class Parser
         }
     }
 
-    private static function parseExpressionPrefix(parser :Parser, scanner :TokenScanner, context :Context) : Expr
+    private static function parseConsume(scanner :TokenScanner) : Expr
+    {
+        scanner.next();
+        return null;
+    }
+
+    private static function parseExpressionPrefix(scanner :TokenScanner, context :Context) : Expr
     {
         return switch (scanner.peek().type) {
-            case IF:
-                null;
-            case IDENTIFIER:
-                ParserIdentifier.parse(scanner, context);
-            case NUMBER:
-                ParserNumber.parse(scanner, context);
-            case SCALE:
-                ParserScale.parse(scanner, context);
-            case KEY:
-                ParserKey.parse(scanner, context);
-            case RHYTHM:
-                ParserRhythm.parse(scanner, context);
-            case LEFT_PARENTHESES:
-                ParserParentheses.parse(parser, scanner, context);
-            case LEFT_BRACE:
-                ParserBlock.parse(parser, scanner, context);
-            case LEFT_BRACKET:
-                ParserArray.parse(parser, scanner, context);
-            case FUNC:
-                ParserFunc.parse(parser, scanner, context);
-            case PRINT:
-                ParserPrint.parse(parser, scanner, context);
-            case RIGHT_PARENTHESES, RIGHT_BRACE, RIGHT_BRACKET, COMMA, SLASH, 
-                COMMENT, WHITESPACE, ADD, ASSIGNMENT, COLON, 
-                SHIFT_LEFT, SHIFT_RIGHT:
-                {
-                    scanner.next();
-                    null;
+            case Punctuator(type):
+                switch type {
+                    case COLON: parseConsume(scanner);
+                    case ADD: parseConsume(scanner);
+                    case ASSIGNMENT: parseConsume(scanner);
+                    case LEFT_PARENTHESES: ParserParentheses.parse(scanner, context);
+                    case RIGHT_PARENTHESES: parseConsume(scanner);
+                    case LEFT_BRACE: ParserBlock.parse(scanner, context);
+                    case RIGHT_BRACE: parseConsume(scanner);
+                    case LEFT_BRACKET: ParserArray.parse(scanner, context);
+                    case RIGHT_BRACKET: parseConsume(scanner);
+                    case SHIFT_LEFT: parseConsume(scanner);
+                    case SHIFT_RIGHT: parseConsume(scanner);
+                    case SLASH: parseConsume(scanner);
+                    case COMMA: parseConsume(scanner);
                 }
+            case Keyword(type): switch type {
+                case FUNC: ParserFunc.parse(scanner, context);
+                case PRINT: ParserPrint.parse(scanner, context);
+                case IF: parseConsume(scanner);
+            }
+            case Identifier(str): ParserIdentifier.parse(scanner, context);
+            case Scale(str): ParserScale.parse(scanner, context);
+            case Key(str): ParserKey.parse(scanner, context);
+            case Number(str): ParserNumber.parse(scanner, context);
+            case Rhythm(str): ParserRhythm.parse(scanner, context);
         }
     }
     
-    private static function parseExpressionInfix(parser :Parser, left :Expr, scanner :TokenScanner, context :Context) : Expr
+    private static function parseExpressionInfix(left :Expr, scanner :TokenScanner, context :Context) : Expr
     {
         return switch (scanner.peek().type) {
-            case ADD:
-                return ParserBinop.parse(parser, left, scanner, context);
-            case ASSIGNMENT:
-                return ParserVar.parse(parser, left, scanner, context);
-            case LEFT_PARENTHESES:
-                return ParserCall.parse(parser, left, scanner, context);
-			case LEFT_BRACKET:
-				return ParserArrayAccess.parse(parser, left, scanner, context);
-            case COLON:
-                return ParserTyping.parse(left, scanner, context);
-            case SHIFT_LEFT:
-                return ParserBinop.parse(parser, left, scanner, context);
-            case SHIFT_RIGHT:
-                return ParserBinop.parse(parser, left, scanner, context);
-            case IF, RIGHT_PARENTHESES, LEFT_BRACE, RIGHT_BRACE, RIGHT_BRACKET, COMMA, 
-                SLASH, IDENTIFIER, SCALE, KEY, WHITESPACE, 
-                COMMENT, RHYTHM, FUNC, PRINT, NUMBER:
-                null;
+            case Punctuator(type):
+                switch type {
+                    case COLON: ParserTyping.parse(left, scanner, context);
+                    case ADD: ParserBinop.parse(left, scanner, context);
+                    case ASSIGNMENT: ParserVar.parse(left, scanner, context);
+                    case LEFT_PARENTHESES: ParserCall.parse(left, scanner, context);
+                    case RIGHT_PARENTHESES: null;
+                    case LEFT_BRACE: null;
+                    case RIGHT_BRACE: null;
+                    case LEFT_BRACKET: ParserArrayAccess.parse(left, scanner, context);
+                    case RIGHT_BRACKET: null;
+                    case SHIFT_LEFT: ParserBinop.parse(left, scanner, context);
+                    case SHIFT_RIGHT: ParserBinop.parse(left, scanner, context);
+                    case SLASH: null;
+                    case COMMA: null;
+                }
+            case Keyword(type): null;
+            case Identifier(str): null;
+            case Scale(str): null;
+            case Key(str): null;
+            case Number(str): null;
+            case Rhythm(str): null;
         }
     }
 }

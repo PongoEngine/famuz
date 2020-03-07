@@ -26,10 +26,10 @@ import famuz.compiler.parser.Parser;
 
 class ParserArrayAccess
 {
-	public static function parse(parser:Parser, left:Expr, scanner:TokenScanner, context:Context):Expr 
+	public static function parse(left:Expr, scanner:TokenScanner, context:Context):Expr 
 	{
 		var leftBracket = scanner.next(); // consume "["
-		var expr = parser.parse(0, scanner, context);
+		var expr = Parser.parse(0, scanner, context);
         var rightBracket = scanner.next(); // consume "]"
         
 		return {

@@ -33,20 +33,26 @@ class Precedence
 
     public static function getPrecedence(scanner :TokenScanner) : Int
     {
-        switch (scanner.peek().type)
+        return switch (scanner.peek().type)
         {
-            case ASSIGNMENT:
-                return PRECEDENCE_ASSIGNMENT;
-            case ADD, SHIFT_LEFT, SHIFT_RIGHT:
-                return PRECEDENCE_SUM;
-			case LEFT_PARENTHESES:
-                return PRECEDENCE_CALL;
-			case LEFT_BRACKET:
-				return PRECEDENCE_ARRAY;
-            case COLON:
-                return PRECEDENCE_TYPE;
+            case Punctuator(type): {
+                switch type {
+                    case ASSIGNMENT:
+                        PRECEDENCE_ASSIGNMENT;
+                    case ADD, SHIFT_LEFT, SHIFT_RIGHT:
+                        PRECEDENCE_SUM;
+                    case LEFT_PARENTHESES:
+                        PRECEDENCE_CALL;
+                    case LEFT_BRACKET:
+                        PRECEDENCE_ARRAY;
+                    case COLON:
+                        PRECEDENCE_TYPE;
+                    default:
+                        0;
+                }
+            }
             default:
-                return 0;
+                0;
         }
     }
 }

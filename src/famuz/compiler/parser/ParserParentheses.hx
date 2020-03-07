@@ -27,12 +27,12 @@ import famuz.compiler.parser.Parser;
 
 class ParserParentheses
 {
-    public static function parse(parser :Parser, scanner :TokenScanner, context :Context) : Expr
+    public static function parse(scanner :TokenScanner, context :Context) : Expr
     {
         var token = scanner.next(); // (
-        var expr = parser.parse(0, scanner, context);
+        var expr = Parser.parse(0, scanner, context);
         var rightParentheses = scanner.next(); // )
-        Assert.that(rightParentheses.type == RIGHT_PARENTHESES, "EXPECTED RIGHT PARENTHESES");
+        Assert.that(rightParentheses.isPunctuator(RIGHT_PARENTHESES), "EXPECTED RIGHT PARENTHESES");
 
         return {
             context: context,

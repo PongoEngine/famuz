@@ -28,20 +28,20 @@ using famuz.compiler.Type;
 
 class ParserArray
 {
-    public static function parse(parser :Parser, scanner :TokenScanner, context :Context) : Expr
+    public static function parse(scanner :TokenScanner, context :Context) : Expr
     {
         var token = scanner.next(); //[
         var exprs :Array<Expr> = [];
 
-        while (scanner.hasNext() && scanner.peek().type != RIGHT_BRACKET) {
-            exprs.push(parser.parse(0, scanner, context));
-            if(scanner.peek().type == COMMA) {
+        while (scanner.hasNext() && scanner.peek().isNotPunctuator(RIGHT_BRACKET)) {
+            exprs.push(Parser.parse(0, scanner, context));
+            if(scanner.peek().isPunctuator(COMMA)) {
                 scanner.next();
             }
         }
 
         var rightBrace = scanner.next();
-        Assert.that(rightBrace.type == RIGHT_BRACKET, "EXPECTED RIGHT BRACKET");
+        Assert.that(rightBrace.isPunctuator(RIGHT_BRACKET), "EXPECTED RIGHT BRACKET");
         var ret = exprs.length > 0 ? exprs[0].ret : TMonomorph;
 
         return {

@@ -29,18 +29,18 @@ using famuz.compiler.Position;
 
 class ParserBlock
 {
-    public static function parse(parser :Parser, scanner :TokenScanner, context :Context) : Expr
+    public static function parse(scanner :TokenScanner, context :Context) : Expr
     {
         var token = scanner.next();
         var exprs :Array<Expr> = [];
         context = context.createChild();
 
-        while (scanner.hasNext() && scanner.peek().type != RIGHT_BRACE) {
-            exprs.push(parser.parse(0, scanner, context));
+        while (scanner.hasNext() && scanner.peek().isNotPunctuator(RIGHT_BRACE)) {
+            exprs.push(Parser.parse(0, scanner, context));
         }
 
         var rightBrace = scanner.next();
-        Assert.that(rightBrace.type == RIGHT_BRACE, "EXPECTED RIGHT BRACKET");
+        Assert.that(rightBrace.isPunctuator(RIGHT_BRACE), "EXPECTED RIGHT BRACKET");
         var ret = exprs.length > 0 ? exprs[exprs.length-1].ret : TInvalid;
 
         return {

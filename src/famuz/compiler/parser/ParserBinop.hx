@@ -30,7 +30,7 @@ using famuz.compiler.Type;
 
 class ParserBinop
 {
-    public static function parse(parser :Parser, left :Expr, scanner :TokenScanner, context :Context) : Expr
+    public static function parse(left :Expr, scanner :TokenScanner, context :Context) : Expr
     {
         var token = scanner.next();
 
@@ -41,7 +41,7 @@ class ParserBinop
             case _: throw "Invalid operation";
         }
         
-        var right = parser.parse(PRECEDENCE_SUM, scanner, context);
+        var right = Parser.parse(PRECEDENCE_SUM, scanner, context);
 		return {
 			context: context,
 			def: EBinop(op, left, right),

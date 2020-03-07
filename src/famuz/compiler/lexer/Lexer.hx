@@ -85,14 +85,14 @@ class Lexer
         return tokens;
     }
 
-    public static function createToken(type :TokenType, scanner :Scanner) : Token
+    public static function createToken(type :PunctuatorType, scanner :Scanner) : Token
     {
         var line = scanner.curLine;
         var min = scanner.curIndex;
         var lexeme = scanner.next();
         var max = scanner.curIndex;
         var pos = new Position(line, min, max, scanner.filepath, scanner.content);
-        return new Token(lexeme, type, pos);
+        return new Token(lexeme, Punctuator(type), pos);
     }
 
     public static function createTokenIdentifier(scanner :Scanner) : Token
@@ -113,7 +113,7 @@ class Lexer
         var lexeme = scanner.consumeRhythm();
         var max = scanner.curIndex;
         var position = new Position(line, min, max, scanner.filepath, scanner.content);
-        return new Token(lexeme, RHYTHM, position);
+        return new Token(lexeme, Rhythm(lexeme), position);
     }
 
     public static function createTokenShiftLeft(scanner :Scanner) : Token
@@ -125,7 +125,7 @@ class Lexer
         lexeme += scanner.next(); //'<'
         var max = scanner.curIndex;
         var position = new Position(line, min, max, scanner.filepath, scanner.content);
-        return new Token(lexeme, SHIFT_LEFT, position);
+        return new Token(lexeme, Punctuator(SHIFT_LEFT), position);
     }
 
     public static function createTokenShiftRight(scanner :Scanner) : Token
@@ -137,7 +137,7 @@ class Lexer
         lexeme += scanner.next(); //'>'
         var max = scanner.curIndex;
         var position = new Position(line, min, max, scanner.filepath, scanner.content);
-        return new Token(lexeme, SHIFT_RIGHT, position);
+        return new Token(lexeme, Punctuator(SHIFT_RIGHT), position);
     }
 
     public static function createTokenNumber(scanner :Scanner) : Token
@@ -147,25 +147,25 @@ class Lexer
         var lexeme = scanner.consumeNumber();
         var max = scanner.curIndex;
         var position = new Position(line, min, max, scanner.filepath, scanner.content);
-        return new Token(lexeme, NUMBER, position);
+        return new Token(lexeme, Number(lexeme), position);
     }
 
     public static function wordType(str :String) : TokenType
     {
         if (str.isKey()) {
-            return KEY;
+            return Key(str);
         }
         else if (str.isScale()) {
-            return SCALE;
+            return Scale(str);
         }
         else if (str.isFunc()) {
-            return FUNC;
+            return Keyword(FUNC);
         }
         else if (str.isPrint()) {
-            return PRINT;
+            return Keyword(PRINT);
         }
         else {
-            return IDENTIFIER;
+            return Identifier(str);
         }
     }
 

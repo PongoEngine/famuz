@@ -35,6 +35,19 @@ class Token
         this.type = type;
         this.pos = pos;
     }
+
+    public function isPunctuator(punctuator: PunctuatorType) : Bool
+    {
+        return switch this.type {
+            case Punctuator(type): type == punctuator;
+            case _: false;
+        }
+    }
+
+    public inline function isNotPunctuator(punctuator: PunctuatorType) : Bool
+    {
+        return !isPunctuator(punctuator);
+    }
 }
 
 class TokenScanner
@@ -64,17 +77,20 @@ class TokenScanner
     }
 }
 
-enum TokenType {
-	IDENTIFIER;
+enum TokenType 
+{
+    Punctuator(type :PunctuatorType);
+    Keyword(type :KeywordType);
+    Identifier(str :String);
+    Scale(str :String);
+    Key(str :String);
+    Number(str :String);
+    Rhythm(str :String);
+}
+
+enum PunctuatorType 
+{
 	COLON;
-	SCALE;
-	FUNC;
-	PRINT;
-	KEY;
-	WHITESPACE;
-	NUMBER;
-	RHYTHM;
-	COMMENT;
 	ADD;
 	ASSIGNMENT;
 	LEFT_PARENTHESES;
@@ -83,9 +99,15 @@ enum TokenType {
 	RIGHT_BRACE;
 	LEFT_BRACKET;
 	RIGHT_BRACKET;
-	COMMA;
 	SHIFT_LEFT;
 	SHIFT_RIGHT;
 	SLASH;
+	COMMA;
+}
+
+enum KeywordType 
+{
+	FUNC;
+	PRINT;
 	IF;
 }
