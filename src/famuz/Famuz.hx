@@ -52,16 +52,10 @@ class Famuz
             case EFunction(identifier, params, body): {
                 var stack = new ExprStack();
                 Evaluate.evaluate(body, stack);
-                // var expr = stack.pop();
-                // parser.assert(expr.ret == TMusic, () -> {
-                //     parser.assert(stack.length == 0, () -> {
-                //         Some(getMusic(expr));
-                //     }, () -> None, "Compilation Error", expr.pos);
-                // }, () -> None, "Main function must produce music.", expr.pos);
                 None;
             }
             case _: 
-                throw None;
+                None;
         }
 
         return {
