@@ -110,7 +110,6 @@ enum TokenType
 
 enum PunctuatorType 
 {
-	COLON;
 	ADD;
 	ASSIGNMENT;
 	LEFT_PARENTHESES;
@@ -127,7 +126,6 @@ enum PunctuatorType
 
 enum KeywordType 
 {
-	STRUCT;
 	FUNC;
 	PRINT;
 	IF;

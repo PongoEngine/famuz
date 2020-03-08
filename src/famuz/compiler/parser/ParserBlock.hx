@@ -36,7 +36,7 @@ class ParserBlock
         context = context.createChild();
 
         while (scanner.hasNext() && scanner.peek().isNotPunctuator(RIGHT_BRACE)) {
-            exprs.push(Parser.parse(new Precedence(0), scanner, context));
+            exprs.push(Parser.parse(new Precedence(0), scanner, context, false));
         }
 
         var rightBrace = scanner.next();

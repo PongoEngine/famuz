@@ -38,8 +38,6 @@ class Lexer
             {
                 case ASSIGNMENT:
                     tokens.push(createToken(ASSIGNMENT, 1, scanner));
-                case COLON:
-                    tokens.push(createToken(COLON, 1, scanner));
                 case LEFT_PARENTHESES:
                     tokens.push(createToken(LEFT_PARENTHESES, 1, scanner));
                 case RIGHT_PARENTHESES:
@@ -132,7 +130,6 @@ class Lexer
     {
         return switch str {
             //keyword
-            case "struct": TTKeyword(STRUCT);
             case "func": TTKeyword(FUNC);
             case "print": TTKeyword(PRINT);
             case "if": TTKeyword(IF);

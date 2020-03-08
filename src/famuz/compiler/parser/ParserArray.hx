@@ -34,7 +34,7 @@ class ParserArray
         var exprs :Array<Expr> = [];
 
         while (scanner.hasNext() && scanner.peek().isNotPunctuator(RIGHT_BRACKET)) {
-            exprs.push(Parser.parse(new Precedence(0), scanner, context));
+            exprs.push(Parser.parse(new Precedence(0), scanner, context, false));
             if(scanner.peek().isPunctuator(COMMA)) {
                 scanner.next();
             }

@@ -44,7 +44,7 @@ class Famuz
         var env = new Context();
 
         while(tokenScanner.hasNext()) {
-            Parser.parse(new Precedence(0), tokenScanner, env);
+            Parser.parse(new Precedence(0), tokenScanner, env, false);
         }
 
         var main = env.getExpr("main");

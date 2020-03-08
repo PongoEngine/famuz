@@ -29,7 +29,7 @@ class ParserArrayAccess
 	public static function parse(left:Expr, scanner:TokenScanner, context:Context):Expr 
 	{
 		var leftBracket = scanner.next(); // consume "["
-		var expr = Parser.parse(new Precedence(0), scanner, context);
+		var expr = Parser.parse(new Precedence(0), scanner, context, false);
         var rightBracket = scanner.next(); // consume "]"
         
 		return {

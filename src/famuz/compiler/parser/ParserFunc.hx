@@ -37,15 +37,14 @@ class ParserFunc
         scanner.next(); //consume left parentheses
 
         var params = parseParams(scanner);
-        var type = parseType(scanner);
 
-        var body = Parser.parse(PRECEDENCE_CALL, scanner, context);
+        var body = Parser.parse(PRECEDENCE_CALL, scanner, context, true);
 
         var func :Expr = {
             context: context,
             def: EFunction(identifier, params, body),
             pos: Position.union(token.pos, body.pos),
-            ret: type
+            ret: body.ret
         };
         context.addExpr(identifier, func);
 
@@ -58,20 +57,10 @@ class ParserFunc
         while (scanner.peek().isNotPunctuator(RIGHT_PARENTHESES)) {
             var name = scanner.next();
     
-            if(scanner.peek().isPunctuator(COLON)) {
-                scanner.next(); //consume colon
-                var token = scanner.next();
-                params.push({
-                    name: name.getIdentifier(),
-                    type: token.getType()
-                });
-            }
-            else {
-                params.push({
-                    name: name.getIdentifier(),
-                    type: TMonomorph
-                });
-            }
+            params.push({
+                name: name.getIdentifier(),
+                type: TMonomorph
+            });
     
             if(scanner.peek().isPunctuator(COMMA)) {
                 scanner.next(); //consume comma
@@ -80,15 +69,5 @@ class ParserFunc
 
         Assert.that(scanner.next().isPunctuator(RIGHT_PARENTHESES), "\nparse_func :NOT LEFT PARENTHESES!\n");
         return params;
-    }
-    
-    private static function parseType(scanner :TokenScanner) : Type
-    {
-        if(scanner.peek().isPunctuator(COLON)) {
-            scanner.next(); //consume colon
-            var t = scanner.next();
-            return t.getType();
-        }
-        return TInvalid;
     }
 }

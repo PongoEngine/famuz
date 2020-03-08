@@ -23,8 +23,6 @@ package famuz.compiler.lexer;
 
 enum abstract LexerToken(String) from String
 {
-    var COLON = ":";
-
     var HIT = "x";
 
     var LEFT_BRACE = "{";

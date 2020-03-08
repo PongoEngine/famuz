@@ -34,17 +34,17 @@ import famuz.compiler.parser.ParserParentheses;
 import famuz.compiler.parser.ParserPrint;
 import famuz.compiler.parser.ParserRhythm;
 import famuz.compiler.parser.ParserScale;
-import famuz.compiler.parser.ParserTyping;
 import famuz.compiler.parser.ParserVar;
 import famuz.compiler.parser.ParserArrayAccess;
+import famuz.compiler.parser.ParserStruct;
 using famuz.compiler.parser.Precedence;
 
 class Parser
 {
-    public static function parse(precedence :Precedence, scanner :TokenScanner, context :Context) : Expr
+    public static function parse(precedence :Precedence, scanner :TokenScanner, context :Context, isFunc :Bool) : Expr
     {
         if (scanner.hasNext()) {
-            var left = parseExpressionPrefix(scanner, context);
+            var left = parseExpressionPrefix(scanner, context, isFunc);
             if (!Assert.that(left != null, "IN PARSE EXPRESSION LEFT IS NULL\n")) {
                 if (scanner.hasNext()) {
                     scanner.next();
@@ -70,24 +70,24 @@ class Parser
         return EMPTY_EXPR;
     }
 
-    private static function parseExpressionPrefix(scanner :TokenScanner, context :Context) : Expr
+    private static function parseExpressionPrefix(scanner :TokenScanner, context :Context, isFunc :Bool) : Expr
     {
         return switch (scanner.peek().type) {
             case TTPunctuator(type):
                 switch type {
                     case LEFT_PARENTHESES: 
                         ParserParentheses.parse(scanner, context);
-                    case LEFT_BRACE: 
-                        ParserBlock.parse(scanner, context);
+                    case LEFT_BRACE:
+                        isFunc
+                            ? ParserBlock.parse(scanner, context)
+                            : ParserStruct.parse(scanner, context);
                     case LEFT_BRACKET: 
                         ParserArray.parse(scanner, context);
-                    case COLON, ADD, ASSIGNMENT, RIGHT_PARENTHESES, RIGHT_BRACE,
+                    case ADD, ASSIGNMENT, RIGHT_PARENTHESES, RIGHT_BRACE,
                         RIGHT_BRACKET, SHIFT_LEFT, SHIFT_RIGHT, SLASH, COMMA: 
                         parseConsume(scanner);
                 }
             case TTKeyword(type): switch type {
-                case STRUCT: 
-                    throw "struct not implemented";
                 case FUNC: 
                     ParserFunc.parse(scanner, context);
                 case PRINT: 
@@ -115,8 +115,6 @@ class Parser
         return switch (scanner.peek().type) {
             case TTPunctuator(type):
                 switch type {
-                    case COLON: 
-                        ParserTyping.parse(left, scanner, context);
                     case ADD: 
                             ParserBinop.parse(left, scanner, context, type);
                     case ASSIGNMENT: 

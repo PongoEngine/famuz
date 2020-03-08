@@ -48,32 +48,44 @@ class EvaluatePrint
         trace('${pos.file}:${pos.line}: ${value}\n');
     }
 
-    private static function getValue(expr :Expr) : Dynamic
+    private static function getValue(expr :Expr) : String
     {
         return switch expr.def {
             case EConstant(constant): switch constant {
                 case CIdentifier(str):
                     str;
                 case CNumber(value):
-                    value;
+                    value + "";
                 case CRhythm(hits, duration):
                     '${hits.map(h -> '(${h.start},${h.duration})')}, ${duration}';
                 case CMelody(notes, duration):
-                    notes.map(n -> '${n.step}-(${n.hit.start},${n.hit.duration}), ${duration}');
+                    notes.map(n -> '${n.step}-(${n.hit.start},${n.hit.duration}), ${duration}') + "";
                 case CHarmony(melodies):
-                    melodies;
+                    melodies + "";
                 case CSteps(steps):
-                    steps;
+                    steps + "";
                 case CScale(scale):
                     scale.toString();
                 case CKey(key):
                     key.toString();
                 case CScaledKey(scale, key):
-                    {scale: scale.toString(), key: key.toString()};
+                    {scale: scale.toString(), key: key.toString()} + "";
                 case CMusic(music):
-                    music.map(n -> '${n.note}-(${n.hit.start},${n.hit.duration})');
+                    music.map(n -> '${n.note}-(${n.hit.start},${n.hit.duration})') + "";
             }
-            case EArrayDecl(values): values.map(getValue);
+            case EArrayDecl(values): 
+                values.map(getValue) + "";
+            case EObjectDecl(fields): {
+                var obj = "{";
+                for(i in 0...fields.length) {
+                    var field = fields[i];
+                    obj += '${field.field}: ${getValue(field.expr)}';
+                    if(i != fields.length -1) {
+                        obj += ", ";
+                    }
+                }
+                obj + "}";
+            }
             case _: throw "invalid getValue";
         }
     }

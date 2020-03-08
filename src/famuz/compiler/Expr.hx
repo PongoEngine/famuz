@@ -94,7 +94,7 @@ enum Unop
 /**
  * 
  */
-typedef StructField = 
+typedef ObjectField = 
 {
     /**
 	 * The field expression.
@@ -140,9 +140,9 @@ enum ExprDef {
 	ESwitch(e:Expr, cases:Array<Case>, edef:Null<Expr>); //TODO: add to parser
 
 	/**
-	 * A struct declaration.
+	 * A object declaration.
 	 */
-	EStructDecl(fields:Array<StructField>); //TODO: add to parser
+	EObjectDecl(fields :Array<ObjectField>);
     
 	/**
 	 * Array access e1[e2].
@@ -153,6 +153,11 @@ enum ExprDef {
 	 * An array declaration [el].
      */
     EArrayDecl(values:Array<Expr>);
+
+    /**
+     * Field access on e.field.
+     */
+    EField(e:Expr, field:String);
     
     /**
 	 * Variable declaration.

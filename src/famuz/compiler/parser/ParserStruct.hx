@@ -22,15 +22,35 @@
 package famuz.compiler.parser;
 
 import famuz.compiler.Token;
+import famuz.compiler.Expr;
+import famuz.compiler.parser.Parser;
+using famuz.compiler.Type;
 
-class ParserTyping
+class ParserStruct
 {
-    public static function parse(left :Expr, scanner :TokenScanner, context :Context) : Expr
+    public static function parse(scanner :TokenScanner, context :Context) : Expr
     {
-        scanner.next(); //consume ':'
-        var token = scanner.next(); //get type "ex: Rhythm"
-        left.pos = Position.union(left.pos, token.pos);
-        left.ret = token.getType();
-        return left;
+        var leftBrace = scanner.next();
+        var fields :Array<ObjectField> = [];
+
+        while (scanner.hasNext() && scanner.peek().isNotPunctuator(RIGHT_BRACE)) {
+            var name = scanner.next();
+            scanner.next(); //consume '='
+            var expr = Parser.parse(new Precedence(0), scanner, context, false);
+
+            fields.push({field: name.getIdentifier(), expr: expr});
+
+            if(scanner.peek().isPunctuator(COMMA)) {
+                scanner.next();
+            }
+        }
+        var rightBrace = scanner.next();
+
+        return {
+            context: context,
+            def: EObjectDecl(fields),
+            pos: Position.union(leftBrace.pos, rightBrace.pos),
+            ret: Type.TMonomorph
+        };
     }
 }

@@ -30,7 +30,7 @@ class ParserParentheses
     public static function parse(scanner :TokenScanner, context :Context) : Expr
     {
         var token = scanner.next(); // (
-        var expr = Parser.parse(new Precedence(0), scanner, context);
+        var expr = Parser.parse(new Precedence(0), scanner, context, false);
         var rightParentheses = scanner.next(); // )
         Assert.that(rightParentheses.isPunctuator(RIGHT_PARENTHESES), "EXPECTED RIGHT PARENTHESES");
 

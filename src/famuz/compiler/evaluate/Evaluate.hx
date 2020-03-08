@@ -57,7 +57,9 @@ class Evaluate
             case EIf(econd, ethen, eelse):
 			case ETernary(econd, eif, eelse):
             case EUnop(op, postFix, e):
-            case EStructDecl(fields):
+            case EObjectDecl(fields):
+                stack.push(e);
+            case EField(e, field):
             case ESwitch(e, cases, edef):
             case EBinop(type, e1, e2): 
                 EvaluateBinop.evaluate(type, e1, e2, e.context, stack);
