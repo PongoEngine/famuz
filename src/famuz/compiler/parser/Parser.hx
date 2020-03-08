@@ -75,31 +75,38 @@ class Parser
         return switch (scanner.peek().type) {
             case TTPunctuator(type):
                 switch type {
-                    case COLON: parseConsume(scanner);
-                    case ADD: parseConsume(scanner);
-                    case ASSIGNMENT: parseConsume(scanner);
-                    case LEFT_PARENTHESES: ParserParentheses.parse(scanner, context);
-                    case RIGHT_PARENTHESES: parseConsume(scanner);
-                    case LEFT_BRACE: ParserBlock.parse(scanner, context);
-                    case RIGHT_BRACE: parseConsume(scanner);
-                    case LEFT_BRACKET: ParserArray.parse(scanner, context);
-                    case RIGHT_BRACKET: parseConsume(scanner);
-                    case SHIFT_LEFT: parseConsume(scanner);
-                    case SHIFT_RIGHT: parseConsume(scanner);
-                    case SLASH: parseConsume(scanner);
-                    case COMMA: parseConsume(scanner);
+                    case LEFT_PARENTHESES: 
+                        ParserParentheses.parse(scanner, context);
+                    case LEFT_BRACE: 
+                        ParserBlock.parse(scanner, context);
+                    case LEFT_BRACKET: 
+                        ParserArray.parse(scanner, context);
+                    case COLON, ADD, ASSIGNMENT, RIGHT_PARENTHESES, RIGHT_BRACE,
+                        RIGHT_BRACKET, SHIFT_LEFT, SHIFT_RIGHT, SLASH, COMMA: 
+                        parseConsume(scanner);
                 }
             case TTKeyword(type): switch type {
-                case FUNC: ParserFunc.parse(scanner, context);
-                case PRINT: ParserPrint.parse(scanner, context);
-                case IF: parseConsume(scanner);
+                case STRUCT: 
+                    throw "struct not implemented";
+                case FUNC: 
+                    ParserFunc.parse(scanner, context);
+                case PRINT: 
+                    ParserPrint.parse(scanner, context);
+                case IF: 
+                    throw "if not implemented";
             }
-            case TTIdentifier(str): ParserIdentifier.parse(scanner, context, str);
-            case TTScale(scale): ParserScale.parse(scanner, context, scale);
-            case TTKey(key): ParserKey.parse(scanner, context, key);
-            case TTNumber(str): ParserNumber.parse(scanner, context, str);
-            case TTRhythm(str): ParserRhythm.parse(scanner, context, str);
-            case TTType(type): parseConsume(scanner);
+            case TTIdentifier(str): 
+                ParserIdentifier.parse(scanner, context, str);
+            case TTScale(scale): 
+                ParserScale.parse(scanner, context, scale);
+            case TTKey(key): 
+                ParserKey.parse(scanner, context, key);
+            case TTNumber(str): 
+                ParserNumber.parse(scanner, context, str);
+            case TTRhythm(str): 
+                ParserRhythm.parse(scanner, context, str);
+            case TTType(type): 
+                parseConsume(scanner);
         }
     }
     
@@ -108,27 +115,38 @@ class Parser
         return switch (scanner.peek().type) {
             case TTPunctuator(type):
                 switch type {
-                    case COLON: ParserTyping.parse(left, scanner, context);
-                    case ADD: ParserBinop.parse(left, scanner, context, type);
-                    case ASSIGNMENT: ParserVar.parse(left, scanner, context);
-                    case LEFT_PARENTHESES: ParserCall.parse(left, scanner, context);
-                    case RIGHT_PARENTHESES: EMPTY_EXPR;
-                    case LEFT_BRACE: EMPTY_EXPR;
-                    case RIGHT_BRACE: EMPTY_EXPR;
-                    case LEFT_BRACKET: ParserArrayAccess.parse(left, scanner, context);
-                    case RIGHT_BRACKET: EMPTY_EXPR;
-                    case SHIFT_LEFT: ParserBinop.parse(left, scanner, context, type);
-                    case SHIFT_RIGHT: ParserBinop.parse(left, scanner, context, type);
-                    case SLASH: EMPTY_EXPR;
-                    case COMMA: EMPTY_EXPR;
+                    case COLON: 
+                        ParserTyping.parse(left, scanner, context);
+                    case ADD: 
+                            ParserBinop.parse(left, scanner, context, type);
+                    case ASSIGNMENT: 
+                            ParserVar.parse(left, scanner, context);
+                    case LEFT_PARENTHESES: 
+                            ParserCall.parse(left, scanner, context);
+                    case LEFT_BRACKET: 
+                            ParserArrayAccess.parse(left, scanner, context);
+                    case SHIFT_LEFT: 
+                            ParserBinop.parse(left, scanner, context, type);
+                    case SHIFT_RIGHT: 
+                            ParserBinop.parse(left, scanner, context, type);
+                    case RIGHT_PARENTHESES, LEFT_BRACE, RIGHT_BRACE, 
+                        RIGHT_BRACKET, SLASH, COMMA: 
+                            EMPTY_EXPR;
                 }
-            case TTKeyword(type): EMPTY_EXPR;
-            case TTIdentifier(str): EMPTY_EXPR;
-            case TTScale(str): EMPTY_EXPR;
-            case TTKey(str): EMPTY_EXPR;
-            case TTNumber(str): EMPTY_EXPR;
-            case TTRhythm(str): EMPTY_EXPR;
-            case TTType(type): EMPTY_EXPR;
+            case TTKeyword(type): 
+                EMPTY_EXPR;
+            case TTIdentifier(str): 
+                EMPTY_EXPR;
+            case TTScale(str): 
+                EMPTY_EXPR;
+            case TTKey(str): 
+                EMPTY_EXPR;
+            case TTNumber(str): 
+                EMPTY_EXPR;
+            case TTRhythm(str): 
+                EMPTY_EXPR;
+            case TTType(type): 
+                EMPTY_EXPR;
         }
     }
 

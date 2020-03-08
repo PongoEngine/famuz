@@ -127,6 +127,7 @@ enum PunctuatorType
 
 enum KeywordType 
 {
+	STRUCT;
 	FUNC;
 	PRINT;
 	IF;
