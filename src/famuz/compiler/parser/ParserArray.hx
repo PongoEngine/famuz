@@ -1,5 +1,3 @@
-package famuz.compiler.parser;
-
 /*
  * Copyright (c) 2020 Jeremy Meltingtallow
  *
@@ -21,6 +19,8 @@ package famuz.compiler.parser;
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+package famuz.compiler.parser;
+
 import famuz.compiler.Token;
 import famuz.util.Assert;
 import famuz.compiler.parser.Parser;
@@ -34,7 +34,7 @@ class ParserArray
         var exprs :Array<Expr> = [];
 
         while (scanner.hasNext() && scanner.peek().isNotPunctuator(RIGHT_BRACKET)) {
-            exprs.push(Parser.parse(0, scanner, context));
+            exprs.push(Parser.parse(new Precedence(0), scanner, context));
             if(scanner.peek().isPunctuator(COMMA)) {
                 scanner.next();
             }

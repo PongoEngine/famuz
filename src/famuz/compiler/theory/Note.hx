@@ -47,25 +47,6 @@ abstract Note(Int)
         return PRETTY_NOTES[v]+o;
     }
 
-    //Unary
-    @:op(A++) static function increment(a :Note) : Note;
-    @:op(A--) static function decrement(a :Note) : Note;
-
-    //Arithmetic with Note
-    @:op(A % B) static function modulo(a :Note, b :Note) : Note;
-    @:op(A * B) static function multiplication(a :Note, b :Note) : Note;
-    @:op(A / B) static inline function divideByNote(a :Note, b :Note) : Note return cast Math.floor(a.toInt()/b.toInt());
-    @:op(A + B) static function addition(a :Note, b :Note) : Note;
-    @:op(A - B) static function subtraction(a :Note, b :Note) : Note;
-
-    //Comparison with Note
-    @:op(A == B) static function equal(a :Note, b :Note) : Bool;
-    @:op(A != B) static function notEqual(a :Note, b :Note) : Bool;
-    @:op(A < B) static function lessThan(a :Note, b :Note) : Bool;
-    @:op(A <= B) static function lessThanOrEqual(a :Note, b :Note) : Bool;
-    @:op(A > B) static function greaterThan(a :Note, b :Note) : Bool;
-    @:op(A >= B) static function greaterThanOrEqual(a :Note, b :Note) : Bool;
-
     private static var PRETTY_NOTES = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
     // private static var PRETTY_NOTES = ["C", "C#/Db", "D", "D#/Eb", "E", "F", "F#/Gb", "G", "G#/Ab", "A", "A#/Bb", "B"];
 }

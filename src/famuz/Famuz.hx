@@ -1,5 +1,3 @@
-package famuz;
-
 /*
  * Copyright (c) 2020 Jeremy Meltingtallow
  *
@@ -21,8 +19,11 @@ package famuz;
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+package famuz;
+
 import sys.io.File;
 import haxe.ds.Option;
+import famuz.compiler.parser.Precedence;
 import famuz.compiler.Expr;
 import famuz.compiler.Expr.ExprStack;
 import famuz.compiler.Position;
@@ -43,7 +44,7 @@ class Famuz
         var env = new Context();
 
         while(tokenScanner.hasNext()) {
-            Parser.parse(0, tokenScanner, env);
+            Parser.parse(new Precedence(0), tokenScanner, env);
         }
 
         var main = env.getExpr("main");

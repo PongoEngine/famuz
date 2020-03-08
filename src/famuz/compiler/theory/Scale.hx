@@ -20,6 +20,7 @@
  */
 
 package famuz.compiler.theory;
+
 import famuz.compiler.theory.Key;
 
 @:enum

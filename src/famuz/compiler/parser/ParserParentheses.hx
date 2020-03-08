@@ -1,5 +1,3 @@
-package famuz.compiler.parser;
-
 /*
  * Copyright (c) 2020 Jeremy Meltingtallow
  *
@@ -21,6 +19,8 @@ package famuz.compiler.parser;
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+package famuz.compiler.parser;
+
 import famuz.compiler.Token;
 import famuz.util.Assert;
 import famuz.compiler.parser.Parser;
@@ -30,7 +30,7 @@ class ParserParentheses
     public static function parse(scanner :TokenScanner, context :Context) : Expr
     {
         var token = scanner.next(); // (
-        var expr = Parser.parse(0, scanner, context);
+        var expr = Parser.parse(new Precedence(0), scanner, context);
         var rightParentheses = scanner.next(); // )
         Assert.that(rightParentheses.isPunctuator(RIGHT_PARENTHESES), "EXPECTED RIGHT PARENTHESES");
 

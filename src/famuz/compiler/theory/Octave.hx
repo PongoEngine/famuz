@@ -31,22 +31,5 @@ extern abstract Octave(Int)
 
     inline public function toInt() : Int return this;
 
-    //Unary
-    @:op(A++) static function increment(a :Octave) : Octave;
-    @:op(A--) static function decrement(a :Octave) : Octave;
-
-    //Arithmetic with Octave
-    @:op(A % B) static function modulo(a :Octave, b :Octave) : Octave;
-    @:op(A * B) static function multiplication(a :Octave, b :Octave) : Octave;
-    @:op(A / B) static inline function divideByOctave(a :Octave, b :Octave) : Octave return cast Math.floor(a.toInt()/b.toInt());
     @:op(A + B) static function addition(a :Octave, b :Octave) : Octave;
-    @:op(A - B) static function subtraction(a :Octave, b :Octave) : Octave;
-
-    //Comparison with Octave
-    @:op(A == B) static function equal(a :Octave, b :Octave) : Bool;
-    @:op(A != B) static function Octavequal(a :Octave, b :Octave) : Bool;
-    @:op(A < B) static function lessThan(a :Octave, b :Octave) : Bool;
-    @:op(A <= B) static function lessThanOrEqual(a :Octave, b :Octave) : Bool;
-    @:op(A > B) static function greaterThan(a :Octave, b :Octave) : Bool;
-    @:op(A >= B) static function greaterThanOrEqual(a :Octave, b :Octave) : Bool;
 }

@@ -20,6 +20,7 @@
  */
 
 package famuz.compiler.theory;
+
 extern abstract Step(Int)
 {
     inline public function new(val :Int)

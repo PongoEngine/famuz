@@ -1,5 +1,3 @@
-package famuz.compiler.parser;
-
 /*
  * Copyright (c) 2020 Jeremy Meltingtallow
  *
@@ -21,6 +19,8 @@ package famuz.compiler.parser;
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+package famuz.compiler.parser;
+
 import famuz.compiler.Token;
 import famuz.util.Assert;
 import famuz.compiler.parser.ParserBinop;
@@ -41,7 +41,7 @@ using famuz.compiler.parser.Precedence;
 
 class Parser
 {
-    public static function parse(precedence :Int, scanner :TokenScanner, context :Context) : Expr
+    public static function parse(precedence :Precedence, scanner :TokenScanner, context :Context) : Expr
     {
         if (scanner.hasNext()) {
             var left = parseExpressionPrefix(scanner, context);

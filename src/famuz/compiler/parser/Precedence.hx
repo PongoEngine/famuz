@@ -1,5 +1,3 @@
-package famuz.compiler.parser;
-
 /*
  * Copyright (c) 2020 Jeremy Meltingtallow
  *
@@ -21,17 +19,29 @@ package famuz.compiler.parser;
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+package famuz.compiler.parser;
+
 import famuz.compiler.Token;
 
-class Precedence
+abstract Precedence(Int)
 {
-    public static inline var PRECEDENCE_ASSIGNMENT = 1;
-    public static inline var PRECEDENCE_SUM = 2;
-	public static inline var PRECEDENCE_CALL = 3;
-	public static inline var PRECEDENCE_ARRAY = 3;
-    public static inline var PRECEDENCE_TYPE = 4;
+    public static var PRECEDENCE_ASSIGNMENT = new Precedence(1);
+    public static var PRECEDENCE_SUM = new Precedence(2);
+	public static var PRECEDENCE_CALL = new Precedence(3);
+	public static var PRECEDENCE_ARRAY = new Precedence(3);
+    public static var PRECEDENCE_TYPE = new Precedence(4);
 
-    public static function getPrecedence(scanner :TokenScanner) : Int
+    public function new(val :Int) : Void
+    {
+        this = val;
+    }
+    
+    public function toInt() : Int
+    {
+        return this;
+    }
+
+    public static function getPrecedence(scanner :TokenScanner) : Precedence
     {
         return switch (scanner.peek().type)
         {
@@ -48,11 +58,14 @@ class Precedence
                     case COLON:
                         PRECEDENCE_TYPE;
                     default:
-                        0;
+                        new Precedence(0);
                 }
             }
             default:
-                0;
+                new Precedence(0);
         }
     }
+
+    //Comparison with Octave
+    @:op(A < B) static function lessThan(a :Precedence, b :Precedence) : Bool;
 }

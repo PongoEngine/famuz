@@ -1,5 +1,3 @@
-package famuz.compiler.parser;
-
 /*
  * Copyright (c) 2020 Jeremy Meltingtallow
  *
@@ -21,6 +19,8 @@ package famuz.compiler.parser;
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+package famuz.compiler.parser;
+
 import famuz.compiler.Token;
 import famuz.compiler.parser.Parser;
 
@@ -29,7 +29,7 @@ class ParserArrayAccess
 	public static function parse(left:Expr, scanner:TokenScanner, context:Context):Expr 
 	{
 		var leftBracket = scanner.next(); // consume "["
-		var expr = Parser.parse(0, scanner, context);
+		var expr = Parser.parse(new Precedence(0), scanner, context);
         var rightBracket = scanner.next(); // consume "]"
         
 		return {
