@@ -21,6 +21,9 @@
 
 package famuz.util;
 
+/**
+ * 
+ */
 class MathTools
 {
     public static function mod(number :Int, amount :Int) : Int 

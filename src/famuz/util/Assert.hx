@@ -21,6 +21,9 @@
 
 package famuz.util;
 
+/**
+ * 
+ */
 class Assert
 {
     public static function that(isTrue :Bool, msg :String) : Bool

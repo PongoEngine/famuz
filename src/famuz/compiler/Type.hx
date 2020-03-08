@@ -21,6 +21,9 @@
 
 package famuz.compiler;
 
+/**
+ * 
+ */
 @:using(famuz.compiler.Type.TypeTools)
 enum Type
 {

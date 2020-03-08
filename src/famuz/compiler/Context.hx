@@ -23,6 +23,9 @@ package famuz.compiler;
 
 import famuz.compiler.Expr;
 
+/**
+ * 
+ */
 class Context
 {
     public var parent :Context = null;

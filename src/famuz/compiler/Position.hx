@@ -21,6 +21,9 @@
 
 package famuz.compiler;
 
+/**
+ * 
+ */
 class Position
 {
     public var line :Int;

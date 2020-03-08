@@ -25,6 +25,9 @@ import famuz.compiler.Position;
 import famuz.compiler.theory.Key;
 import famuz.compiler.theory.Scale;
 
+/**
+ * 
+ */
 class Token
 {
     public var type :TokenType;

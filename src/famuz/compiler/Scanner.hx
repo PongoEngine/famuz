@@ -24,6 +24,9 @@ package famuz.compiler;
 import famuz.compiler.lexer.LexerToken;
 using famuz.compiler.Scanner.ScannerTools;
 
+/**
+ * 
+ */
 class Scanner
 {
     public var content :String;

@@ -29,6 +29,9 @@ import famuz.compiler.theory.Hit;
 import famuz.compiler.theory.SteppedHit;
 import famuz.compiler.theory.NotedHit;
 
+/**
+ * 
+ */
 enum BinopType
 {
     ADD;
@@ -36,12 +39,18 @@ enum BinopType
     SHIFT_RIGHT;
 }
 
+/**
+ * 
+ */
 typedef Parameter =
 {
     var name :String;
     var type :Type;
 }
 
+/**
+ * 
+ */
 enum Constant
 {
     CIdentifier(str :String);
@@ -56,6 +65,9 @@ enum Constant
     CMusic(music :Array<NotedHit>);
 }
 
+/**
+ * 
+ */
 enum Unop
 {
 	/**
@@ -79,6 +91,9 @@ enum Unop
     OpNeg;
 }
 
+/**
+ * 
+ */
 typedef ObjectField = 
 {
     /**
@@ -92,6 +107,9 @@ typedef ObjectField =
 	field:String
 }
 
+/**
+ * 
+ */
 typedef Case =
 {
     /**
@@ -105,6 +123,9 @@ typedef Case =
 	values:Array<Expr>
 } 
 
+/**
+ * 
+ */
 enum ExprDef {
 
     /**
@@ -116,12 +137,12 @@ enum ExprDef {
 	 * Represents a switch expression with related cases and an optional. 
      * default case if edef != null.
 	 */
-	ESwitch(e:Expr, cases:Array<Case>, edef:Null<Expr>);
+	ESwitch(e:Expr, cases:Array<Case>, edef:Null<Expr>); //TODO: add to parser
 
 	/**
 	 * An object declaration.
 	 */
-	EObjectDecl(fields:Array<ObjectField>);
+	EObjectDecl(fields:Array<ObjectField>); //TODO: add to parser
     
 	/**
 	 * Array access e1[e2].
@@ -151,7 +172,7 @@ enum ExprDef {
     /**
 	 * Aif(econd) ethen else eelse expression.
      */
-    EIf(econd:Expr, ethen:Expr, eelse:Expr);
+    EIf(econd:Expr, ethen:Expr, eelse:Expr); //TODO: add to parser
 
 	/**
 	 * An unary operator op on e:
@@ -161,12 +182,12 @@ enum ExprDef {
      * postFix = false) -e (op = OpNeg, postFix = false) !e (op = OpNot, postFix 
      * = false) ~e (op = OpNegBits, postFix = false)
 	 */
-	EUnop(op:Unop, postFix:Bool, e:Expr);
+	EUnop(op:Unop, postFix:Bool, e:Expr); //TODO: add to parser
     
     /**
 	 * A (econd) ? eif : eelse expression.
      */
-    ETernary(econd:Expr, eif:Expr, eelse:Expr);
+    ETernary(econd:Expr, eif:Expr, eelse:Expr); //TODO: add to parser
     
     /**
 	 * Binary operator e1 op e2.
@@ -189,6 +210,9 @@ enum ExprDef {
     EFunction(identifier :String, params :Array<Parameter>, body :Expr);
 }
 
+/**
+ * 
+ */
 typedef Expr = {
     var context :Context;
     var def :ExprDef;
@@ -196,6 +220,9 @@ typedef Expr = {
     var ret :Type;
 }
 
+/**
+ * 
+ */
 @:forward(length)
 abstract ExprStack(Array<Expr>)
 {
@@ -226,6 +253,9 @@ abstract ExprStack(Array<Expr>)
     }
 }
 
+/**
+ * 
+ */
 class ExprTools
 {
     public static function copyNumber(e :Expr) : Int
