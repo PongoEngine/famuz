@@ -28,11 +28,10 @@ import famuz.compiler.theory.Scale;
 import famuz.compiler.theory.Key;
 import famuz.compiler.theory.NotedHit;
 
-
 /**
  * 
  */
- enum ExprDef {
+enum ExprDef {
 
     /**
 	 * A constant.
