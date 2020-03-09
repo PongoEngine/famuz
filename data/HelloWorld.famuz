@@ -1,6 +1,6 @@
-steps1 = \2 1 0 1 2 2 2
-steps2 = \1 1 1 2 4 4
-steps3 = \2 1 1 2 1 0
+steps1 = [2, 1, 0, 10, 2, 2, 2]
+steps2 = [1, 1, 1, 2, 4, 4]
+steps3 = [2, 1, 1, 2, 1, 0]
 rhythm1 = \x-x-x-x-x-x-x~~-
 rhythm2 = \x-x-x---x-x-x~~-
 rhythm3 = \x-x-x-x-x-x-x-
@@ -23,6 +23,7 @@ key = G
 scale = melodic-minor
 
 func main() {
-    print(coolBeans.coolNumber)
-    print(1)
+    x = print(99)
+    stepsIndex = 3
+    print(x + 30 + steps1[stepsIndex])
 }

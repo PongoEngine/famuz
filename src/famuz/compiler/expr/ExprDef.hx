@@ -19,7 +19,7 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package famuz.compiler.expr.exprDef;
+package famuz.compiler.expr;
 
 import famuz.compiler.theory.Hit;
 import famuz.compiler.theory.SteppedHit;

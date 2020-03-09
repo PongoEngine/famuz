@@ -25,12 +25,10 @@ import sys.io.File;
 import haxe.ds.Option;
 import famuz.compiler.parser.Precedence;
 import famuz.compiler.expr.Expr;
-import famuz.compiler.expr.ExprStack;
 import famuz.compiler.Position;
 import famuz.compiler.Context;
 import famuz.compiler.Token.TokenScanner;
 import famuz.compiler.lexer.Lexer;
-import famuz.compiler.evaluate.Evaluate;
 import famuz.compiler.parser.Parser;
 import famuz.compiler.theory.NotedHit;
 
@@ -48,10 +46,10 @@ class Famuz
         }
 
         var main = env.getExpr("main");
+
         var music = switch main.def {
-            case EFunction(identifier, params, body): {
-                var stack = new ExprStack();
-                Evaluate.evaluate(body, stack);
+            case EFunction(_, _, body): {
+                body.evaluate();
                 None;
             }
             case _: 
@@ -62,17 +60,6 @@ class Famuz
             music: music,
             errors: []
         };
-    }
-
-    private static function getMusic(e :Expr) : Array<NotedHit>
-    {
-        return switch e.def {
-            case EConstant(constant): switch constant {
-                case CMusic(val): val;
-                case _: throw "Expected Steps.";
-            }
-            case _: throw "Expected Steps.";
-        }
     }
 }
 

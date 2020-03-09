@@ -22,7 +22,7 @@
 package famuz.compiler.expr;
 
 import famuz.compiler.Context;
-import famuz.compiler.expr.exprDef.ExprDef;
+import famuz.compiler.expr.ExprDef;
 
 /**
  * 
@@ -40,5 +40,136 @@ class Expr
         this.def = def;
         this.pos = pos;
         this.ret = ret;
+    }
+
+    public function evaluate() : Expr
+    {
+        return switch def {
+            case EConstant(constant):
+                switch constant {
+                    case CIdentifier(str):
+                        this.context.getExpr(str).evaluate();
+                    case _:
+                        this;
+                }
+            case ESwitch(e, cases, edef):
+                throw "ESwitch";
+            case EObjectDecl(_):
+                this;
+            case EArray(e1, e2):
+                switch [e1.evaluate().def, e2.evaluate().def] {
+                    case [EArrayDecl(values), EConstant(constant)]: switch constant {
+                        case CNumber(index): values[index].evaluate();
+                        case _: throw "err";
+                    }
+                    case _: throw "err";
+                }
+            case EArrayDecl(_):
+                this;
+            case EField(e, field):
+                throw "EField";
+            case EVar(_, expr):
+                expr.evaluate();
+            case ECall(identifier, args):
+                throw "ECall";
+            case EBlock(exprs):
+                exprs[exprs.length-1].evaluate();
+            case EIf(econd, ethen, eelse):
+                throw "EIf";
+            case EUnop(op, postFix, e):
+                throw "EUnop";
+            case ETernary(econd, eif, eelse):
+                throw "ETernary";
+            case EBinop(type, e1, e2):
+                switch type {
+                    case ADD: e1.add(e2);
+                    case SHIFT_LEFT: throw "SHIFT_LEFT";
+                    case SHIFT_RIGHT: throw "SHIFT_RIGHT";
+                }
+            case EParentheses(expr):
+                expr.evaluate();
+            case EPrint(expr):
+                var evalExpr = expr.evaluate();
+                trace(evalExpr.toString());
+                evalExpr;
+            case EFunction(_, _, _):
+                this;
+        }
+    }
+
+    public function toString() : String
+    {
+        var strVal = switch def {
+            case EConstant(constant): switch constant {
+                case CIdentifier(str): str;
+                case CNumber(value): value + "";
+                case CRhythm(hits, duration): "CRhythm";
+                case CMelody(notes, duration): "CMelody";
+                case CHarmony(melodies): "CHarmony";
+                case CSteps(steps): "CSteps";
+                case CScale(scale): scale.toString();
+                case CKey(key): key.toString();
+                case CScaledKey(scale, key): "CScaledKey";
+                case CMusic(music): "CMusic";
+            }
+            case ESwitch(e, cases, edef):
+                throw "ESwitch";
+            case EObjectDecl(fields):
+                throw "EObjectDecl";
+            case EArray(e1, e2):
+                throw "EArray";
+            case EArrayDecl(values):
+                throw "EArrayDecl";
+            case EField(e, field):
+                throw "EField";
+            case EVar(identifier, expr):
+                throw "EVar";
+            case ECall(identifier, args):
+                throw "ECall";
+            case EBlock(exprs):
+                throw "ECall";
+            case EIf(econd, ethen, eelse):
+                throw "EIf";
+            case EUnop(op, postFix, e):
+                throw "EUnop";
+            case ETernary(econd, eif, eelse):
+                throw "ETernary";
+            case EBinop(type, e1, e2):
+                throw "EBinop";
+            case EParentheses(expr):
+                throw "EParentheses";
+            case EPrint(expr):
+                throw "EPrint";
+            case EFunction(identifier, params, body):
+                throw "EFunction";
+        }
+
+        return '${pos.file}:${pos.line}: ${strVal}\n';
+    }
+
+    public function add(expr :Expr) : Expr
+    {
+        var a = this.evaluate();
+        var b = expr.evaluate();
+
+        var constant = switch [a.def, b.def] {
+            case [EConstant(constantA), EConstant(constantB)]: {
+                switch [constantA, constantB] {
+                    case [CNumber(valueA), CNumber(valueB)]:
+                        EConstant(CNumber(valueA + valueB));
+                    case _: 
+                        throw "Only Supports Numbers";
+                }
+            }
+            case _: 
+                throw "Can only add constants";
+        }
+
+        return new Expr(
+            expr.context, 
+            constant, 
+            Position.union(this.pos, expr.pos), 
+            TInvalid
+        );
     }
 }
