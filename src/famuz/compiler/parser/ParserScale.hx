@@ -30,11 +30,11 @@ class ParserScale
     {
         var token = scanner.next();
 
-        return {
-            context: context,
-            def: EConstant(CScale(scale)),
-            pos: token.pos,
-            ret: TScale
-        };
+        return new Expr(
+            context,
+            EConstant(CScale(scale)),
+            token.pos,
+            TScale
+        );
     }
 }

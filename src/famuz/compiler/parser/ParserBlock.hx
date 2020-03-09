@@ -43,11 +43,11 @@ class ParserBlock
         Assert.that(rightBrace.isPunctuator(RIGHT_BRACE), "EXPECTED RIGHT BRACKET");
         var ret = exprs.length > 0 ? exprs[exprs.length-1].ret : TInvalid;
 
-        return {
-            context: context,
-            def: EBlock(exprs),
-            pos: Position.union(token.pos, rightBrace.pos), 
-            ret: ret
-        };
+        return  new Expr(
+            context,
+            EBlock(exprs),
+            Position.union(token.pos, rightBrace.pos), 
+            ret
+        );
     }
 }

@@ -28,11 +28,11 @@ class ParserNumber
     public static function parse(scanner :TokenScanner, context :Context, number :Int) : Expr
     {
         var token = scanner.next();
-        return {
-            context: context,
-            def: EConstant(CNumber(number)),
-            pos: token.pos,
-            ret: TNumber
-        };
+        return new Expr(
+            context,
+            EConstant(CNumber(number)),
+            token.pos,
+            TNumber
+        );
     }
 }

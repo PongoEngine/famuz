@@ -51,12 +51,12 @@ class ParserRhythm
         }
         var duration = rhythmScanner.content.length;
 
-        return {
-            context: context,
-            def: EConstant(CRhythm(hits, duration)),
-            pos: token.pos,
-            ret: TRhythm
-        };
+        return new Expr(
+            context,
+            EConstant(CRhythm(hits, duration)),
+            token.pos,
+            TRhythm
+        );
     }
 
     private static function eatDuration(scanner :Scanner) : Void

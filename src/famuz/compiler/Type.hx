@@ -36,6 +36,7 @@ enum Type
     TScaledKey;
     TMusic;
     TMonomorph;
+    TArray(type :Type);
     TInvalid;
 }
 
@@ -55,7 +56,7 @@ class TypeTools
                 return b == TScale ? TScaledKey : TInvalid;
             case TScaledKey:
                 return b == TMelody ? TMusic : TInvalid;
-            case TMusic, TBool, TMonomorph, TInvalid, TRhythm:
+            case TMusic, TBool, TMonomorph, TInvalid, TRhythm, TArray(_):
                 return TInvalid;
         }
     }

@@ -38,7 +38,7 @@ class EvaluatePrint
                 }
                 print(str, expr.pos);
             }
-            case _: print(getValue(printExpr), expr.pos);
+            case _: print(getValue(stack, printExpr), expr.pos);
         }
         stack.push(printExpr);
     }
@@ -48,12 +48,12 @@ class EvaluatePrint
         trace('${pos.file}:${pos.line}: ${value}\n');
     }
 
-    private static function getValue(expr :Expr) : String
+    private static function getValue(stack :ExprStack, expr :Expr) : String
     {
         return switch expr.def {
             case EConstant(constant): switch constant {
                 case CIdentifier(str):
-                    str;
+                    throw "IMPOSSIBLE!";
                 case CNumber(value):
                     value + "";
                 case CRhythm(hits, duration):
@@ -74,19 +74,29 @@ class EvaluatePrint
                     music.map(n -> '${n.note}-(${n.hit.start},${n.hit.duration})') + "";
             }
             case EArrayDecl(values): 
-                values.map(getValue) + "";
+                values.map(getValue.bind(stack)) + "";
             case EObjectDecl(fields): {
                 var obj = "{";
                 for(i in 0...fields.length) {
                     var field = fields[i];
-                    obj += '${field.field}: ${getValue(field.expr)}';
+                    obj += '${field.field}: ${getValue(stack, field.expr)}';
                     if(i != fields.length -1) {
                         obj += ", ";
                     }
                 }
                 obj + "}";
             }
-            case _: throw "invalid getValue";
+            case EField(e, field): {
+                trace(e.def + "\n");
+                switch e.def {
+                    case EObjectDecl(fields): 
+                        throw "invalid getValue";
+                    case _: 
+                        throw "invalid getValue";
+                }
+            }
+            case _: 
+                throw "invalid getValue";
         }
     }
 }

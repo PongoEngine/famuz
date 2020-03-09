@@ -37,6 +37,7 @@ import famuz.compiler.parser.ParserScale;
 import famuz.compiler.parser.ParserVar;
 import famuz.compiler.parser.ParserArrayAccess;
 import famuz.compiler.parser.ParserStruct;
+import famuz.compiler.parser.ParserDot;
 using famuz.compiler.parser.Precedence;
 
 class Parser
@@ -84,7 +85,8 @@ class Parser
                     case LEFT_BRACKET: 
                         ParserArray.parse(scanner, context);
                     case ADD, ASSIGNMENT, RIGHT_PARENTHESES, RIGHT_BRACE,
-                        RIGHT_BRACKET, SHIFT_LEFT, SHIFT_RIGHT, SLASH, COMMA: 
+                        RIGHT_BRACKET, SHIFT_LEFT, SHIFT_RIGHT, SLASH,
+                        COMMA, PERIOD: 
                         parseConsume(scanner);
                 }
             case TTKeyword(type): switch type {
@@ -127,6 +129,8 @@ class Parser
                             ParserBinop.parse(left, scanner, context, type);
                     case SHIFT_RIGHT: 
                             ParserBinop.parse(left, scanner, context, type);
+                    case PERIOD:
+                            ParserDot.parse(left, scanner, context);
                     case RIGHT_PARENTHESES, LEFT_BRACE, RIGHT_BRACE, 
                         RIGHT_BRACKET, SLASH, COMMA: 
                             EMPTY_EXPR;

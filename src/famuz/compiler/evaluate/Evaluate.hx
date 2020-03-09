@@ -59,7 +59,8 @@ class Evaluate
             case EUnop(op, postFix, e):
             case EObjectDecl(fields):
                 stack.push(e);
-            case EField(e, field):
+            case EField(expr, field):
+                stack.push(e);
             case ESwitch(e, cases, edef):
             case EBinop(type, e1, e2): 
                 EvaluateBinop.evaluate(type, e1, e2, e.context, stack);
@@ -73,12 +74,7 @@ class Evaluate
                     evaluate(v, stack);
                     vals.push(stack.pop());
                 }
-                stack.push({
-                    context :e.context,
-                    def :EArrayDecl(vals),
-                    pos :e.pos,
-                    ret :e.ret
-                });
+                stack.push(new Expr(e.context, EArrayDecl(vals), e.pos, e.ret));
             }
             case EFunction(_, _, _): 
                 stack.push(e);

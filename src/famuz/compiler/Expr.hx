@@ -218,11 +218,20 @@ enum ExprDef {
 /**
  * 
  */
-typedef Expr = {
-    var context :Context;
-    var def :ExprDef;
-    var pos :Position;
-    var ret :Type;
+class Expr
+{
+    public var context :Context;
+    public var def :ExprDef;
+    public var pos :Position;
+    public var ret :Type;
+
+    public function new(context :Context, def :ExprDef, pos :Position, ret :Type) : Void
+    {
+        this.context = context;
+        this.def = def;
+        this.pos = pos;
+        this.ret = ret;
+    }
 }
 
 /**

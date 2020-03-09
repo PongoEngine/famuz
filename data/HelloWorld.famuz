@@ -23,5 +23,6 @@ key = G
 scale = melodic-minor
 
 func main() {
-    print(coolBeans)
+    print(coolBeans.coolNumber)
+    print(1)
 }

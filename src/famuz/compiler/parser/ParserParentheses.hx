@@ -34,11 +34,11 @@ class ParserParentheses
         var rightParentheses = scanner.next(); // )
         Assert.that(rightParentheses.isPunctuator(RIGHT_PARENTHESES), "EXPECTED RIGHT PARENTHESES");
 
-        return {
-            context: context,
-            def: EParentheses(expr),
-            pos: Position.union(token.pos, rightParentheses.pos),
-            ret: expr.ret
-        };
+        return new Expr(
+            context,
+            EParentheses(expr),
+            Position.union(token.pos, rightParentheses.pos),
+            expr.ret
+        );
     }
 }

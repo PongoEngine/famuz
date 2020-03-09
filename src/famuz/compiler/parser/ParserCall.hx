@@ -52,11 +52,11 @@ class ParserCall
         var rightParam = scanner.next();
         Assert.that(rightParam.isPunctuator(RIGHT_PARENTHESES), "EXPECTED RIGHT_PARENTHESES");
 
-        return {
-            context: context,
-            def: ECall(funcName, args),
-            pos: Position.union(left.pos, rightParam.pos),
-            ret: TInvalid
-        };
+        return new Expr(
+            context,
+            ECall(funcName, args),
+            Position.union(left.pos, rightParam.pos),
+            TInvalid
+        );
     }
 }

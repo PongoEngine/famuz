@@ -32,11 +32,11 @@ class ParserArrayAccess
 		var expr = Parser.parse(new Precedence(0), scanner, context, false);
         var rightBracket = scanner.next(); // consume "]"
         
-		return {
-			context: context,
-			def: EArray(left, expr),
-			pos: Position.union(leftBracket.pos, rightBracket.pos),
-			ret: TMonomorph
-        };
+		return new Expr(
+			context,
+			EArray(left, expr),
+			Position.union(leftBracket.pos, rightBracket.pos),
+			TMonomorph
+		);
 	}
 }

@@ -122,6 +122,7 @@ enum PunctuatorType
 	SHIFT_RIGHT;
 	SLASH;
 	COMMA;
+	PERIOD;
 }
 
 enum KeywordType 

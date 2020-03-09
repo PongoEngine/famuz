@@ -30,11 +30,11 @@ class ParserKey
     {
         var token = scanner.next();
 
-        return {
-            context: context,
-            def: EConstant(CKey(key)),
-            pos: token.pos,
-            ret: TKey
-        };
+        return new Expr(
+            context,
+            EConstant(CKey(key)),
+            token.pos,
+            TKey
+        );
     }
 }

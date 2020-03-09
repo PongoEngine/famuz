@@ -33,11 +33,11 @@ class ParserPrint
         var expr = Parser.parse(new Precedence(0), scanner, context, false);
         var rightParentheses = scanner.next(); //consume ")"
 
-        return {
-            context: context,
-            def: EPrint(expr),
-            pos: Position.union(token.pos, rightParentheses.pos),
-            ret: expr.ret
-        };
+        return new Expr(
+            context,
+            EPrint(expr),
+            Position.union(token.pos, rightParentheses.pos),
+            expr.ret
+        );
     }
 }

@@ -28,11 +28,11 @@ class ParserIdentifier
     public static function parse(scanner :TokenScanner, context :Context, identifier :String) : Expr
     {
         var token = scanner.next();
-        return {
-            context: context,
-            def: EConstant(CIdentifier(identifier)),
-            pos: token.pos,
-            ret: TMonomorph
-        };
+        return new Expr(
+            context,
+            EConstant(CIdentifier(identifier)),
+            token.pos,
+            TMonomorph
+        );
     }
 }

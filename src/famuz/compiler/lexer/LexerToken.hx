@@ -34,6 +34,7 @@ enum abstract LexerToken(String) from String
     var LEFT_PARENTHESES = "(";
     var RIGHT_PARENTHESES = ")";
     var COMMA = ",";
+    var PERIOD = ".";
     var ASSIGNMENT = "=";
 
     var ADD = "+";

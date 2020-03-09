@@ -46,11 +46,11 @@ class ParserStruct
         }
         var rightBrace = scanner.next();
 
-        return {
-            context: context,
-            def: EObjectDecl(fields),
-            pos: Position.union(leftBrace.pos, rightBrace.pos),
-            ret: Type.TMonomorph
-        };
+        return new Expr(
+            context,
+            EObjectDecl(fields),
+            Position.union(leftBrace.pos, rightBrace.pos),
+            Type.TMonomorph
+        );
     }
 }

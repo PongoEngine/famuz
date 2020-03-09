@@ -61,12 +61,12 @@ class EvaluateBinop
 
     private static function addNumbers(left :Expr, right :Expr, context :Context, stack :ExprStack) : Void
     {
-        stack.push({
-            context: context,
-            def: EConstant(CNumber(left.copyNumber() + right.copyNumber())),
-            pos: Position.union(left.pos, right.pos),
-            ret: TNumber
-        });
+        stack.push(new Expr(
+            context, 
+            EConstant(CNumber(left.copyNumber() + right.copyNumber())),
+            Position.union(left.pos, right.pos),
+            TNumber
+        ));
     }
 
     private static function addMusic(left :Expr, right :Expr, context :Context, stack :ExprStack) : Void
@@ -83,12 +83,12 @@ class EvaluateBinop
             m3.push(n);
         }
 
-        stack.push({
-            context: context,
-            def: EConstant(CMusic(m3)),
-            pos: Position.union(left.pos, right.pos),
-            ret: TMusic
-        });
+        stack.push(new Expr(
+            context,
+            EConstant(CMusic(m3)),
+            Position.union(left.pos, right.pos),
+            TMusic
+        ));
     }
 
     private static function addMelody(left :Expr, right :Expr, context :Context, stack :ExprStack) : Void
@@ -103,12 +103,12 @@ class EvaluateBinop
             m3Hits.push(n);
         }
 
-        stack.push({
-            context: context,
-            def: EConstant(CMelody(m3Hits, m1.duration + m2.duration)),
-            pos: Position.union(left.pos, right.pos),
-            ret: TMelody
-        });
+        stack.push(new Expr(
+            context,
+            EConstant(CMelody(m3Hits, m1.duration + m2.duration)),
+            Position.union(left.pos, right.pos),
+            TMelody
+        ));
     }
 
     private static function addMelodyToScaledKey(melody :Expr, scaledKey :Expr, context :Context, stack :ExprStack) : Void
@@ -123,22 +123,22 @@ class EvaluateBinop
             return new NotedHit(n, steppedHit.hit);
         });
 
-        stack.push({
-            context: context,
-            def: EConstant(CMusic(music)),
-            pos: Position.union(melody.pos, scaledKey.pos),
-            ret: TMusic
-        });
+        stack.push(new Expr(
+            context,
+            EConstant(CMusic(music)),
+            Position.union(melody.pos, scaledKey.pos),
+            TMusic
+        ));
     }
 
     private static function addKeyToScale(key :Expr, scale :Expr, context :Context, stack :ExprStack) : Void
     {
-        stack.push({
-            context: context,
-            def: EConstant(CScaledKey(scale.copyScale(), key.copyKey())),
-            pos: Position.union(key.pos, scale.pos),
-            ret: TScaledKey
-        });
+        stack.push(new Expr(
+            context,
+            EConstant(CScaledKey(scale.copyScale(), key.copyKey())),
+            Position.union(key.pos, scale.pos),
+            TScaledKey
+        ));
     }
 
     private static function addRhythmToSteps(rhythm :Expr, steps :Expr, context :Context, stack :ExprStack) : Void
@@ -147,12 +147,12 @@ class EvaluateBinop
         var m :Array<SteppedHit> = steps.copySteps().mapi((index, item) -> {
             return new SteppedHit(item, r.hits[index % r.hits.length]);
         });
-        stack.push({
-            context: context,
-            def: EConstant(CMelody(m, r.duration)),
-            pos: Position.union(rhythm.pos, steps.pos),
-            ret: TMelody
-        });
+        stack.push(new Expr(
+            context,
+            EConstant(CMelody(m, r.duration)),
+            Position.union(rhythm.pos, steps.pos),
+            TMelody
+        ));
     }
 
     private static function shiftRhythm(rhythm :Expr, number :Expr, context :Context, stack :ExprStack, isLeft :Bool) : Void
@@ -162,11 +162,11 @@ class EvaluateBinop
         var n = number.copyNumber() * (isLeft ? -1 : 1);
         r.hits.map(r -> r.start = (r.start + n).mod(duration));
         r.hits.sort((a,b) -> a.start - b.start);
-        stack.push({
-            context: context,
-            def: EConstant(CRhythm(r.hits, r.duration)),
-            pos: Position.union(rhythm.pos, number.pos),
-            ret: TRhythm
-        });
+        stack.push(new Expr(
+            context,
+            EConstant(CRhythm(r.hits, r.duration)),
+            Position.union(rhythm.pos, number.pos),
+            TRhythm
+        ));
     }
 }

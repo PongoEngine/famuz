@@ -21,53 +21,23 @@
 
 package famuz.compiler.parser;
 
-import famuz.compiler.Expr.Parameter;
 import famuz.compiler.Token;
 import famuz.util.Assert;
 import famuz.compiler.parser.Precedence.*;
 import famuz.compiler.parser.Parser;
-using famuz.compiler.Type;
 
-class ParserFunc
+class ParserDot
 {
-    public static function parse(scanner :TokenScanner, context :Context) : Expr
+    public static function parse(left :Expr, scanner :TokenScanner, context :Context) : Expr
     {
-        var token = scanner.next(); //func
-        var identifier = scanner.next().getIdentifier(); //id (ex: main)
-        scanner.next(); //consume left parentheses
+        var dot = scanner.next();
+        var field = scanner.next();
 
-        var params = parseParams(scanner);
-
-        var body = Parser.parse(PRECEDENCE_CALL, scanner, context, true);
-
-        var func = new Expr(
+        return new Expr(
             context,
-            EFunction(identifier, params, body),
-            Position.union(token.pos, body.pos),
-            body.ret
+            EField(left, field.getIdentifier()),
+            Position.union(dot.pos, field.pos),
+            TMonomorph
         );
-        context.addExpr(identifier, func);
-
-        return func;
-    }
-
-    private static function parseParams(scanner :TokenScanner) : Array<Parameter>
-    {
-        var params :Array<Parameter> = [];
-        while (scanner.peek().isNotPunctuator(RIGHT_PARENTHESES)) {
-            var name = scanner.next();
-    
-            params.push({
-                name: name.getIdentifier(),
-                type: TMonomorph
-            });
-    
-            if(scanner.peek().isPunctuator(COMMA)) {
-                scanner.next(); //consume comma
-            }
-        }
-
-        Assert.that(scanner.next().isPunctuator(RIGHT_PARENTHESES), "\nparse_func :NOT LEFT PARENTHESES!\n");
-        return params;
     }
 }

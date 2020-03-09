@@ -32,23 +32,25 @@ class ParserArray
     {
         var token = scanner.next(); //[
         var exprs :Array<Expr> = [];
+        var ret = TMonomorph;
 
         while (scanner.hasNext() && scanner.peek().isNotPunctuator(RIGHT_BRACKET)) {
-            exprs.push(Parser.parse(new Precedence(0), scanner, context, false));
+            var expr = Parser.parse(new Precedence(0), scanner, context, false);
+            exprs.push(expr);
             if(scanner.peek().isPunctuator(COMMA)) {
                 scanner.next();
             }
+            ret = expr.ret;
         }
 
         var rightBrace = scanner.next();
         Assert.that(rightBrace.isPunctuator(RIGHT_BRACKET), "EXPECTED RIGHT BRACKET");
-        var ret = exprs.length > 0 ? exprs[0].ret : TMonomorph;
 
-        return {
-            context: context,
-            def: EArrayDecl(exprs),
-            pos: Position.union(token.pos, rightBrace.pos), 
-            ret: ret
-        };
+        return new Expr(
+            context,
+            EArrayDecl(exprs),
+            Position.union(token.pos, rightBrace.pos), 
+            TArray(ret)
+        );
     }
 }
