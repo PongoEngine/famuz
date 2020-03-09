@@ -23,6 +23,7 @@ package famuz.compiler.parser;
 
 import famuz.compiler.Token;
 import famuz.util.Assert;
+import famuz.compiler.expr.Expr;
 import famuz.compiler.parser.ParserBinop;
 import famuz.compiler.parser.ParserBlock;
 import famuz.compiler.parser.ParserCall;

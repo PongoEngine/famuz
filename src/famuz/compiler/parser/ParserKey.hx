@@ -23,6 +23,7 @@ package famuz.compiler.parser;
 
 import famuz.compiler.Token;
 import famuz.compiler.theory.Key;
+import famuz.compiler.expr.Expr;
 
 class ParserKey
 {

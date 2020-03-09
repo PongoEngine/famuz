@@ -19,34 +19,37 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package famuz.compiler.parser;
+package famuz.compiler.expr;
 
-import famuz.compiler.expr.Expr;
-import famuz.compiler.expr.ExprDef.BinopType;
-import famuz.compiler.Token;
-import famuz.compiler.parser.Precedence.*;
-import famuz.compiler.parser.Parser;
-using famuz.compiler.Type;
-
-class ParserBinop
+/**
+ * 
+ */
+@:forward(length)
+abstract ExprStack(Array<Expr>)
 {
-    public static function parse(left :Expr, scanner :TokenScanner, context :Context, punctuator :PunctuatorType) : Expr
+    public inline function new() : Void
     {
-        var token = scanner.next();
+        this = [];
+    }
 
-        var op :BinopType = switch punctuator {
-            case PunctuatorType.ADD: ADD;
-            case PunctuatorType.SHIFT_LEFT: SHIFT_LEFT;
-            case PunctuatorType.SHIFT_RIGHT: SHIFT_RIGHT;
-            case _: throw "Invalid operation";
-        }
-        
-        var right = Parser.parse(PRECEDENCE_SUM, scanner, context, false);
-		return new Expr(
-			context,
-			EBinop(op, left, right),
-			Position.union(left.pos, right.pos),
-			left.ret.add(right.ret)
-        );
+    public inline function push(expr :Expr) : Void
+    {
+        this.push(expr);
+    }
+
+    public inline function pop() : Expr
+    {
+        return this.pop();
+    }
+
+    public inline function peek() : Expr
+    {
+        return this[this.length-1];
+    }
+
+    @:arrayAccess
+    public inline function get(index :Int) : Expr
+    {
+        return this[index];
     }
 }

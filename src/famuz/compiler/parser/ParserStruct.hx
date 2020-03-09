@@ -22,7 +22,8 @@
 package famuz.compiler.parser;
 
 import famuz.compiler.Token;
-import famuz.compiler.Expr;
+import famuz.compiler.expr.Expr;
+import famuz.compiler.expr.ExprDef;
 import famuz.compiler.parser.Parser;
 using famuz.compiler.Type;
 

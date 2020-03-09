@@ -21,7 +21,7 @@
 
 package famuz.compiler;
 
-import famuz.compiler.Expr;
+import famuz.compiler.expr.Expr;
 
 /**
  * 

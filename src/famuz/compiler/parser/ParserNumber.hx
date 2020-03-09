@@ -22,6 +22,7 @@
 package famuz.compiler.parser;
 
 import famuz.compiler.Token;
+import famuz.compiler.expr.Expr;
 
 class ParserNumber
 {

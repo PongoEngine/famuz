@@ -23,8 +23,9 @@ package famuz.compiler.evaluate;
 
 import famuz.compiler.evaluate.EvaluateBinop;
 import famuz.compiler.evaluate.EvaluatePrint;
-import famuz.compiler.Expr.ExprStack;
-using famuz.compiler.Expr.ExprTools;
+import famuz.compiler.expr.ExprStack;
+import famuz.compiler.expr.Expr;
+using famuz.compiler.expr.ExprTools;
 
 class Evaluate
 {

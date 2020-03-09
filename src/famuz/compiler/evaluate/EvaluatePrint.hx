@@ -21,7 +21,8 @@
 
 package famuz.compiler.evaluate;
 
-import famuz.compiler.Expr.ExprStack;
+import famuz.compiler.expr.ExprStack;
+import famuz.compiler.expr.Expr;
 
 class EvaluatePrint
 {

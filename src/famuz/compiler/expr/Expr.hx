@@ -19,34 +19,25 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package famuz.compiler.parser;
+package famuz.compiler.expr;
 
-import famuz.compiler.expr.Expr;
-import famuz.compiler.expr.ExprDef.BinopType;
-import famuz.compiler.Token;
-import famuz.compiler.parser.Precedence.*;
-import famuz.compiler.parser.Parser;
-using famuz.compiler.Type;
+import famuz.compiler.Context;
 
-class ParserBinop
+/**
+ * 
+ */
+class Expr
 {
-    public static function parse(left :Expr, scanner :TokenScanner, context :Context, punctuator :PunctuatorType) : Expr
-    {
-        var token = scanner.next();
+    public var context :Context;
+    public var def :ExprDef;
+    public var pos :Position;
+    public var ret :Type;
 
-        var op :BinopType = switch punctuator {
-            case PunctuatorType.ADD: ADD;
-            case PunctuatorType.SHIFT_LEFT: SHIFT_LEFT;
-            case PunctuatorType.SHIFT_RIGHT: SHIFT_RIGHT;
-            case _: throw "Invalid operation";
-        }
-        
-        var right = Parser.parse(PRECEDENCE_SUM, scanner, context, false);
-		return new Expr(
-			context,
-			EBinop(op, left, right),
-			Position.union(left.pos, right.pos),
-			left.ret.add(right.ret)
-        );
+    public function new(context :Context, def :ExprDef, pos :Position, ret :Type) : Void
+    {
+        this.context = context;
+        this.def = def;
+        this.pos = pos;
+        this.ret = ret;
     }
 }

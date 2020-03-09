@@ -23,16 +23,18 @@ package famuz.compiler.evaluate;
 
 import famuz.compiler.theory.NotedHit;
 import famuz.compiler.theory.Octave;
-import famuz.compiler.Expr.BinopType;
-import famuz.compiler.Expr.ExprStack;
+import famuz.compiler.expr.ExprDef.BinopType;
 import famuz.compiler.theory.Note;
 import famuz.compiler.theory.Step;
 import famuz.compiler.theory.Hit;
 import famuz.compiler.theory.SteppedHit;
+import famuz.compiler.expr.Expr;
+import famuz.compiler.expr.ExprStack;
+import famuz.compiler.expr.ExprDef;
 
 using Lambda;
 using famuz.util.MathTools;
-using famuz.compiler.Expr.ExprTools;
+using famuz.compiler.expr.ExprTools;
 
 class EvaluateBinop
 {

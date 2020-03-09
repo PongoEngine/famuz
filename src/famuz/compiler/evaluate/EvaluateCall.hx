@@ -21,8 +21,9 @@
 
 package famuz.compiler.evaluate;
 
-import famuz.compiler.Expr.Parameter;
-import famuz.compiler.Expr.ExprStack;
+import famuz.compiler.expr.ExprDef.Parameter;
+import famuz.compiler.expr.ExprStack;
+import famuz.compiler.expr.Expr;
 
 class EvaluateCall
 {

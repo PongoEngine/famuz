@@ -21,11 +21,13 @@
 
 package famuz.compiler.parser;
 
-import famuz.compiler.Expr.Parameter;
+import famuz.compiler.expr.ExprDef.Parameter;
 import famuz.compiler.Token;
 import famuz.util.Assert;
 import famuz.compiler.parser.Precedence.*;
 import famuz.compiler.parser.Parser;
+import famuz.compiler.expr.Expr;
+import famuz.compiler.expr.ExprDef;
 using famuz.compiler.Type;
 
 class ParserFunc
