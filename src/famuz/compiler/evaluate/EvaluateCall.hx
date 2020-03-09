@@ -21,7 +21,7 @@
 
 package famuz.compiler.evaluate;
 
-import famuz.compiler.expr.ExprDef.Parameter;
+import famuz.compiler.expr.exprDef.ExprDef.Parameter;
 import famuz.compiler.expr.ExprStack;
 import famuz.compiler.expr.Expr;
 

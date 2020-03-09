@@ -19,39 +19,4 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package famuz.compiler.parser;
-
-import famuz.compiler.Token;
-import famuz.compiler.expr.Expr;
-import famuz.compiler.expr.exprDef.ExprDef;
-import famuz.compiler.parser.Parser;
-using famuz.compiler.Type;
-
-class ParserStruct
-{
-    public static function parse(scanner :TokenScanner, context :Context) : Expr
-    {
-        var leftBrace = scanner.next();
-        var fields :Array<ObjectField> = [];
-
-        while (scanner.hasNext() && scanner.peek().isNotPunctuator(RIGHT_BRACE)) {
-            var name = scanner.next();
-            scanner.next(); //consume '='
-            var expr = Parser.parse(new Precedence(0), scanner, context, false);
-
-            fields.push({field: name.getIdentifier(), expr: expr});
-
-            if(scanner.peek().isPunctuator(COMMA)) {
-                scanner.next();
-            }
-        }
-        var rightBrace = scanner.next();
-
-        return new Expr(
-            context,
-            EObjectDecl(fields),
-            Position.union(leftBrace.pos, rightBrace.pos),
-            Type.TMonomorph
-        );
-    }
-}
+package famuz.compiler.expr.exprDef;

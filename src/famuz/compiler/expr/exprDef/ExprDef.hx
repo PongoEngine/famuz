@@ -19,7 +19,7 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package famuz.compiler.expr;
+package famuz.compiler.expr.exprDef;
 
 import famuz.compiler.theory.Hit;
 import famuz.compiler.theory.SteppedHit;
@@ -31,8 +31,8 @@ import famuz.compiler.theory.NotedHit;
 /**
  * 
  */
-enum ExprDef {
-
+enum ExprDef 
+{
     /**
 	 * A constant.
      */
