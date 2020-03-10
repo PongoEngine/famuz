@@ -25,6 +25,7 @@ import famuz.compiler.Token;
 import famuz.util.Assert;
 import famuz.compiler.parser.Parser;
 import famuz.compiler.expr.Expr;
+import famuz.compiler.expr.ExprDef;
 using famuz.compiler.Type;
 
 class ParserSwitch
@@ -35,29 +36,51 @@ class ParserSwitch
         var e = Parser.parse(new Precedence(0), scanner, context, false);
         scanner.next(); //{
 
+        var cases :Array<Case> = [];
+        var default_ :Null<Expr> = null;
+        while(scanner.peek().isNotPunctuator(RIGHT_BRACE)) {
+            switch scanner.peek().type {
+                case TTKeyword(type): switch type {
+                    case CASE: 
+                        cases.push(parseCase(scanner, context));
+                    case DEFAULT: {
+                        default_ = parseDefault(scanner, context);
+                    }
+                    case _: throw "err";
+                }
+                case _: throw "err";
+            }
+        }
+        var endBrace = scanner.next(); //}
+
+        return new Expr(
+            context, 
+            ESwitch(e, cases, default_), 
+            Position.union(switch_.pos, endBrace.pos), 
+            TMonomorph
+        );
+    }
+
+    public static function parseCase(scanner :TokenScanner, context :Context) : Case
+    {
         scanner.next(); //case
+        var values :Array<Expr> = [];
         while(scanner.peek().isNotPunctuator(COLON)) {
-            var value = Parser.parse(new Precedence(0), scanner, context, false);
+            values.push(Parser.parse(new Precedence(0), scanner, context, false));
             if(scanner.peek().isPunctuator(COMMA)) {
                 scanner.next();
             }
         }
         scanner.next(); //colon
         var expr = Parser.parse(new Precedence(0), scanner, context, false);
-        trace(expr + "\n");
 
+        return {expr:expr, values: values};
+    }
 
-        // var ethen = Parser.parse(new Precedence(0), scanner, context, false);
-        // scanner.next(); //else
-        // var eelse = Parser.parse(new Precedence(0), scanner, context, false);
-
-        // return new Expr(
-        //     context, 
-        //     EIf(econd, ethen, eelse), 
-        //     Position.union(if_.pos, eelse.pos), 
-        //     TMonomorph
-        // );
-
-        throw "switch";
+    public static function parseDefault(scanner :TokenScanner, context :Context) : Expr
+    {
+        scanner.next(); //default
+        scanner.next(); //:
+        return Parser.parse(new Precedence(0), scanner, context, false);
     }
 }

@@ -139,6 +139,7 @@ class Lexer
             case "func": TTKeyword(FUNC);
             case "switch": TTKeyword(SWITCH);
             case "case": TTKeyword(CASE);
+            case "default": TTKeyword(DEFAULT);
             case "print": TTKeyword(PRINT);
             case "if": TTKeyword(IF);
             case "true": TTKeyword(TRUE);

@@ -108,6 +108,8 @@ class Parser
                     ParserSwitch.parse(scanner, context);
                 case CASE:
                     parseConsume(scanner);
+                case DEFAULT:
+                    parseConsume(scanner);
             }
             case TTIdentifier(str): 
                 ParserIdentifier.parse(scanner, context, str);

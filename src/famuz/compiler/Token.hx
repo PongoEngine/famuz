@@ -132,6 +132,7 @@ enum KeywordType
 	FUNC;
 	SWITCH;
 	CASE;
+	DEFAULT;
 	PRINT;
 	IF;
 	TRUE;
