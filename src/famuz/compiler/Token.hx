@@ -130,4 +130,6 @@ enum KeywordType
 	FUNC;
 	PRINT;
 	IF;
+	TRUE;
+	FALSE;
 }

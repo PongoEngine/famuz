@@ -126,6 +126,7 @@ enum ExprDef
 enum Constant
 {
     CIdentifier(str :String);
+    CBool(value :Bool);
     CNumber(value :Int);
     CRhythm(hits :Array<Hit>, duration :Int);
     CMelody(notes :Array<SteppedHit>, duration :Int);

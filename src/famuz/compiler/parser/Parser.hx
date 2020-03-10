@@ -33,11 +33,13 @@ import famuz.compiler.parser.ParserKey;
 import famuz.compiler.parser.ParserNumber;
 import famuz.compiler.parser.ParserParentheses;
 import famuz.compiler.parser.ParserPrint;
+import famuz.compiler.parser.ParserBool;
 import famuz.compiler.parser.ParserRhythm;
 import famuz.compiler.parser.ParserScale;
 import famuz.compiler.parser.ParserVar;
 import famuz.compiler.parser.ParserArrayAccess;
 import famuz.compiler.parser.ParserStruct;
+import famuz.compiler.parser.ParserIf;
 import famuz.compiler.parser.ParserDot;
 using famuz.compiler.parser.Precedence;
 
@@ -96,7 +98,11 @@ class Parser
                 case PRINT: 
                     ParserPrint.parse(scanner, context);
                 case IF: 
-                    throw "if not implemented";
+                    ParserIf.parse(scanner, context);
+                case TRUE: 
+                    ParserBool.parse(scanner, context);
+                case FALSE: 
+                    ParserBool.parse(scanner, context);
             }
             case TTIdentifier(str): 
                 ParserIdentifier.parse(scanner, context, str);

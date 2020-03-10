@@ -135,6 +135,8 @@ class Lexer
             case "func": TTKeyword(FUNC);
             case "print": TTKeyword(PRINT);
             case "if": TTKeyword(IF);
+            case "true": TTKeyword(TRUE);
+            case "false": TTKeyword(FALSE);
             //type
             case "Number": TTType(TNumber);
             case "Bool": TTType(TBool);

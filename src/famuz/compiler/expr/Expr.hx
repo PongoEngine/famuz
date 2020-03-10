@@ -98,7 +98,15 @@ class Expr
             case EBlock(exprs):
                 exprs[exprs.length-1].evaluate();
             case EIf(econd, ethen, eelse):
-                throw "EIf";
+                switch econd.evaluate().def {
+                    case EConstant(constant): switch constant {
+                        case CBool(value): value
+                            ? ethen.evaluate()
+                            : eelse.evaluate();
+                        case _: Expr.err();
+                    }
+                    case _: Expr.err();
+                }
             case EUnop(op, postFix, e):
                 throw "EUnop";
             case ETernary(econd, eif, eelse):
@@ -126,6 +134,7 @@ class Expr
             case EConstant(constant): switch constant {
                 case CIdentifier(str): str;
                 case CNumber(value): value + "";
+                case CBool(value): value + "";
                 case CRhythm(hits, duration): throw "CRhythm";
                 case CMelody(notes, duration): throw "CMelody";
                 case CHarmony(melodies): throw "CHarmony";
