@@ -34,28 +34,28 @@ import famuz.compiler.theory.NotedHit;
 enum ExprDef 
 {
     /**
-	 * A constant.
+     * A constant.
      */
     EConstant(constant :Constant);
 
-	/**
-	 * Represents a switch expression with related cases and an optional. 
+    /**
+     * Represents a switch expression with related cases and an optional. 
      * default case if edef != null.
-	 */
-	ESwitch(e:Expr, cases:Array<Case>, edef:Null<Expr>); //TODO: add to parser
+     */
+    ESwitch(e:Expr, cases:Array<Case>, edef:Null<Expr>); //TODO: add to parser
 
-	/**
-	 * A object declaration.
-	 */
-	EObjectDecl(fields :Map<String, Expr>);
-    
-	/**
-	 * Array access e1[e2].
-	 */
-	EArray(e1:Expr, e2:Expr);
+    /**
+     * A object declaration.
+     */
+    EObjectDecl(fields :Map<String, Expr>);
     
     /**
-	 * An array declaration [el].
+     * Array access e1[e2].
+     */
+    EArray(e1:Expr, e2:Expr);
+    
+    /**
+     * An array declaration [el].
      */
     EArrayDecl(values:Array<Expr>);
 
@@ -65,57 +65,57 @@ enum ExprDef
     EField(e:Expr, field:String);
     
     /**
-	 * Variable declaration.
+     * Variable declaration.
      */
     EVar(identifier :String, expr :Expr);
     
     /**
-	 * A call e(params).
+     * A call e(params).
      */
     ECall(identifier :String, args :Array<Expr>);
     
     /**
-	 * A block of expressions {exprs}.
+     * A block of expressions {exprs}.
      */
     EBlock(expr :Array<Expr>);
     
     /**
-	 * Aif(econd) ethen else eelse expression.
+     * Aif(econd) ethen else eelse expression.
      */
-    EIf(econd:Expr, ethen:Expr, eelse:Expr); //TODO: add to parser
+    EIf(econd:Expr, ethen:Expr, eelse:Expr);
 
-	/**
-	 * An unary operator op on e:
+    /**
+     * An unary operator op on e:
      * 
-	 * e++ (op = OpIncrement, postFix = true) e-- (op = OpDecrement, postFix = 
+     * e++ (op = OpIncrement, postFix = true) e-- (op = OpDecrement, postFix = 
      * true) ++e (op = OpIncrement, postFix = false) --e (op = OpDecrement, 
      * postFix = false) -e (op = OpNeg, postFix = false) !e (op = OpNot, postFix 
      * = false) ~e (op = OpNegBits, postFix = false)
-	 */
-	EUnop(op:Unop, postFix:Bool, e:Expr); //TODO: add to parser
+     */
+    EUnop(op:Unop, postFix:Bool, e:Expr); //TODO: add to parser
     
     /**
-	 * A (econd) ? eif : eelse expression.
+     * A (econd) ? eif : eelse expression.
      */
     ETernary(econd:Expr, eif:Expr, eelse:Expr); //TODO: add to parser
     
     /**
-	 * Binary operator e1 op e2.
+     * Binary operator e1 op e2.
      */
     EBinop(type :BinopType, e1 :Expr, e2 :Expr);
     
     /**
-	 * Parentheses (e).
+     * Parentheses (e).
      */
     EParentheses(expr :Expr);
     
     /**
-	 * Print print(e).
+     * Print print(e).
      */
     EPrint(expr :Expr);
     
     /**
-	 * A function declaration.
+     * A function declaration.
      */
     EFunction(identifier :String, params :Array<Parameter>, body :Expr);
 }
@@ -144,14 +144,14 @@ enum Constant
 typedef Case =
 {
     /**
-	 * The expression of the case, if available.
+     * The expression of the case, if available.
      */
     expr:Expr,
 
-	/**
-	 * The value expressions of the case.
-	 */
-	values:Array<Expr>
+    /**
+     * The value expressions of the case.
+     */
+    values:Array<Expr>
 }
 
 /**
@@ -159,23 +159,23 @@ typedef Case =
  */
 enum Unop
 {
-	/**
-	 * ++
-	 */
+    /**
+     * ++
+     */
     OpIncrement; 
     
     /**
-	 * --
+     * --
      */
     OpDecrement;
     
     /**
-	 * !
+     * !
      */
     OpNot;
     
     /**
-	 * -
+     * -
      */
     OpNeg;
 }
