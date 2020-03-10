@@ -42,7 +42,7 @@ enum ExprDef
      * Represents a switch expression with related cases and an optional. 
      * default case if edef != null.
      */
-    ESwitch(e:Expr, cases:Array<Case>, edef:Null<Expr>); //TODO: add to parser
+    ESwitch(e:Expr, cases:Array<Case>, edef:Null<Expr>);
 
     /**
      * A object declaration.
