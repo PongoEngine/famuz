@@ -52,8 +52,19 @@ class Expr
                     case _:
                         this;
                 }
-            case ESwitch(e, cases, edef):
-                throw "ESwitch";
+            case ESwitch(e, cases, edef): {
+                for(case_ in cases) {
+                    for(v in case_.values) {
+                        if(v.equals(e)) {
+                            return case_.expr.evaluate();
+                        }
+                    }
+                }
+
+                edef == null
+                    ? throw "err"
+                    : edef;
+            }
             case EObjectDecl(_):
                 this;
             case EArray(e1, e2):
@@ -214,5 +225,20 @@ class Expr
             Position.union(this.pos, expr.pos), 
             TInvalid
         );
+    }
+
+    public function equals(expr :Expr) : Bool
+    {
+        var a = this.evaluate();
+        var b = expr.evaluate();
+
+        return switch [a.def, b.def] {
+            case [EConstant(constantA), EConstant(constantB)]:
+                switch [constantA, constantB] {
+                    case [CNumber(valueA), CNumber(valueB)]: valueA == valueB;
+                    case _: false;
+                }
+            case _: false;
+        }
     }
 }
