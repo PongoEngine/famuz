@@ -33,14 +33,12 @@ class Expr
     public var context :Context;
     public var def :ExprDef;
     public var pos :Position;
-    public var ret :Type;
 
-    public function new(context :Context, def :ExprDef, pos :Position, ret :Type) : Void
+    public function new(context :Context, def :ExprDef, pos :Position) : Void
     {
         this.context = context;
         this.def = def;
         this.pos = pos;
-        this.ret = ret;
     }
 
     public function evaluate() : Expr
@@ -129,7 +127,7 @@ class Expr
                         c.parent = body.context.parent;
                         body.context.parent = c;
                         for(i in 0...params.length) {
-                            c.addExpr(params[i].name, args[i]);
+                            c.addExpr(params[i], args[i]);
                         }
                         var evalExpr = body.evaluate();
                         body.context.parent = c.parent;
@@ -170,8 +168,7 @@ class Expr
                             new Expr(
                                 this.context, 
                                 EConstant(CBool(!value)), 
-                                Position.union(this.pos, this.pos), 
-                                TInvalid
+                                Position.union(this.pos, this.pos)
                             );
                         case _: throw "err";
                     }
@@ -180,8 +177,7 @@ class Expr
                             new Expr(
                                 this.context, 
                                 EConstant(CNumber(-value)), 
-                                Position.union(this.pos, this.pos), 
-                                TInvalid
+                                Position.union(this.pos, this.pos)
                             );
                         case _: throw "err";
                     }

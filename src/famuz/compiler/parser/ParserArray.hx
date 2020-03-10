@@ -25,7 +25,6 @@ import famuz.compiler.Token;
 import famuz.util.Assert;
 import famuz.compiler.parser.Parser;
 import famuz.compiler.expr.Expr;
-using famuz.compiler.Type;
 
 class ParserArray
 {
@@ -33,7 +32,6 @@ class ParserArray
     {
         var token = scanner.next(); //[
         var exprs :Array<Expr> = [];
-        var ret = TMonomorph;
 
         while (scanner.hasNext() && scanner.peek().isNotPunctuator(RIGHT_BRACKET)) {
             var expr = Parser.parse(new Precedence(0), scanner, context, false);
@@ -41,7 +39,6 @@ class ParserArray
             if(scanner.peek().isPunctuator(COMMA)) {
                 scanner.next();
             }
-            ret = expr.ret;
         }
 
         var rightBrace = scanner.next();
@@ -50,8 +47,7 @@ class ParserArray
         return new Expr(
             context,
             EArrayDecl(exprs),
-            Position.union(token.pos, rightBrace.pos), 
-            TArray(ret)
+            Position.union(token.pos, rightBrace.pos)
         );
     }
 }

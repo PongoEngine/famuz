@@ -148,15 +148,6 @@ class Lexer
             case "if": TTKeyword(IF);
             case "true": TTKeyword(TRUE);
             case "false": TTKeyword(FALSE);
-            //type
-            case "Number": TTType(TNumber);
-            case "Bool": TTType(TBool);
-            case "Rhythm": TTType(TRhythm);
-            case "Melody": TTType(TMelody);
-            case "Scale": TTType(TScale);
-            case "Key": TTType(TKey);
-            case "ScaledKey": TTType(TScaledKey);
-            case "Music": TTType(TMusic);
             //scale
             case "major": TTScale(MAJOR);
             case "natural-minor": TTScale(NATURAL_MINOR);

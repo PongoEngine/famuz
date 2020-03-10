@@ -114,7 +114,7 @@ enum ExprDef
     /**
      * A function declaration.
      */
-    EFunction(identifier :String, params :Array<Parameter>, body :Expr);
+    EFunction(identifier :String, params :Array<String>, body :Expr);
 }
 
 /**
@@ -176,13 +176,4 @@ enum BinopType
     SUBTRACT;
     SHIFT_LEFT;
     SHIFT_RIGHT;
-}
-
-/**
- * 
- */
-typedef Parameter =
-{
-    var name :String;
-    var type :Type;
 }

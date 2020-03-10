@@ -55,8 +55,7 @@ class ParserRhythm
         return new Expr(
             context,
             EConstant(CRhythm(hits, duration)),
-            token.pos,
-            TRhythm
+            token.pos
         );
     }
 

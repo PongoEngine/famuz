@@ -49,8 +49,7 @@ class ExprBinops
         return new Expr(
             expr.context, 
             constant, 
-            Position.union(this_.pos, expr.pos), 
-            TInvalid
+            Position.union(this_.pos, expr.pos)
         );
     }
 
@@ -75,8 +74,7 @@ class ExprBinops
         return new Expr(
             expr.context, 
             constant, 
-            Position.union(this_.pos, expr.pos), 
-            TInvalid
+            Position.union(this_.pos, expr.pos)
         );
     }
 

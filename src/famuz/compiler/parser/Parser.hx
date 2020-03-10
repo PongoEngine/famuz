@@ -124,8 +124,6 @@ class Parser
                 ParserNumber.parse(scanner, context, str);
             case TTRhythm(str): 
                 ParserRhythm.parse(scanner, context, str);
-            case TTType(type): 
-                parseConsume(scanner);
         }
     }
     
@@ -167,8 +165,6 @@ class Parser
             case TTNumber(str): 
                 EMPTY_EXPR;
             case TTRhythm(str): 
-                EMPTY_EXPR;
-            case TTType(type): 
                 EMPTY_EXPR;
         }
     }

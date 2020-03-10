@@ -52,14 +52,6 @@ class Token
         return !isPunctuator(punctuator);
     }
 
-    public function getType() : Type
-    {
-        return switch this.type {
-            case TTType(type): type;
-            case _: throw "Error";
-        }
-    }
-
     public function getIdentifier() : String
     {
         return switch this.type {
@@ -103,7 +95,6 @@ enum TokenType
     TTIdentifier(str :String);
     TTScale(scale :Scale);
     TTKey(key :Key);
-    TTType(type :Type);
     TTNumber(num :Int);
     TTRhythm(str :String);
 }

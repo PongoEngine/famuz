@@ -34,8 +34,7 @@ class ParserKey
         return new Expr(
             context,
             EConstant(CKey(key)),
-            token.pos,
-            TKey
+            token.pos
         );
     }
 }

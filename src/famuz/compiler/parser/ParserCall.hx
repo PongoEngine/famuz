@@ -56,8 +56,7 @@ class ParserCall
         return new Expr(
             context,
             ECall(funcName, args),
-            Position.union(left.pos, rightParam.pos),
-            TInvalid
+            Position.union(left.pos, rightParam.pos)
         );
     }
 }

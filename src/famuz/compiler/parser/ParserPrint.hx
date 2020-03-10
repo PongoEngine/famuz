@@ -37,8 +37,7 @@ class ParserPrint
         return new Expr(
             context,
             EPrint(expr),
-            Position.union(token.pos, rightParentheses.pos),
-            expr.ret
+            Position.union(token.pos, rightParentheses.pos)
         );
     }
 }

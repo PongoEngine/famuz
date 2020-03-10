@@ -36,8 +36,7 @@ class ParserArrayAccess
 		return new Expr(
 			context,
 			EArray(left, expr),
-			Position.union(leftBracket.pos, rightBracket.pos),
-			TMonomorph
+			Position.union(leftBracket.pos, rightBracket.pos)
 		);
 	}
 }

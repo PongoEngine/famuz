@@ -54,8 +54,7 @@ class ParserSwitch
         return new Expr(
             context, 
             ESwitch(e, cases, default_), 
-            Position.union(switch_.pos, endBrace.pos), 
-            TMonomorph
+            Position.union(switch_.pos, endBrace.pos)
         );
     }
 

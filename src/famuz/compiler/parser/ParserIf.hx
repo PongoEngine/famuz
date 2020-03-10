@@ -39,8 +39,7 @@ class ParserIf
         return new Expr(
             context, 
             EIf(econd, ethen, eelse), 
-            Position.union(if_.pos, eelse.pos), 
-            TMonomorph
+            Position.union(if_.pos, eelse.pos)
         );
     }
 }

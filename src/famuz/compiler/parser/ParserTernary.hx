@@ -36,8 +36,7 @@ class ParserTernary
         return new Expr(
             context,
             ETernary(left, eif, eelse),
-            Position.union(question.pos, eelse.pos),
-            TMonomorph
+            Position.union(question.pos, eelse.pos)
         );
     }
 }

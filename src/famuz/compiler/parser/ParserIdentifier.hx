@@ -32,8 +32,7 @@ class ParserIdentifier
         return new Expr(
             context,
             EConstant(CIdentifier(identifier)),
-            token.pos,
-            TMonomorph
+            token.pos
         );
     }
 }

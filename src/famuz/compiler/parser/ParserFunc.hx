@@ -43,24 +43,20 @@ class ParserFunc
         var func = new Expr(
             context,
             EFunction(identifier, params, body),
-            Position.union(token.pos, body.pos),
-            body.ret
+            Position.union(token.pos, body.pos)
         );
         context.addExpr(identifier, func);
 
         return func;
     }
 
-    private static function parseParams(scanner :TokenScanner) : Array<Parameter>
+    private static function parseParams(scanner :TokenScanner) : Array<String>
     {
-        var params :Array<Parameter> = [];
+        var params :Array<String> = [];
         while (scanner.peek().isNotPunctuator(RIGHT_PARENTHESES)) {
             var name = scanner.next();
     
-            params.push({
-                name: name.getIdentifier(),
-                type: TMonomorph
-            });
+            params.push(name.getIdentifier());
     
             if(scanner.peek().isPunctuator(COMMA)) {
                 scanner.next(); //consume comma

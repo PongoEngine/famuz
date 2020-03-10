@@ -44,8 +44,7 @@ class ParserUnop
         return new Expr(
             context, 
             EUnop(unop, expr), 
-            Position.union(unopToken.pos, expr.pos), 
-            TMonomorph
+            Position.union(unopToken.pos, expr.pos)
         );
     }
 }

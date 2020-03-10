@@ -34,8 +34,7 @@ class ParserDot
         return new Expr(
             context,
             EField(left, field.getIdentifier()),
-            Position.union(dot.pos, field.pos),
-            TMonomorph
+            Position.union(dot.pos, field.pos)
         );
     }
 }

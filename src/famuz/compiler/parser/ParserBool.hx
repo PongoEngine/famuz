@@ -37,6 +37,6 @@ class ParserBool
             }
             case _:  throw "err";
         }
-        return new Expr(context, EConstant(CBool(isTrue)), token.pos, TBool);
+        return new Expr(context, EConstant(CBool(isTrue)), token.pos);
     }
 }

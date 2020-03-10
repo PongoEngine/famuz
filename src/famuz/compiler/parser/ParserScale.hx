@@ -34,8 +34,7 @@ class ParserScale
         return new Expr(
             context,
             EConstant(CScale(scale)),
-            token.pos,
-            TScale
+            token.pos
         );
     }
 }

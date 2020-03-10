@@ -38,8 +38,7 @@ class ParserParentheses
         return new Expr(
             context,
             EParentheses(expr),
-            Position.union(token.pos, rightParentheses.pos),
-            expr.ret
+            Position.union(token.pos, rightParentheses.pos)
         );
     }
 }

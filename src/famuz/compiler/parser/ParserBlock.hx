@@ -25,7 +25,6 @@ import famuz.compiler.Token;
 import famuz.util.Assert;
 import famuz.compiler.parser.Parser;
 import famuz.compiler.expr.Expr;
-using famuz.compiler.Type;
 using famuz.compiler.Position;
 
 class ParserBlock
@@ -42,13 +41,11 @@ class ParserBlock
 
         var rightBrace = scanner.next();
         Assert.that(rightBrace.isPunctuator(RIGHT_BRACE), "EXPECTED RIGHT BRACKET");
-        var ret = exprs.length > 0 ? exprs[exprs.length-1].ret : TInvalid;
 
         return  new Expr(
             context,
             EBlock(exprs),
-            Position.union(token.pos, rightBrace.pos), 
-            ret
+            Position.union(token.pos, rightBrace.pos)
         );
     }
 }

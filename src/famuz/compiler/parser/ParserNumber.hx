@@ -32,8 +32,7 @@ class ParserNumber
         return new Expr(
             context,
             EConstant(CNumber(number)),
-            token.pos,
-            TNumber
+            token.pos
         );
     }
 }

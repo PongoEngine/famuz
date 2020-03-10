@@ -26,7 +26,6 @@ import famuz.compiler.expr.ExprDef.BinopType;
 import famuz.compiler.Token;
 import famuz.compiler.parser.Precedence.*;
 import famuz.compiler.parser.Parser;
-using famuz.compiler.Type;
 
 class ParserBinop
 {
@@ -46,8 +45,7 @@ class ParserBinop
 		return new Expr(
 			context,
 			EBinop(op, left, right),
-			Position.union(left.pos, right.pos),
-			left.ret.add(right.ret)
+			Position.union(left.pos, right.pos)
         );
     }
 }
