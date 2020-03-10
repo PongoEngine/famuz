@@ -1,7 +1,7 @@
 tern = true ? 20 : 10
 
 cond = if !false 
-    then 100 
+    then 10 
     else if false
         then 10
         else 20
@@ -22,5 +22,5 @@ switchVal = switch 1 {
 }
 
 func main() {
-    print(switchVal + cond)
+    print(switchVal - cond)
 }

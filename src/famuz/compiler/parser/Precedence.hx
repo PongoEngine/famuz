@@ -31,6 +31,7 @@ abstract Precedence(Int)
 	public static var PRECEDENCE_PERIOD = new Precedence(2);
 	public static var PRECEDENCE_ARRAY = new Precedence(2);
     public static var PRECEDENCE_SUM = new Precedence(3);
+    public static var PRECEDENCE_SUBTRACT = new Precedence(3);
 
     public function new(val :Int) : Void
     {
@@ -52,6 +53,8 @@ abstract Precedence(Int)
                         PRECEDENCE_ASSIGNMENT;
                     case ADD, SHIFT_LEFT, SHIFT_RIGHT:
                         PRECEDENCE_SUM;
+                    case MINUS:
+                        PRECEDENCE_SUBTRACT;
                     case LEFT_PARENTHESES:
                         PRECEDENCE_CALL;
                     case LEFT_BRACKET:

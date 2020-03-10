@@ -136,6 +136,8 @@ class Parser
                 switch type {
                     case ADD: 
                             ParserBinop.parse(left, scanner, context, type);
+                    case MINUS: 
+                            ParserBinop.parse(left, scanner, context, type);
                     case ASSIGNMENT: 
                             ParserVar.parse(left, scanner, context);
                     case LEFT_PARENTHESES: 
@@ -150,7 +152,7 @@ class Parser
                             ParserDot.parse(left, scanner, context);
                     case QUESTION_MARK:
                         ParserTernary.parse(left, scanner, context);
-                    case MINUS, BANG, RIGHT_PARENTHESES, LEFT_BRACE, RIGHT_BRACE, 
+                    case BANG, RIGHT_PARENTHESES, LEFT_BRACE, RIGHT_BRACE, 
                         RIGHT_BRACKET, SLASH, COMMA, COLON: 
                             EMPTY_EXPR;
                 }

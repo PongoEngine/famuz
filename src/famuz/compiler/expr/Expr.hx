@@ -210,6 +210,7 @@ class Expr
             case EBinop(type, e1, e2):
                 switch type {
                     case ADD: e1.add(e2);
+                    case SUBTRACT: e1.subtract(e2);
                     case SHIFT_LEFT: throw "SHIFT_LEFT";
                     case SHIFT_RIGHT: throw "SHIFT_RIGHT";
                 }

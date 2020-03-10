@@ -173,6 +173,7 @@ enum Unop
 enum BinopType
 {
     ADD;
+    SUBTRACT;
     SHIFT_LEFT;
     SHIFT_RIGHT;
 }

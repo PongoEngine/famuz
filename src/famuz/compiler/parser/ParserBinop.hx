@@ -32,10 +32,11 @@ class ParserBinop
 {
     public static function parse(left :Expr, scanner :TokenScanner, context :Context, punctuator :PunctuatorType) : Expr
     {
-        var token = scanner.next();
+        scanner.next(); //op
 
         var op :BinopType = switch punctuator {
             case PunctuatorType.ADD: ADD;
+            case PunctuatorType.MINUS: SUBTRACT;
             case PunctuatorType.SHIFT_LEFT: SHIFT_LEFT;
             case PunctuatorType.SHIFT_RIGHT: SHIFT_RIGHT;
             case _: throw "Invalid operation";

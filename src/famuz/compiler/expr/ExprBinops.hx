@@ -54,6 +54,32 @@ class ExprBinops
         );
     }
 
+    public static function subtract(this_ :Expr, expr :Expr) : Expr
+    {
+        var a = this_.evaluate();
+        var b = expr.evaluate();
+
+        var constant = switch [a.def, b.def] {
+            case [EConstant(constantA), EConstant(constantB)]: {
+                switch [constantA, constantB] {
+                    case [CNumber(valueA), CNumber(valueB)]:
+                        EConstant(CNumber(valueA - valueB));
+                    case _: 
+                        throw "Only Supports Numbers";
+                }
+            }
+            case _: 
+                throw "Can only add constants";
+        }
+
+        return new Expr(
+            expr.context, 
+            constant, 
+            Position.union(this_.pos, expr.pos), 
+            TInvalid
+        );
+    }
+
     public static function equals(this_ :Expr, expr :Expr) : Bool
     {
         var a = this_.evaluate();
