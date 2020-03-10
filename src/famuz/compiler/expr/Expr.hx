@@ -60,18 +60,41 @@ class Expr
                 switch [e1.evaluate().def, e2.evaluate().def] {
                     case [EArrayDecl(values), EConstant(constant)]: switch constant {
                         case CNumber(index): values[index].evaluate();
-                        case _: throw "err";
+                        case _: Expr.err();
                     }
-                    case _: throw "err";
+                    case _: Expr.err();
                 }
             case EArrayDecl(_):
                 this;
-            case EField(e, field):
-                throw "EField";
+            case EField(e, field): {
+                switch e.evaluate().def {
+                    case EObjectDecl(fields):
+                        fields.get(field);
+                    case _:
+                        Expr.err();
+                }
+            }
             case EVar(_, expr):
                 expr.evaluate();
-            case ECall(identifier, args):
-                throw "ECall";
+            case ECall(identifier, args): {
+                switch this.context.getExpr(identifier).def {
+                    case EFunction(identifier, params, body): {
+                        if(args.length != params.length) {
+                            Expr.err();
+                        }
+                        var c = new Context();
+                        c.parent = body.context.parent;
+                        body.context.parent = c;
+                        for(i in 0...params.length) {
+                            c.addExpr(params[i].name, args[i]);
+                        }
+                        var evalExpr = body.evaluate();
+                        body.context.parent = c.parent;
+                        evalExpr;
+                    }
+                    case _: Expr.err();
+                }
+            }
             case EBlock(exprs):
                 exprs[exprs.length-1].evaluate();
             case EIf(econd, ethen, eelse):
@@ -103,14 +126,14 @@ class Expr
             case EConstant(constant): switch constant {
                 case CIdentifier(str): str;
                 case CNumber(value): value + "";
-                case CRhythm(hits, duration): "CRhythm";
-                case CMelody(notes, duration): "CMelody";
-                case CHarmony(melodies): "CHarmony";
-                case CSteps(steps): "CSteps";
+                case CRhythm(hits, duration): throw "CRhythm";
+                case CMelody(notes, duration): throw "CMelody";
+                case CHarmony(melodies): throw "CHarmony";
+                case CSteps(steps): throw "CSteps";
                 case CScale(scale): scale.toString();
                 case CKey(key): key.toString();
-                case CScaledKey(scale, key): "CScaledKey";
-                case CMusic(music): "CMusic";
+                case CScaledKey(scale, key): throw "CScaledKey";
+                case CMusic(music): throw "CMusic";
             }
             case ESwitch(e, cases, edef):
                 throw "ESwitch";
@@ -137,11 +160,11 @@ class Expr
             case EBinop(type, e1, e2):
                 throw "EBinop";
             case EParentheses(expr):
-                throw "EParentheses";
+                expr.toString();
             case EPrint(expr):
-                throw "EPrint";
+                expr.toString();
             case EFunction(identifier, params, body):
-                throw "EFunction";
+                identifier;
         }
 
         return '${pos.file}:${pos.line}: ${strVal}\n';
@@ -171,5 +194,10 @@ class Expr
             Position.union(this.pos, expr.pos), 
             TInvalid
         );
+    }
+
+    private static function err() : Expr
+    {
+        throw "err";
     }
 }

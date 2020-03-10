@@ -47,7 +47,7 @@ enum ExprDef
 	/**
 	 * A object declaration.
 	 */
-	EObjectDecl(fields :Array<ObjectField>);
+	EObjectDecl(fields :Map<String, Expr>);
     
 	/**
 	 * Array access e1[e2].
@@ -151,22 +151,6 @@ typedef Case =
 	 * The value expressions of the case.
 	 */
 	values:Array<Expr>
-}
-
-/**
- * 
- */
-typedef ObjectField = 
-{
-    /**
-	 * The field expression.
-     */
-    expr :Expr,
-
-	/**
-	 * The name of the field.
-	 */
-	field:String
 }
 
 /**

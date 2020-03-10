@@ -11,9 +11,13 @@ phrase2 = steps2 + rhythm2
 phrase3 = steps1 + rhythm3
 phrase4 = steps3 + rhythm4
 
-coolBeans = {
-    coolNumber = 1,
-    coolScale = major,
+beans = {
+    num = 100,
+    scale = major,
+}
+
+func shwam(swag) {
+    20 + swag
 }
 
 maryLittleLamb = phrase1 + phrase2 + phrase3 + phrase4
@@ -25,5 +29,5 @@ scale = melodic-minor
 func main() {
     x = print(99)
     stepsIndex = 3
-    print(x + 30 + steps1[stepsIndex])
+    print(x + 30 + steps1[stepsIndex] + beans.num + shwam(1))
 }

@@ -32,14 +32,13 @@ class ParserStruct
     public static function parse(scanner :TokenScanner, context :Context) : Expr
     {
         var leftBrace = scanner.next();
-        var fields :Array<ObjectField> = [];
+        var fields = new Map<String, Expr>();
 
         while (scanner.hasNext() && scanner.peek().isNotPunctuator(RIGHT_BRACE)) {
             var name = scanner.next();
             scanner.next(); //consume '='
             var expr = Parser.parse(new Precedence(0), scanner, context, false);
-
-            fields.push({field: name.getIdentifier(), expr: expr});
+            fields.set(name.getIdentifier(), expr);
 
             if(scanner.peek().isPunctuator(COMMA)) {
                 scanner.next();
