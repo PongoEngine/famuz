@@ -53,6 +53,22 @@ class Context
         else if(this.parent != null) {
             return this.parent.getExpr(name);
         }
+        else if(name == "push") {
+            var body = new Expr(this, EConstant(CIdentifier("array")), null);
+            var intermediate = new Expr(this, EIntermediate(() -> {
+                var arra = this.getExpr("array").evaluate();
+                var element = this.getExpr("element");
+                switch arra.def {
+                    case EArrayDecl(values): values.push(element);
+                    case _: throw "err";
+                }
+            }, body), null);
+            
+            return new Expr(
+                this, 
+                EFunction("push", ["array", "element"], intermediate), 
+                null);
+        }
         else {
             return null;
         }

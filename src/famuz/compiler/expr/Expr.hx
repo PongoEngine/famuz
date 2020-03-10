@@ -44,6 +44,9 @@ class Expr
     public function evaluate() : Expr
     {
         return switch def {
+            case EIntermediate(cb, expr):
+                cb();
+                expr.evaluate();
             /**
              * 
              */
@@ -222,7 +225,7 @@ class Expr
              */
             case EPrint(expr):
                 var evalExpr = expr.evaluate();
-                trace(evalExpr.toString());
+                trace('${pos.file}:${pos.line}: ${evalExpr.toString()}\n');
                 evalExpr;
 
             /**
@@ -235,7 +238,7 @@ class Expr
 
     public function toString() : String
     {
-        var strVal = switch def {
+        return switch def {
             case EConstant(constant): switch constant {
                 case CIdentifier(str): str;
                 case CNumber(value): value + "";
@@ -249,10 +252,10 @@ class Expr
                 case CScaledKey(scale, key): throw "CScaledKey";
                 case CMusic(music): throw "CMusic";
             }
+            case EArrayDecl(values):
+                values.map(v -> v.evaluate().toString()) + "";
             case _:
-                this.evaluate().toString();
+                throw "err";
         }
-
-        return '${pos.file}:${pos.line}: ${strVal}\n';
     }
 }

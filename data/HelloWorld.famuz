@@ -14,13 +14,17 @@ func foo(abba) {
     }
 }
 
-switchVal = switch 1 {
+num = -233333
+arra = [0, 1, 2, -44]
+parra= push(arra, num)
+
+switchVal = switch 3 {
     case 1: 10 + 20
     case 2: 20
-    case 3: 30
+    case 3: [3,2,3,4][0]
     default: -100
 }
 
 func main() {
-    print(switchVal - cond)
+    print(parra)
 }

@@ -36,6 +36,11 @@ enum ExprDef
     /**
      * A constant.
      */
+    EIntermediate(cb :() -> Void, expr :Expr);
+     
+    /**
+     * A constant.
+     */
     EConstant(constant :Constant);
 
     /**
