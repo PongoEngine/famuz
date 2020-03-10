@@ -12,9 +12,20 @@ phrase3 = steps1 + rhythm3
 phrase4 = steps3 + rhythm4
 
 
+
+
 beans = {
-    num = 100,
+    num = 1000,
     scale = major,
+}
+
+pepper = {
+    num = 8,
+    scale = major,
+}
+
+func sage(obj) {
+    obj.num
 }
 
 func shwam(swag) {
@@ -48,8 +59,19 @@ mainScale = major
 
 cond2 = if false then 90 else if false then 30 else 4000
 
+func foo(abba) {
+    func cool() {
+        40
+    }
+}
+
 func main() {
     x = print(99)
     stepsIndex = 3
     print(cond2)
+    print(sage(pepper) + 90)
+
+    robot = foo(20)
+
+    print(robot())
 }

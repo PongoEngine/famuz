@@ -60,9 +60,9 @@ class Expr
                 switch [e1.evaluate().def, e2.evaluate().def] {
                     case [EArrayDecl(values), EConstant(constant)]: switch constant {
                         case CNumber(index): values[index].evaluate();
-                        case _: Expr.err();
+                        case _: throw "err";
                     }
-                    case _: Expr.err();
+                    case _: throw "err";
                 }
             case EArrayDecl(_):
                 this;
@@ -71,16 +71,16 @@ class Expr
                     case EObjectDecl(fields):
                         fields.get(field);
                     case _:
-                        Expr.err();
+                        throw "err";
                 }
             }
             case EVar(_, expr):
                 expr.evaluate();
             case ECall(identifier, args): {
-                switch this.context.getExpr(identifier).def {
+                switch this.context.getExpr(identifier).evaluate().def {
                     case EFunction(identifier, params, body): {
                         if(args.length != params.length) {
-                            Expr.err();
+                            throw "err";
                         }
                         var c = new Context();
                         c.parent = body.context.parent;
@@ -92,7 +92,8 @@ class Expr
                         body.context.parent = c.parent;
                         evalExpr;
                     }
-                    case _: Expr.err();
+                    case _:
+                        throw "err";
                 }
             }
             case EBlock(exprs):
@@ -103,9 +104,9 @@ class Expr
                         case CBool(value): value
                             ? ethen.evaluate()
                             : eelse.evaluate();
-                        case _: Expr.err();
+                        case _: throw "err";
                     }
-                    case _: Expr.err();
+                    case _: throw "err";
                 }
             case EUnop(op, postFix, e):
                 throw "EUnop";
@@ -116,10 +117,10 @@ class Expr
                             case CBool(value): value
                                 ? eif.evaluate()
                                 : eelse.evaluate();
-                            case _: Expr.err();
+                            case _: throw "err";
                         }
                     }
-                    case _: Expr.err();
+                    case _: throw "err";
                 }
             case EBinop(type, e1, e2):
                 switch type {
@@ -213,10 +214,5 @@ class Expr
             Position.union(this.pos, expr.pos), 
             TInvalid
         );
-    }
-
-    private static function err() : Expr
-    {
-        throw "err";
     }
 }
