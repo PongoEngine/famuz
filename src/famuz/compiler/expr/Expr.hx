@@ -110,7 +110,17 @@ class Expr
             case EUnop(op, postFix, e):
                 throw "EUnop";
             case ETernary(econd, eif, eelse):
-                throw "ETernary";
+                switch econd.evaluate().def {
+                    case EConstant(constant): {
+                        switch constant {
+                            case CBool(value): value
+                                ? eif.evaluate()
+                                : eelse.evaluate();
+                            case _: Expr.err();
+                        }
+                    }
+                    case _: Expr.err();
+                }
             case EBinop(type, e1, e2):
                 switch type {
                     case ADD: e1.add(e2);

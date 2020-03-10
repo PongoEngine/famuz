@@ -54,6 +54,10 @@ class Lexer
                     tokens.push(createToken(COMMA, 1, scanner));
                 case PERIOD:
                     tokens.push(createToken(PERIOD, 1, scanner));
+                case QUESTION_MARK:
+                    tokens.push(createToken(QUESTION_MARK, 1, scanner));
+                case COLON:
+                    tokens.push(createToken(COLON, 1, scanner));
                 case ADD:
                     tokens.push(createToken(ADD, 1, scanner));
                 case BACKWARD_SLASH: {

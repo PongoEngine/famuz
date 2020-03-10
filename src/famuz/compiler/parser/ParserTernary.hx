@@ -19,48 +19,25 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package famuz.compiler.lexer;
+package famuz.compiler.parser;
 
-enum abstract LexerToken(String) from String
+import famuz.compiler.Token;
+import famuz.compiler.expr.Expr;
+
+class ParserTernary
 {
-    var HIT = "x";
+    public static function parse(left :Expr, scanner :TokenScanner, context :Context) : Expr
+    {
+        var question = scanner.next(); //?
+        var eif = Parser.parse(new Precedence(0), scanner, context, false);
+        scanner.next(); //:
+        var eelse = Parser.parse(new Precedence(0), scanner, context, false);
 
-    var LEFT_BRACE = "{";
-    var RIGHT_BRACE = "}";
-
-    var LEFT_BRACKET = "[";
-    var RIGHT_BRACKET = "]";
-
-    var LEFT_PARENTHESES = "(";
-    var RIGHT_PARENTHESES = ")";
-    var COMMA = ",";
-    var QUESTION_MARK = "?";
-    var COLON = ":";
-    var PERIOD = ".";
-    var ASSIGNMENT = "=";
-
-    var ADD = "+";
-    var FORWARD_SLASH = "/";
-    var BACKWARD_SLASH = "\\";
-
-    var DURATION = "~";
-    var REST = "-";
-
-    var LT = "<";
-    var GT = ">";
-
-    var TAB = "\t";
-    var SPACE = " ";
-    var LINE = "\n";
-
-    var ZERO = "0";
-    var ONE = "1";
-    var TWO = "2";
-    var THREE = "3";
-    var FOUR = "4";
-    var FIVE = "5";
-    var SIX = "6";
-    var SEVEN = "7";
-    var EIGHT = "8";
-    var NINE = "9";
+        return new Expr(
+            context,
+            ETernary(left, eif, eelse),
+            Position.union(question.pos, eelse.pos),
+            TMonomorph
+        );
+    }
 }

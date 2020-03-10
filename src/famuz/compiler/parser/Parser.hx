@@ -89,7 +89,7 @@ class Parser
                         ParserArray.parse(scanner, context);
                     case ADD, ASSIGNMENT, RIGHT_PARENTHESES, RIGHT_BRACE,
                         RIGHT_BRACKET, SHIFT_LEFT, SHIFT_RIGHT, SLASH,
-                        COMMA, PERIOD: 
+                        COMMA, PERIOD, QUESTION_MARK, COLON:
                         parseConsume(scanner);
                 }
             case TTKeyword(type): switch type {
@@ -138,8 +138,10 @@ class Parser
                             ParserBinop.parse(left, scanner, context, type);
                     case PERIOD:
                             ParserDot.parse(left, scanner, context);
+                    case QUESTION_MARK:
+                        ParserTernary.parse(left, scanner, context);
                     case RIGHT_PARENTHESES, LEFT_BRACE, RIGHT_BRACE, 
-                        RIGHT_BRACKET, SLASH, COMMA: 
+                        RIGHT_BRACKET, SLASH, COMMA, COLON: 
                             EMPTY_EXPR;
                 }
             case TTKeyword(type): 

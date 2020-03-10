@@ -97,7 +97,7 @@ enum ExprDef
     /**
      * A (econd) ? eif : eelse expression.
      */
-    ETernary(econd:Expr, eif:Expr, eelse:Expr); //TODO: add to parser
+    ETernary(econd:Expr, eif:Expr, eelse:Expr);
     
     /**
      * Binary operator e1 op e2.

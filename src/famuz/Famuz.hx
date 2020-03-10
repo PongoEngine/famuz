@@ -24,7 +24,6 @@ package famuz;
 import sys.io.File;
 import haxe.ds.Option;
 import famuz.compiler.parser.Precedence;
-import famuz.compiler.expr.Expr;
 import famuz.compiler.Position;
 import famuz.compiler.Context;
 import famuz.compiler.Token.TokenScanner;

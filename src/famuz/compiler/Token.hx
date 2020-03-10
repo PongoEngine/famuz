@@ -123,6 +123,8 @@ enum PunctuatorType
 	SLASH;
 	COMMA;
 	PERIOD;
+	QUESTION_MARK;
+	COLON;
 }
 
 enum KeywordType 
