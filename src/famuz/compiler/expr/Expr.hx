@@ -23,6 +23,7 @@ package famuz.compiler.expr;
 
 import famuz.compiler.Context;
 import famuz.compiler.expr.ExprDef;
+using famuz.compiler.expr.ExprBinops;
 
 /**
  * 
@@ -251,79 +252,10 @@ class Expr
                 case CScaledKey(scale, key): throw "CScaledKey";
                 case CMusic(music): throw "CMusic";
             }
-            case ESwitch(e, cases, edef):
-                throw "ESwitch";
-            case EObjectDecl(fields):
-                throw "EObjectDecl";
-            case EArray(e1, e2):
-                throw "EArray";
-            case EArrayDecl(values):
-                throw "EArrayDecl";
-            case EField(e, field):
-                throw "EField";
-            case EVar(identifier, expr):
-                throw "EVar";
-            case ECall(identifier, args):
-                throw "ECall";
-            case EBlock(exprs):
-                throw "ECall";
-            case EIf(econd, ethen, eelse):
-                throw "EIf";
-            case EUnop(op, e):
-                throw "EUnop";
-            case ETernary(econd, eif, eelse):
-                throw "ETernary";
-            case EBinop(type, e1, e2):
-                throw "EBinop";
-            case EParentheses(expr):
-                expr.toString();
-            case EPrint(expr):
-                expr.toString();
-            case EFunction(identifier, params, body):
-                identifier;
+            case _:
+                this.evaluate().toString();
         }
 
         return '${pos.file}:${pos.line}: ${strVal}\n';
-    }
-
-    public function add(expr :Expr) : Expr
-    {
-        var a = this.evaluate();
-        var b = expr.evaluate();
-
-        var constant = switch [a.def, b.def] {
-            case [EConstant(constantA), EConstant(constantB)]: {
-                switch [constantA, constantB] {
-                    case [CNumber(valueA), CNumber(valueB)]:
-                        EConstant(CNumber(valueA + valueB));
-                    case _: 
-                        throw "Only Supports Numbers";
-                }
-            }
-            case _: 
-                throw "Can only add constants";
-        }
-
-        return new Expr(
-            expr.context, 
-            constant, 
-            Position.union(this.pos, expr.pos), 
-            TInvalid
-        );
-    }
-
-    public function equals(expr :Expr) : Bool
-    {
-        var a = this.evaluate();
-        var b = expr.evaluate();
-
-        return switch [a.def, b.def] {
-            case [EConstant(constantA), EConstant(constantB)]:
-                switch [constantA, constantB] {
-                    case [CNumber(valueA), CNumber(valueB)]: valueA == valueB;
-                    case _: false;
-                }
-            case _: false;
-        }
     }
 }

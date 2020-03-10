@@ -14,8 +14,8 @@ func foo(abba) {
     }
 }
 
-switchVal = switch 10 {
-    case 1: 10
+switchVal = switch 1 {
+    case 1: 10 + 20
     case 2: 20
     case 3: 30
     default: -100
