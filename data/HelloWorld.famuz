@@ -28,6 +28,13 @@ func shwam(swag) {
     swag ? 20 : 10
 }
 
+switchVal = switch 1 {
+    case 1: 10
+    case 2: 20
+    case 3: 30
+    default: 100
+}
+
 func identity(swag) swag
 
 maryLittleLamb = phrase1 + phrase2 + phrase3 + phrase4

@@ -130,6 +130,8 @@ enum PunctuatorType
 enum KeywordType 
 {
 	FUNC;
+	SWITCH;
+	CASE;
 	PRINT;
 	IF;
 	TRUE;

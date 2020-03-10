@@ -40,6 +40,7 @@ import famuz.compiler.parser.ParserVar;
 import famuz.compiler.parser.ParserArrayAccess;
 import famuz.compiler.parser.ParserStruct;
 import famuz.compiler.parser.ParserIf;
+import famuz.compiler.parser.ParserSwitch;
 import famuz.compiler.parser.ParserDot;
 using famuz.compiler.parser.Precedence;
 
@@ -103,6 +104,10 @@ class Parser
                     ParserBool.parse(scanner, context);
                 case FALSE: 
                     ParserBool.parse(scanner, context);
+                case SWITCH:
+                    ParserSwitch.parse(scanner, context);
+                case CASE:
+                    parseConsume(scanner);
             }
             case TTIdentifier(str): 
                 ParserIdentifier.parse(scanner, context, str);
