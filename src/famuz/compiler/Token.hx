@@ -111,6 +111,8 @@ enum TokenType
 enum PunctuatorType 
 {
 	ADD;
+	MINUS;
+	BANG;
 	ASSIGNMENT;
 	LEFT_PARENTHESES;
 	RIGHT_PARENTHESES;

@@ -60,6 +60,10 @@ class Lexer
                     tokens.push(createToken(COLON, 1, scanner));
                 case ADD:
                     tokens.push(createToken(ADD, 1, scanner));
+                case MINUS:
+                    tokens.push(createToken(MINUS, 1, scanner));
+                case BANG:
+                    tokens.push(createToken(BANG, 1, scanner));
                 case BACKWARD_SLASH: {
                     tokens.push(createTokenRhythm(scanner));
                 }

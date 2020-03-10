@@ -19,50 +19,35 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package famuz.compiler.lexer;
+package famuz.compiler.parser;
 
-enum abstract LexerToken(String) from String
+import famuz.compiler.Token;
+import famuz.util.Assert;
+import famuz.compiler.parser.Parser;
+import famuz.compiler.expr.Expr;
+import famuz.compiler.expr.ExprDef;
+using famuz.compiler.Type;
+
+class ParserUnop
 {
-    var HIT = "x";
+    public static function parse(scanner :TokenScanner, context :Context) : Expr
+    {
+        var unopToken = scanner.next();
+        var unop :Unop = switch unopToken.type {
+            case TTPunctuator(type): switch type {
+                case MINUS: OpNeg;
+                case BANG: OpNot;
+                case _: throw "err";
+            }
+            case _: throw "err";
+        }
+        var expr = Parser.parse(new Precedence(0), scanner, context, false);
 
-    var LEFT_BRACE = "{";
-    var RIGHT_BRACE = "}";
-
-    var LEFT_BRACKET = "[";
-    var RIGHT_BRACKET = "]";
-
-    var LEFT_PARENTHESES = "(";
-    var RIGHT_PARENTHESES = ")";
-    var COMMA = ",";
-    var QUESTION_MARK = "?";
-    var COLON = ":";
-    var PERIOD = ".";
-    var ASSIGNMENT = "=";
-
-    var ADD = "+";
-    var MINUS = "-";
-    var BANG = "!";
-    var FORWARD_SLASH = "/";
-    var BACKWARD_SLASH = "\\";
-
-    var DURATION = "~";
-    var REST = "_";
-
-    var LT = "<";
-    var GT = ">";
-
-    var TAB = "\t";
-    var SPACE = " ";
-    var LINE = "\n";
-
-    var ZERO = "0";
-    var ONE = "1";
-    var TWO = "2";
-    var THREE = "3";
-    var FOUR = "4";
-    var FIVE = "5";
-    var SIX = "6";
-    var SEVEN = "7";
-    var EIGHT = "8";
-    var NINE = "9";
+        return new Expr(
+            context, 
+            EUnop(unop, expr), 
+            Position.union(unopToken.pos, expr.pos), 
+            TMonomorph
+        );
+    }
 }

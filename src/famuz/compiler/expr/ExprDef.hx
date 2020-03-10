@@ -87,12 +87,9 @@ enum ExprDef
     /**
      * An unary operator op on e:
      * 
-     * e++ (op = OpIncrement, postFix = true) e-- (op = OpDecrement, postFix = 
-     * true) ++e (op = OpIncrement, postFix = false) --e (op = OpDecrement, 
-     * postFix = false) -e (op = OpNeg, postFix = false) !e (op = OpNot, postFix 
-     * = false) ~e (op = OpNegBits, postFix = false)
+     * -e (op = OpNeg) !e (op = OpNot)
      */
-    EUnop(op:Unop, postFix:Bool, e:Expr); //TODO: add to parser
+    EUnop(op:Unop, e:Expr); //TODO: add to parser
     
     /**
      * A (econd) ? eif : eelse expression.
@@ -159,16 +156,6 @@ typedef Case =
  */
 enum Unop
 {
-    /**
-     * ++
-     */
-    OpIncrement; 
-    
-    /**
-     * --
-     */
-    OpDecrement;
-    
     /**
      * !
      */

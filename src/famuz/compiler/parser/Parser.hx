@@ -42,6 +42,7 @@ import famuz.compiler.parser.ParserStruct;
 import famuz.compiler.parser.ParserIf;
 import famuz.compiler.parser.ParserSwitch;
 import famuz.compiler.parser.ParserDot;
+import famuz.compiler.parser.ParserUnop;
 using famuz.compiler.parser.Precedence;
 
 class Parser
@@ -88,6 +89,8 @@ class Parser
                             : ParserStruct.parse(scanner, context);
                     case LEFT_BRACKET: 
                         ParserArray.parse(scanner, context);
+                    case MINUS, BANG:
+                        ParserUnop.parse(scanner, context);
                     case ADD, ASSIGNMENT, RIGHT_PARENTHESES, RIGHT_BRACE,
                         RIGHT_BRACKET, SHIFT_LEFT, SHIFT_RIGHT, SLASH,
                         COMMA, PERIOD, QUESTION_MARK, COLON:
@@ -147,7 +150,7 @@ class Parser
                             ParserDot.parse(left, scanner, context);
                     case QUESTION_MARK:
                         ParserTernary.parse(left, scanner, context);
-                    case RIGHT_PARENTHESES, LEFT_BRACE, RIGHT_BRACE, 
+                    case MINUS, BANG, RIGHT_PARENTHESES, LEFT_BRACE, RIGHT_BRACE, 
                         RIGHT_BRACKET, SLASH, COMMA, COLON: 
                             EMPTY_EXPR;
                 }
