@@ -41,7 +41,7 @@ class ParserBinop
             case _: throw "Invalid operation";
         }
         
-        var right = Parser.parse(PRECEDENCE_SUM, scanner, context, false);
+        var right = Parser.parse(PRECEDENCE_SUM, scanner, context, false).evaluate();
 		return new Expr(
 			context,
 			EBinop(op, left, right),

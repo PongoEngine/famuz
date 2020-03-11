@@ -39,7 +39,7 @@ class ParserUnop
             }
             case _: throw "err";
         }
-        var expr = Parser.parse(new Precedence(0), scanner, context, false);
+        var expr = Parser.parse(new Precedence(0), scanner, context, false).evaluate();
 
         return new Expr(
             context, 

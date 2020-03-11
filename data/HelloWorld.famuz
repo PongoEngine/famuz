@@ -20,7 +20,7 @@ parra = push(arra, num)
 parra2 = push(parra, 90)
 parra3 = pop(pop(pop(pop(parra2))))
 
-switchVal = switch 3 {
+switchVal = switch 1 {
     case 1: 10 + 20
     case 2: 20
     case 3: parra3

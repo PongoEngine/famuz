@@ -35,7 +35,7 @@ class ParserStruct
         while (scanner.hasNext() && scanner.peek().isNotPunctuator(RIGHT_BRACE)) {
             var name = scanner.next();
             scanner.next(); //consume '='
-            var expr = Parser.parse(new Precedence(0), scanner, context, false);
+            var expr = Parser.parse(new Precedence(0), scanner, context, false).evaluate();
             fields.set(name.getIdentifier(), expr);
 
             if(scanner.peek().isPunctuator(COMMA)) {

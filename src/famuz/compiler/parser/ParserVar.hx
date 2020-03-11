@@ -39,7 +39,7 @@ class ParserVar
             case _: throw "invalid";
         }
 
-        var expr = Parser.parse(PRECEDENCE_ASSIGNMENT, scanner, context, false);
+        var expr = Parser.parse(PRECEDENCE_ASSIGNMENT, scanner, context, false).evaluate();
         left.def = EVar(identifier, expr.evaluate());
         left.pos = Position.union(left.pos, expr.pos);
 
