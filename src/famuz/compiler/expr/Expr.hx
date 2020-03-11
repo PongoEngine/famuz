@@ -44,9 +44,6 @@ class Expr
     public function evaluate() : Expr
     {
         return switch def {
-            case EIntermediate(cb, expr):
-                cb();
-                expr.evaluate();
             /**
              * 
              */
@@ -98,6 +95,21 @@ class Expr
              */
             case EArrayDecl(_):
                 this;
+
+            /**
+             * 
+             */
+             case EArrayFunc(e, op):
+                var evalArra = e.evaluate();
+                switch [evalArra.def, op] {
+                    case [EArrayDecl(values), OpPush(expr)]:
+                        values.push(expr.evaluate());
+                        evalArra;
+                    case [EArrayDecl(values), OpPop]:
+                        values.pop();
+                        evalArra;
+                    case _:throw "err";
+                }
 
             /**
              * 
@@ -225,7 +237,7 @@ class Expr
              */
             case EPrint(expr):
                 var evalExpr = expr.evaluate();
-                trace('${pos.file}:${pos.line}: ${evalExpr.toString()}\n');
+                trace('${pos.file}:${pos.line}: ${evalExpr}\n');
                 evalExpr;
 
             /**
@@ -254,6 +266,8 @@ class Expr
             }
             case EArrayDecl(values):
                 values.map(v -> v.evaluate().toString()) + "";
+            case EFunction(identifier, params, body):
+                '${identifier}(${params.join(",")}){...}';
             case _:
                 throw "err";
         }

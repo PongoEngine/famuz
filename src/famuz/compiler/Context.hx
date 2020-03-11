@@ -53,24 +53,8 @@ class Context
         else if(this.parent != null) {
             return this.parent.getExpr(name);
         }
-        else if(name == "push") {
-            var body = new Expr(this, EConstant(CIdentifier("array")), null);
-            var intermediate = new Expr(this, EIntermediate(() -> {
-                var arra = this.getExpr("array").evaluate();
-                var element = this.getExpr("element");
-                switch arra.def {
-                    case EArrayDecl(values): values.push(element);
-                    case _: throw "err";
-                }
-            }, body), null);
-            
-            return new Expr(
-                this, 
-                EFunction("push", ["array", "element"], intermediate), 
-                null);
-        }
         else {
-            return null;
+            return ContextArrayTools.getExpr(this, name);
         }
     }
 
@@ -82,4 +66,33 @@ class Context
     }
 
     private var _map :Map<String, Expr>;
+}
+
+class ContextArrayTools
+{
+    public static function getExpr(this_ :Context, name :String) : Expr
+    {
+        if(name == "push") {
+            var array = new Expr(this_, EConstant(CIdentifier("array")), null);
+            var element = new Expr(this_, EConstant(CIdentifier("element")), null);
+            var op = new Expr(this_, EArrayFunc(array, OpPush(element)), null);
+            return new Expr(
+                this_, 
+                EFunction("push", ["array", "element"], op), 
+                null
+            );
+        }
+        else if(name == "pop") {
+            var array = new Expr(this_, EConstant(CIdentifier("array")), null);
+            var op = new Expr(this_, EArrayFunc(array, OpPop), null);
+            return new Expr(
+                this_, 
+                EFunction("push", ["array"], op), 
+                null
+            );
+        }
+        else {
+            return null;
+        }
+    }
 }

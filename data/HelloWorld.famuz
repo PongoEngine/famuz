@@ -8,7 +8,7 @@ cond = if !false
 
 cond2 = if false then 90 else if false then 30 else 4000
 
-func foo(abba) {
+func foo(abba, zabba) {
     func cool() {
         40
     }
@@ -16,15 +16,18 @@ func foo(abba) {
 
 num = -233333
 arra = [0, 1, 2, -44]
-parra= push(arra, num)
+parra = push(arra, num)
+parra2 = push(parra, 90)
+parra3 = pop(pop(pop(pop(parra2))))
 
-switchVal = switch 3 {
+switchVal = switch false {
     case 1: 10 + 20
     case 2: 20
-    case 3: [3,2,3,4][0]
-    default: -100
+    case 3: parra3
+    case true: 99
+    default: cond2
 }
 
 func main() {
-    print(parra)
+    print(switchVal)
 }

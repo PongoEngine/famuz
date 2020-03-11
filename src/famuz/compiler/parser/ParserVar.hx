@@ -40,7 +40,7 @@ class ParserVar
         }
 
         var expr = Parser.parse(PRECEDENCE_ASSIGNMENT, scanner, context, false);
-        left.def = EVar(identifier, expr);
+        left.def = EVar(identifier, expr.evaluate());
         left.pos = Position.union(left.pos, expr.pos);
 
         context.addExpr(identifier, left);

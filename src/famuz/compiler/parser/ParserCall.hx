@@ -44,7 +44,7 @@ class ParserCall
 
         var args :Array<Expr> = [];
         while (scanner.hasNext() && scanner.peek().isNotPunctuator(RIGHT_PARENTHESES)) {
-            args.push(Parser.parse(PRECEDENCE_CALL, scanner, context, false));
+            args.push(Parser.parse(new Precedence(0), scanner, context, false).evaluate());
             if (scanner.peek().isPunctuator(COMMA)) {
                 scanner.next(); //consume comma
             }

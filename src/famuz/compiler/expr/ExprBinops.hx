@@ -87,6 +87,7 @@ class ExprBinops
             case [EConstant(constantA), EConstant(constantB)]:
                 switch [constantA, constantB] {
                     case [CNumber(valueA), CNumber(valueB)]: valueA == valueB;
+                    case [CBool(valueA), CBool(valueB)]: valueA == valueB;
                     case _: false;
                 }
             case _: false;

@@ -36,11 +36,6 @@ enum ExprDef
     /**
      * A constant.
      */
-    EIntermediate(cb :() -> Void, expr :Expr);
-     
-    /**
-     * A constant.
-     */
     EConstant(constant :Constant);
 
     /**
@@ -58,6 +53,11 @@ enum ExprDef
      * Array access e1[e2].
      */
     EArray(e1:Expr, e2:Expr);
+
+    /**
+     * Array access e1.push(e2)
+     */
+    EArrayFunc(e:Expr, op :ArrayOp);
     
     /**
      * An array declaration [el].
@@ -170,6 +170,22 @@ enum Unop
      * -
      */
     OpNeg;
+}
+
+/**
+ * 
+ */
+enum ArrayOp
+{
+    /**
+     * push
+     */
+    OpPush(expr :Expr);
+
+    /**
+     * pop
+     */
+    OpPop;
 }
 
 /**
