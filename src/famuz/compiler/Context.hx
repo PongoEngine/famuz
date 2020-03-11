@@ -54,7 +54,7 @@ class Context
             return this.parent.getExpr(name);
         }
         else {
-            return ContextArrayTools.getExpr(this, name);
+            return null;
         }
     }
 
@@ -68,31 +68,34 @@ class Context
     private var _map :Map<String, Expr>;
 }
 
-class ContextArrayTools
+class ContextTools
 {
-    public static function getExpr(this_ :Context, name :String) : Expr
+    public static function addArrayExprs(ctx :Context) : Void
     {
-        if(name == "push") {
-            var array = new Expr(this_, EConstant(CIdentifier("array")), null);
-            var element = new Expr(this_, EConstant(CIdentifier("element")), null);
-            var op = new Expr(this_, EArrayFunc(array, OpPush(element)), null);
-            return new Expr(
-                this_, 
-                EFunction("push", ["array", "element"], op), 
-                null
-            );
-        }
-        else if(name == "pop") {
-            var array = new Expr(this_, EConstant(CIdentifier("array")), null);
-            var op = new Expr(this_, EArrayFunc(array, OpPop), null);
-            return new Expr(
-                this_, 
-                EFunction("push", ["array"], op), 
-                null
-            );
-        }
-        else {
-            return null;
-        }
+        addPush(ctx);
+        addPop(ctx);
+    }
+
+    private static function addPush(ctx :Context) : Void
+    {
+        var array = new Expr(ctx, EConstant(CIdentifier("array")), null);
+        var element = new Expr(ctx, EConstant(CIdentifier("element")), null);
+        var op = new Expr(ctx, EArrayFunc(array, OpPush(element)), null);
+        ctx.addExpr("push", new Expr(
+            ctx, 
+            EFunction("push", ["array", "element"], op), 
+            null
+        ));
+    }
+
+    private static function addPop(ctx :Context) : Void
+    {
+        var array = new Expr(ctx, EConstant(CIdentifier("array")), null);
+        var op = new Expr(ctx, EArrayFunc(array, OpPop), null);
+        ctx.addExpr("pop", new Expr(
+            ctx, 
+            EFunction("pop", ["array"], op), 
+            null
+        ));
     }
 }
