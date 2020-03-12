@@ -35,7 +35,7 @@ class ParserSwitch
         scanner.next(); //{
 
         var cases :Array<Case> = [];
-        var default_ :Null<Expr> = null;
+        var default_ :Expr = null;
         while(scanner.peek().isNotPunctuator(RIGHT_BRACE)) {
             switch scanner.peek().type {
                 case TTKeyword(type): switch type {
@@ -51,6 +51,10 @@ class ParserSwitch
         }
         var endBrace = scanner.next(); //}
 
+        if(default_ == null) {
+            throw "err";
+        }
+ 
         return new Expr(
             context, 
             ESwitch(e, cases, default_), 
