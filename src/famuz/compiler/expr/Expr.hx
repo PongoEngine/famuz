@@ -75,6 +75,12 @@ class Expr
             /**
              * 
              */
+            case EEnumParameter(e, type, index):
+                this;
+
+            /**
+             * 
+             */
             case EObjectDecl(_):
                 this;
 
@@ -142,7 +148,7 @@ class Expr
                         c.parent = body.context.parent;
                         body.context.parent = c;
                         for(i in 0...params.length) {
-                            c.addExpr(params[i], args[i]);
+                            c.addVarFunc(params[i], args[i]);
                         }
                         var evalExpr = body.evaluate();
                         body.context.parent = c.parent;
@@ -273,3 +279,5 @@ class Expr
         }
     }
 }
+
+typedef Ref<T> = {ref :T};

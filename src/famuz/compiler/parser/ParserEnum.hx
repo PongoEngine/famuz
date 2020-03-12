@@ -22,48 +22,39 @@
 package famuz.compiler.parser;
 
 import famuz.compiler.Token;
-import famuz.util.Assert;
-import famuz.compiler.parser.Precedence.*;
 import famuz.compiler.parser.Parser;
 import famuz.compiler.expr.Expr;
-import famuz.compiler.expr.ExprDef;
+import famuz.compiler.expr.EnumDefinition;
 
-class ParserFunc
+class ParserEnum
 {
-    public static function parse(scanner :TokenScanner, context :Context) : Expr
+    public static function parse(scanner :TokenScanner, context :Context) : Void
     {
-        var token = scanner.next(); //func
-        var identifier = scanner.next().getIdentifier(); //id (ex: main)
-        scanner.next(); //consume left parentheses
+        var enum_ = scanner.next(); //enum
+        var identifier = scanner.next().getIdentifier(); //id (ex: RHYTHMS)
+        scanner.next(); //left brace
 
-        var params = parseParams(scanner);
-
-        var body = Parser.parse(PRECEDENCE_CALL, scanner, context, true);
-
-        var func = new Expr(
-            context,
-            EFunction(identifier, params, body),
-            Position.union(token.pos, body.pos)
-        );
-        context.addVarFunc(identifier, func);
-
-        return func;
-    }
-
-    private static function parseParams(scanner :TokenScanner) : Array<String>
-    {
-        var params :Array<String> = [];
-        while (scanner.peek().isNotPunctuator(RIGHT_PARENTHESES)) {
-            var name = scanner.next();
-    
-            params.push(name.getIdentifier());
-    
-            if(scanner.peek().isPunctuator(COMMA)) {
-                scanner.next(); //consume comma
+        var fields :Array<Field> = [];
+        var index = 0;
+        var ref :Ref<EnumDefinition> = {ref:null};
+        while (scanner.hasNext() && scanner.peek().isNotPunctuator(RIGHT_BRACE)) {
+            var e = Parser.parse(new Precedence(0), scanner, context, false);
+            switch e.def {
+                case EConstant(constant): switch constant {
+                    case CIdentifier(str): {
+                        var param = new Expr(context, EEnumParameter(e, ref, index), e.pos);
+                        fields.push(new Field(str, param));
+                    }
+                    case _: throw "invalid enum";
+                }
+                case _: throw "invalid enum";
             }
+            index++;
         }
+        var rightBrace = scanner.next(); //right brace
 
-        Assert.that(scanner.next().isPunctuator(RIGHT_PARENTHESES), "\nparse_func :NOT LEFT PARENTHESES!\n");
-        return params;
+        var def = new EnumDefinition(identifier, fields, Position.union(enum_.pos, rightBrace.pos));
+        ref.ref = def;
+        context.defineEnumDef(def);
     }
 }

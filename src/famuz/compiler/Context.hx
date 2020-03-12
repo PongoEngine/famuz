@@ -22,6 +22,7 @@
 package famuz.compiler;
 
 import famuz.compiler.expr.Expr;
+import famuz.compiler.expr.EnumDefinition;
 
 /**
  * 
@@ -33,15 +34,29 @@ class Context
     public function new() : Void
     {
         _map = new Map<String, Expr>();
+        _enumDefs = new Map<String, EnumDefinition>();
     }
 
-    public function addExpr(name :String, expr :Expr) : Void
+    public function addVarFunc(name :String, expr :Expr) : Void
     {
         if(_map.exists(name)) {
             throw '"${name}" already exists.';
         }
         else {
             _map.set(name, expr);
+        }
+    }
+
+    public function defineEnumDef(def :EnumDefinition) : Void
+    {
+        if(_enumDefs.exists(def.name)) {
+            throw '"${def.name}" already exists.';
+        }
+        else {
+            _enumDefs.set(def.name, def);
+            for(f in def.fields) {
+                this.addVarFunc(f.name, f.expr);
+            }
         }
     }
 
@@ -66,6 +81,7 @@ class Context
     }
 
     private var _map :Map<String, Expr>;
+    private var _enumDefs :Map<String, EnumDefinition>;
 }
 
 class ContextTools
@@ -81,7 +97,7 @@ class ContextTools
         var array = new Expr(ctx, EConstant(CIdentifier("array")), null);
         var element = new Expr(ctx, EConstant(CIdentifier("element")), null);
         var op = new Expr(ctx, EArrayFunc(array, OpPush(element)), null);
-        ctx.addExpr("push", new Expr(
+        ctx.addVarFunc("push", new Expr(
             ctx, 
             EFunction("push", ["array", "element"], op), 
             null
@@ -92,7 +108,7 @@ class ContextTools
     {
         var array = new Expr(ctx, EConstant(CIdentifier("array")), null);
         var op = new Expr(ctx, EArrayFunc(array, OpPop), null);
-        ctx.addExpr("pop", new Expr(
+        ctx.addVarFunc("pop", new Expr(
             ctx, 
             EFunction("pop", ["array"], op), 
             null

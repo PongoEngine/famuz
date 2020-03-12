@@ -19,31 +19,30 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package famuz.compiler.parser;
+package famuz.compiler.expr;
 
-import famuz.compiler.Token;
-import famuz.compiler.parser.Precedence.*;
-import famuz.compiler.parser.Parser;
-import famuz.compiler.expr.Expr;
-
-class ParserVar
+class EnumDefinition
 {
-    public static function parse(left :Expr, scanner :TokenScanner, context :Context) : Expr
+    public var name :String;
+    public var fields :Array<Field>;
+    public var pos:Position;
+
+    public function new(name :String, fields :Array<Field>, pos :Position) : Void
     {
-        scanner.next(); //consume "="
-        var identifier = switch left.def {
-            case EConstant(constant): switch constant {
-                case CIdentifier(str): str;
-                case _: throw "invalid";
-            }
-            case _: throw "invalid";
-        }
+        this.name = name;
+        this.fields = fields;
+        this.pos = pos;
+    }
+}
 
-        var expr = Parser.parse(PRECEDENCE_ASSIGNMENT, scanner, context, false).evaluate();
-        left.def = EVar(identifier, expr.evaluate());
-        left.pos = Position.union(left.pos, expr.pos);
+class Field
+{
+    public var name :String;
+    public var expr :Expr;
 
-        context.addVarFunc(identifier, left);
-        return left;
+    public function new(name :String, expr :Expr) : Void
+    {
+        this.name = name;
+        this.expr = expr;
     }
 }

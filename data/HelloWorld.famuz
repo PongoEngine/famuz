@@ -1,32 +1,21 @@
-tern = true ? 20 : 10
-
-cond = if !false 
-    then 10 
-    else if false
-        then 10
-        else 20
-
-cond2 = if false then 90 else if false then 30 else 4000
-
-func foo(abba, zabba) {
-    func cool() {
-        40
-    }
+enum Robot {
+    SWAG
+    TURKEY
 }
 
-num = -233333
-arra = [0, 1, 2, -44]
-parra = push(arra, num)
-parra2 = push(parra, 90)
-parra3 = pop(pop(pop(pop(parra2))))
-
-switchVal = switch 1 {
-    case 1: 10 + 20
-    case 2: 20
-    case 3: parra3
-    case true: 99
-    default: cond2
+enum Robot2 {
+    SWAG222222
+    TURKEY2
 }
+
+switchVal = switch SWAG {
+    case 1, 2: 10 + 200
+    case 20: 20
+    case SWAG: 99
+    default: -20
+}
+
+dag = -30
 
 func main() {
     print(switchVal)

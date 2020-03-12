@@ -21,6 +21,8 @@
 
 package famuz.compiler.expr;
 
+import famuz.compiler.expr.Expr;
+import famuz.compiler.expr.EnumDefinition;
 import famuz.compiler.theory.Hit;
 import famuz.compiler.theory.SteppedHit;
 import famuz.compiler.theory.Step;
@@ -37,6 +39,11 @@ enum ExprDef
      * A constant.
      */
     EConstant(constant :Constant);
+
+    /**
+     * A constant.
+     */
+    EEnumParameter(e :Expr, def :Ref<EnumDefinition>, index :Int);
 
     /**
      * Represents a switch expression with related cases and an optional. 
@@ -77,7 +84,7 @@ enum ExprDef
     /**
      * A call e(params).
      */
-    ECall(identifier :String, args :Array<Expr>);
+    ECall(identifier :String, params :Array<Expr>);
     
     /**
      * A block of expressions {exprs}.
@@ -119,7 +126,7 @@ enum ExprDef
     /**
      * A function declaration.
      */
-    EFunction(identifier :String, params :Array<String>, body :Expr);
+    EFunction(identifier :String, args :Array<String>, body :Expr);
 }
 
 /**

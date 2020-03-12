@@ -129,5 +129,6 @@ enum KeywordType
 	PRINT;
 	IF;
 	TRUE;
-	FALSE;
+    FALSE;
+    ENUM;
 }
