@@ -3,12 +3,9 @@ enum Robot {
     TURKEY
 }
 
-enum Robot2 {
-    SWAG222222
-    TURKEY2
-}
+section = SWAG
 
-switchVal = switch SWAG {
+switchVal = switch section {
     case 1, 2: 10 + 200
     case 20: 20
     case SWAG: 99
