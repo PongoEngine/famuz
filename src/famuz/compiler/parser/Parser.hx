@@ -21,7 +21,6 @@
 
 package famuz.compiler.parser;
 
-import famuz.compiler.Error;
 import famuz.compiler.Token;
 import famuz.compiler.expr.Expr;
 import famuz.compiler.parser.ParserBinop;
@@ -48,13 +47,13 @@ using famuz.compiler.parser.Precedence;
 
 class Parser
 {
-    public static function parse(precedence :Precedence, scanner :TokenScanner, context :Context, error :Error, isFunc :Bool) : Expr
+    public static function parse(precedence :Precedence, scanner :TokenScanner, context :Context, isFunc :Bool) : Expr
     {
         if (scanner.hasNext()) {
             while(isEnumType(scanner)) {
-                ParserEnum.parse(scanner, context, error);
+                ParserEnum.parse(scanner, context);
             }
-            var left = parseExpressionPrefix(scanner, context, error, isFunc);
+            var left = parseExpressionPrefix(scanner, context, isFunc);
             if (left == null) {
                 if (scanner.hasNext()) {
                     scanner.next();
@@ -64,7 +63,7 @@ class Parser
 
             while (scanner.hasNext() && precedence < scanner.getPrecedence())
             {
-                left = parseExpressionInfix(left, scanner, context, error);
+                left = parseExpressionInfix(left, scanner, context);
             }
             return left;
         }
@@ -80,21 +79,21 @@ class Parser
         return EMPTY_EXPR;
     }
 
-    private static function parseExpressionPrefix(scanner :TokenScanner, context :Context, error :Error, isFunc :Bool) : Expr
+    private static function parseExpressionPrefix(scanner :TokenScanner, context :Context, isFunc :Bool) : Expr
     {
         return switch (scanner.peek().type) {
             case TTPunctuator(type):
                 switch type {
                     case LEFT_PARENTHESES: 
-                        ParserParentheses.parse(scanner, context, error);
+                        ParserParentheses.parse(scanner, context);
                     case LEFT_BRACE:
                         isFunc
-                            ? ParserBlock.parse(scanner, context, error)
-                            : ParserStruct.parse(scanner, context, error);
+                            ? ParserBlock.parse(scanner, context)
+                            : ParserStruct.parse(scanner, context);
                     case LEFT_BRACKET: 
-                        ParserArray.parse(scanner, context, error);
+                        ParserArray.parse(scanner, context);
                     case MINUS, BANG:
-                        ParserUnop.parse(scanner, context, error);
+                        ParserUnop.parse(scanner, context);
                     case ADD, ASSIGNMENT, RIGHT_PARENTHESES, RIGHT_BRACE,
                         RIGHT_BRACKET, SHIFT_LEFT, SHIFT_RIGHT, SLASH,
                         COMMA, PERIOD, QUESTION_MARK, COLON:
@@ -102,17 +101,17 @@ class Parser
                 }
             case TTKeyword(type): switch type {
                 case FUNC: 
-                    ParserFunc.parse(scanner, context, error);
+                    ParserFunc.parse(scanner, context);
                 case PRINT: 
-                    ParserPrint.parse(scanner, context, error);
+                    ParserPrint.parse(scanner, context);
                 case IF: 
-                    ParserIf.parse(scanner, context, error);
+                    ParserIf.parse(scanner, context);
                 case TRUE: 
-                    ParserBool.parse(scanner, context, error);
+                    ParserBool.parse(scanner, context);
                 case FALSE: 
-                    ParserBool.parse(scanner, context, error);
+                    ParserBool.parse(scanner, context);
                 case SWITCH:
-                    ParserSwitch.parse(scanner, context, error);
+                    ParserSwitch.parse(scanner, context);
                 case CASE:
                     parseConsume(scanner);
                 case DEFAULT:
@@ -133,29 +132,29 @@ class Parser
         }
     }
     
-    private static function parseExpressionInfix(left :Expr, scanner :TokenScanner, context :Context, error :Error) : Expr
+    private static function parseExpressionInfix(left :Expr, scanner :TokenScanner, context :Context) : Expr
     {
         return switch (scanner.peek().type) {
             case TTPunctuator(type):
                 switch type {
                     case ADD: 
-                            ParserBinop.parse(left, scanner, context, error, type);
+                            ParserBinop.parse(left, scanner, context, type);
                     case MINUS: 
-                            ParserBinop.parse(left, scanner, context, error, type);
+                            ParserBinop.parse(left, scanner, context, type);
                     case ASSIGNMENT: 
-                            ParserVar.parse(left, scanner, context, error);
+                            ParserVar.parse(left, scanner, context);
                     case LEFT_PARENTHESES: 
-                            ParserCall.parse(left, scanner, context, error);
+                            ParserCall.parse(left, scanner, context);
                     case LEFT_BRACKET: 
-                            ParserArrayAccess.parse(left, scanner, context, error);
+                            ParserArrayAccess.parse(left, scanner, context);
                     case SHIFT_LEFT: 
-                            ParserBinop.parse(left, scanner, context, error, type);
+                            ParserBinop.parse(left, scanner, context, type);
                     case SHIFT_RIGHT: 
-                            ParserBinop.parse(left, scanner, context, error, type);
+                            ParserBinop.parse(left, scanner, context, type);
                     case PERIOD:
-                            ParserDot.parse(left, scanner, context, error);
+                            ParserDot.parse(left, scanner, context);
                     case QUESTION_MARK:
-                        ParserTernary.parse(left, scanner, context, error);
+                        ParserTernary.parse(left, scanner, context);
                     case BANG, RIGHT_PARENTHESES, LEFT_BRACE, RIGHT_BRACE, 
                         RIGHT_BRACKET, SLASH, COMMA, COLON: 
                             EMPTY_EXPR;

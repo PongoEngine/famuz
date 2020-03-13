@@ -28,7 +28,7 @@ import famuz.compiler.expr.Expr;
 
 class ParserCall
 {
-    public static function parse(left :Expr, scanner :TokenScanner, context :Context, error :Error) : Expr
+    public static function parse(left :Expr, scanner :TokenScanner, context :Context) : Expr
     {
         var funcName = switch left.def {
             case EConstant(constant): {
@@ -43,7 +43,7 @@ class ParserCall
 
         var args :Array<Expr> = [];
         while (scanner.hasNext() && scanner.peek().isNotPunctuator(RIGHT_PARENTHESES)) {
-            args.push(Parser.parse(new Precedence(0), scanner, context, error, false).evaluate());
+            args.push(Parser.parse(new Precedence(0), scanner, context, false).evaluate());
             if (scanner.peek().isPunctuator(COMMA)) {
                 scanner.next(); //consume comma
             }

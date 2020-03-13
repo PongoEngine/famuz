@@ -30,7 +30,7 @@ import famuz.compiler.expr.ExprDef;
 
 class ParserFunc
 {
-    public static function parse(scanner :TokenScanner, context :Context, error :Error) : Expr
+    public static function parse(scanner :TokenScanner, context :Context) : Expr
     {
         var token = scanner.next(); //func
         var identifier = scanner.next().getIdentifier(); //id (ex: main)
@@ -38,7 +38,7 @@ class ParserFunc
 
         var params = parseParams(scanner);
 
-        var body = Parser.parse(PRECEDENCE_CALL, scanner, context, error, true);
+        var body = Parser.parse(PRECEDENCE_CALL, scanner, context, true);
 
         var func = new Expr(
             context,

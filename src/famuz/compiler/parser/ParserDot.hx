@@ -27,7 +27,7 @@ import famuz.compiler.expr.Expr;
 
 class ParserDot
 {
-    public static function parse(left :Expr, scanner :TokenScanner, context :Context, error :Error) : Expr
+    public static function parse(left :Expr, scanner :TokenScanner, context :Context) : Expr
     {
         var dot = scanner.next();
         var field = scanner.next();

@@ -29,7 +29,7 @@ import famuz.compiler.expr.EnumDefinition;
 
 class ParserEnum
 {
-    public static function parse(scanner :TokenScanner, context :Context, error :Error) : Void
+    public static function parse(scanner :TokenScanner, context :Context) : Void
     {
         var enum_ = scanner.next(); //enum
         var identifier = scanner.next().getIdentifier(); //id (ex: RHYTHMS)
@@ -39,7 +39,7 @@ class ParserEnum
         var index = 0;
         var ref :Ref<EnumDefinition> = {ref:null};
         while (scanner.hasNext() && scanner.peek().isNotPunctuator(RIGHT_BRACE)) {
-            var e = Parser.parse(new Precedence(0), scanner, context, error, false);
+            var e = Parser.parse(new Precedence(0), scanner, context, false);
             switch e.def {
                 case EConstant(constant): switch constant {
                     case CIdentifier(str): {

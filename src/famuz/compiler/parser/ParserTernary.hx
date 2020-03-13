@@ -27,18 +27,18 @@ import famuz.compiler.expr.Expr;
 
 class ParserTernary
 {
-    public static function parse(left :Expr, scanner :TokenScanner, context :Context, error :Error) : Expr
+    public static function parse(left :Expr, scanner :TokenScanner, context :Context) : Expr
     {
         var question = scanner.next(); //?
         if(!question.isPunctuator(QUESTION_MARK)) {
-            error.addError("Expected a question mark", question.pos);
+            context.addError("Expected a question mark", question.pos);
         }
-        var eif = Parser.parse(new Precedence(0), scanner, context, error, false).evaluate();
+        var eif = Parser.parse(new Precedence(0), scanner, context, false).evaluate();
         var colon = scanner.next(); //:
         if(!colon.isPunctuator(COLON)) {
-            error.addError("Expected a colon", colon.pos);
+            context.addError("Expected a colon", colon.pos);
         }
-        var eelse = Parser.parse(new Precedence(0), scanner, context, error, false).evaluate();
+        var eelse = Parser.parse(new Precedence(0), scanner, context, false).evaluate();
 
         return new Expr(
             context,

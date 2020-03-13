@@ -21,17 +21,16 @@
 
 package famuz.compiler.parser;
 
-import famuz.compiler.Error;
 import famuz.compiler.Token;
 import famuz.compiler.parser.Parser;
 import famuz.compiler.expr.Expr;
 
 class ParserArrayAccess
 {
-	public static function parse(left:Expr, scanner:TokenScanner, context:Context, error :Error):Expr 
+	public static function parse(left:Expr, scanner:TokenScanner, context:Context):Expr 
 	{
 		var leftBracket = scanner.next(); // consume "["
-		var expr = Parser.parse(new Precedence(0), scanner, context, error, false).evaluate();
+		var expr = Parser.parse(new Precedence(0), scanner, context, false).evaluate();
         var rightBracket = scanner.next(); // consume "]"
         
 		return new Expr(

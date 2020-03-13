@@ -28,10 +28,10 @@ import famuz.compiler.expr.Expr;
 
 class ParserParentheses
 {
-    public static function parse(scanner :TokenScanner, context :Context, error :Error) : Expr
+    public static function parse(scanner :TokenScanner, context :Context) : Expr
     {
         var token = scanner.next(); // (
-        var expr = Parser.parse(new Precedence(0), scanner, context, error, false).evaluate();
+        var expr = Parser.parse(new Precedence(0), scanner, context, false).evaluate();
         var rightParentheses = scanner.next(); // )
 
         return new Expr(

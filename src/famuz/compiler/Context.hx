@@ -31,8 +31,9 @@ class Context
 {
     public var parent :Context = null;
 
-    public function new() : Void
+    public function new(error :Error) : Void
     {
+        _error = error;
         _map = new Map<String, Expr>();
         _enumDefs = new Map<String, EnumDefinition>();
     }
@@ -73,13 +74,19 @@ class Context
         }
     }
 
+    public function addError(msg :String, pos :Position) : Void
+    {
+        
+    }
+
     public function createChild() : Context
     {
-        var context = new Context();
+        var context = new Context(_error);
         context.parent = this;
         return context;
     }
 
+    private var _error :Error;
     private var _map :Map<String, Expr>;
     private var _enumDefs :Map<String, EnumDefinition>;
 }

@@ -21,7 +21,6 @@
 
 package famuz.compiler.parser;
 
-import famuz.compiler.Error;
 import famuz.compiler.expr.Expr;
 import famuz.compiler.expr.ExprDef.BinopType;
 import famuz.compiler.Token;
@@ -30,7 +29,7 @@ import famuz.compiler.parser.Parser;
 
 class ParserBinop
 {
-    public static function parse(left :Expr, scanner :TokenScanner, context :Context, error :Error, punctuator :PunctuatorType) : Expr
+    public static function parse(left :Expr, scanner :TokenScanner, context :Context, punctuator :PunctuatorType) : Expr
     {
         scanner.next(); //op
 
@@ -42,7 +41,7 @@ class ParserBinop
             case _: throw "Invalid operation";
         }
         
-        var right = Parser.parse(PRECEDENCE_SUM, scanner, context, error, false);
+        var right = Parser.parse(PRECEDENCE_SUM, scanner, context, false);
 		return new Expr(
 			context,
 			EBinop(op, left, right),

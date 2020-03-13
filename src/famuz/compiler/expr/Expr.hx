@@ -144,7 +144,7 @@ class Expr
                         if(args.length != params.length) {
                             throw "err";
                         }
-                        var c = new Context();
+                        var c = new Context(null);
                         c.parent = body.context.parent;
                         body.context.parent = c;
                         for(i in 0...params.length) {

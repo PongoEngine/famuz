@@ -28,11 +28,11 @@ import famuz.compiler.expr.Expr;
 
 class ParserPrint
 {
-    public static function parse(scanner :TokenScanner, context :Context, error :Error) : Expr
+    public static function parse(scanner :TokenScanner, context :Context) : Expr
     {
         var token = scanner.next(); //consume "print"
         scanner.next(); //consume "("
-        var expr = Parser.parse(new Precedence(0), scanner, context, error, false).evaluate();
+        var expr = Parser.parse(new Precedence(0), scanner, context, false).evaluate();
         var rightParentheses = scanner.next(); //consume ")"
 
         return new Expr(

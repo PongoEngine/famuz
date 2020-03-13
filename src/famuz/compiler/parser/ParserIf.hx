@@ -28,14 +28,14 @@ import famuz.compiler.expr.Expr;
 
 class ParserIf
 {
-    public static function parse(scanner :TokenScanner, context :Context, error :Error) : Expr
+    public static function parse(scanner :TokenScanner, context :Context) : Expr
     {
         var if_ = scanner.next(); //if
-        var econd = Parser.parse(new Precedence(0), scanner, context, error, false).evaluate();
+        var econd = Parser.parse(new Precedence(0), scanner, context, false).evaluate();
         scanner.next(); //then
-        var ethen = Parser.parse(new Precedence(0), scanner, context, error, false).evaluate();
+        var ethen = Parser.parse(new Precedence(0), scanner, context, false).evaluate();
         scanner.next(); //else
-        var eelse = Parser.parse(new Precedence(0), scanner, context, error, false).evaluate();
+        var eelse = Parser.parse(new Precedence(0), scanner, context, false).evaluate();
 
         return new Expr(
             context, 

@@ -27,7 +27,7 @@ import famuz.compiler.expr.Expr;
 
 class ParserBool
 {
-    public static function parse(scanner :TokenScanner, context :Context, error :Error) : Expr
+    public static function parse(scanner :TokenScanner, context :Context) : Expr
     {
         var token = scanner.next(); //true | false
         var isTrue = switch token.type {
