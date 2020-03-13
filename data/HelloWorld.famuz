@@ -1,19 +1,30 @@
 enum Robot {
     SWAG
     TURKEY
+    KILLSTEVE
 }
+
+r = 1 + 2 + 3 - 20
+
+swagMonkey = true ? 200 : 100
+
+tunaFish = if true then 40 else if false then 100 else 90
 
 section = SWAG
 
 switchVal = switch section {
     case 1, 2: 10 + 200
     case 20: 20
-    case SWAG: 99
+    case KILLSTEVE, SWAG: true
     default: -20
+}
+
+func baller(satan) {
+    90 - satan
 }
 
 dag = -30
 
 func main() {
-    print(switchVal)
+    print(baller(666))
 }

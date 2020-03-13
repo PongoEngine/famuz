@@ -90,7 +90,7 @@ class Expr
             case EArray(e1, e2):
                 switch [e1.evaluate().def, e2.evaluate().def] {
                     case [EArrayDecl(values), EConstant(constant)]: switch constant {
-                        case CNumber(index): values[index].evaluate();
+                        // case CNumber(index): values[index].evaluate();
                         case _: throw "err";
                     }
                     case _: throw "err";

@@ -29,6 +29,7 @@ import famuz.compiler.theory.Step;
 import famuz.compiler.theory.Scale;
 import famuz.compiler.theory.Key;
 import famuz.compiler.theory.NotedHit;
+import famuz.ds.ImmutableList;
 
 /**
  * 
@@ -69,7 +70,7 @@ enum ExprDef
     /**
      * An array declaration [el].
      */
-    EArrayDecl(values:Array<Expr>);
+    EArrayDecl(values:ImmutableList<Expr>);
 
     /**
      * Field access on e.field.
