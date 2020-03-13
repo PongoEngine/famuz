@@ -23,7 +23,6 @@ package famuz.compiler.parser;
 
 import famuz.compiler.Error;
 import famuz.compiler.Token;
-import famuz.util.Assert;
 import famuz.compiler.expr.Expr;
 import famuz.compiler.parser.ParserBinop;
 import famuz.compiler.parser.ParserBlock;
@@ -56,7 +55,7 @@ class Parser
                 ParserEnum.parse(scanner, context, error);
             }
             var left = parseExpressionPrefix(scanner, context, error, isFunc);
-            if (!Assert.that(left != null, "IN PARSE EXPRESSION LEFT IS NULL\n")) {
+            if (left == null) {
                 if (scanner.hasNext()) {
                     scanner.next();
                 }

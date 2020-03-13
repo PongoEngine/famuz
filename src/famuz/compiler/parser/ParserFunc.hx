@@ -23,7 +23,6 @@ package famuz.compiler.parser;
 
 import famuz.compiler.Error;
 import famuz.compiler.Token;
-import famuz.util.Assert;
 import famuz.compiler.parser.Precedence.*;
 import famuz.compiler.parser.Parser;
 import famuz.compiler.expr.Expr;
@@ -64,7 +63,7 @@ class ParserFunc
             }
         }
 
-        Assert.that(scanner.next().isPunctuator(RIGHT_PARENTHESES), "\nparse_func :NOT LEFT PARENTHESES!\n");
+        scanner.next(); //)
         return params;
     }
 }

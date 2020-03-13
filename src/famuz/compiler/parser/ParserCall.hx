@@ -23,7 +23,6 @@ package famuz.compiler.parser;
 
 import famuz.compiler.Error;
 import famuz.compiler.Token;
-import famuz.util.Assert;
 import famuz.compiler.parser.Parser;
 import famuz.compiler.expr.Expr;
 
@@ -51,7 +50,6 @@ class ParserCall
         }
 
         var rightParam = scanner.next();
-        Assert.that(rightParam.isPunctuator(RIGHT_PARENTHESES), "EXPECTED RIGHT_PARENTHESES");
 
         return new Expr(
             context,

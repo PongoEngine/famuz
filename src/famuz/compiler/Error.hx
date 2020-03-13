@@ -28,6 +28,10 @@ class Error
 {
     public function new() : Void
     {
-        
+    }
+
+    public function addError(msg :String, position :Position) : Void
+    {
+
     }
 }

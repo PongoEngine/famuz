@@ -23,7 +23,6 @@ package famuz.compiler.parser;
 
 import famuz.compiler.Error;
 import famuz.compiler.Token;
-import famuz.util.Assert;
 import famuz.compiler.parser.Parser;
 import famuz.compiler.expr.Expr;
 using famuz.compiler.Position;
@@ -41,7 +40,6 @@ class ParserBlock
         }
 
         var rightBrace = scanner.next();
-        Assert.that(rightBrace.isPunctuator(RIGHT_BRACE), "EXPECTED RIGHT BRACKET");
 
         return  new Expr(
             context,
