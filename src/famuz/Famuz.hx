@@ -21,6 +21,7 @@
 
 package famuz;
 
+import famuz.compiler.Error;
 import sys.io.File;
 import haxe.ds.Option;
 import famuz.compiler.parser.Precedence;
@@ -39,10 +40,11 @@ class Famuz
         var tokens = Lexer.lex(filePath, content);
         var tokenScanner = new TokenScanner(tokens);
         var env = new Context();
+        var error = new Error();
         ContextTools.addArrayExprs(env);
 
         while(tokenScanner.hasNext()) {
-            Parser.parse(new Precedence(0), tokenScanner, env, false);
+            Parser.parse(new Precedence(0), tokenScanner, env, error, false);
         }
 
         var main = env.getExpr("main");

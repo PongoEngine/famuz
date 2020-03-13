@@ -21,12 +21,13 @@
 
 package famuz.compiler.parser;
 
+import famuz.compiler.Error;
 import famuz.compiler.Token;
 import famuz.compiler.expr.Expr;
 
 class ParserBool
 {
-    public static function parse(scanner :TokenScanner, context :Context) : Expr
+    public static function parse(scanner :TokenScanner, context :Context, error :Error) : Expr
     {
         var token = scanner.next(); //true | false
         var isTrue = switch token.type {

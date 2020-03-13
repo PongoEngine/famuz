@@ -21,6 +21,7 @@
 
 package famuz.compiler.parser;
 
+import famuz.compiler.Error;
 import famuz.compiler.Token;
 import famuz.compiler.parser.Parser;
 import famuz.compiler.expr.Expr;
@@ -28,7 +29,7 @@ import famuz.compiler.expr.ExprDef;
 
 class ParserUnop
 {
-    public static function parse(scanner :TokenScanner, context :Context) : Expr
+    public static function parse(scanner :TokenScanner, context :Context, error :Error) : Expr
     {
         var unopToken = scanner.next();
         var unop :Unop = switch unopToken.type {
@@ -39,7 +40,7 @@ class ParserUnop
             }
             case _: throw "err";
         }
-        var expr = Parser.parse(new Precedence(0), scanner, context, false).evaluate();
+        var expr = Parser.parse(new Precedence(0), scanner, context, error, false).evaluate();
 
         return new Expr(
             context, 

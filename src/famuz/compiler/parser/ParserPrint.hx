@@ -21,17 +21,18 @@
 
 package famuz.compiler.parser;
 
+import famuz.compiler.Error;
 import famuz.compiler.Token;
 import famuz.compiler.parser.Parser;
 import famuz.compiler.expr.Expr;
 
 class ParserPrint
 {
-    public static function parse(scanner :TokenScanner, context :Context) : Expr
+    public static function parse(scanner :TokenScanner, context :Context, error :Error) : Expr
     {
         var token = scanner.next(); //consume "print"
         scanner.next(); //consume "("
-        var expr = Parser.parse(new Precedence(0), scanner, context, false).evaluate();
+        var expr = Parser.parse(new Precedence(0), scanner, context, error, false).evaluate();
         var rightParentheses = scanner.next(); //consume ")"
 
         return new Expr(

@@ -21,6 +21,7 @@
 
 package famuz.compiler.parser;
 
+import famuz.compiler.Error;
 import famuz.compiler.Token;
 import famuz.compiler.parser.Precedence.*;
 import famuz.compiler.parser.Parser;
@@ -28,7 +29,7 @@ import famuz.compiler.expr.Expr;
 
 class ParserVar
 {
-    public static function parse(left :Expr, scanner :TokenScanner, context :Context) : Expr
+    public static function parse(left :Expr, scanner :TokenScanner, context :Context, error :Error) : Expr
     {
         scanner.next(); //consume "="
         var identifier = switch left.def {
@@ -39,7 +40,7 @@ class ParserVar
             case _: throw "invalid";
         }
 
-        var expr = Parser.parse(PRECEDENCE_ASSIGNMENT, scanner, context, false).evaluate();
+        var expr = Parser.parse(PRECEDENCE_ASSIGNMENT, scanner, context, error, false).evaluate();
         left.def = EVar(identifier, expr.evaluate());
         left.pos = Position.union(left.pos, expr.pos);
 

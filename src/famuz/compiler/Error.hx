@@ -19,25 +19,15 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package famuz.compiler.parser;
+ package famuz.compiler;
 
-import famuz.compiler.Error;
-import famuz.compiler.Token;
-import famuz.compiler.expr.Expr;
-
-class ParserTernary
+/**
+ * 
+ */
+class Error
 {
-    public static function parse(left :Expr, scanner :TokenScanner, context :Context, error :Error) : Expr
+    public function new() : Void
     {
-        var question = scanner.next(); //?
-        var eif = Parser.parse(new Precedence(0), scanner, context, error, false).evaluate();
-        scanner.next(); //:
-        var eelse = Parser.parse(new Precedence(0), scanner, context, error, false).evaluate();
-
-        return new Expr(
-            context,
-            ETernary(left, eif, eelse),
-            Position.union(question.pos, eelse.pos)
-        );
+        
     }
 }

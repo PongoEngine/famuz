@@ -21,6 +21,7 @@
 
 package famuz.compiler.parser;
 
+import famuz.compiler.Error;
 import famuz.compiler.Token;
 import famuz.compiler.parser.Parser;
 import famuz.compiler.expr.Expr;
@@ -28,10 +29,10 @@ import famuz.compiler.expr.ExprDef;
 
 class ParserSwitch
 {
-    public static function parse(scanner :TokenScanner, context :Context) : Expr
+    public static function parse(scanner :TokenScanner, context :Context, error :Error) : Expr
     {
         var switch_ = scanner.next(); //switch
-        var e = Parser.parse(new Precedence(0), scanner, context, false).evaluate();
+        var e = Parser.parse(new Precedence(0), scanner, context, error, false).evaluate();
         scanner.next(); //{
 
         var cases :Array<Case> = [];
@@ -40,9 +41,9 @@ class ParserSwitch
             switch scanner.peek().type {
                 case TTKeyword(type): switch type {
                     case CASE: 
-                        cases.push(parseCase(scanner, context));
+                        cases.push(parseCase(scanner, context, error));
                     case DEFAULT: {
-                        default_ = parseDefault(scanner, context);
+                        default_ = parseDefault(scanner, context, error);
                     }
                     case _: throw "err";
                 }
@@ -62,26 +63,26 @@ class ParserSwitch
         );
     }
 
-    public static function parseCase(scanner :TokenScanner, context :Context) : Case
+    public static function parseCase(scanner :TokenScanner, context :Context, error :Error) : Case
     {
         scanner.next(); //case
         var values :Array<Expr> = [];
         while(scanner.peek().isNotPunctuator(COLON)) {
-            values.push(Parser.parse(new Precedence(0), scanner, context, false).evaluate());
+            values.push(Parser.parse(new Precedence(0), scanner, context, error, false).evaluate());
             if(scanner.peek().isPunctuator(COMMA)) {
                 scanner.next();
             }
         }
         scanner.next(); //colon
-        var expr = Parser.parse(new Precedence(0), scanner, context, false).evaluate();
+        var expr = Parser.parse(new Precedence(0), scanner, context, error, false).evaluate();
 
         return {expr:expr, values: values};
     }
 
-    public static function parseDefault(scanner :TokenScanner, context :Context) : Expr
+    public static function parseDefault(scanner :TokenScanner, context :Context, error :Error) : Expr
     {
         scanner.next(); //default
         scanner.next(); //:
-        return Parser.parse(new Precedence(0), scanner, context, false).evaluate();
+        return Parser.parse(new Precedence(0), scanner, context, error, false).evaluate();
     }
 }

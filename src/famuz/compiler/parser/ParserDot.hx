@@ -21,12 +21,13 @@
 
 package famuz.compiler.parser;
 
+import famuz.compiler.Error;
 import famuz.compiler.Token;
 import famuz.compiler.expr.Expr;
 
 class ParserDot
 {
-    public static function parse(left :Expr, scanner :TokenScanner, context :Context) : Expr
+    public static function parse(left :Expr, scanner :TokenScanner, context :Context, error :Error) : Expr
     {
         var dot = scanner.next();
         var field = scanner.next();
