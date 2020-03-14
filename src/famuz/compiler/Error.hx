@@ -29,6 +29,8 @@ import famuz.compiler.Position;
  */
 class Error
 {
+    public static var FATAL_COMPILER_ERROR = "FATAL COMPILER ERROR";
+
     public function new() : Void
     {
         _errors = [];
@@ -37,6 +39,11 @@ class Error
     public function addError(e :ParserError) : Void
     {
         _errors.push(e);
+    }
+
+    public function printErrors() : Void
+    {
+        
     }
 
     public function hasErrors() : Bool

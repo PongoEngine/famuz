@@ -107,9 +107,9 @@ class Parser
                 case IF: 
                     ParserIf.parse(scanner, context);
                 case TRUE: 
-                    ParserBool.parse(scanner, context);
+                    ParserBool.parse(scanner, context, type);
                 case FALSE: 
-                    ParserBool.parse(scanner, context);
+                    ParserBool.parse(scanner, context, type);
                 case SWITCH:
                     ParserSwitch.parse(scanner, context);
                 case CASE:

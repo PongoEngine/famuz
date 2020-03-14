@@ -26,17 +26,14 @@ import famuz.compiler.expr.Expr;
 
 class ParserBool
 {
-    public static function parse(scanner :TokenScanner, context :Context) : Expr
+    public static function parse(scanner :TokenScanner, context :Context, keywordType :KeywordType) : Expr
     {
-        var token = scanner.next(); //true | false
-        var isTrue = switch token.type {
-            case TTKeyword(type): switch type {
-                case TRUE: true;
-                case FALSE: false;
-                case _: throw "err";
-            }
-            case _:  throw "err";
+        var boolToken = scanner.next(); //true | false
+        var isTrue = switch keywordType {
+            case TRUE: true;
+            case FALSE: false;
+            case _: throw Error.FATAL_COMPILER_ERROR;
         }
-        return new Expr(context, EConstant(CBool(isTrue)), token.pos);
+        return new Expr(context, EConstant(CBool(isTrue)), boolToken.pos);
     }
 }

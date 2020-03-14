@@ -39,12 +39,17 @@ class ParserCall
             }
         }
 
-        var rightParam = scanner.next();
+        var rightParentheses = scanner.hasNext() && scanner.peek().isPunctuator(RIGHT_PARENTHESES)
+            ? scanner.next()
+            : {
+                context.addError(MissingPunctuator(RIGHT_PARENTHESES, scanner.lastPosition()));
+                new Token(TTPunctuator(RIGHT_PARENTHESES), scanner.lastPosition());
+            };
 
         return new Expr(
             context,
             ECall(left, args),
-            Position.union(left.pos, rightParam.pos)
+            Position.union(left.pos, rightParentheses.pos)
         );
     }
 }

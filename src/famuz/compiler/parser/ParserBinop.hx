@@ -38,7 +38,7 @@ class ParserBinop
             case PunctuatorType.MINUS: SUBTRACT;
             case PunctuatorType.SHIFT_LEFT: SHIFT_LEFT;
             case PunctuatorType.SHIFT_RIGHT: SHIFT_RIGHT;
-            case _: throw "Invalid operation";
+            case _: throw Error.FATAL_COMPILER_ERROR;
         }
         
         var right = Parser.parse(PRECEDENCE_SUM, scanner, context, false);

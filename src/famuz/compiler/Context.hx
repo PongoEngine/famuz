@@ -76,6 +76,11 @@ class Context
         }
     }
 
+    public inline function printErrors() : Void
+    {
+        this._error.printErrors();
+    }
+
     public inline function addError(e :ParserError) : Void
     {
         _error.addError(e);
