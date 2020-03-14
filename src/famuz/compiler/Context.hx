@@ -25,6 +25,7 @@ import famuz.compiler.Error.ParserError;
 import famuz.compiler.Token.PunctuatorType;
 import famuz.compiler.expr.Expr;
 import famuz.compiler.expr.EnumDefinition;
+using famuz.util.FStringTools;
 
 /**
  * 
@@ -43,10 +44,21 @@ class Context
     public function addVarFunc(name :String, expr :Expr) : Void
     {
         if(_map.exists(name)) {
+            this.printEnvironment("ALREADY EXISTS:");
             throw '"${name}" already exists.';
         }
         else {
             _map.set(name, expr);
+        }
+    }
+
+    public function removeVarFunc(name :String) : Void
+    {
+        if(!_map.exists(name)) {
+            throw '"${name}" doesn\'t exists.';
+        }
+        else {
+            _map.remove(name);
         }
     }
 
@@ -72,6 +84,7 @@ class Context
             return this.parent.getExpr(name);
         }
         else {
+            this.printEnvironment("MISSING EXPR:");
             throw 'Expr:${name} not found.';
         }
     }
@@ -96,6 +109,11 @@ class Context
         var context = new Context(_error);
         context.parent = this;
         return context;
+    }
+
+    public function printEnvironment(msg :String) : Void
+    {
+        trace(msg + "\n" + _map.mapToString() + "\n");
     }
 
     private var _error :Error;

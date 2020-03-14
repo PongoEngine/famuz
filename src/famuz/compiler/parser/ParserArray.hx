@@ -22,7 +22,6 @@
 package famuz.compiler.parser;
 
 import famuz.compiler.Token;
-import famuz.ds.ImmutableList;
 import famuz.compiler.parser.Parser;
 import famuz.compiler.expr.Expr;
 
@@ -31,7 +30,7 @@ class ParserArray
     public static function parse(scanner :TokenScanner, context :Context) : Expr
     {
         var token = scanner.next(); //[
-        var exprs = new ImmutableList<Expr>();
+        var exprs = new Array<Expr>();
         var missingComma = false;
 
         while (scanner.hasNext() && scanner.peek().isNotPunctuator(RIGHT_BRACKET)) {

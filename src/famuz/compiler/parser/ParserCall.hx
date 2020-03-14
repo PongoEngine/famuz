@@ -38,7 +38,7 @@ class ParserCall
             if(missingComma) {
                 context.addError(MissingPunctuator(COMMA, scanner.lastPosition()));
             }
-            args.push(Parser.parse(new Precedence(0), scanner, context, false).evaluate());
+            args.push(Parser.parse(new Precedence(0), scanner, context, false));
             if (scanner.hasNext() && scanner.peek().isPunctuator(COMMA)) {
                 scanner.next(); //consume comma
             }

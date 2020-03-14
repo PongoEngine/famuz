@@ -90,7 +90,7 @@ class Expr
             case EArray(e1, e2):
                 switch [e1.evaluate().def, e2.evaluate().def] {
                     case [EArrayDecl(values), EConstant(constant)]: switch constant {
-                        // case CNumber(index): values[index].evaluate();
+                        case CNumber(index): values[index].evaluate();
                         case _: throw "err";
                     }
                     case _: throw "err";
@@ -146,25 +146,21 @@ class Expr
                         case _: 
                             throw "err";
                     }
-                    case ECall(_, _):
-                        trace(e.def + "\n");
-                        throw "err";
                     case _: 
                         throw "err";
                 }
                 switch expr.def {
-                    case EFunction(identifier, params, body): {
+                    case EFunction(_, params, body): {
                         if(args.length != params.length) {
                             throw "err";
                         }
-                        var c = new Context(null);
-                        c.parent = body.context.parent;
-                        body.context.parent = c;
                         for(i in 0...params.length) {
-                            c.addVarFunc(params[i], args[i]);
+                            body.context.addVarFunc(params[i], args[i].evaluate());
                         }
                         var evalExpr = body.evaluate();
-                        body.context.parent = c.parent;
+                        for(i in 0...params.length) {
+                            body.context.removeVarFunc(params[i]);
+                        }
                         evalExpr;
                     }
                     case _:
@@ -287,6 +283,8 @@ class Expr
                 values.map(v -> v.evaluate().toString()) + "";
             case EFunction(identifier, params, body):
                 '${identifier}(${params.join(",")}){...}';
+            case EVar(identifier, expr):
+                '${identifier}: ${expr}';
             case _:
                 throw "err";
         }

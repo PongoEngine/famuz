@@ -32,10 +32,10 @@ class ParserBlock
     {
         var leftBrace = scanner.next(); //{
         var exprs :Array<Expr> = [];
-        context = context.createChild();
+        var bodyContext = context.createChild();
 
         while (scanner.hasNext() && scanner.peek().isPrefixToken()) {
-            exprs.push(Parser.parse(new Precedence(0), scanner, context, false));
+            exprs.push(Parser.parse(new Precedence(0), scanner, bodyContext, false));
         }
 
         var rightBrace = scanner.hasNext() && scanner.peek().isPunctuator(RIGHT_BRACE)
@@ -47,7 +47,7 @@ class ParserBlock
 
 
         return new Expr(
-            context,
+            bodyContext,
             EBlock(exprs),
             Position.union(leftBrace.pos, rightBrace.pos)
         );

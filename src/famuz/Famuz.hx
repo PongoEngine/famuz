@@ -21,20 +21,19 @@
 
 package famuz;
 
+import famuz.compiler.expr.Expr;
 import famuz.compiler.Error;
 import sys.io.File;
 import haxe.ds.Option;
 import famuz.compiler.parser.Precedence;
-import famuz.compiler.Position;
 import famuz.compiler.Context;
 import famuz.compiler.Token.TokenScanner;
 import famuz.compiler.lexer.Lexer;
 import famuz.compiler.parser.Parser;
-import famuz.compiler.theory.NotedHit;
 
 class Famuz
 {
-    public static function compile(filePath :String) : Evaluation
+    public static function compile(filePath :String) : Option<Expr>
     {
         var content = File.getContent(filePath);
         var tokens = Lexer.lex(filePath, content);
@@ -48,30 +47,16 @@ class Famuz
         
         if(env.hasErrors()) {
             env.printErrors();
-            return {
-                music: None,
-                errors: []
-            };
+            return None;
         }
 
         var main = env.getExpr("main");
-        var music = switch main.def {
+        return switch main.def {
             case EFunction(_, _, body): {
-                body.evaluate();
-                None;
+                return Some(body.evaluate());
             }
             case _: 
                 None;
         }
-
-        return {
-            music: music,
-            errors: []
-        };
     }
-}
-
-typedef Evaluation = {
-    music: Option<Array<NotedHit>>,
-    errors: Array<{msg :String, pos :Position}>
 }

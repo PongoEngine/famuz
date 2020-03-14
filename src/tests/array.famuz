@@ -1,0 +1,9 @@
+array = [9,1,2,3,4]
+
+func identity(a) {
+    a
+}
+
+func main() {
+    print(array)
+}

@@ -24,29 +24,21 @@ package tests;
 import haxe.io.Path;
 import famuz.Famuz;
 import famuz.compiler.midi.Midi;
+import famuz.compiler.expr.Expr;
+import haxe.ds.Option;
 
 class Test {
     static function main() {
+        haxe.Log.trace = function(v:Dynamic, ?infos:haxe.PosInfos) {
+			Sys.print(v + "");
+        }
+        
         run("./src/tests/func.famuz");
+        run("./src/tests/array.famuz");
     }
 
-	static function run(sourcePath :String) {
-		var start = Sys.time();
-		var path = new Path(sourcePath);
-		var output = path.file + ".mid";
-
-		haxe.Log.trace = function(v:Dynamic, ?infos:haxe.PosInfos) {
-			Sys.print(v + "");
-		}
-		var evaluation = Famuz.compile(sourcePath);
-
-		switch [evaluation.errors.length, evaluation.music] {
-			case [0, Some(m)]:
-				Midi.create(m, output);
-			case _:
-		}
-		var end = Sys.time();
-		var time = Math.floor((end - start) * 1000000) / 1000000;
-		trace('\nCompiled ${sourcePath} in ${time} seconds.\n');
+	static function run(sourcePath :String) : Option<Expr>
+	{
+		return Famuz.compile(sourcePath);
 	}
 }
