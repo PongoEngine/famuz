@@ -75,7 +75,9 @@ class Parser
 
     private static function parseConsume(scanner :TokenScanner) : Expr
     {
-        scanner.next();
+        if(scanner.hasNext()) {
+            scanner.next();
+        }
         return EMPTY_EXPR;
     }
 

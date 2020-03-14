@@ -52,6 +52,31 @@ class Token
         return !isPunctuator(punctuator);
     }
 
+    public inline function isPrefixToken() : Bool
+    {
+        return switch this.type {
+            case TTPunctuator(type):
+                switch type {
+                    case LEFT_PARENTHESES, LEFT_BRACE, LEFT_BRACKET, MINUS, BANG: 
+                        true;
+                    case ADD, ASSIGNMENT, RIGHT_PARENTHESES, RIGHT_BRACE,
+                        RIGHT_BRACKET, SHIFT_LEFT, SHIFT_RIGHT, SLASH,
+                        COMMA, PERIOD, QUESTION_MARK, COLON:
+                        false;
+                }
+            case TTKeyword(type): switch type {
+                case FUNC, PRINT, IF, TRUE, FALSE, SWITCH: 
+                    true;
+                case CASE, DEFAULT:
+                    false;
+                case ENUM:
+                    throw "err";
+            }
+            case TTIdentifier(_), TTScale(_), TTKey(_), TTNumber(_), TTRhythm(_): 
+                true;
+        }
+    }
+
     public function getIdentifier() : String
     {
         return switch this.type {
@@ -77,7 +102,9 @@ class TokenScanner
         return this.curIndex < this.tokens.length;
     }
 
-    public function next() : Token
+    public function next(
+        
+    ) : Token
     {
         return this.tokens[this.curIndex++];
     }

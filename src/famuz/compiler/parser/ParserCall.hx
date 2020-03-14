@@ -32,10 +32,18 @@ class ParserCall
         scanner.next(); //left parentheses
 
         var args :Array<Expr> = [];
-        while (scanner.hasNext() && scanner.peek().isNotPunctuator(RIGHT_PARENTHESES)) {
+        var missingComma = false;
+
+        while (scanner.hasNext() && scanner.peek().isPrefixToken()) {
+            if(missingComma) {
+                context.addError(MissingPunctuator(COMMA, scanner.lastPosition()));
+            }
             args.push(Parser.parse(new Precedence(0), scanner, context, false).evaluate());
-            if (scanner.peek().isPunctuator(COMMA)) {
+            if (scanner.hasNext() && scanner.peek().isPunctuator(COMMA)) {
                 scanner.next(); //consume comma
+            }
+            else {
+                missingComma = true;
             }
         }
 

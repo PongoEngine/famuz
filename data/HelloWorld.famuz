@@ -1,7 +1,0 @@
-func robot(cool) {
-    cool
-}
-
-func main() {
-    print(robot(100))
-}

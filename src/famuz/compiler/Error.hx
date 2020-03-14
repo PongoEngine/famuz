@@ -43,7 +43,17 @@ class Error
 
     public function printErrors() : Void
     {
-        
+        for(e in _errors) {
+            switch e {
+                case MissingPunctuator(t, pos):
+                    printError('Missing punctuator: ${t}', pos);
+            }
+        }
+    }
+
+    public function printError(msg :String, pos :Position) : Void
+    {
+        trace('${pos.file}:${pos.line}: ${msg}\n');
     }
 
     public function hasErrors() : Bool

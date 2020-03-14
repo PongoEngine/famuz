@@ -34,7 +34,7 @@ class ParserBlock
         var exprs :Array<Expr> = [];
         context = context.createChild();
 
-        while (scanner.hasNext() && scanner.peek().isNotPunctuator(RIGHT_BRACE)) {
+        while (scanner.hasNext() && scanner.peek().isPrefixToken()) {
             exprs.push(Parser.parse(new Precedence(0), scanner, context, false));
         }
 
