@@ -21,6 +21,9 @@
 
  package famuz.compiler;
 
+import famuz.compiler.Token.PunctuatorType;
+import famuz.compiler.Position;
+
 /**
  * 
  */
@@ -28,10 +31,23 @@ class Error
 {
     public function new() : Void
     {
+        _errors = [];
     }
 
-    public function addError(msg :String, position :Position) : Void
+    public function addError(e :ParserError) : Void
     {
-
+        _errors.push(e);
     }
+
+    public function hasErrors() : Bool
+    {
+        return _errors.length > 0;
+    }
+
+    private var _errors :Array<ParserError>;
+}
+
+enum ParserError
+{
+    MissingPunctuator(t :PunctuatorType, pos :Position);
 }

@@ -30,15 +30,9 @@ class ParserTernary
     public static function parse(left :Expr, scanner :TokenScanner, context :Context) : Expr
     {
         var question = scanner.next(); //?
-        if(!question.isPunctuator(QUESTION_MARK)) {
-            context.addError("Expected a question mark", question.pos);
-        }
-        var eif = Parser.parse(new Precedence(0), scanner, context, false).evaluate();
+        var eif = Parser.parse(new Precedence(0), scanner, context, false);
         var colon = scanner.next(); //:
-        if(!colon.isPunctuator(COLON)) {
-            context.addError("Expected a colon", colon.pos);
-        }
-        var eelse = Parser.parse(new Precedence(0), scanner, context, false).evaluate();
+        var eelse = Parser.parse(new Precedence(0), scanner, context, false);
 
         return new Expr(
             context,

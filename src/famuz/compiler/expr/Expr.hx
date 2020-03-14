@@ -138,8 +138,21 @@ class Expr
             /**
              * 
              */
-            case ECall(identifier, args): {
-                switch this.context.getExpr(identifier).evaluate().def {
+            case ECall(e, args): {
+                var expr = switch e.def {
+                    case EConstant(constant): switch constant {
+                        case CIdentifier(identifier): 
+                            this.context.getExpr(identifier).evaluate();
+                        case _: 
+                            throw "err";
+                    }
+                    case ECall(_, _):
+                        trace(e.def + "\n");
+                        throw "err";
+                    case _: 
+                        throw "err";
+                }
+                switch expr.def {
                     case EFunction(identifier, params, body): {
                         if(args.length != params.length) {
                             throw "err";

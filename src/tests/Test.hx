@@ -19,34 +19,34 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package famuz.compiler.parser;
+package tests;
 
-import famuz.compiler.Token;
-import famuz.ds.ImmutableList;
-import famuz.compiler.parser.Parser;
-import famuz.compiler.expr.Expr;
+import haxe.io.Path;
+import famuz.Famuz;
+import famuz.compiler.midi.Midi;
 
-class ParserArray
-{
-    public static function parse(scanner :TokenScanner, context :Context) : Expr
-    {
-        var token = scanner.next(); //[
-        var exprs = new ImmutableList<Expr>();
-
-        while (scanner.hasNext() && scanner.peek().isNotPunctuator(RIGHT_BRACKET)) {
-            var expr = Parser.parse(new Precedence(0), scanner, context, false);
-            exprs.push(expr);
-            if(scanner.peek().isPunctuator(COMMA)) {
-                scanner.next();
-            }
-        }
-
-        var rightBrace = scanner.next();
-
-        return new Expr(
-            context,
-            EArrayDecl(exprs),
-            Position.union(token.pos, rightBrace.pos)
-        );
+class Test {
+    static function main() {
+        run("./src/tests/func.famuz");
     }
+
+	static function run(sourcePath :String) {
+		var start = Sys.time();
+		var path = new Path(sourcePath);
+		var output = path.file + ".mid";
+
+		haxe.Log.trace = function(v:Dynamic, ?infos:haxe.PosInfos) {
+			Sys.print(v + "");
+		}
+		var evaluation = Famuz.compile(sourcePath);
+
+		switch [evaluation.errors.length, evaluation.music] {
+			case [0, Some(m)]:
+				Midi.create(m, output);
+			case _:
+		}
+		var end = Sys.time();
+		var time = Math.floor((end - start) * 1000000) / 1000000;
+		trace('\nCompiled ${sourcePath} in ${time} seconds.\n');
+	}
 }

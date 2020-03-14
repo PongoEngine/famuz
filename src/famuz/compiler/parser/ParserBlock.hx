@@ -31,7 +31,7 @@ class ParserBlock
 {
     public static function parse(scanner :TokenScanner, context :Context) : Expr
     {
-        var token = scanner.next();
+        var leftBrace = scanner.next(); //{
         var exprs :Array<Expr> = [];
         context = context.createChild();
 
@@ -39,12 +39,18 @@ class ParserBlock
             exprs.push(Parser.parse(new Precedence(0), scanner, context, false));
         }
 
-        var rightBrace = scanner.next();
+        var rightBrace = scanner.hasNext() && scanner.peek().isPunctuator(RIGHT_BRACE)
+            ? scanner.next()
+            : {
+                context.addError(MissingPunctuator(RIGHT_BRACE, scanner.lastPosition()));
+                new Token(TTPunctuator(RIGHT_BRACE), scanner.lastPosition());
+            };
 
-        return  new Expr(
+
+        return new Expr(
             context,
             EBlock(exprs),
-            Position.union(token.pos, rightBrace.pos)
+            Position.union(leftBrace.pos, rightBrace.pos)
         );
     }
 }

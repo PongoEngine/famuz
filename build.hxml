@@ -1,6 +1,7 @@
 -cp src
 -D analyzer-optimize
--main Main
+# -main Main
+-main tests.Test
 --interp
 # -cpp cpp
 # -D HXCPP_M64

@@ -31,11 +31,11 @@ class ParserIf
     public static function parse(scanner :TokenScanner, context :Context) : Expr
     {
         var if_ = scanner.next(); //if
-        var econd = Parser.parse(new Precedence(0), scanner, context, false).evaluate();
+        var econd = Parser.parse(new Precedence(0), scanner, context, false);
         scanner.next(); //then
-        var ethen = Parser.parse(new Precedence(0), scanner, context, false).evaluate();
+        var ethen = Parser.parse(new Precedence(0), scanner, context, false);
         scanner.next(); //else
-        var eelse = Parser.parse(new Precedence(0), scanner, context, false).evaluate();
+        var eelse = Parser.parse(new Precedence(0), scanner, context, false);
 
         return new Expr(
             context, 

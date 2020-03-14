@@ -21,6 +21,8 @@
 
 package famuz.compiler;
 
+import famuz.compiler.Error.ParserError;
+import famuz.compiler.Token.PunctuatorType;
 import famuz.compiler.expr.Expr;
 import famuz.compiler.expr.EnumDefinition;
 
@@ -70,13 +72,18 @@ class Context
             return this.parent.getExpr(name);
         }
         else {
-            return null;
+            throw 'Expr:${name} not found.';
         }
     }
 
-    public function addError(msg :String, pos :Position) : Void
+    public inline function addError(e :ParserError) : Void
     {
-        
+        _error.addError(e);
+    }
+
+    public function hasErrors() : Bool
+    {
+        return this._error.hasErrors();
     }
 
     public function createChild() : Context

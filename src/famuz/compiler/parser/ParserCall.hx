@@ -30,15 +30,6 @@ class ParserCall
 {
     public static function parse(left :Expr, scanner :TokenScanner, context :Context) : Expr
     {
-        var funcName = switch left.def {
-            case EConstant(constant): {
-                switch constant {
-                    case CIdentifier(str): str;
-                    case _: "Invalid funcName";
-                }
-            }
-            case _: "Invalid funcName";
-        }
         scanner.next(); //left parentheses
 
         var args :Array<Expr> = [];
@@ -53,7 +44,7 @@ class ParserCall
 
         return new Expr(
             context,
-            ECall(funcName, args),
+            ECall(left, args),
             Position.union(left.pos, rightParam.pos)
         );
     }

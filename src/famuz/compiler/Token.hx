@@ -86,6 +86,14 @@ class TokenScanner
     {
         return this.tokens[this.curIndex];
     }
+
+    public function lastPosition() : Position
+    {
+        var index = this.curIndex > 0
+            ? this.curIndex - 1
+            : this.curIndex;
+        return this.tokens[index].pos;
+    }
 }
 
 enum TokenType 
