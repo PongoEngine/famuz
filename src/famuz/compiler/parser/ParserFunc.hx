@@ -21,12 +21,10 @@
 
 package famuz.compiler.parser;
 
-import famuz.compiler.Error;
 import famuz.compiler.Token;
 import famuz.compiler.parser.Precedence.*;
 import famuz.compiler.parser.Parser;
 import famuz.compiler.expr.Expr;
-import famuz.compiler.expr.ExprDef;
 
 class ParserFunc
 {

@@ -21,7 +21,6 @@
 
 package famuz.compiler.parser;
 
-import famuz.compiler.Error;
 import famuz.compiler.Token;
 import famuz.compiler.theory.Scale;
 import famuz.compiler.expr.Expr;
