@@ -126,7 +126,7 @@ enum ExprDef
     /**
      * A function declaration.
      */
-    EFunction(identifier :String, args :Array<String>, body :Expr);
+    EFunction(identifier :String, params :Array<String>, body :Expr);
 }
 
 /**

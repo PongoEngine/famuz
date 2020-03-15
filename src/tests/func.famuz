@@ -1,7 +1,20 @@
-func textFunc(a, b) {
+func binopFunc(a, b) {
     a + b
 }
 
+func identity(a) {
+    a
+}
+
+func retfunc(a) {
+    b = a
+    func val() {
+        122
+    }
+}
+
 func main() {
-    print(textFunc(1, 2))
+    a = binopFunc(1, 2)
+    //print(identity(a))
+    print(retfunc(99)())
 }

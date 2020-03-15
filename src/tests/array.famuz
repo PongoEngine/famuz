@@ -1,9 +1,10 @@
-array = [9,1,2,3,4]
-
-func identity(a) {
-    a
-}
+arra = [9,1,2,3,4]
 
 func main() {
-    print(array)
+    a = pop(arra)
+    b = pop(a)
+    c = pop(b)
+    d = pop(c)
+    e = pop(d)
+    print(e)
 }

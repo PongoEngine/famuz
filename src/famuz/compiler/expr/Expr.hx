@@ -139,32 +139,18 @@ class Expr
              * 
              */
             case ECall(e, args): {
-                var expr = switch e.def {
-                    case EConstant(constant): switch constant {
-                        case CIdentifier(identifier): 
-                            this.context.getExpr(identifier).evaluate();
-                        case _: 
-                            throw "err";
-                    }
-                    case _: 
-                        throw "err";
-                }
-                switch expr.def {
-                    case EFunction(_, params, body): {
-                        if(args.length != params.length) {
-                            throw "err";
-                        }
+                switch e.evaluate().def {
+                    case EFunction(_, params, body):
                         for(i in 0...params.length) {
-                            body.context.addVarFunc(params[i], args[i].evaluate());
+                            body.context.addVarFunc(params[i], args[i]);
                         }
-                        var evalExpr = body.evaluate();
+                        var e = body.evaluate();
                         for(i in 0...params.length) {
                             body.context.removeVarFunc(params[i]);
                         }
-                        evalExpr;
-                    }
-                    case _:
-                        throw "err";
+                        e;
+                    case _: 
+                        e.evaluate();
                 }
             }
 
@@ -285,7 +271,33 @@ class Expr
                 '${identifier}(${params.join(",")}){...}';
             case EVar(identifier, expr):
                 '${identifier}: ${expr}';
-            case _:
+            case EBlock(expr):
+                '{...}';
+            case EArray(e1, e2):
+                throw "err";
+            case EArrayFunc(e, op):
+                throw "err";
+            case EBinop(type, e1, e2):
+                throw "err";
+            case ECall(e, params):
+                '${e}(${params.join(",")})';
+            case EEnumParameter(e, def, index):
+                throw "err";
+            case EField(e, field):
+                throw "err";
+            case EIf(econd, ethen, eelse):
+                throw "err";
+            case EObjectDecl(fields):
+                throw "err";
+            case EParentheses(expr):
+                throw "err";
+            case EPrint(expr):
+                throw "err";
+            case ESwitch(e, cases, edef):
+                throw "err";
+            case ETernary(econd, eif, eelse):
+                throw "err";
+            case EUnop(op, e):
                 throw "err";
         }
     }
