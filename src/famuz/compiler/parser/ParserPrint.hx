@@ -30,11 +30,13 @@ class ParserPrint
     public static function parse(scanner :TokenScanner, context :Context) : Expr
     {
         var token = scanner.next(); //consume "print"
+        scanner.next(); //consume "("
         var expr = Parser.parse(new Precedence(0), scanner, context, false);
+        var rightParentheses = scanner.next(); //consume ")"
 
         return new Expr(
             EPrint(expr),
-            Position.union(token.pos, expr.pos)
+            Position.union(token.pos, rightParentheses.pos)
         );
     }
 }

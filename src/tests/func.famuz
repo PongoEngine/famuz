@@ -9,5 +9,5 @@ func cool a b = {
 
 func main = {
     let sum = cool( 2 10 )( 20 )
-    print sum
+    print(sum)
 }
