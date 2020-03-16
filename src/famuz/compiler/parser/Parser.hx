@@ -90,7 +90,7 @@ class Parser
                         ParserParentheses.parse(scanner, context);
                     case LEFT_BRACE:
                         isFunc
-                            ? ParserBlock.parse(scanner, context.createChild())
+                            ? ParserBlock.parse(scanner, context)
                             : ParserStruct.parse(scanner, context);
                     case LEFT_BRACKET: 
                         ParserArray.parse(scanner, context);

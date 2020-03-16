@@ -32,7 +32,6 @@ class ParserKey
         var token = scanner.next();
 
         return new Expr(
-            context,
             EConstant(CKey(key)),
             token.pos
         );

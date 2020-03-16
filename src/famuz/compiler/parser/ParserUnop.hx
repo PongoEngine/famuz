@@ -42,7 +42,6 @@ class ParserUnop
         var expr = Parser.parse(new Precedence(0), scanner, context, false);
 
         return new Expr(
-            context,
             EUnop(unop, expr), 
             Position.union(unopToken.pos, expr.pos)
         );

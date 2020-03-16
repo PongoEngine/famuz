@@ -52,7 +52,6 @@ class ParserRhythm
         var duration = rhythmScanner.content.length;
 
         return new Expr(
-            context,
             EConstant(CRhythm(hits, duration)),
             token.pos
         );

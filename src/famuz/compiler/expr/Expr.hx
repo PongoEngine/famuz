@@ -30,18 +30,16 @@ using famuz.compiler.expr.ExprBinops;
  */
 class Expr
 {
-    public var context :Context;
     public var def :ExprDef;
     public var pos :Position;
 
-    public function new(context :Context, def :ExprDef, pos :Position) : Void
+    public function new(def :ExprDef, pos :Position) : Void
     {
-        this.context = context;
         this.def = def;
         this.pos = pos;
     }
 
-    public function evaluate() : Expr
+    public function evaluate(context :Context) : Expr
     {
         return switch def {
             /**
@@ -50,7 +48,7 @@ class Expr
             case EConstant(constant):
                 switch constant {
                     case CIdentifier(str):
-                        context.getExpr(str).evaluate();
+                        context.getExpr(str).evaluate(context);
                     case _:
                         this;
                 }
@@ -62,14 +60,14 @@ class Expr
                 for(case_ in cases) {
                     for(v in case_.values) {
                         if(v.equals(e, context)) {
-                            return case_.expr.evaluate();
+                            return case_.expr.evaluate(context);
                         }
                     }
                 }
 
                 edef == null
                     ? throw "err"
-                    : edef.evaluate();
+                    : edef.evaluate(context);
             }
 
             /**
@@ -88,9 +86,9 @@ class Expr
              * 
              */
             case EArray(e1, e2):
-                switch [e1.evaluate().def, e2.evaluate().def] {
+                switch [e1.evaluate(context).def, e2.evaluate(context).def] {
                     case [EArrayDecl(values), EConstant(constant)]: switch constant {
-                        case CNumber(index): values[index].evaluate();
+                        case CNumber(index): values[index].evaluate(context);
                         case _: throw "err";
                     }
                     case _: throw "err";
@@ -106,10 +104,10 @@ class Expr
              * 
              */
              case EArrayFunc(e, op):
-                var evalArra = e.evaluate();
+                var evalArra = e.evaluate(context);
                 switch [evalArra.def, op] {
                     case [EArrayDecl(values), OpPush(expr)]:
-                        values.push(expr.evaluate());
+                        values.push(expr.evaluate(context));
                         evalArra;
                     case [EArrayDecl(values), OpPop]:
                         values.pop();
@@ -121,7 +119,7 @@ class Expr
              * 
              */
             case EField(e, field): {
-                switch e.evaluate().def {
+                switch e.evaluate(context).def {
                     case EObjectDecl(fields):
                         fields.get(field);
                     case _:
@@ -133,18 +131,18 @@ class Expr
              * 
              */
             case EVar(_, expr):
-                expr.evaluate();
+                expr.evaluate(context);
 
             /**
              * 
              */
             case ECall(e, args):
-                switch e.evaluate().def {
-                    case EFunction(_, params, body): {
+                switch e.evaluate(context).def {
+                    case EFunction(_, params, body, ctx): {
                         for(i in 0...args.length) {
-                            body.context.addVarFunc(params[i], args[i]);
+                            ctx.addVarFunc(params[i], args[i]);
                         }
-                        body.evaluate();
+                        body.evaluate(ctx);
                     }
                     case _:
                         throw "err";
@@ -154,17 +152,17 @@ class Expr
              * 
              */
             case EBlock(exprs):
-                exprs[exprs.length - 1].evaluate();
+                exprs[exprs.length - 1].evaluate(context);
 
             /**
              * 
              */
             case EIf(econd, ethen, eelse):
-                switch econd.evaluate().def {
+                switch econd.evaluate(context).def {
                     case EConstant(constant): switch constant {
                         case CBool(value): value
-                            ? ethen.evaluate()
-                            : eelse.evaluate();
+                            ? ethen.evaluate(context)
+                            : eelse.evaluate(context);
                         case _: throw "err";
                     }
                     case _: throw "err";
@@ -174,11 +172,10 @@ class Expr
              * 
              */
             case EUnop(op, e):
-                switch [op, e.evaluate().def] {
+                switch [op, e.evaluate(context).def] {
                     case [OpNot, EConstant(constant)]: switch constant {
                         case CBool(value): 
                             new Expr(
-                                context,
                                 EConstant(CBool(!value)), 
                                 Position.union(this.pos, this.pos)
                             );
@@ -187,7 +184,6 @@ class Expr
                     case [OpNeg, EConstant(constant)]: switch constant {
                         case CNumber(value): 
                             new Expr(
-                                context,
                                 EConstant(CNumber(-value)), 
                                 Position.union(this.pos, this.pos)
                             );
@@ -200,12 +196,12 @@ class Expr
              * 
              */
             case ETernary(econd, eif, eelse):
-                switch econd.evaluate().def {
+                switch econd.evaluate(context).def {
                     case EConstant(constant): {
                         switch constant {
                             case CBool(value): value
-                                ? eif.evaluate()
-                                : eelse.evaluate();
+                                ? eif.evaluate(context)
+                                : eelse.evaluate(context);
                             case _: throw "err";
                         }
                     }
@@ -227,13 +223,13 @@ class Expr
              * 
              */
             case EParentheses(expr):
-                expr.evaluate();
+                expr.evaluate(context);
 
             /**
              * 
              */
             case EPrint(expr):
-                var evalExpr = expr.evaluate();
+                var evalExpr = expr.evaluate(context);
                 trace('${pos.file}:${pos.line}: ${evalExpr}\n');
                 evalExpr;
 

@@ -33,7 +33,6 @@ class ParserPrint
         var expr = Parser.parse(new Precedence(0), scanner, context, false);
 
         return new Expr(
-            context,
             EPrint(expr),
             Position.union(token.pos, expr.pos)
         );

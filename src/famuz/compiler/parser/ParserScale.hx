@@ -32,7 +32,6 @@ class ParserScale
         var token = scanner.next();
 
         return new Expr(
-            context,
             EConstant(CScale(scale)),
             token.pos
         );

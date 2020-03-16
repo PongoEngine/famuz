@@ -43,7 +43,6 @@ class ParserArray
         var rightBrace = scanner.next();
 
         return new Expr(
-            context,
             EArrayDecl(exprs),
             Position.union(token.pos, rightBrace.pos)
         );

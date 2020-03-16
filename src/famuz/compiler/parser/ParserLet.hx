@@ -35,7 +35,6 @@ class ParserLet
         var value = Parser.parse(new Precedence(0), scanner, context, true);
 
         var letExpr = new Expr(
-            context,
             EVar(identifier.getIdentifier(), value),
             Position.union(let.pos, value.pos)
         );

@@ -34,7 +34,6 @@ class ParserParentheses
         var rightParentheses = scanner.next(); // )
 
         return new Expr(
-            context,
             EParentheses(expr),
             Position.union(token.pos, rightParentheses.pos)
         );

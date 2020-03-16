@@ -39,7 +39,6 @@ class ParserCall
         var rightParentheses = scanner.next();
 
         var e = new Expr(
-            context,
             ECall(left, args),
             Position.union(leftParentheses.pos, rightParentheses.pos)
         );

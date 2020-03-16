@@ -40,7 +40,6 @@ class ParserBlock
 
 
         return new Expr(
-            context,
             EBlock(exprs),
             Position.union(leftBrace.pos, rightBrace.pos)
         );

@@ -34,7 +34,6 @@ class ParserArrayAccess
         var rightBracket = scanner.next(); // consume "]"
         
 		return new Expr(
-            context,
 			EArray(left, expr),
 			Position.union(leftBracket.pos, rightBracket.pos)
 		);

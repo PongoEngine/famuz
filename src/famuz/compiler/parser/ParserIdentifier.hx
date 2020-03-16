@@ -30,7 +30,6 @@ class ParserIdentifier
     {
         var token = scanner.next();
         return new Expr(
-            context,
             EConstant(CIdentifier(identifier)),
             token.pos
         );

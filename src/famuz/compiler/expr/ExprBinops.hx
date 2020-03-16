@@ -30,8 +30,8 @@ class ExprBinops
 {
     public static function add(this_ :Expr, expr :Expr, context :Context) : Expr
     {
-        var a = this_.evaluate();
-        var b = expr.evaluate();
+        var a = this_.evaluate(context);
+        var b = expr.evaluate(context);
 
         var constant = switch [a.def, b.def] {
             case [EConstant(constantA), EConstant(constantB)]: {
@@ -47,7 +47,6 @@ class ExprBinops
         }
 
         return new Expr(
-            context,
             constant, 
             Position.union(this_.pos, expr.pos)
         );
@@ -55,8 +54,8 @@ class ExprBinops
 
     public static function subtract(this_ :Expr, expr :Expr, context :Context) : Expr
     {
-        var a = this_.evaluate();
-        var b = expr.evaluate();
+        var a = this_.evaluate(context);
+        var b = expr.evaluate(context);
 
         var constant = switch [a.def, b.def] {
             case [EConstant(constantA), EConstant(constantB)]: {
@@ -72,7 +71,6 @@ class ExprBinops
         }
 
         return new Expr(
-            context,
             constant, 
             Position.union(this_.pos, expr.pos)
         );
@@ -80,8 +78,8 @@ class ExprBinops
 
     public static function equals(this_ :Expr, expr :Expr, context :Context) : Bool
     {
-        var a = this_.evaluate();
-        var b = expr.evaluate();
+        var a = this_.evaluate(context);
+        var b = expr.evaluate(context);
 
         return switch [a.def, b.def] {
             case [EConstant(constantA), EConstant(constantB)]:

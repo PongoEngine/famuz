@@ -34,6 +34,6 @@ class ParserBool
             case FALSE: false;
             case _: throw Error.FATAL_COMPILER_ERROR;
         }
-        return new Expr(context, EConstant(CBool(isTrue)), boolToken.pos);
+        return new Expr(EConstant(CBool(isTrue)), boolToken.pos);
     }
 }

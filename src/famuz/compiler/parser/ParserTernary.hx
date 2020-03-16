@@ -34,7 +34,6 @@ class ParserTernary
         var eelse = Parser.parse(new Precedence(0), scanner, context, false);
 
         return new Expr(
-            context,
             ETernary(left, eif, eelse),
             Position.union(question.pos, eelse.pos)
         );

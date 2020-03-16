@@ -1,13 +1,13 @@
 func add a b = a + b
 
 func cool a b = {
-    let q = a + b + 4
-    func robot d = {
-        d + q
+    a + b + 4
+    func swag a = {
+        3 + a + b
     }
 }
 
 func main = {
-    let sum = cool( 2 10 )( -1 )
+    let sum = cool( 2 10 )( 20 )
     print sum
 }

@@ -45,7 +45,6 @@ class ParserStruct
         var rightBrace = scanner.next();
 
         return new Expr(
-            context,
             EObjectDecl(fields),
             Position.union(leftBrace.pos, rightBrace.pos)
         );

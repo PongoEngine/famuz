@@ -30,7 +30,6 @@ class ParserNumber
     {
         var token = scanner.next();
         return new Expr(
-            context,
             EConstant(CNumber(number)),
             token.pos
         );

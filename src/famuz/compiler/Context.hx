@@ -43,7 +43,6 @@ class Context
     public function addVarFunc(name :String, expr :Expr) : Void
     {
         if(_map.exists(name)) {
-            this.printEnvironment("ALREADY EXISTS:");
             throw '"${name}" already exists.';
         }
         else {
@@ -79,11 +78,10 @@ class Context
         if(_map.exists(name)) {
             return _map.get(name);
         }
-        else if(parent != null) {
-            return parent.getExpr(name);
+        if(this.parent != null) {
+            return this.parent.getExpr(name);
         }
         else {
-            this.printEnvironment("MISSING EXPR:");
             throw 'Expr:${name} not found.';
         }
     }
@@ -103,16 +101,16 @@ class Context
         return this._error.hasErrors();
     }
 
-    public function createChild() : Context
-    {
-        var context = new Context(_error);
-        context.parent = this;
-        return context;
-    }
-
     public function printEnvironment(msg :String) : Void
     {
         trace(msg + "\n" + _map.mapToString() + "\n");
+    }
+
+    public function createChild() : Context
+    {
+        var c = new Context(_error);
+        c.parent = this;
+        return c;
     }
 
     private var _error :Error;
@@ -130,23 +128,21 @@ class ContextTools
 
     private static function addPush(ctx :Context) : Void
     {
-        var array = new Expr(ctx, EConstant(CIdentifier("array")), null);
-        var element = new Expr(ctx, EConstant(CIdentifier("element")), null);
-        var op = new Expr(ctx, EArrayFunc(array, OpPush(element)), null);
+        var array = new Expr(EConstant(CIdentifier("array")), null);
+        var element = new Expr(EConstant(CIdentifier("element")), null);
+        var op = new Expr(EArrayFunc(array, OpPush(element)), null);
         ctx.addVarFunc("push", new Expr(
-            ctx,
-            EFunction("push", ["array", "element"], op), 
+            EFunction("push", ["array", "element"], op, ctx), 
             null
         ));
     }
 
     private static function addPop(ctx :Context) : Void
     {
-        var array = new Expr(ctx, EConstant(CIdentifier("array")), null);
-        var op = new Expr(ctx, EArrayFunc(array, OpPop), null);
+        var array = new Expr(EConstant(CIdentifier("array")), null);
+        var op = new Expr(EArrayFunc(array, OpPop), null);
         ctx.addVarFunc("pop", new Expr(
-            ctx,
-            EFunction("pop", ["array"], op), 
+            EFunction("pop", ["array"], op, ctx), 
             null
         ));
     }
