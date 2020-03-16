@@ -50,7 +50,7 @@ class Expr
             case EConstant(constant):
                 switch constant {
                     case CIdentifier(str):
-                        this.context.getExpr(str).evaluate();
+                        context.getExpr(str).evaluate();
                     case _:
                         this;
                 }
@@ -61,7 +61,7 @@ class Expr
             case ESwitch(e, cases, edef): {
                 for(case_ in cases) {
                     for(v in case_.values) {
-                        if(v.equals(e)) {
+                        if(v.equals(e, context)) {
                             return case_.expr.evaluate();
                         }
                     }
@@ -138,30 +138,23 @@ class Expr
             /**
              * 
              */
-            case EApplication(e, args):
+            case ECall(e, args):
                 switch e.evaluate().def {
-                    case EFunction(_, params, body):
-                        for(i in 0...params.length) {
+                    case EFunction(_, params, body): {
+                        for(i in 0...args.length) {
                             body.context.addVarFunc(params[i], args[i]);
                         }
-                        var e = body.evaluate();
-                        for(i in 0...params.length) {
-                            body.context.removeVarFunc(params[i]);
-                        }
-                        e;
+                        body.evaluate();
+                    }
                     case _:
-                        e.evaluate();
+                        throw "err";
                 }
 
             /**
              * 
              */
             case EBlock(exprs):
-                var lastExpr = null;
-                for(e in exprs) {
-                    lastExpr = e.evaluate();
-                }
-                lastExpr;
+                exprs[exprs.length - 1].evaluate();
 
             /**
              * 
@@ -185,7 +178,7 @@ class Expr
                     case [OpNot, EConstant(constant)]: switch constant {
                         case CBool(value): 
                             new Expr(
-                                this.context, 
+                                context,
                                 EConstant(CBool(!value)), 
                                 Position.union(this.pos, this.pos)
                             );
@@ -194,7 +187,7 @@ class Expr
                     case [OpNeg, EConstant(constant)]: switch constant {
                         case CNumber(value): 
                             new Expr(
-                                this.context, 
+                                context,
                                 EConstant(CNumber(-value)), 
                                 Position.union(this.pos, this.pos)
                             );
@@ -224,8 +217,8 @@ class Expr
              */
             case EBinop(type, e1, e2):
                 switch type {
-                    case ADD: e1.add(e2);
-                    case SUBTRACT: e1.subtract(e2);
+                    case ADD: e1.add(e2, context);
+                    case SUBTRACT: e1.subtract(e2, context);
                     case SHIFT_LEFT: throw "SHIFT_LEFT";
                     case SHIFT_RIGHT: throw "SHIFT_RIGHT";
                 }
@@ -269,12 +262,12 @@ class Expr
                 case CMusic(music): throw "CMusic";
             }
             case EArrayDecl(values):
-                values.map(v -> v.evaluate().toString()) + "";
-            case EFunction(identifier, params, body):
+                values.map(v -> v.toString()) + "";
+            case EFunction(identifier, params, _):
                 '${identifier}(${params.join(",")}){...}';
             case EVar(identifier, expr):
                 '${identifier}: ${expr}';
-            case EBlock(expr):
+            case EBlock(exprs):
                 '{...}';
             case EArray(e1, e2):
                 throw "err";
@@ -288,7 +281,7 @@ class Expr
                     case SHIFT_RIGHT: '>>';
                 }
                 '${e1}${op}${e2}';
-            case EApplication(e, params):
+            case ECall(e, params):
                 '${e}(${params.join(",")})';
             case EEnumParameter(e, def, index):
                 throw "err";

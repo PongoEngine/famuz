@@ -38,7 +38,7 @@ class ParserFunc
         }
 
         scanner.next(); // '='
-
+        
         var body = Parser.parse(new Precedence(0), scanner, context, true);
 
         var func = new Expr(

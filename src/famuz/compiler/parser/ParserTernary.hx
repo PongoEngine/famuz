@@ -30,7 +30,7 @@ class ParserTernary
     {
         var question = scanner.next(); //?
         var eif = Parser.parse(new Precedence(0), scanner, context, false);
-        var colon = scanner.next(); //:
+        scanner.next(); //:
         var eelse = Parser.parse(new Precedence(0), scanner, context, false);
 
         return new Expr(

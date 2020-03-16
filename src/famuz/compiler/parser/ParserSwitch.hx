@@ -56,7 +56,7 @@ class ParserSwitch
         }
  
         return new Expr(
-            context, 
+            context,
             ESwitch(e, cases, default_), 
             Position.union(switch_.pos, endBrace.pos)
         );

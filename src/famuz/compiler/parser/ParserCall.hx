@@ -40,7 +40,7 @@ class ParserCall
 
         var e = new Expr(
             context,
-            EApplication(left, args),
+            ECall(left, args),
             Position.union(leftParentheses.pos, rightParentheses.pos)
         );
 

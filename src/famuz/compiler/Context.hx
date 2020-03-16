@@ -22,7 +22,6 @@
 package famuz.compiler;
 
 import famuz.compiler.Error.ParserError;
-import famuz.compiler.Token.PunctuatorType;
 import famuz.compiler.expr.Expr;
 import famuz.compiler.expr.EnumDefinition;
 using famuz.util.FStringTools;
@@ -80,29 +79,12 @@ class Context
         if(_map.exists(name)) {
             return _map.get(name);
         }
-        else if(this.parent != null) {
-            return this.parent.getExpr(name);
+        else if(parent != null) {
+            return parent.getExpr(name);
         }
         else {
             this.printEnvironment("MISSING EXPR:");
             throw 'Expr:${name} not found.';
-        }
-    }
-
-    public function isExprFunc(name :String) : Bool
-    {
-        trace(name + "\n");
-        if(_map.exists(name)) {
-            return switch _map.get(name).evaluate().def {
-                case EFunction(_, _, _): true;
-                case _: false;
-            };
-        }
-        else if(this.parent != null) {
-            return this.parent.isExprFunc(name);
-        }
-        else {
-            return false;
         }
     }
 
@@ -148,23 +130,23 @@ class ContextTools
 
     private static function addPush(ctx :Context) : Void
     {
-        var array = new Expr(ctx, EConstant(CIdentifier("___array___")), null);
-        var element = new Expr(ctx, EConstant(CIdentifier("___element___")), null);
+        var array = new Expr(ctx, EConstant(CIdentifier("array")), null);
+        var element = new Expr(ctx, EConstant(CIdentifier("element")), null);
         var op = new Expr(ctx, EArrayFunc(array, OpPush(element)), null);
         ctx.addVarFunc("push", new Expr(
-            ctx, 
-            EFunction("push", ["___array___", "___element___"], op), 
+            ctx,
+            EFunction("push", ["array", "element"], op), 
             null
         ));
     }
 
     private static function addPop(ctx :Context) : Void
     {
-        var array = new Expr(ctx, EConstant(CIdentifier("___array___")), null);
+        var array = new Expr(ctx, EConstant(CIdentifier("array")), null);
         var op = new Expr(ctx, EArrayFunc(array, OpPop), null);
         ctx.addVarFunc("pop", new Expr(
-            ctx, 
-            EFunction("pop", ["___array___"], op), 
+            ctx,
+            EFunction("pop", ["array"], op), 
             null
         ));
     }

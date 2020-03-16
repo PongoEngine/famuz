@@ -28,7 +28,7 @@ import famuz.compiler.expr.ExprDef;
  */
 class ExprBinops
 {
-    public static function add(this_ :Expr, expr :Expr) : Expr
+    public static function add(this_ :Expr, expr :Expr, context :Context) : Expr
     {
         var a = this_.evaluate();
         var b = expr.evaluate();
@@ -47,13 +47,13 @@ class ExprBinops
         }
 
         return new Expr(
-            expr.context, 
+            context,
             constant, 
             Position.union(this_.pos, expr.pos)
         );
     }
 
-    public static function subtract(this_ :Expr, expr :Expr) : Expr
+    public static function subtract(this_ :Expr, expr :Expr, context :Context) : Expr
     {
         var a = this_.evaluate();
         var b = expr.evaluate();
@@ -72,13 +72,13 @@ class ExprBinops
         }
 
         return new Expr(
-            expr.context, 
+            context,
             constant, 
             Position.union(this_.pos, expr.pos)
         );
     }
 
-    public static function equals(this_ :Expr, expr :Expr) : Bool
+    public static function equals(this_ :Expr, expr :Expr, context :Context) : Bool
     {
         var a = this_.evaluate();
         var b = expr.evaluate();

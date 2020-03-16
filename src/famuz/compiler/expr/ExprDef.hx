@@ -21,6 +21,7 @@
 
 package famuz.compiler.expr;
 
+import famuz.compiler.Context;
 import famuz.compiler.expr.Expr;
 import famuz.compiler.expr.EnumDefinition;
 import famuz.compiler.theory.Hit;
@@ -82,14 +83,14 @@ enum ExprDef
     EVar(identifier :String, expr :Expr);
     
     /**
-     * A call e(params).
+     * A call e(args).
      */
-    EApplication(e :Expr, params :Array<Expr>);
+    ECall(e :Expr, args :Array<Expr>);
     
     /**
      * A block of expressions {exprs}.
      */
-    EBlock(expr :Array<Expr>);
+    EBlock(exprs :Array<Expr>);
     
     /**
      * Aif(econd) ethen else eelse expression.

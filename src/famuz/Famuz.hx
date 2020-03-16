@@ -38,19 +38,19 @@ class Famuz
         var content = File.getContent(filePath);
         var tokens = Lexer.lex(filePath, content);
         var tokenScanner = new TokenScanner(tokens);
-        var env = new Context(new Error());
-        ContextTools.addArrayExprs(env);
+        var context = new Context(new Error());
+        ContextTools.addArrayExprs(context);
 
         while(tokenScanner.hasNext()) {
-            Parser.parse(new Precedence(0), tokenScanner, env, false);
+            Parser.parse(new Precedence(0), tokenScanner, context, false);
         }
         
-        if(env.hasErrors()) {
-            env.printErrors();
+        if(context.hasErrors()) {
+            context.printErrors();
             return None;
         }
 
-        var main = env.getExpr("main");
+        var main = context.getExpr("main");
         return switch main.def {
             case EFunction(_, _, body): {
                 return Some(body.evaluate());

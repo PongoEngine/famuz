@@ -37,7 +37,7 @@ class ParserIf
         var eelse = Parser.parse(new Precedence(0), scanner, context, false);
 
         return new Expr(
-            context, 
+            context,
             EIf(econd, ethen, eelse), 
             Position.union(if_.pos, eelse.pos)
         );
