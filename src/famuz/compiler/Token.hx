@@ -52,28 +52,45 @@ class Token
         return !isPunctuator(punctuator);
     }
 
-    public inline function isPrefixToken() : Bool
+    public inline function isApplicable() : Bool
     {
         return switch this.type {
-            case TTPunctuator(type):
-                switch type {
-                    case LEFT_PARENTHESES, LEFT_BRACE, LEFT_BRACKET, MINUS, BANG: 
-                        true;
-                    case ADD, ASSIGNMENT, RIGHT_PARENTHESES, RIGHT_BRACE,
-                        RIGHT_BRACKET, SHIFT_LEFT, SHIFT_RIGHT, SLASH,
-                        COMMA, PERIOD, QUESTION_MARK, COLON:
-                        false;
-                }
-            case TTKeyword(type): switch type {
-                case FUNC, PRINT, IF, TRUE, FALSE, SWITCH: 
-                    true;
-                case CASE, DEFAULT:
-                    false;
-                case ENUM:
-                    throw "err";
+            case TTPunctuator(type): switch type {
+                case ADD: false;
+                case MINUS: true;
+                case BANG: true;
+                case EQUALS: false;
+                case LEFT_PARENTHESES: true;
+                case RIGHT_PARENTHESES: false;
+                case LEFT_BRACE: true;
+                case RIGHT_BRACE: false;
+                case LEFT_BRACKET: true;
+                case RIGHT_BRACKET: false;
+                case SHIFT_LEFT: false;
+                case SHIFT_RIGHT: false;
+                case SLASH: false;
+                case COMMA: false;
+                case PERIOD: false;
+                case QUESTION_MARK: false;
+                case COLON: false;
             }
-            case TTIdentifier(_), TTScale(_), TTKey(_), TTNumber(_), TTRhythm(_): 
-                true;
+            case TTKeyword(type): switch type {
+                case FUNC: false;
+                case LET: false;
+                case SWITCH: true;
+                case CASE: false;
+                case DEFAULT: false;
+                case PRINT: true;
+                case IF: true;
+                case TRUE: true;
+                case FALSE: true;
+                case ENUM: false;
+            }
+            case TTIdentifier(str): true;
+            case TTScale(scale): true;
+            case TTKey(key): true;
+            case TTNumber(num): true;
+            case TTRhythm(str): true;
         }
     }
 
@@ -102,9 +119,7 @@ class TokenScanner
         return this.curIndex < this.tokens.length;
     }
 
-    public function next(
-        
-    ) : Token
+    public function next() : Token
     {
         return this.tokens[this.curIndex++];
     }
@@ -139,7 +154,7 @@ enum PunctuatorType
 	ADD;
 	MINUS;
 	BANG;
-	ASSIGNMENT;
+	EQUALS;
 	LEFT_PARENTHESES;
 	RIGHT_PARENTHESES;
 	LEFT_BRACE;
@@ -158,6 +173,7 @@ enum PunctuatorType
 enum KeywordType 
 {
 	FUNC;
+	LET;
 	SWITCH;
 	CASE;
 	DEFAULT;

@@ -32,11 +32,14 @@ class ParserFunc
     {
         var token = scanner.next(); //func
         var identifier = scanner.next().getIdentifier(); //id (ex: main)
-        scanner.next(); //consume left parentheses
+        var params :Array<String> = [];
+        while (scanner.peek().isNotPunctuator(EQUALS)) {
+            params.push(scanner.next().getIdentifier());
+        }
 
-        var params = parseParams(scanner);
+        scanner.next(); // '='
 
-        var body = Parser.parse(PRECEDENCE_CALL, scanner, context, true);
+        var body = Parser.parse(new Precedence(0), scanner, context, true);
 
         var func = new Expr(
             context,
@@ -46,22 +49,5 @@ class ParserFunc
         context.addVarFunc(identifier, func);
 
         return func;
-    }
-
-    private static function parseParams(scanner :TokenScanner) : Array<String>
-    {
-        var params :Array<String> = [];
-        while (scanner.peek().isNotPunctuator(RIGHT_PARENTHESES)) {
-            var name = scanner.next();
-    
-            params.push(name.getIdentifier());
-    
-            if(scanner.peek().isPunctuator(COMMA)) {
-                scanner.next(); //consume comma
-            }
-        }
-
-        scanner.next(); //)
-        return params;
     }
 }

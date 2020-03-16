@@ -31,19 +31,12 @@ class ParserArray
     {
         var token = scanner.next(); //[
         var exprs = new Array<Expr>();
-        var missingComma = false;
 
         while (scanner.hasNext() && scanner.peek().isNotPunctuator(RIGHT_BRACKET)) {
-            if(missingComma) {
-                context.addError(MissingPunctuator(COMMA, scanner.lastPosition()));
-            }
             var expr = Parser.parse(new Precedence(0), scanner, context, false);
             exprs.push(expr);
             if(scanner.hasNext() && scanner.peek().isPunctuator(COMMA)) {
                 scanner.next();
-            }
-            else {
-                missingComma = true;
             }
         }
 

@@ -138,7 +138,7 @@ class Expr
             /**
              * 
              */
-            case ECall(e, args): {
+            case EApplication(e, args):
                 switch e.evaluate().def {
                     case EFunction(_, params, body):
                         for(i in 0...params.length) {
@@ -149,16 +149,19 @@ class Expr
                             body.context.removeVarFunc(params[i]);
                         }
                         e;
-                    case _: 
+                    case _:
                         e.evaluate();
                 }
-            }
 
             /**
              * 
              */
             case EBlock(exprs):
-                exprs[exprs.length-1].evaluate();
+                var lastExpr = null;
+                for(e in exprs) {
+                    lastExpr = e.evaluate();
+                }
+                lastExpr;
 
             /**
              * 
@@ -278,8 +281,14 @@ class Expr
             case EArrayFunc(e, op):
                 throw "err";
             case EBinop(type, e1, e2):
-                throw "err";
-            case ECall(e, params):
+                var op = switch type {
+                    case ADD: '+';
+                    case SUBTRACT: '-';
+                    case SHIFT_LEFT: '<<';
+                    case SHIFT_RIGHT: '>>';
+                }
+                '${e1}${op}${e2}';
+            case EApplication(e, params):
                 '${e}(${params.join(",")})';
             case EEnumParameter(e, def, index):
                 throw "err";
@@ -292,7 +301,7 @@ class Expr
             case EParentheses(expr):
                 throw "err";
             case EPrint(expr):
-                throw "err";
+                'print ${expr}';
             case ESwitch(e, cases, edef):
                 throw "err";
             case ETernary(econd, eif, eelse):

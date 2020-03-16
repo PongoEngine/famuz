@@ -35,10 +35,10 @@ import famuz.compiler.parser.ParserPrint;
 import famuz.compiler.parser.ParserBool;
 import famuz.compiler.parser.ParserRhythm;
 import famuz.compiler.parser.ParserScale;
-import famuz.compiler.parser.ParserVar;
 import famuz.compiler.parser.ParserArrayAccess;
 import famuz.compiler.parser.ParserStruct;
 import famuz.compiler.parser.ParserIf;
+import famuz.compiler.parser.ParserLet;
 import famuz.compiler.parser.ParserSwitch;
 import famuz.compiler.parser.ParserDot;
 import famuz.compiler.parser.ParserUnop;
@@ -96,12 +96,14 @@ class Parser
                         ParserArray.parse(scanner, context);
                     case MINUS, BANG:
                         ParserUnop.parse(scanner, context);
-                    case ADD, ASSIGNMENT, RIGHT_PARENTHESES, RIGHT_BRACE,
+                    case ADD, EQUALS, RIGHT_PARENTHESES, RIGHT_BRACE,
                         RIGHT_BRACKET, SHIFT_LEFT, SHIFT_RIGHT, SLASH,
                         COMMA, PERIOD, QUESTION_MARK, COLON:
                         parseConsume(scanner);
                 }
             case TTKeyword(type): switch type {
+                case LET:
+                    ParserLet.parse(scanner, context);
                 case FUNC: 
                     ParserFunc.parse(scanner, context);
                 case PRINT: 
@@ -121,7 +123,7 @@ class Parser
                 case ENUM:
                     throw "err";
             }
-            case TTIdentifier(str): 
+            case TTIdentifier(str):
                 ParserIdentifier.parse(scanner, context, str);
             case TTScale(scale): 
                 ParserScale.parse(scanner, context, scale);
@@ -143,10 +145,6 @@ class Parser
                             ParserBinop.parse(left, scanner, context, type);
                     case MINUS: 
                             ParserBinop.parse(left, scanner, context, type);
-                    case ASSIGNMENT: 
-                            ParserVar.parse(left, scanner, context);
-                    case LEFT_PARENTHESES: 
-                            ParserCall.parse(left, scanner, context);
                     case LEFT_BRACKET: 
                             ParserArrayAccess.parse(left, scanner, context);
                     case SHIFT_LEFT: 
@@ -157,21 +155,23 @@ class Parser
                             ParserDot.parse(left, scanner, context);
                     case QUESTION_MARK:
                         ParserTernary.parse(left, scanner, context);
-                    case BANG, RIGHT_PARENTHESES, LEFT_BRACE, RIGHT_BRACE, 
+                    case LEFT_PARENTHESES:
+                        ParserCall.parse(left, scanner, context);
+                    case EQUALS, BANG, RIGHT_PARENTHESES, LEFT_BRACE, RIGHT_BRACE, 
                         RIGHT_BRACKET, SLASH, COMMA, COLON: 
-                            EMPTY_EXPR;
+                        EMPTY_EXPR;
                 }
-            case TTKeyword(type): 
+            case TTKeyword(_): 
                 EMPTY_EXPR;
-            case TTIdentifier(str): 
+            case TTIdentifier(_): 
                 EMPTY_EXPR;
-            case TTScale(str): 
+            case TTScale(_): 
                 EMPTY_EXPR;
-            case TTKey(str): 
+            case TTKey(_): 
                 EMPTY_EXPR;
-            case TTNumber(str): 
+            case TTNumber(_): 
                 EMPTY_EXPR;
-            case TTRhythm(str): 
+            case TTRhythm(_): 
                 EMPTY_EXPR;
         }
     }

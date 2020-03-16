@@ -84,7 +84,7 @@ enum ExprDef
     /**
      * A call e(params).
      */
-    ECall(e :Expr, params :Array<Expr>);
+    EApplication(e :Expr, params :Array<Expr>);
     
     /**
      * A block of expressions {exprs}.

@@ -37,7 +37,7 @@ enum abstract LexerToken(String) from String
     var QUESTION_MARK = "?";
     var COLON = ":";
     var PERIOD = ".";
-    var ASSIGNMENT = "=";
+    var EQUALS = "=";
 
     var ADD = "+";
     var MINUS = "-";

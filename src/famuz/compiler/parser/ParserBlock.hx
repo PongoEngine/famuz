@@ -34,16 +34,10 @@ class ParserBlock
         var exprs :Array<Expr> = [];
         var bodyContext = context.createChild();
 
-        while (scanner.hasNext() && scanner.peek().isPrefixToken()) {
+        while (scanner.hasNext() && scanner.peek().isNotPunctuator(RIGHT_BRACE)) {
             exprs.push(Parser.parse(new Precedence(0), scanner, bodyContext, false));
         }
-
-        var rightBrace = scanner.hasNext() && scanner.peek().isPunctuator(RIGHT_BRACE)
-            ? scanner.next()
-            : {
-                context.addError(MissingPunctuator(RIGHT_BRACE, scanner.lastPosition()));
-                new Token(TTPunctuator(RIGHT_BRACE), scanner.lastPosition());
-            };
+        var rightBrace = scanner.next();
 
 
         return new Expr(

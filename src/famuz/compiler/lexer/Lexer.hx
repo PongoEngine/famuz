@@ -36,8 +36,8 @@ class Lexer
             var lexerToken :LexerToken = scanner.peek();
             switch (lexerToken)
             {
-                case ASSIGNMENT:
-                    tokens.push(createToken(ASSIGNMENT, 1, scanner));
+                case EQUALS:
+                    tokens.push(createToken(EQUALS, 1, scanner));
                 case LEFT_PARENTHESES:
                     tokens.push(createToken(LEFT_PARENTHESES, 1, scanner));
                 case RIGHT_PARENTHESES:
@@ -141,6 +141,7 @@ class Lexer
         return switch str {
             //keyword
             case "enum": TTKeyword(ENUM);
+            case "let": TTKeyword(LET);
             case "func": TTKeyword(FUNC);
             case "switch": TTKeyword(SWITCH);
             case "case": TTKeyword(CASE);

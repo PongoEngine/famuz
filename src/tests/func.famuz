@@ -1,20 +1,6 @@
-func binopFunc(a, b) {
-    a + b
-}
+func add a b = a + b
 
-func identity(a) {
-    a
-}
-
-func retfunc(a) {
-    b = a
-    func val() {
-        122
-    }
-}
-
-func main() {
-    a = binopFunc(1, 2)
-    //print(identity(a))
-    print(retfunc(99)())
+func main = {
+    let sum = add( 1 2 )
+    print sum
 }

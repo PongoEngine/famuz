@@ -1,10 +1,3 @@
-arra = [9,1,2,3,4]
-
-func main() {
-    a = pop(arra)
-    b = pop(a)
-    c = pop(b)
-    d = pop(c)
-    e = pop(d)
-    print(e)
+func main = {
+    print([9,1,2,3,4])
 }

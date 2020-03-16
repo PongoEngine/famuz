@@ -89,6 +89,23 @@ class Context
         }
     }
 
+    public function isExprFunc(name :String) : Bool
+    {
+        trace(name + "\n");
+        if(_map.exists(name)) {
+            return switch _map.get(name).evaluate().def {
+                case EFunction(_, _, _): true;
+                case _: false;
+            };
+        }
+        else if(this.parent != null) {
+            return this.parent.isExprFunc(name);
+        }
+        else {
+            return false;
+        }
+    }
+
     public inline function printErrors() : Void
     {
         this._error.printErrors();

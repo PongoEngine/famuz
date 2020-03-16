@@ -29,35 +29,21 @@ class ParserCall
 {
     public static function parse(left :Expr, scanner :TokenScanner, context :Context) : Expr
     {
-        scanner.next(); //left parentheses
-
+        var leftParentheses = scanner.next();
         var args :Array<Expr> = [];
-        var missingComma = false;
 
-        while (scanner.hasNext() && scanner.peek().isPrefixToken()) {
-            if(missingComma) {
-                context.addError(MissingPunctuator(COMMA, scanner.lastPosition()));
-            }
-            args.push(Parser.parse(new Precedence(0), scanner, context, false).evaluate());
-            if (scanner.hasNext() && scanner.peek().isPunctuator(COMMA)) {
-                scanner.next(); //consume comma
-            }
-            else {
-                missingComma = true;
-            }
+        while (scanner.hasNext() && scanner.peek().isNotPunctuator(RIGHT_PARENTHESES)) {
+            var expr = Parser.parse(new Precedence(0), scanner, context, false);
+            args.push(expr);
         }
+        var rightParentheses = scanner.next();
 
-        var rightParentheses = scanner.hasNext() && scanner.peek().isPunctuator(RIGHT_PARENTHESES)
-            ? scanner.next()
-            : {
-                context.addError(MissingPunctuator(RIGHT_PARENTHESES, scanner.lastPosition()));
-                new Token(TTPunctuator(RIGHT_PARENTHESES), scanner.lastPosition());
-            };
-
-        return new Expr(
+        var e = new Expr(
             context,
-            ECall(left, args),
-            Position.union(left.pos, rightParentheses.pos)
+            EApplication(left, args),
+            Position.union(leftParentheses.pos, rightParentheses.pos)
         );
+
+        return e;
     }
 }

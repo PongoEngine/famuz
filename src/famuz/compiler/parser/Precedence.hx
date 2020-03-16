@@ -49,7 +49,7 @@ abstract Precedence(Int)
         {
             case TTPunctuator(type): {
                 switch type {
-                    case ASSIGNMENT:
+                    case EQUALS:
                         PRECEDENCE_ASSIGNMENT;
                     case ADD, SHIFT_LEFT, SHIFT_RIGHT:
                         PRECEDENCE_SUM;
