@@ -1,6 +1,8 @@
-func add a b = a + b
+func add3 a b c = a + b + c
 
 func main = {
-    let partial = add(4)
-    print(partial(2) + partial(3))
+    let partial1 = add3(-3)
+    let partial2 = partial1(2)
+    let partial3 = add3(0 0)
+    print(partial3)
 }

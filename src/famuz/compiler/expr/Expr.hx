@@ -153,7 +153,11 @@ class Expr
                                 callScoped.addVarFunc(params[i], args[i]);
                             }
                             var ctxInnerOuter = new ContextInnerOuter(callScoped, context);
-                            new Expr(EFunction(ident + "_c", params.slice(args.length), body, ctxInnerOuter), null);
+                            var identParams = "";
+                            for(i in 0...args.length) {
+                                identParams += '_${params[i]}';
+                            }
+                            new Expr(EFunction(ident + identParams, params.slice(args.length), body, ctxInnerOuter), null);
                         }
                         else {
                             context.error(TooManyArgs(node.pos));
