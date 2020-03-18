@@ -27,7 +27,7 @@ import famuz.compiler.expr.Expr;
 
 class ParserRhythm
 {
-    public static function parse(scanner :TokenScanner, context :Context, rhythm :String) : Expr
+    public static function parse(scanner :TokenScanner, context :Context, d :Int, rhythm :String) : Expr
     {
         var token = scanner.next();
         var rhythmScanner = new Scanner(rhythm, token.pos.file);
@@ -52,7 +52,7 @@ class ParserRhythm
         var duration = rhythmScanner.content.length;
 
         return new Expr(
-            EConstant(CRhythm(hits, duration)),
+            EConstant(CRhythm(d, hits, duration)),
             token.pos
         );
     }

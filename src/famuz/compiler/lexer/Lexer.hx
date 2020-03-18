@@ -24,6 +24,7 @@ package famuz.compiler.lexer;
 import famuz.compiler.lexer.LexerToken;
 import famuz.compiler.Token;
 import famuz.compiler.Scanner;
+using famuz.util.FStringTools;
 
 class Lexer
 {
@@ -36,6 +37,10 @@ class Lexer
             var lexerToken :LexerToken = scanner.peek();
             switch (lexerToken)
             {
+                case AT:
+                    scanner.peekDouble().isNumber()
+                        ? tokens.push(createTokenRhythm(scanner))
+                        : throw "err";
                 case EQUALS:
                     tokens.push(createToken(EQUALS, 1, scanner));
                 case LEFT_PARENTHESES:
@@ -65,7 +70,7 @@ class Lexer
                 case BANG:
                     tokens.push(createToken(BANG, 1, scanner));
                 case BACKWARD_SLASH: {
-                    tokens.push(createTokenRhythm(scanner));
+                    throw "err";
                 }
                 case FORWARD_SLASH:
                     scanner.peekDouble() == '/'
@@ -116,13 +121,15 @@ class Lexer
 
     public static function createTokenRhythm(scanner :Scanner) : Token
     {
-        scanner.next(); //consume \
         var line = scanner.curLine;
         var min = scanner.curIndex;
+        scanner.next(); //consume '@'
+        var d = scanner.consumeNumber();
+        var num = Std.parseInt(d);
         var lexeme = scanner.consumeRhythm();
         var max = scanner.curIndex;
         var position = new Position(line, min, max, scanner.filepath, scanner.content);
-        return new Token(TTRhythm(lexeme), position);
+        return new Token(TTRhythm(num, lexeme), position);
     }
 
     public static function createTokenNumber(scanner :Scanner) : Token

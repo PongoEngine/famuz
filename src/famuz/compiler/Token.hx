@@ -112,7 +112,7 @@ enum TokenType
     TTScale(scale :Scale);
     TTKey(key :Key);
     TTNumber(num :Int);
-    TTRhythm(str :String);
+    TTRhythm(duration: Int, str :String);
 }
 
 enum PunctuatorType 

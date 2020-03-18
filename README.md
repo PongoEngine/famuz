@@ -17,13 +17,19 @@ func main = {
 }
 ```
 
-## Famuz Types
+## Operators
+### Numberic
 
-    - rhythm -> "x~~~ x--- x~~~ x~--"
-    - melody -> "rhythm + steps"
-    - harmony -> fn(melody)
-    - steps -> "0 1 2 3"
-    - scale -> "harmonic-minor"
-    - key -> "c#"
-    - scaled-key -> scale + key
-    - music -> scaled-key + (melody | harmony)
+(+) Plus
+
+(-) Minus
+
+(*) Multiplication
+
+(/) Division
+
+### Musical
+
+(:+) Add to Sequence
+
+(:=) Parrellel

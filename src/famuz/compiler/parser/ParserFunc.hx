@@ -31,6 +31,7 @@ class ParserFunc
     public static function parse(scanner :TokenScanner, context :Context) : Expr
     {
         var token = scanner.next(); //func
+        
         var identifier = scanner.next().getIdentifier(); //id (ex: main)
         var params :Array<String> = [];
         while (scanner.peek().isNotPunctuator(EQUALS)) {

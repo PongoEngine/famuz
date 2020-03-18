@@ -138,7 +138,7 @@ enum Constant
     CIdentifier(str :String);
     CBool(value :Bool);
     CNumber(value :Int);
-    CRhythm(hits :Array<Hit>, duration :Int);
+    CRhythm(d :Int, hits :Array<Hit>, duration :Int);
     CMelody(notes :Array<SteppedHit>, duration :Int);
     CHarmony(melodies :Array<Array<SteppedHit>>);
     CSteps(steps :Array<Step>);

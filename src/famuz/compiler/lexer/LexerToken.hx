@@ -51,6 +51,8 @@ enum abstract LexerToken(String) from String
     var LT = "<";
     var GT = ">";
 
+    var AT = "@";
+
     var TAB = "\t";
     var SPACE = " ";
     var LINE = "\n";

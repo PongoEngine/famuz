@@ -131,8 +131,8 @@ class Parser
                 ParserKey.parse(scanner, context, key);
             case TTNumber(str): 
                 ParserNumber.parse(scanner, context, str);
-            case TTRhythm(str): 
-                ParserRhythm.parse(scanner, context, str);
+            case TTRhythm(d, str): 
+                ParserRhythm.parse(scanner, context, d, str);
         }
     }
     

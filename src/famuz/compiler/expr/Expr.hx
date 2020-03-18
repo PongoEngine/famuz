@@ -267,7 +267,7 @@ class Expr
                 case CIdentifier(str): str;
                 case CNumber(value): value + "";
                 case CBool(value): value + "";
-                case CRhythm(hits, duration): throw "CRhythm";
+                case CRhythm(d, hits, duration): '@${d} ${hits} | ${duration}';
                 case CMelody(notes, duration): throw "CMelody";
                 case CHarmony(melodies): throw "CHarmony";
                 case CSteps(steps): throw "CSteps";
