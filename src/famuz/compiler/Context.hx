@@ -29,7 +29,6 @@ using famuz.util.FStringTools;
 interface IContext {
     function getExpr(name :String) : Expr;
     function clone() : IContext;
-    function printEnvironment() : String;
     function addVarFunc(name :String, expr :Expr) : Void;
 }
 
@@ -38,9 +37,8 @@ interface IContext {
  */
 class Context implements IContext
 {
-    public function new(error :Error) : Void
+    public function new() : Void
     {
-        _error = error;
         _map = new Map<String, Expr>();
         _enumDefs = new Map<String, EnumDefinition>();
     }
@@ -78,29 +76,14 @@ class Context implements IContext
         }
     }
 
-    public inline function printErrors() : Void
+    public inline function error(e :ParserError) : Void
     {
-        this._error.printErrors();
-    }
-
-    public inline function addError(e :ParserError) : Void
-    {
-        _error.addError(e);
-    }
-
-    public function hasErrors() : Bool
-    {
-        return this._error.hasErrors();
-    }
-
-    public function printEnvironment() : String
-    {
-        return (_map.mapToString() + "\n");
+        Error.error(e);
     }
 
     public function createContext() : Context
     {
-        return new Context(_error);
+        return new Context();
     }
 
     public function clone() : Context
@@ -111,7 +94,6 @@ class Context implements IContext
         return c;
     }
 
-    private var _error :Error;
     private var _map :Map<String, Expr>;
     private var _enumDefs :Map<String, EnumDefinition>;
 }
@@ -153,13 +135,6 @@ class ContextInnerOuter implements IContext
         var c = new ContextInnerOuter(this._inner, this._outer);
         c._map = this._map.copy();
         return c;
-    }
-
-    public function printEnvironment() : String
-    {
-        var inner = _inner.printEnvironment();
-        var outer = _outer.printEnvironment();
-        return 'inner: ${inner}outer: ${outer}';
     }
 
     private var _map :Map<String, Expr>;

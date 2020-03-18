@@ -31,37 +31,24 @@ class Error
 {
     public static var FATAL_COMPILER_ERROR = "FATAL COMPILER ERROR";
 
-    public function new() : Void
+    public static function error(e :ParserError) : Void
     {
-        _errors = [];
+        printError(e);
+        throw "COMPILER ERROR";
     }
 
-    public function addError(e :ParserError) : Void
+    private static function printError(e :ParserError) : Void
     {
-        _errors.push(e);
-    }
-
-    public function printErrors() : Void
-    {
-        for(e in _errors) {
-            switch e {
-                case MissingPunctuator(t, pos):
-                    printError('Missing punctuator: ${t}', pos);
-            }
+        switch e {
+            case MissingPunctuator(t, pos):
+                printErrorMsg('Missing punctuator: ${t}', pos);
         }
     }
 
-    public function printError(msg :String, pos :Position) : Void
+    private static function printErrorMsg(msg :String, pos :Position) : Void
     {
         trace('${pos.file}:${pos.line}: ${msg}\n');
     }
-
-    public function hasErrors() : Bool
-    {
-        return _errors.length > 0;
-    }
-
-    private var _errors :Array<ParserError>;
 }
 
 enum ParserError
