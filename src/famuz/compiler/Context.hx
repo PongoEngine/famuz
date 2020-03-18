@@ -24,12 +24,12 @@ package famuz.compiler;
 import famuz.compiler.Error.ParserError;
 import famuz.compiler.expr.Expr;
 import famuz.compiler.expr.EnumDefinition;
-using famuz.util.FStringTools;
 
 interface IContext {
     function getExpr(name :String) : Expr;
     function clone() : IContext;
     function addVarFunc(name :String, expr :Expr) : Void;
+    function error(e :ParserError) : Dynamic;
 }
 
 /**
@@ -76,9 +76,10 @@ class Context implements IContext
         }
     }
 
-    public inline function error(e :ParserError) : Void
+    public inline function error(e :ParserError) : Dynamic
     {
         Error.error(e);
+        return null;
     }
 
     public function createContext() : Context
@@ -135,6 +136,11 @@ class ContextInnerOuter implements IContext
         var c = new ContextInnerOuter(this._inner, this._outer);
         c._map = this._map.copy();
         return c;
+    }
+    public inline function error(e :ParserError) : Dynamic
+    {
+        Error.error(e);
+        return null;
     }
 
     private var _map :Map<String, Expr>;

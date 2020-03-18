@@ -156,7 +156,7 @@ class Expr
                             new Expr(EFunction(ident + "_c", params.slice(args.length), body, ctxInnerOuter), null);
                         }
                         else {
-                            throw "TOO MANY ARGS";
+                            context.error(TooManyArgs(node.pos));
                         }
                     }
                     case _:

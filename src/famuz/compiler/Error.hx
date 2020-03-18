@@ -42,6 +42,8 @@ class Error
         switch e {
             case MissingPunctuator(t, pos):
                 printErrorMsg('Missing punctuator: ${t}', pos);
+            case TooManyArgs(pos):
+                printErrorMsg('Too many args', pos);
         }
     }
 
@@ -54,4 +56,5 @@ class Error
 enum ParserError
 {
     MissingPunctuator(t :PunctuatorType, pos :Position);
+    TooManyArgs(pos :Position);
 }

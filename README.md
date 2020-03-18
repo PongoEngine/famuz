@@ -9,24 +9,11 @@ Famuz is a programming language that compiles to Midi. The goal of this project 
 ## Simple Example
 
 ``` javascript
-enum Robot {
-    SWAG
-    TURKEY
-}
+func add a b = a + b
 
-section = SWAG
-
-switchVal = switch section {
-    case 1, 2: 10 + 200
-    case 20: 20
-    case SWAG: 99
-    default: -20
-}
-
-dag = -30
-
-func main() {
-    print(switchVal)
+func main = {
+    let partial = add(4)
+    print(partial(2) + partial(3))
 }
 ```
 
