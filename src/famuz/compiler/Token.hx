@@ -52,45 +52,11 @@ class Token
         return !isPunctuator(punctuator);
     }
 
-    public inline function isApplicable() : Bool
+    public function isIdentifier() : Bool
     {
         return switch this.type {
-            case TTPunctuator(type): switch type {
-                case ADD: false;
-                case MINUS: true;
-                case BANG: true;
-                case EQUALS: false;
-                case LEFT_PARENTHESES: true;
-                case RIGHT_PARENTHESES: false;
-                case LEFT_BRACE: true;
-                case RIGHT_BRACE: false;
-                case LEFT_BRACKET: true;
-                case RIGHT_BRACKET: false;
-                case SHIFT_LEFT: false;
-                case SHIFT_RIGHT: false;
-                case SLASH: false;
-                case COMMA: false;
-                case PERIOD: false;
-                case QUESTION_MARK: false;
-                case COLON: false;
-            }
-            case TTKeyword(type): switch type {
-                case FUNC: false;
-                case LET: false;
-                case SWITCH: true;
-                case CASE: false;
-                case DEFAULT: false;
-                case PRINT: true;
-                case IF: true;
-                case TRUE: true;
-                case FALSE: true;
-                case ENUM: false;
-            }
             case TTIdentifier(str): true;
-            case TTScale(scale): true;
-            case TTKey(key): true;
-            case TTNumber(num): true;
-            case TTRhythm(str): true;
+            case _: false;
         }
     }
 

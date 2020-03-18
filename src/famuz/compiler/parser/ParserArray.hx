@@ -39,7 +39,9 @@ class ParserArray
                 scanner.next();
             }
         }
-
+        if(!scanner.hasNext() || scanner.peek().isNotPunctuator(RIGHT_BRACKET)) {
+            Error.create(MissingPunctuator(RIGHT_BRACKET, scanner.lastPosition()));
+        }
         var rightBrace = scanner.next();
 
         return new Expr(

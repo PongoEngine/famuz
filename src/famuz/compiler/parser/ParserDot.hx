@@ -29,6 +29,10 @@ class ParserDot
     public static function parse(left :Expr, scanner :TokenScanner, context :Context) : Expr
     {
         var dot = scanner.next();
+
+        if(!scanner.hasNext() || !scanner.peek().isIdentifier()) {
+            Error.create(MissingIdentifier(scanner.lastPosition()));
+        }
         var field = scanner.next();
 
         return new Expr(

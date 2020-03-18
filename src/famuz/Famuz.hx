@@ -35,17 +35,17 @@ class Famuz
 {
     public static function compile(filePath :String) : Option<Expr>
     {
-        var content = File.getContent(filePath);
-        var tokens = Lexer.lex(filePath, content);
-        var tokenScanner = new TokenScanner(tokens);
-        var context = new Context();
-        ContextTools.addArrayExprs(context);
-
-        while(tokenScanner.hasNext()) {
-            Parser.parse(new Precedence(0), tokenScanner, context, false);
-        }
-        
         try {
+            var content = File.getContent(filePath);
+            var tokens = Lexer.lex(filePath, content);
+            var tokenScanner = new TokenScanner(tokens);
+            var context = new Context();
+            ContextTools.addArrayExprs(context);
+
+            while(tokenScanner.hasNext()) {
+                Parser.parse(new Precedence(0), tokenScanner, context, false);
+            }
+        
             var main = context.getExpr("main");
             return switch main.def {
                 case EFunction(_, _, body, scope): {

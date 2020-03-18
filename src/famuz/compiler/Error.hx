@@ -31,7 +31,7 @@ class Error
 {
     public static var FATAL_COMPILER_ERROR = "FATAL COMPILER ERROR";
 
-    public static function error(e :ParserError) : Void
+    public static function create(e :ParserError) : Dynamic
     {
         printError(e);
         throw "COMPILER ERROR";
@@ -42,6 +42,8 @@ class Error
         switch e {
             case MissingPunctuator(t, pos):
                 printErrorMsg('Missing punctuator: ${t}', pos);
+            case MissingIdentifier(pos):
+                printErrorMsg('Missing identifier', pos);
             case TooManyArgs(pos):
                 printErrorMsg('Too many args', pos);
         }
@@ -56,5 +58,6 @@ class Error
 enum ParserError
 {
     MissingPunctuator(t :PunctuatorType, pos :Position);
+    MissingIdentifier(pos :Position);
     TooManyArgs(pos :Position);
 }

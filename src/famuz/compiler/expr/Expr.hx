@@ -160,7 +160,7 @@ class Expr
                             new Expr(EFunction(ident + identParams, params.slice(args.length), body, ctxInnerOuter), null);
                         }
                         else {
-                            context.error(TooManyArgs(node.pos));
+                            Error.create(TooManyArgs(node.pos));
                         }
                     }
                     case _:

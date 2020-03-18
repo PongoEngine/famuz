@@ -31,6 +31,11 @@ class ParserArrayAccess
 	{
 		var leftBracket = scanner.next(); // consume "["
 		var expr = Parser.parse(new Precedence(0), scanner, context, false);
+		
+		if(!scanner.hasNext() || scanner.peek().isNotPunctuator(RIGHT_BRACKET)) {
+            Error.create(MissingPunctuator(RIGHT_BRACKET, scanner.lastPosition()));
+		}
+		
         var rightBracket = scanner.next(); // consume "]"
         
 		return new Expr(

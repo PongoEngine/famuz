@@ -36,6 +36,11 @@ class ParserBlock
         while (scanner.hasNext() && scanner.peek().isNotPunctuator(RIGHT_BRACE)) {
             exprs.push(Parser.parse(new Precedence(0), scanner, context, false));
         }
+
+        if(!scanner.hasNext() || scanner.peek().isNotPunctuator(RIGHT_BRACE)) {
+            Error.create(MissingPunctuator(RIGHT_BRACE, scanner.lastPosition()));
+        }
+        
         var rightBrace = scanner.next();
 
 

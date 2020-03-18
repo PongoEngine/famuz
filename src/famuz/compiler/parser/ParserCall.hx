@@ -36,6 +36,11 @@ class ParserCall
             var expr = Parser.parse(new Precedence(0), scanner, context, false);
             args.push(expr);
         }
+
+        if(!scanner.hasNext() || scanner.peek().isNotPunctuator(RIGHT_PARENTHESES)) {
+            Error.create(MissingPunctuator(RIGHT_PARENTHESES, scanner.lastPosition()));
+        }
+
         var rightParentheses = scanner.next();
 
         var e = new Expr(
