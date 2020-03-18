@@ -44,11 +44,11 @@ abstract Precedence(Int)
 {
     public static var PRECEDENCE_ASSIGNMENT = new Precedence(1);
 	public static var PRECEDENCE_TERNARY = new Precedence(2);
-	public static var PRECEDENCE_CALL = new Precedence(2);
 	public static var PRECEDENCE_PERIOD = new Precedence(2);
 	public static var PRECEDENCE_ARRAY = new Precedence(2);
     public static var PRECEDENCE_SUM = new Precedence(3);
     public static var PRECEDENCE_SUBTRACT = new Precedence(3);
+	public static var PRECEDENCE_CALL = new Precedence(4);
 
     public function new(val :Int) : Void
     {

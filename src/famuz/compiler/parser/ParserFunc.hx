@@ -39,11 +39,11 @@ class ParserFunc
 
         scanner.next(); // '='
         
-        var bodyScope = context.createChild();
-        var body = Parser.parse(new Precedence(0), scanner, bodyScope, true);
+        var scope = context.createContext();
+        var body = Parser.parse(new Precedence(0), scanner, scope, true);
 
         var func = new Expr(
-            EFunction(identifier, params, body, bodyScope),
+            EFunction(identifier, params, body, scope),
             Position.union(token.pos, body.pos)
         );
         context.addVarFunc(identifier, func);

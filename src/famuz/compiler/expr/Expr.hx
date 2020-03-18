@@ -39,18 +39,18 @@ class Expr
         this.pos = pos;
     }
 
-    public function evaluate(context :Context) : Expr
+    public static function evaluate(node :Expr, context :IContext) : Expr
     {
-        return switch def {
+        return switch node.def {
             /**
              * 
              */
             case EConstant(constant):
                 switch constant {
                     case CIdentifier(str):
-                        context.getExpr(str).evaluate(context);
+                        evaluate(context.getExpr(str), context);
                     case _:
-                        this;
+                        node;
                 }
 
             /**
@@ -60,35 +60,35 @@ class Expr
                 for(case_ in cases) {
                     for(v in case_.values) {
                         if(v.equals(e, context)) {
-                            return case_.expr.evaluate(context);
+                            return evaluate(case_.expr, context);
                         }
                     }
                 }
 
                 edef == null
                     ? throw "err"
-                    : edef.evaluate(context);
+                    : evaluate(edef, context);
             }
 
             /**
              * 
              */
             case EEnumParameter(e, type, index):
-                this;
+                node;
 
             /**
              * 
              */
             case EObjectDecl(_):
-                this;
+                node;
 
             /**
              * 
              */
             case EArray(e1, e2):
-                switch [e1.evaluate(context).def, e2.evaluate(context).def] {
+                switch [evaluate(e1, context).def, evaluate(e2, context).def] {
                     case [EArrayDecl(values), EConstant(constant)]: switch constant {
-                        case CNumber(index): values[index].evaluate(context);
+                        case CNumber(index): evaluate(values[index], context);
                         case _: throw "err";
                     }
                     case _: throw "err";
@@ -98,16 +98,16 @@ class Expr
              * 
              */
             case EArrayDecl(_):
-                this;
+                node;
 
             /**
              * 
              */
              case EArrayFunc(e, op):
-                var evalArra = e.evaluate(context);
+                var evalArra = evaluate(e, context);
                 switch [evalArra.def, op] {
                     case [EArrayDecl(values), OpPush(expr)]:
-                        values.push(expr.evaluate(context));
+                        values.push(evaluate(expr, context));
                         evalArra;
                     case [EArrayDecl(values), OpPop]:
                         values.pop();
@@ -119,7 +119,7 @@ class Expr
              * 
              */
             case EField(e, field): {
-                switch e.evaluate(context).def {
+                switch evaluate(e, context).def {
                     case EObjectDecl(fields):
                         fields.get(field);
                     case _:
@@ -131,18 +131,33 @@ class Expr
              * 
              */
             case EVar(_, expr):
-                expr.evaluate(context);
+                evaluate(expr, context);
 
             /**
              * 
              */
             case ECall(e, args):
-                switch e.evaluate(context).def {
-                    case EFunction(_, params, body, ctx): {
-                        for(i in 0...args.length) {
-                            ctx.addVarFunc(params[i], args[i]);
+                switch evaluate(e, context).def {
+                    case EFunction(ident, params, body, scope): {
+                        if(args.length == params.length) {
+                            var callScoped = scope.clone();
+                            for(i in 0...args.length) {
+                                callScoped.addVarFunc(params[i], args[i]);
+                            }
+                            var ctxInnerOuter = new ContextInnerOuter(callScoped, context);
+                            evaluate(body, ctxInnerOuter);
                         }
-                        body.evaluate(ctx);
+                        else if(args.length < params.length) {
+                            var callScoped = scope.clone();
+                            for(i in 0...args.length) {
+                                callScoped.addVarFunc(params[i], args[i]);
+                            }
+                            var ctxInnerOuter = new ContextInnerOuter(callScoped, context);
+                            new Expr(EFunction(ident + "_c", params.slice(args.length), body, ctxInnerOuter), null);
+                        }
+                        else {
+                            throw "TOO MANY ARGS";
+                        }
                     }
                     case _:
                         throw "err";
@@ -152,17 +167,17 @@ class Expr
              * 
              */
             case EBlock(exprs):
-                exprs[exprs.length - 1].evaluate(context);
+                evaluate(exprs[exprs.length - 1], context);
 
             /**
              * 
              */
             case EIf(econd, ethen, eelse):
-                switch econd.evaluate(context).def {
+                switch evaluate(econd, context).def {
                     case EConstant(constant): switch constant {
                         case CBool(value): value
-                            ? ethen.evaluate(context)
-                            : eelse.evaluate(context);
+                            ? evaluate(ethen, context)
+                            : evaluate(eelse, context);
                         case _: throw "err";
                     }
                     case _: throw "err";
@@ -172,12 +187,12 @@ class Expr
              * 
              */
             case EUnop(op, e):
-                switch [op, e.evaluate(context).def] {
+                switch [op, evaluate(e, context).def] {
                     case [OpNot, EConstant(constant)]: switch constant {
                         case CBool(value): 
                             new Expr(
                                 EConstant(CBool(!value)), 
-                                Position.union(this.pos, this.pos)
+                                node.pos
                             );
                         case _: throw "err";
                     }
@@ -185,7 +200,7 @@ class Expr
                         case CNumber(value): 
                             new Expr(
                                 EConstant(CNumber(-value)), 
-                                Position.union(this.pos, this.pos)
+                                node.pos
                             );
                         case _: throw "err";
                     }
@@ -196,12 +211,12 @@ class Expr
              * 
              */
             case ETernary(econd, eif, eelse):
-                switch econd.evaluate(context).def {
+                switch evaluate(econd, context).def {
                     case EConstant(constant): {
                         switch constant {
                             case CBool(value): value
-                                ? eif.evaluate(context)
-                                : eelse.evaluate(context);
+                                ? evaluate(eif, context)
+                                : evaluate(eelse, context);
                             case _: throw "err";
                         }
                     }
@@ -223,21 +238,21 @@ class Expr
              * 
              */
             case EParentheses(expr):
-                expr.evaluate(context);
+                evaluate(expr, context);
 
             /**
              * 
              */
             case EPrint(expr):
-                var evalExpr = expr.evaluate(context);
-                trace('${pos.file}:${pos.line}: ${evalExpr}\n');
+                var evalExpr = evaluate(expr, context);
+                trace('${node.pos.file}:${node.pos.line}: ${evalExpr}\n');
                 evalExpr;
 
             /**
              * 
              */
             case EFunction(_, _, _):
-                this;
+                node;
         }
     }
 

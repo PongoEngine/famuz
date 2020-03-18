@@ -53,7 +53,8 @@ class Famuz
         var main = context.getExpr("main");
         return switch main.def {
             case EFunction(_, _, body, scope): {
-                return Some(body.evaluate(scope));
+                var expr = Expr.evaluate(new Expr(ECall(main, []), null), context);
+                Some(expr);
             }
             case _: 
                 None;

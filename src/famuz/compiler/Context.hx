@@ -26,13 +26,18 @@ import famuz.compiler.expr.Expr;
 import famuz.compiler.expr.EnumDefinition;
 using famuz.util.FStringTools;
 
+interface IContext {
+    function getExpr(name :String) : Expr;
+    function clone() : IContext;
+    function printEnvironment() : String;
+    function addVarFunc(name :String, expr :Expr) : Void;
+}
+
 /**
  * 
  */
-class Context
+class Context implements IContext
 {
-    public var parent :Context = null;
-
     public function new(error :Error) : Void
     {
         _error = error;
@@ -47,16 +52,6 @@ class Context
         }
         else {
             _map.set(name, expr);
-        }
-    }
-
-    public function removeVarFunc(name :String) : Void
-    {
-        if(!_map.exists(name)) {
-            throw '"${name}" doesn\'t exists.';
-        }
-        else {
-            _map.remove(name);
         }
     }
 
@@ -78,9 +73,6 @@ class Context
         if(_map.exists(name)) {
             return _map.get(name);
         }
-        if(this.parent != null) {
-            return this.parent.getExpr(name);
-        }
         else {
             throw 'Expr:${name} not found.';
         }
@@ -101,21 +93,78 @@ class Context
         return this._error.hasErrors();
     }
 
-    public function printEnvironment(msg :String) : Void
+    public function printEnvironment() : String
     {
-        trace(msg + "\n" + _map.mapToString() + "\n");
+        return (_map.mapToString() + "\n");
     }
 
-    public function createChild() : Context
+    public function createContext() : Context
     {
-        var c = new Context(_error);
-        c.parent = this;
+        return new Context(_error);
+    }
+
+    public function clone() : Context
+    {
+        var c = this.createContext();
+        c._map = this._map.copy();
+        c._enumDefs = this._enumDefs.copy();
         return c;
     }
 
     private var _error :Error;
     private var _map :Map<String, Expr>;
     private var _enumDefs :Map<String, EnumDefinition>;
+}
+
+class ContextInnerOuter implements IContext
+{
+    public function new(inner :IContext, outer :IContext)
+    {
+        _map = new Map<String, Expr>();
+        _inner = inner;
+        _outer = outer;
+    }
+
+    public function getExpr(name :String) : Expr
+    {
+        if(_map.exists(name)) {
+            return _map.get(name);
+        }
+        try {
+            return _inner.getExpr(name);
+        }
+        catch(e :Dynamic) {
+            return _outer.getExpr(name);
+        }
+    }
+
+    public function addVarFunc(name :String, expr :Expr) : Void
+    {
+        if(_map.exists(name)) {
+            throw '"${name}" already exists.';
+        }
+        else {
+            _map.set(name, expr);
+        }
+    }
+
+    public function clone() : ContextInnerOuter
+    {
+        var c = new ContextInnerOuter(this._inner, this._outer);
+        c._map = this._map.copy();
+        return c;
+    }
+
+    public function printEnvironment() : String
+    {
+        var inner = _inner.printEnvironment();
+        var outer = _outer.printEnvironment();
+        return 'inner: ${inner}outer: ${outer}';
+    }
+
+    private var _map :Map<String, Expr>;
+    private var _inner :IContext;
+    private var _outer :IContext;
 }
 
 class ContextTools
@@ -132,7 +181,7 @@ class ContextTools
         var element = new Expr(EConstant(CIdentifier("element")), null);
         var op = new Expr(EArrayFunc(array, OpPush(element)), null);
         ctx.addVarFunc("push", new Expr(
-            EFunction("push", ["array", "element"], op, ctx), 
+            EFunction("push", ["array", "element"], op, ctx.createContext()), 
             null
         ));
     }
@@ -142,7 +191,7 @@ class ContextTools
         var array = new Expr(EConstant(CIdentifier("array")), null);
         var op = new Expr(EArrayFunc(array, OpPop), null);
         ctx.addVarFunc("pop", new Expr(
-            EFunction("pop", ["array"], op, ctx), 
+            EFunction("pop", ["array"], op, ctx.createContext()), 
             null
         ));
     }

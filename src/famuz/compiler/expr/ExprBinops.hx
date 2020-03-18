@@ -22,16 +22,17 @@
 package famuz.compiler.expr;
 
 import famuz.compiler.expr.ExprDef;
+import famuz.compiler.Context;
 
 /**
  * 
  */
 class ExprBinops
 {
-    public static function add(this_ :Expr, expr :Expr, context :Context) : Expr
+    public static function add(this_ :Expr, expr :Expr, context :IContext) : Expr
     {
-        var a = this_.evaluate(context);
-        var b = expr.evaluate(context);
+        var a = Expr.evaluate(this_, context);
+        var b = Expr.evaluate(expr, context);
 
         var constant = switch [a.def, b.def] {
             case [EConstant(constantA), EConstant(constantB)]: {
@@ -52,10 +53,10 @@ class ExprBinops
         );
     }
 
-    public static function subtract(this_ :Expr, expr :Expr, context :Context) : Expr
+    public static function subtract(this_ :Expr, expr :Expr, context :IContext) : Expr
     {
-        var a = this_.evaluate(context);
-        var b = expr.evaluate(context);
+        var a = Expr.evaluate(this_, context);
+        var b = Expr.evaluate(expr, context);
 
         var constant = switch [a.def, b.def] {
             case [EConstant(constantA), EConstant(constantB)]: {
@@ -76,10 +77,10 @@ class ExprBinops
         );
     }
 
-    public static function equals(this_ :Expr, expr :Expr, context :Context) : Bool
+    public static function equals(this_ :Expr, expr :Expr, context :IContext) : Bool
     {
-        var a = this_.evaluate(context);
-        var b = expr.evaluate(context);
+        var a = Expr.evaluate(this_, context);
+        var b = Expr.evaluate(expr, context);
 
         return switch [a.def, b.def] {
             case [EConstant(constantA), EConstant(constantB)]:
