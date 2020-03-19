@@ -24,6 +24,7 @@ package famuz.compiler.parser;
 import famuz.compiler.Token;
 import famuz.compiler.theory.Hit;
 import famuz.compiler.expr.Expr;
+using famuz.compiler.Scanner.ScannerTools;
 
 class ParserRhythm
 {
@@ -34,7 +35,7 @@ class ParserRhythm
         var hits :Array<Hit> = [];
 
         while (rhythmScanner.hasNext()) {
-            if (rhythmScanner.peek() == 'x') {
+            if (rhythmScanner.peek().isDigit()) {
                 var start = rhythmScanner.curIndex;
                 rhythmScanner.next(); //consume "x"
                 eatDuration(rhythmScanner);

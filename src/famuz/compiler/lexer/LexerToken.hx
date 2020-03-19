@@ -46,7 +46,7 @@ enum abstract LexerToken(String) from String
     var BACKWARD_SLASH = "\\";
 
     var DURATION = "~";
-    var REST = "_";
+    var REST = "-";
 
     var LT = "<";
     var GT = ">";

@@ -23,6 +23,7 @@ package famuz.compiler;
 
 import famuz.compiler.lexer.LexerToken;
 using famuz.compiler.Scanner.ScannerTools;
+using famuz.util.FStringTools;
 
 /**
  * 
@@ -101,18 +102,7 @@ class Scanner
                 str += c;
             }
         }
-        return str;
-    }
 
-    public function consumeSteps() : String
-    {
-        var str = "";
-        while(this.hasNext() && (this.peek().isDigit() || this.peek() == SPACE)) {
-            var c = this.next();
-            if(c != SPACE) {
-                str += c;
-            }
-        }
         return str;
     }
 
@@ -140,7 +130,7 @@ class ScannerTools
 
     public static function isRhythm(ch :String) : Bool
     {
-        return ch == HIT || ch == DURATION || ch == REST;
+        return ch.isDigit() || ch == DURATION || ch == REST;
     }
 
     public static function isDigit(ch :String) : Bool

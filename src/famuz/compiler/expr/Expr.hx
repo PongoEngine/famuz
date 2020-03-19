@@ -267,7 +267,7 @@ class Expr
                 case CIdentifier(str): str;
                 case CNumber(value): value + "";
                 case CBool(value): value + "";
-                case CRhythm(d, hits, duration): '@${d} ${hits} | ${duration}';
+                case CRhythm(d, hits, duration): '@${d} ${hits.map(h -> '(${h.start}, ${h.duration})')} | ${duration}';
                 case CMelody(notes, duration): throw "CMelody";
                 case CHarmony(melodies): throw "CHarmony";
                 case CSteps(steps): throw "CSteps";

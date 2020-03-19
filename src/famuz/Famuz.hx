@@ -35,7 +35,7 @@ class Famuz
 {
     public static function compile(filePath :String) : Option<Expr>
     {
-        try {
+        // try {
             var content = File.getContent(filePath);
             var tokens = Lexer.lex(filePath, content);
             var tokenScanner = new TokenScanner(tokens);
@@ -55,9 +55,9 @@ class Famuz
                 case _: 
                     None;
             }
-        }
-        catch(e :Dynamic) {
-            return None;
-        }
+        // }
+        // catch(e :Dynamic) {
+        //     return None;
+        // }
     }
 }

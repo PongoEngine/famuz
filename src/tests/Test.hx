@@ -33,9 +33,9 @@ class Test {
 			Sys.print(v + "");
         }
         
-        // run("./src/tests/let.famuz");
+        run("./src/tests/let.famuz");
         run("./src/tests/func.famuz");
-        // run("./src/tests/array.famuz");
+        run("./src/tests/array.famuz");
     }
 
 	static function run(sourcePath :String) : Option<Expr>

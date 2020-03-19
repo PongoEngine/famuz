@@ -84,7 +84,7 @@ class Lexer
                     scanner.peekDouble() == '>'
                         ? tokens.push(createToken(SHIFT_RIGHT, 2, scanner))
                         : scanner.next();
-                case DURATION, REST:
+                case DURATION:
                     scanner.next();
                 case TAB, SPACE, LINE:
                     scanner.consumeWhitespace();
