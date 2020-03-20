@@ -26,7 +26,6 @@ import famuz.compiler.expr.Expr;
 import famuz.compiler.expr.EnumDefinition;
 import famuz.compiler.theory.Hit;
 import famuz.compiler.theory.SteppedHit;
-import famuz.compiler.theory.Step;
 import famuz.compiler.theory.Scale;
 import famuz.compiler.theory.Key;
 import famuz.compiler.theory.NotedHit;
@@ -34,6 +33,7 @@ import famuz.compiler.theory.NotedHit;
 /**
  * 
  */
+@:using(famuz.compiler.expr.ExprDef.ExprDefTools)
 enum ExprDef 
 {
     /**
@@ -130,6 +130,64 @@ enum ExprDef
     EFunction(identifier :String, params :Array<String>, body :Expr, scope :IContext);
 }
 
+class ExprDefTools
+{
+    public static function getIdentifier(def :ExprDef) : String
+    {
+        return switch def {
+            case EConstant(constant): switch constant {
+                case CIdentifier(str): str;
+                case _: throw "err";
+            }
+            case _: throw "err";
+        }
+    }
+
+    public static function getBool(def :ExprDef) : Bool
+    {
+        return switch def {
+            case EConstant(constant): switch constant {
+                case CBool(value): value;
+                case _: throw "err";
+            }
+            case _: throw "err";
+        }
+    }
+
+    public static function getNumber(def :ExprDef) : Int
+    {
+        return switch def {
+            case EConstant(constant): switch constant {
+                case CNumber(value): value;
+                case _: throw "err";
+            }
+            case _: throw "err";
+        }
+    }
+
+    public static function getScale(def :ExprDef) : Scale
+    {
+        return switch def {
+            case EConstant(constant): switch constant {
+                case CScale(type): type;
+                case _: throw "err";
+            }
+            case _: throw "err";
+        }
+    }
+
+    public static function getKey(def :ExprDef) : Key
+    {
+        return switch def {
+            case EConstant(constant): switch constant {
+                case CKey(type): type;
+                case _: throw "err";
+            }
+            case _: throw "err";
+        }
+    }
+}
+
 /**
  * 
  */
@@ -138,12 +196,13 @@ enum Constant
     CIdentifier(str :String);
     CBool(value :Bool);
     CNumber(value :Int);
+    CScale(type :Scale);
+    CKey(key :Key);
+
+    //rethink these as exprs
     CRhythm(d :Int, hits :Array<Hit>, duration :Int);
     CMelody(notes :Array<SteppedHit>, duration :Int);
     CHarmony(melodies :Array<Array<SteppedHit>>);
-    CSteps(steps :Array<Step>);
-    CScale(type :Scale);
-    CKey(key :Key);
     CScaledKey(scale :Scale, key :Key);
     CMusic(music :Array<NotedHit>);
 }
@@ -205,4 +264,5 @@ enum BinopType
     SUBTRACT;
     SHIFT_LEFT;
     SHIFT_RIGHT;
+    WRAP;
 }

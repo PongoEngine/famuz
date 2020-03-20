@@ -30,11 +30,11 @@ abstract Note(Int)
         this = val;
     }
 
-    public static function create(root :Key, scale :Scale, step :Step, octave :Octave) : Note
+    public static function create(root :Key, scale :Scale, step :Int, octave :Octave) : Note
     {
-        var rangedStep = new Step(step.toInt().mod(scale.length()));
-        var realOctave = new Octave(Math.floor(step.toInt() / scale.length())) + octave;
-        var value = scale.steppedValue(root, rangedStep.toInt()) + 12 * realOctave.toInt();
+        var rangedStep = step.mod(scale.length());
+        var realOctave = new Octave(Math.floor(step / scale.length())) + octave;
+        var value = scale.steppedValue(root, rangedStep) + 12 * realOctave.toInt();
         return new Note(value);
     }
     

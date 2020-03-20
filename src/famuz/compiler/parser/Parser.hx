@@ -96,7 +96,7 @@ class Parser
                         ParserArray.parse(scanner, context);
                     case MINUS, BANG:
                         ParserUnop.parse(scanner, context);
-                    case ADD, EQUALS, RIGHT_PARENTHESES, RIGHT_BRACE,
+                    case WRAP, ADD, EQUALS, RIGHT_PARENTHESES, RIGHT_BRACE,
                         RIGHT_BRACKET, SHIFT_LEFT, SHIFT_RIGHT, SLASH,
                         COMMA, PERIOD, QUESTION_MARK, COLON:
                         parseConsume(scanner);
@@ -141,16 +141,10 @@ class Parser
         return switch (scanner.peek().type) {
             case TTPunctuator(type):
                 switch type {
-                    case ADD: 
-                            ParserBinop.parse(left, scanner, context, type);
-                    case MINUS: 
+                    case ADD, MINUS, SHIFT_LEFT, SHIFT_RIGHT, WRAP: 
                             ParserBinop.parse(left, scanner, context, type);
                     case LEFT_BRACKET: 
                             ParserArrayAccess.parse(left, scanner, context);
-                    case SHIFT_LEFT: 
-                            ParserBinop.parse(left, scanner, context, type);
-                    case SHIFT_RIGHT: 
-                            ParserBinop.parse(left, scanner, context, type);
                     case PERIOD:
                             ParserDot.parse(left, scanner, context);
                     case QUESTION_MARK:

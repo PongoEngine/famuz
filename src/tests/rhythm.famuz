@@ -1,0 +1,5 @@
+let r = @2 9--- 8~~~
+
+func main = {
+    print(r)
+}

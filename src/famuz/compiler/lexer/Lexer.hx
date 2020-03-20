@@ -62,7 +62,9 @@ class Lexer
                 case QUESTION_MARK:
                     tokens.push(createToken(QUESTION_MARK, 1, scanner));
                 case COLON:
-                    tokens.push(createToken(COLON, 1, scanner));
+                    scanner.peekDouble() == '>'
+                        ? tokens.push(createToken(WRAP, 2, scanner))
+                        : tokens.push(createToken(COLON, 1, scanner));
                 case ADD:
                     tokens.push(createToken(ADD, 1, scanner));
                 case MINUS:
@@ -75,15 +77,15 @@ class Lexer
                 case FORWARD_SLASH:
                     scanner.peekDouble() == '/'
                         ? scanner.consumeComment()
-                        : scanner.next();
+                        : throw "err";
                 case LT:
                     scanner.peekDouble() == '<'
                         ? tokens.push(createToken(SHIFT_LEFT, 2, scanner))
-                        : scanner.next();
+                        : throw "err";
                 case GT:
                     scanner.peekDouble() == '>'
                         ? tokens.push(createToken(SHIFT_RIGHT, 2, scanner))
-                        : scanner.next();
+                        : throw "err";
                 case DURATION:
                     scanner.next();
                 case TAB, SPACE, LINE:

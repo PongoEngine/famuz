@@ -36,6 +36,7 @@ class ParserBinop
         var op :BinopType = switch punctuator {
             case PunctuatorType.ADD: ADD;
             case PunctuatorType.MINUS: SUBTRACT;
+            case PunctuatorType.WRAP: WRAP;
             case PunctuatorType.SHIFT_LEFT: SHIFT_LEFT;
             case PunctuatorType.SHIFT_RIGHT: SHIFT_RIGHT;
             case _: throw Error.FATAL_COMPILER_ERROR;

@@ -23,16 +23,24 @@ package famuz.compiler.expr;
 
 import famuz.compiler.expr.ExprDef;
 import famuz.compiler.Context;
+import famuz.compiler.theory.SteppedHit;
 
 /**
  * 
  */
 class ExprBinops
 {
-    public static function add(this_ :Expr, expr :Expr, context :IContext) : Expr
+    /**
+     * [Description]
+     * @param left 
+     * @param right 
+     * @param context 
+     * @return Expr
+     */
+    public static function add(left :Expr, right :Expr, context :IContext) : Expr
     {
-        var a = Expr.evaluate(this_, context);
-        var b = Expr.evaluate(expr, context);
+        var a = Expr.evaluate(left, context);
+        var b = Expr.evaluate(right, context);
 
         var constant = switch [a.def, b.def] {
             case [EConstant(constantA), EConstant(constantB)]: {
@@ -49,14 +57,21 @@ class ExprBinops
 
         return new Expr(
             constant, 
-            Position.union(this_.pos, expr.pos)
+            Position.union(left.pos, right.pos)
         );
     }
 
-    public static function subtract(this_ :Expr, expr :Expr, context :IContext) : Expr
+    /**
+     * [Description]
+     * @param left 
+     * @param right 
+     * @param context 
+     * @return Expr
+     */
+    public static function subtract(left :Expr, right :Expr, context :IContext) : Expr
     {
-        var a = Expr.evaluate(this_, context);
-        var b = Expr.evaluate(expr, context);
+        var a = Expr.evaluate(left, context);
+        var b = Expr.evaluate(right, context);
 
         var constant = switch [a.def, b.def] {
             case [EConstant(constantA), EConstant(constantB)]: {
@@ -73,14 +88,72 @@ class ExprBinops
 
         return new Expr(
             constant, 
-            Position.union(this_.pos, expr.pos)
+            Position.union(left.pos, right.pos)
         );
     }
 
-    public static function equals(this_ :Expr, expr :Expr, context :IContext) : Bool
+    /**
+     * [Description]
+     * @param left 
+     * @param right 
+     * @param context 
+     * @return Expr
+     */
+    public static function wrap(left :Expr, right :Expr, context :IContext) : Expr
     {
-        var a = Expr.evaluate(this_, context);
-        var b = Expr.evaluate(expr, context);
+        var a = Expr.evaluate(left, context);
+        var b = Expr.evaluate(right, context);
+
+        var constant = switch [a.def, b.def] {
+            case [EConstant(constantA), EArrayDecl(values)]: {
+                switch constantA {
+                    case CRhythm(d, hits, duration):
+                        var notes :Array<SteppedHit> = [];
+                        for(i in 0...hits.length) {
+                            var hit = hits[i];
+                            var step = values[i%values.length].def.getNumber();
+                            notes.push(new SteppedHit(step, hit));
+                        }
+                        EConstant(CMelody(notes, duration));
+                    case _: 
+                        throw "err";
+                }
+            }
+            case [EArrayDecl(values), EConstant(constantA)]: {
+                switch constantA {
+                    case CRhythm(d, hits, duration):
+                        var notes :Array<SteppedHit> = [];
+                        for(i in 0...values.length) {
+                            var step = values[i].def.getNumber();
+                            var hit = hits[i%hits.length];
+                            notes.push(new SteppedHit(step, hit));
+                        }
+                        EConstant(CMelody(notes, duration));
+                    case _: 
+                        throw "err";
+                }
+            }
+            case _: 
+                throw "err";
+        }
+
+        return new Expr(
+            constant, 
+            Position.union(left.pos, right.pos)
+        );
+    }
+
+    /**
+     * [Description]
+     * @param left 
+     * @param right 
+     * @param context 
+     * @return Bool
+     */
+    public static function equals(left :Expr, right :Expr, context :IContext) : Bool
+    {
+        var a = Expr.evaluate(left, context);
+        var b = Expr.evaluate(right, context);
 
         return switch [a.def, b.def] {
             case [EConstant(constantA), EConstant(constantB)]:

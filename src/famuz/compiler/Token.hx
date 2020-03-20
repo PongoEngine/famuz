@@ -129,6 +129,7 @@ enum PunctuatorType
 	RIGHT_BRACKET;
 	SHIFT_LEFT;
 	SHIFT_RIGHT;
+	WRAP;
 	SLASH;
 	COMMA;
 	PERIOD;

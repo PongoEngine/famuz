@@ -23,10 +23,10 @@ package famuz.compiler.theory;
 
 class SteppedHit
 {
-    public var step : Step;
+    public var step : Int;
     public var hit : Hit;
 
-    public function new(step :Step, hit :Hit) : Void
+    public function new(step :Int, hit :Hit) : Void
     {
         this.step = step;
         this.hit = hit;

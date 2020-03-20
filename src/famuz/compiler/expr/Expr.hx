@@ -234,6 +234,7 @@ class Expr
                 switch type {
                     case ADD: e1.add(e2, context);
                     case SUBTRACT: e1.subtract(e2, context);
+                    case WRAP: e1.wrap(e2, context);
                     case SHIFT_LEFT: throw "SHIFT_LEFT";
                     case SHIFT_RIGHT: throw "SHIFT_RIGHT";
                 }
@@ -268,9 +269,8 @@ class Expr
                 case CNumber(value): value + "";
                 case CBool(value): value + "";
                 case CRhythm(d, hits, duration): '@${d} ${hits.map(h -> '(${h.start}, ${h.duration})')} | ${duration}';
-                case CMelody(notes, duration): throw "CMelody";
+                case CMelody(notes, duration): '${notes.map(n -> '${n.step}(${n.hit.start},${n.hit.duration})')} | ${duration}';
                 case CHarmony(melodies): throw "CHarmony";
-                case CSteps(steps): throw "CSteps";
                 case CScale(scale): scale.toString();
                 case CKey(key): key.toString();
                 case CScaledKey(scale, key): throw "CScaledKey";
@@ -292,6 +292,7 @@ class Expr
                 var op = switch type {
                     case ADD: '+';
                     case SUBTRACT: '-';
+                    case WRAP: ':>';
                     case SHIFT_LEFT: '<<';
                     case SHIFT_RIGHT: '>>';
                 }

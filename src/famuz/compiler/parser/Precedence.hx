@@ -68,7 +68,7 @@ abstract Precedence(Int)
                 switch type {
                     case EQUALS:
                         PRECEDENCE_ASSIGNMENT;
-                    case ADD, SHIFT_LEFT, SHIFT_RIGHT:
+                    case ADD, SHIFT_LEFT, SHIFT_RIGHT, WRAP:
                         PRECEDENCE_SUM;
                     case MINUS:
                         PRECEDENCE_SUBTRACT;

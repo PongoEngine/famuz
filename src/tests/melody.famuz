@@ -1,0 +1,6 @@
+let r = @2 9--- 8~~~
+let arra = [0,1,2,3]
+
+func main = {
+    print(arra :> r)
+}
