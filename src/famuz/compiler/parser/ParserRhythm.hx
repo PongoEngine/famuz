@@ -22,8 +22,8 @@
 package famuz.compiler.parser;
 
 import famuz.compiler.Token;
-import famuz.compiler.theory.Hit;
 import famuz.compiler.expr.Expr;
+import famuz.compiler.expr.Expr.ExprTools;
 using famuz.compiler.Scanner.ScannerTools;
 
 class ParserRhythm
@@ -32,7 +32,7 @@ class ParserRhythm
     {
         var token = scanner.next();
         var rhythmScanner = new Scanner(rhythm, token.pos.file);
-        var hits :Array<Hit> = [];
+        var hits :Array<Expr> = [];
 
         while (rhythmScanner.hasNext()) {
             if (rhythmScanner.peek().isDigit()) {
@@ -40,7 +40,7 @@ class ParserRhythm
                 rhythmScanner.next(); //consume "x"
                 eatDuration(rhythmScanner);
                 var duration = rhythmScanner.curIndex - start;
-                hits.push(new Hit(start, duration));
+                hits.push(ExprTools.createHit(start, duration, token.pos));
             }
             else if (rhythmScanner.peek() == '-') {
                 eatRest(rhythmScanner);
@@ -52,10 +52,7 @@ class ParserRhythm
         }
         var duration = rhythmScanner.content.length;
 
-        return new Expr(
-            EConstant(CRhythm(d, hits, duration)),
-            token.pos
-        );
+        return ExprTools.createRhythm(d, hits, duration, token.pos);
     }
 
     private static function eatDuration(scanner :Scanner) : Void

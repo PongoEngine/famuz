@@ -23,7 +23,6 @@ package famuz.compiler.expr;
 
 import famuz.compiler.expr.ExprDef;
 import famuz.compiler.Context;
-import famuz.compiler.theory.SteppedHit;
 
 /**
  * 
@@ -101,61 +100,15 @@ class ExprBinops
      */
     public static function wrap(left :Expr, right :Expr, context :IContext) : Expr
     {
-        var a = Expr.evaluate(left, context);
-        var b = Expr.evaluate(right, context);
-
-        var constant = switch [a.def, b.def] {
-            case [EConstant(constantA), EArrayDecl(values)]: {
-                switch constantA {
-                    case CRhythm(d, hits, duration):
-                        var notes :Array<SteppedHit> = [];
-                        for(i in 0...hits.length) {
-                            var hit = hits[i];
-                            var step = values[i%values.length].def.getNumber();
-                            notes.push(new SteppedHit(step, hit));
-                        }
-                        EConstant(CMelody(notes, duration));
-                    case _: 
-                        throw "err";
-                }
-            }
-            case [EArrayDecl(values), EConstant(constantA)]: {
-                switch constantA {
-                    case CRhythm(d, hits, duration):
-                        var notes :Array<SteppedHit> = [];
-                        for(i in 0...values.length) {
-                            var step = values[i].def.getNumber();
-                            var hit = hits[i%hits.length];
-                            notes.push(new SteppedHit(step, hit));
-                        }
-                        EConstant(CMelody(notes, duration));
-                    case _: 
-                        throw "err";
-                }
-            }
-            case _: 
-                throw "err";
-        }
-
-        return new Expr(
-            constant, 
-            Position.union(left.pos, right.pos)
-        );
+        throw "err";
     }
 
-    /**
-     * [Description]
-     * @param left 
-     * @param right 
-     * @param context 
-     * @return Bool
-     */
-    public static function equals(left :Expr, right :Expr, context :IContext) : Bool
+    public static function equals(left :Expr, right :Expr, context :IContext) : Expr
     {
         var a = Expr.evaluate(left, context);
         var b = Expr.evaluate(right, context);
 
-        return switch [a.def, b.def] {
+        var v = switch [a.def, b.def] {
             case [EConstant(constantA), EConstant(constantB)]:
                 switch [constantA, constantB] {
                     case [CNumber(valueA), CNumber(valueB)]: valueA == valueB;
@@ -163,9 +116,29 @@ class ExprBinops
                     case _: false;
                 }
             case [EEnumParameter(e1, type1, index1), EEnumParameter(e2, type2, index2)]:
-                return index1 == index2 && type1 == type2;
+                index1 == index2 && type1 == type2;
             case _: 
                 false;
         }
+
+        return new Expr(EConstant(CBool(v)), Position.union(a.pos, b.pos));
+    }
+
+    public static function greaterThan(left :Expr, right :Expr, context :IContext) : Expr
+    {
+        var a = Expr.evaluate(left, context);
+        var b = Expr.evaluate(right, context);
+
+        var v = switch [a.def, b.def] {
+            case [EConstant(constantA), EConstant(constantB)]:
+                switch [constantA, constantB] {
+                    case [CNumber(valueA), CNumber(valueB)]: valueA > valueB;
+                    case _: false;
+                }
+            case _: 
+                false;
+        }
+
+        return new Expr(EConstant(CBool(v)), Position.union(a.pos, b.pos));
     }
 }

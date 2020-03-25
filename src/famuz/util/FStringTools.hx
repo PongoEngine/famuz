@@ -11,6 +11,19 @@ class FStringTools
         return str + "}";
     }
 
+    public static function mapToStringSmall<T>(map :Map<String, T>) : String
+        {
+            var str = "{";
+            var itr = map.keyValueIterator();
+            for(kv in itr) {
+                str += '${kv.key}:${kv.value}';
+                if(itr.hasNext()) {
+                    str += ",";
+                }
+            }
+            return str + "}";
+        }
+
     public static function isNumber(str :String) : Bool
     {
         return str == '0' ||

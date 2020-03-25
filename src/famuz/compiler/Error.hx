@@ -31,7 +31,7 @@ class Error
 {
     public static var FATAL_COMPILER_ERROR = "FATAL COMPILER ERROR";
 
-    public static function create(e :ParserError) : Dynamic
+    public static inline function create(e :ParserError) : Dynamic
     {
         printError(e);
         throw "COMPILER ERROR";

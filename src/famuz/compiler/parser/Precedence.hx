@@ -46,9 +46,10 @@ abstract Precedence(Int)
 	public static var PRECEDENCE_TERNARY = new Precedence(2);
 	public static var PRECEDENCE_PERIOD = new Precedence(2);
 	public static var PRECEDENCE_ARRAY = new Precedence(2);
-    public static var PRECEDENCE_SUM = new Precedence(3);
+    // public static var PRECEDENCE_SUM = new Precedence(3);
     public static var PRECEDENCE_SUBTRACT = new Precedence(3);
 	public static var PRECEDENCE_CALL = new Precedence(4);
+    public static var PRECEDENCE_SUM = new Precedence(5);
 
     public function new(val :Int) : Void
     {
@@ -68,7 +69,7 @@ abstract Precedence(Int)
                 switch type {
                     case EQUALS:
                         PRECEDENCE_ASSIGNMENT;
-                    case ADD, SHIFT_LEFT, SHIFT_RIGHT, WRAP:
+                    case EQUALITY, ADD, SHIFT_LEFT, SHIFT_RIGHT, WRAP, GREATER_THAN:
                         PRECEDENCE_SUM;
                     case MINUS:
                         PRECEDENCE_SUBTRACT;

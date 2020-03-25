@@ -39,6 +39,8 @@ class ParserBinop
             case PunctuatorType.WRAP: WRAP;
             case PunctuatorType.SHIFT_LEFT: SHIFT_LEFT;
             case PunctuatorType.SHIFT_RIGHT: SHIFT_RIGHT;
+            case PunctuatorType.EQUALITY: EQUALITY;
+            case PunctuatorType.GREATER_THAN: GREATER_THAN;
             case _: throw Error.FATAL_COMPILER_ERROR;
         }
         

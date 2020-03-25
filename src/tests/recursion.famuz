@@ -1,0 +1,10 @@
+func count a b = {
+    let q = push(b a)
+    if (a > 0) then count(a-1, q) else q
+}
+
+func main = {
+    let arra = []
+    let x = count(10, [])
+    print(x)
+}

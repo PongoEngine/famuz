@@ -24,11 +24,8 @@ package famuz.compiler.expr;
 import famuz.compiler.Context;
 import famuz.compiler.expr.Expr;
 import famuz.compiler.expr.EnumDefinition;
-import famuz.compiler.theory.Hit;
-import famuz.compiler.theory.SteppedHit;
 import famuz.compiler.theory.Scale;
 import famuz.compiler.theory.Key;
-import famuz.compiler.theory.NotedHit;
 
 /**
  * 
@@ -198,13 +195,6 @@ enum Constant
     CNumber(value :Int);
     CScale(type :Scale);
     CKey(key :Key);
-
-    //rethink these as exprs
-    CRhythm(d :Int, hits :Array<Hit>, duration :Int);
-    CMelody(notes :Array<SteppedHit>, duration :Int);
-    CHarmony(melodies :Array<Array<SteppedHit>>);
-    CScaledKey(scale :Scale, key :Key);
-    CMusic(music :Array<NotedHit>);
 }
 
 /**
@@ -265,4 +255,6 @@ enum BinopType
     SHIFT_LEFT;
     SHIFT_RIGHT;
     WRAP;
+    EQUALITY;
+    GREATER_THAN;
 }

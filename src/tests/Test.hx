@@ -37,7 +37,7 @@ class Test {
         // run("./src/tests/func.famuz");
         // run("./src/tests/array.famuz");
         // run("./src/tests/rhythm.famuz");
-        run("./src/tests/melody.famuz");
+        run("./src/tests/recursion.famuz");
     }
 
 	static function run(sourcePath :String) : Option<Expr>

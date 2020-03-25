@@ -24,6 +24,7 @@ package famuz.compiler.expr;
 import famuz.compiler.Context;
 import famuz.compiler.expr.ExprDef;
 using famuz.compiler.expr.ExprBinops;
+using famuz.util.FStringTools;
 
 /**
  * 
@@ -59,7 +60,7 @@ class Expr
             case ESwitch(e, cases, edef): {
                 for(case_ in cases) {
                     for(v in case_.values) {
-                        if(v.equals(e, context)) {
+                        if(v.equals(e, context).def.getBool()) {
                             return evaluate(case_.expr, context);
                         }
                     }
@@ -142,7 +143,7 @@ class Expr
                         if(args.length == params.length) {
                             var callScoped = scope.clone();
                             for(i in 0...args.length) {
-                                callScoped.addVarFunc(params[i], args[i]);
+                                callScoped.addVarFunc(params[i], Expr.evaluate(args[i], context));
                             }
                             var ctxInnerOuter = new ContextInnerOuter(callScoped, context);
                             evaluate(body, ctxInnerOuter);
@@ -235,6 +236,8 @@ class Expr
                     case ADD: e1.add(e2, context);
                     case SUBTRACT: e1.subtract(e2, context);
                     case WRAP: e1.wrap(e2, context);
+                    case EQUALITY: e1.equals(e2, context);
+                    case GREATER_THAN: e1.greaterThan(e2, context);
                     case SHIFT_LEFT: throw "SHIFT_LEFT";
                     case SHIFT_RIGHT: throw "SHIFT_RIGHT";
                 }
@@ -268,13 +271,8 @@ class Expr
                 case CIdentifier(str): str;
                 case CNumber(value): value + "";
                 case CBool(value): value + "";
-                case CRhythm(d, hits, duration): '@${d} ${hits.map(h -> '(${h.start}, ${h.duration})')} | ${duration}';
-                case CMelody(notes, duration): '${notes.map(n -> '${n.step}(${n.hit.start},${n.hit.duration})')} | ${duration}';
-                case CHarmony(melodies): throw "CHarmony";
                 case CScale(scale): scale.toString();
                 case CKey(key): key.toString();
-                case CScaledKey(scale, key): throw "CScaledKey";
-                case CMusic(music): throw "CMusic";
             }
             case EArrayDecl(values):
                 values.map(v -> v.toString()) + "";
@@ -293,6 +291,8 @@ class Expr
                     case ADD: '+';
                     case SUBTRACT: '-';
                     case WRAP: ':>';
+                    case EQUALITY: '==';
+                    case GREATER_THAN: ">";
                     case SHIFT_LEFT: '<<';
                     case SHIFT_RIGHT: '>>';
                 }
@@ -306,7 +306,7 @@ class Expr
             case EIf(econd, ethen, eelse):
                 throw "err";
             case EObjectDecl(fields):
-                throw "err";
+                '${fields.mapToStringSmall()}';
             case EParentheses(expr):
                 throw "err";
             case EPrint(expr):
@@ -322,3 +322,23 @@ class Expr
 }
 
 typedef Ref<T> = {ref :T};
+
+class ExprTools
+{
+    public static function createHit(start :Int, duration :Int, position :Position) : Expr
+    {
+        var fields = new Map<String, Expr>();
+        fields.set("start", new Expr(EConstant(CNumber(start)), position));
+        fields.set("duration", new Expr(EConstant(CNumber(duration)), position));
+        return new Expr(EObjectDecl(fields), position);
+    }
+
+    public static function createRhythm(d :Int, hits :Array<Expr>, duration :Int, position :Position) : Expr
+    {
+        var fields = new Map<String, Expr>();
+        fields.set("d", new Expr(EConstant(CNumber(d)), position));
+        fields.set("hits", new Expr(EArrayDecl(hits), position));
+        fields.set("duration", new Expr(EConstant(CNumber(duration)), position));
+        return new Expr(EObjectDecl(fields), position);
+    }
+}

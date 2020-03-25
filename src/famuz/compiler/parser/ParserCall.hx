@@ -34,6 +34,9 @@ class ParserCall
 
         while (scanner.hasNext() && scanner.peek().isNotPunctuator(RIGHT_PARENTHESES)) {
             var expr = Parser.parse(new Precedence(0), scanner, context, false);
+            if(scanner.peek().isPunctuator(COMMA)) {
+                scanner.next();
+            }
             args.push(expr);
         }
 
