@@ -46,6 +46,7 @@ class ParserStruct
 
         return new Expr(
             EObjectDecl(fields),
+			Expr._T,
             Position.union(leftBrace.pos, rightBrace.pos)
         );
     }

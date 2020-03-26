@@ -36,6 +36,7 @@ class ParserLet
 
         var letExpr = new Expr(
             EVar(identifier.getIdentifier(), value),
+			Expr._T,
             Position.union(let.pos, value.pos)
         );
         context.addVarFunc(identifier.getIdentifier(), value);

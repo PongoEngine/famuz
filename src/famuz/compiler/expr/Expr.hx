@@ -23,6 +23,7 @@ package famuz.compiler.expr;
 
 import famuz.compiler.Context;
 import famuz.compiler.expr.ExprDef;
+import famuz.compiler.expr.Type;
 using famuz.compiler.expr.ExprBinops;
 using famuz.util.FStringTools;
 
@@ -33,10 +34,14 @@ class Expr
 {
     public var def :ExprDef;
     public var pos :Position;
+    public var t :Type;
 
-    public function new(def :ExprDef, pos :Position) : Void
+    public static var _T :Type = null;
+
+    public function new(def :ExprDef, t :Type, pos :Position) : Void
     {
         this.def = def;
+        this.t = t;
         this.pos = pos;
     }
 
@@ -158,7 +163,7 @@ class Expr
                             for(i in 0...args.length) {
                                 identParams += '_${params[i]}';
                             }
-                            new Expr(EFunction(ident + identParams, params.slice(args.length), body, ctxInnerOuter), null);
+                            new Expr(EFunction(ident + identParams, params.slice(args.length), body, ctxInnerOuter), Expr._T, null);
                         }
                         else {
                             Error.create(TooManyArgs(this.pos));
@@ -197,6 +202,7 @@ class Expr
                         case CBool(value): 
                             new Expr(
                                 EConstant(CBool(!value)), 
+                                Expr._T,
                                 this.pos
                             );
                         case _: throw "err";
@@ -205,6 +211,7 @@ class Expr
                         case CNumber(value): 
                             new Expr(
                                 EConstant(CNumber(-value)), 
+                                Expr._T,
                                 this.pos
                             );
                         case _: throw "err";
@@ -327,16 +334,16 @@ class ExprTools
 {
     public static function createCNumber(value :Int, position :Position) : Expr
     {
-        return new Expr(EConstant(CNumber(value)), position);
+        return new Expr(EConstant(CNumber(value)), Expr._T, position);
     }
 
     public static function createEObjectDecl(fields :Map<String, Expr>, position :Position) : Expr
     {
-        return new Expr(EObjectDecl(fields), position);
+        return new Expr(EObjectDecl(fields), Expr._T, position);
     }
 
     public static function createEArrayDecl(values :Array<Expr>, position :Position) : Expr
     {
-        return new Expr(EArrayDecl(values), position);
+        return new Expr(EArrayDecl(values), Expr._T, position);
     }
 }

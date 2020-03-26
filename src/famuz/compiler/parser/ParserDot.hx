@@ -37,6 +37,7 @@ class ParserDot
 
         return new Expr(
             EField(left, field.getIdentifier()),
+			Expr._T,
             Position.union(dot.pos, field.pos)
         );
     }

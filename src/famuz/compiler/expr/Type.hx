@@ -19,37 +19,13 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package famuz.compiler.parser;
+package famuz.compiler.expr;
 
-import famuz.compiler.Token;
-import famuz.compiler.parser.Precedence.*;
-import famuz.compiler.parser.Parser;
-import famuz.compiler.expr.Expr;
-
-class ParserFunc
+enum Type
 {
-    public static function parse(scanner :TokenScanner, context :Context) : Expr
-    {
-        var token = scanner.next(); //func
-        
-        var identifier = scanner.next().getIdentifier(); //id (ex: main)
-        var params :Array<String> = [];
-        while (scanner.peek().isNotPunctuator(EQUALS)) {
-            params.push(scanner.next().getIdentifier());
-        }
-
-        scanner.next(); // '='
-        
-        var scope = context.createContext();
-        var body = Parser.parse(new Precedence(0), scanner, scope, true);
-
-        var func = new Expr(
-            EFunction(identifier, params, body, scope),
-			Expr._T,
-            Position.union(token.pos, body.pos)
-        );
-        context.addVarFunc(identifier, func);
-
-        return func;
-    }
+    TNumber;
+    TBool;
+    TScale;
+    TKey;
+    TAnonymous(fields :Array<{name :String, type :Type}>);
 }

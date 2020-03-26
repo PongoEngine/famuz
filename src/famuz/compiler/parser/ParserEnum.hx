@@ -42,7 +42,7 @@ class ParserEnum
             switch e.def {
                 case EConstant(constant): switch constant {
                     case CIdentifier(str): {
-                        var param = new Expr(EEnumParameter(e, ref, index), e.pos);
+                        var param = new Expr(EEnumParameter(e, ref, index), Expr._T, e.pos);
                         fields.push(new Field(str, param));
                     }
                     case _: throw "invalid enum";

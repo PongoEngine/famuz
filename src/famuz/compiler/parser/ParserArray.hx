@@ -46,6 +46,7 @@ class ParserArray
 
         return new Expr(
             EArrayDecl(exprs),
+			Expr._T,
             Position.union(token.pos, rightBrace.pos)
         );
     }

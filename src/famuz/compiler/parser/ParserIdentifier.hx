@@ -31,6 +31,7 @@ class ParserIdentifier
         var token = scanner.next();
         return new Expr(
             EConstant(CIdentifier(identifier)),
+			Expr._T,
             token.pos
         );
     }

@@ -48,6 +48,7 @@ class ParserCall
 
         var e = new Expr(
             ECall(left, args),
+			Expr._T,
             Position.union(leftParentheses.pos, rightParentheses.pos)
         );
 

@@ -40,6 +40,7 @@ class ParserArrayAccess
         
 		return new Expr(
 			EArray(left, expr),
+			Expr._T,
 			Position.union(leftBracket.pos, rightBracket.pos)
 		);
 	}

@@ -33,6 +33,7 @@ class ParserKey
 
         return new Expr(
             EConstant(CKey(key)),
+			Expr._T,
             token.pos
         );
     }

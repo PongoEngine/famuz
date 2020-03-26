@@ -36,6 +36,7 @@ class ParserPrint
 
         return new Expr(
             EPrint(expr),
+			Expr._T,
             Position.union(token.pos, rightParentheses.pos)
         );
     }

@@ -38,6 +38,7 @@ class ParserIf
 
         return new Expr(
             EIf(econd, ethen, eelse), 
+			Expr._T,
             Position.union(if_.pos, eelse.pos)
         );
     }
