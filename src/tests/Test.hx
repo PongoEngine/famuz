@@ -35,8 +35,8 @@ class Test {
         
         // run("./src/tests/let.famuz");
         // run("./src/tests/func.famuz");
-        // run("./src/tests/array.famuz");
-        run("./src/tests/rhythm.famuz");
+        run("./src/tests/array.famuz");
+        // run("./src/tests/rhythm.famuz");
         // run("./src/tests/recursion.famuz");
         // run("./src/tests/melody.famuz");
     }

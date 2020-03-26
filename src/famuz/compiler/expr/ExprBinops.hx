@@ -104,21 +104,7 @@ class ExprBinops
         var a = left.evaluate(context);
         var b = right.evaluate(context);
         return switch [a.def, b.def] {
-            case [EArrayDecl(values), EObjectDecl(fields)]: {
-                var i = 0;
-                var hits = fields.get("hits").def.getArrayDecl();
-                trace(fields + "\n");
-
-                var steppedHits = values.map(v -> {
-                    var hit = hits[i++ % hits.length].def.getEObjectDecl();
-                    return ExprTools.createEObjectDecl([
-                        "start" => hit.get("start"),
-                        "duration" => hit.get("duration"),
-                        "step" => v
-                    ], Position.union(a.pos, b.pos));
-                });
-                throw "err";
-            };
+            case [EArrayDecl(values), EObjectDecl(fields)]: throw "err";
             case [EObjectDecl(fields), EArrayDecl(values)]: throw "err";
             case _: throw "err";
         }
