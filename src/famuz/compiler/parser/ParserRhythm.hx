@@ -37,22 +37,36 @@ class ParserRhythm
         while (rhythmScanner.hasNext()) {
             if (rhythmScanner.peek().isDigit()) {
                 var start = rhythmScanner.curIndex;
-                rhythmScanner.next(); //consume "x"
+                var velocity = Std.parseInt(rhythmScanner.next());
                 eatDuration(rhythmScanner);
                 var duration = rhythmScanner.curIndex - start;
-                hits.push(ExprTools.createHit(start, duration, token.pos));
+
+                hits.push(ExprTools.createEObjectDecl([
+                    "start" => ExprTools.createCNumber(start, token.pos),
+                    "velocity" => ExprTools.createCNumber(velocity, token.pos),
+                    "duration" => ExprTools.createCNumber(duration, token.pos)
+                ], token.pos));
             }
             else if (rhythmScanner.peek() == '-') {
+                var start = rhythmScanner.curIndex;
                 eatRest(rhythmScanner);
+                var duration = rhythmScanner.curIndex - start;
+                hits.push(ExprTools.createEObjectDecl([
+                    "start" => ExprTools.createCNumber(start, token.pos),
+                    "velocity" => ExprTools.createCNumber(-1, token.pos),
+                    "duration" => ExprTools.createCNumber(duration, token.pos)
+                ], token.pos));
             }
             else {
                 throw "err";
                 rhythmScanner.next();
             }
         }
-        var duration = rhythmScanner.content.length;
 
-        return ExprTools.createRhythm(d, hits, duration, token.pos);
+        return ExprTools.createEObjectDecl([
+            "d" => ExprTools.createCNumber(d, token.pos),
+            "hits" => ExprTools.createEArrayDecl(hits, token.pos)
+        ], token.pos);
     }
 
     private static function eatDuration(scanner :Scanner) : Void

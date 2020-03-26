@@ -183,6 +183,22 @@ class ExprDefTools
             case _: throw "err";
         }
     }
+
+    public static function getArrayDecl(def :ExprDef) : Array<Expr>
+    {
+        return switch def {
+            case EArrayDecl(values): values;
+            case _: throw "err";
+        }
+    }
+
+    public static function getEObjectDecl(def :ExprDef) : Map<String, Expr>
+    {
+        return switch def {
+            case EObjectDecl(fields): fields;
+            case _: throw "err";
+        }
+    }
 }
 
 /**

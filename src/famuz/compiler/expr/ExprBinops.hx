@@ -21,8 +21,9 @@
 
 package famuz.compiler.expr;
 
-import famuz.compiler.expr.ExprDef;
 import famuz.compiler.Context;
+using famuz.compiler.expr.Expr;
+using famuz.compiler.expr.ExprDef;
 
 /**
  * 
@@ -38,8 +39,8 @@ class ExprBinops
      */
     public static function add(left :Expr, right :Expr, context :IContext) : Expr
     {
-        var a = Expr.evaluate(left, context);
-        var b = Expr.evaluate(right, context);
+        var a = left.evaluate(context);
+        var b = right.evaluate(context);
 
         var constant = switch [a.def, b.def] {
             case [EConstant(constantA), EConstant(constantB)]: {
@@ -69,8 +70,8 @@ class ExprBinops
      */
     public static function subtract(left :Expr, right :Expr, context :IContext) : Expr
     {
-        var a = Expr.evaluate(left, context);
-        var b = Expr.evaluate(right, context);
+        var a = left.evaluate(context);
+        var b = right.evaluate(context);
 
         var constant = switch [a.def, b.def] {
             case [EConstant(constantA), EConstant(constantB)]: {
@@ -100,13 +101,33 @@ class ExprBinops
      */
     public static function wrap(left :Expr, right :Expr, context :IContext) : Expr
     {
-        throw "err";
+        var a = left.evaluate(context);
+        var b = right.evaluate(context);
+        return switch [a.def, b.def] {
+            case [EArrayDecl(values), EObjectDecl(fields)]: {
+                var i = 0;
+                var hits = fields.get("hits").def.getArrayDecl();
+                trace(fields + "\n");
+
+                var steppedHits = values.map(v -> {
+                    var hit = hits[i++ % hits.length].def.getEObjectDecl();
+                    return ExprTools.createEObjectDecl([
+                        "start" => hit.get("start"),
+                        "duration" => hit.get("duration"),
+                        "step" => v
+                    ], Position.union(a.pos, b.pos));
+                });
+                throw "err";
+            };
+            case [EObjectDecl(fields), EArrayDecl(values)]: throw "err";
+            case _: throw "err";
+        }
     }
 
     public static function equals(left :Expr, right :Expr, context :IContext) : Expr
     {
-        var a = Expr.evaluate(left, context);
-        var b = Expr.evaluate(right, context);
+        var a = left.evaluate(context);
+        var b = right.evaluate(context);
 
         var v = switch [a.def, b.def] {
             case [EConstant(constantA), EConstant(constantB)]:
@@ -126,8 +147,8 @@ class ExprBinops
 
     public static function greaterThan(left :Expr, right :Expr, context :IContext) : Expr
     {
-        var a = Expr.evaluate(left, context);
-        var b = Expr.evaluate(right, context);
+        var a = left.evaluate(context);
+        var b = right.evaluate(context);
 
         var v = switch [a.def, b.def] {
             case [EConstant(constantA), EConstant(constantB)]:
