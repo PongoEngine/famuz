@@ -26,6 +26,8 @@ import famuz.Famuz;
 import famuz.compiler.midi.Midi;
 import famuz.compiler.expr.Expr;
 import haxe.ds.Option;
+import famuz.compiler.expr.Infer;
+
 
 class Test {
     static function main() {

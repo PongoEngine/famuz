@@ -22,6 +22,7 @@
 package famuz.compiler.parser;
 
 import famuz.compiler.expr.Type;
+import famuz.compiler.expr.Infer;
 import famuz.compiler.Token;
 import famuz.compiler.parser.Parser;
 import famuz.compiler.expr.Expr;
@@ -32,19 +33,11 @@ class ParserArray
     {
         var token = scanner.next(); //[
         var exprs = new Array<Expr>();
-        var arrayType = Type.TMono;
+        var arrayType = Type.TMono({ref:null});
 
         while (scanner.hasNext() && scanner.peek().isNotPunctuator(RIGHT_BRACKET)) {
             var expr = Parser.parse(new Precedence(0), scanner, context, false);
-            if(expr.t == null) {
-                throw "type cannot be null";
-            }
-            if(arrayType == TMono) {
-                arrayType = expr.t;
-            }
-            else if(!arrayType.equals(expr.t)) {
-                throw '${expr.t} does not match ${arrayType}';
-            }
+            Infer.unify(arrayType, expr.t);
 
             exprs.push(expr);
             if(scanner.hasNext() && scanner.peek().isPunctuator(COMMA)) {
@@ -58,7 +51,7 @@ class ParserArray
 
         return new Expr(
             EArrayDecl(exprs),
-			TArray({ref:arrayType}),
+			arrayType,
             Position.union(token.pos, rightBrace.pos)
         );
     }

@@ -23,7 +23,6 @@ package famuz.compiler.parser;
 
 import famuz.compiler.Token;
 import famuz.compiler.expr.Expr;
-using famuz.compiler.expr.Type.TypeTools;
 import famuz.compiler.parser.Parser;
 
 class ParserStruct
@@ -47,7 +46,7 @@ class ParserStruct
 
         return new Expr(
             EObjectDecl(fields),
-			fields.resolveType(),
+			Expr._T,
             Position.union(leftBrace.pos, rightBrace.pos)
         );
     }

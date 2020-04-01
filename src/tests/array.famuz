@@ -1,3 +1,6 @@
+func ident = 0
+func cool = true
+
 func main = {
-    print([{hi:0}, {hi:20}][0])
+    [true, func ident2 a b = 0]
 }
