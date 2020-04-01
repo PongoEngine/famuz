@@ -21,11 +21,63 @@
 
 package famuz.compiler.expr;
 
+import famuz.compiler.expr.Ref;
+
+@:using(famuz.compiler.expr.Type.TypeTools)
 enum Type
 {
     TNumber;
     TBool;
     TScale;
     TKey;
-    TAnonymous(fields :Array<{name :String, type :Type}>);
+    TMono;
+    TAnonymous(a :Ref<AnonType>);
+    TArray(type :Ref<Type>);
+}
+
+typedef AnonType = {fields :Array<{name :String, type :Type}>};
+
+class TypeTools
+{
+    public static function resolveType(fields :Map<String, Expr>) : Type
+    {
+        var anon = {
+            fields: []
+        };
+
+        for(kv in fields.keyValueIterator()) {
+            anon.fields.push({name:kv.key, type:kv.value.t});
+        }
+
+        return TAnonymous({ref:anon});
+    }
+
+    public static function equals(a :Type, b :Type) : Bool
+    {
+        return switch [a, b] {
+            case [TNumber, TNumber]: 
+                true;
+            case [TBool, TBool]: 
+                true;
+            case [TScale, TScale]: 
+                true;
+            case [TKey, TKey]: 
+                true;
+            case [TMono, TMono]: 
+                true;
+            case [TAnonymous(a1), TAnonymous(a2)]: {
+                if(a1.ref.fields.length != a2.ref.fields.length) {
+                    throw "eer";
+                }
+                else {
+                    // throw "err";
+                    return true;
+                }
+            };
+            case [TArray(type1), TArray(type2)]: 
+                TypeTools.equals(type1.ref, type2.ref);
+            case _: 
+                false;
+        }
+    }
 }

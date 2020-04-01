@@ -19,22 +19,6 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package famuz.compiler.parser;
+package famuz.compiler.expr;
 
-import famuz.compiler.Token;
-import famuz.compiler.theory.Key;
-import famuz.compiler.expr.Expr;
-
-class ParserKey
-{
-    public static function parse(scanner :TokenScanner, context :Context, key :Key) : Expr
-    {
-        var token = scanner.next();
-
-        return new Expr(
-            EConstant(CKey(key)),
-			TKey,
-            token.pos
-        );
-    }
-}
+typedef Ref<T> = {ref :T};

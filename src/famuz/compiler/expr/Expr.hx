@@ -328,8 +328,6 @@ class Expr
     }
 }
 
-typedef Ref<T> = {ref :T};
-
 class ExprTools
 {
     public static function createCNumber(value :Int, position :Position) : Expr
