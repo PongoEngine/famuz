@@ -2,5 +2,5 @@ func ident = 0
 func cool = true
 
 func main = {
-    [true, func ident2 a b = 0]
+    [func ident1 a b = a + b + 0, func ident2 a c = a + c + 0]
 }

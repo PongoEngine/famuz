@@ -36,8 +36,6 @@ class Expr
     public var pos :Position;
     public var t :Type;
 
-    public static var _T :Type = null;
-
     public function new(def :ExprDef, t :Type, pos :Position) : Void
     {
         this.def = def;
@@ -163,7 +161,7 @@ class Expr
                             for(i in 0...args.length) {
                                 identParams += '_${params[i]}';
                             }
-                            new Expr(EFunction(ident + identParams, params.slice(args.length), body, ctxInnerOuter), Expr._T, null);
+                            new Expr(EFunction(ident + identParams, params.slice(args.length), body, ctxInnerOuter), TMono({ref: null}), null);
                         }
                         else {
                             Error.create(TooManyArgs(this.pos));
@@ -202,7 +200,7 @@ class Expr
                         case CBool(value): 
                             new Expr(
                                 EConstant(CBool(!value)), 
-                                Expr._T,
+                                TMono({ref: null}),
                                 this.pos
                             );
                         case _: throw "err";
@@ -211,7 +209,7 @@ class Expr
                         case CNumber(value): 
                             new Expr(
                                 EConstant(CNumber(-value)), 
-                                Expr._T,
+                                TMono({ref: null}),
                                 this.pos
                             );
                         case _: throw "err";
@@ -332,16 +330,16 @@ class ExprTools
 {
     public static function createCNumber(value :Int, position :Position) : Expr
     {
-        return new Expr(EConstant(CNumber(value)), Expr._T, position);
+        return new Expr(EConstant(CNumber(value)), TMono({ref: null}), position);
     }
 
     public static function createEObjectDecl(fields :Map<String, Expr>, position :Position) : Expr
     {
-        return new Expr(EObjectDecl(fields), Expr._T, position);
+        return new Expr(EObjectDecl(fields), TMono({ref: null}), position);
     }
 
     public static function createEArrayDecl(values :Array<Expr>, position :Position) : Expr
     {
-        return new Expr(EArrayDecl(values), Expr._T, position);
+        return new Expr(EArrayDecl(values), TMono({ref: null}), position);
     }
 }

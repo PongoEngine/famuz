@@ -35,7 +35,7 @@ class ParserTernary
 
         return new Expr(
             ETernary(left, eif, eelse),
-			Expr._T,
+			TMono({ref: null}),
             Position.union(question.pos, eelse.pos)
         );
     }

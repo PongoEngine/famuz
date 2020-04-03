@@ -46,7 +46,7 @@ class ParserBlock
 
         return new Expr(
             EBlock(exprs),
-			Expr._T,
+			TMono({ref: null}),
             Position.union(leftBrace.pos, rightBrace.pos)
         );
     }

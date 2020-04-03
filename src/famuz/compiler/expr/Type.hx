@@ -40,7 +40,7 @@ typedef AnonType = {fields :Array<{name :String, type :Type}>};
 
 class TypeTools
 {
-    public static function toString(t :Type, ?letter :String) : String
+    public static function toString(t :Type) : String
     {
         return switch t {
             case TNumber: 
@@ -54,11 +54,10 @@ class TypeTools
             case TMono(t): 
                 t.ref != null
                     ? TypeTools.toString(t.ref)
-                    : letter == null ? "'a" : letter;
+                    : "'" + String.fromCharCode("a".charCodeAt(0));
             case TFun(args, ret): {
                 args.mapi((i, a) -> {
-                    var letter = String.fromCharCode("a".charCodeAt(0) + i);
-                    return a.t.toString(letter);
+                    return a.t.toString();
                 }).join(" -> ") + " -> " + ret.toString();
             }
         }    

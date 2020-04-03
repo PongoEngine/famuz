@@ -22,6 +22,7 @@
 package famuz.compiler.parser;
 
 import famuz.compiler.expr.Expr;
+import famuz.compiler.expr.Infer;
 import famuz.compiler.expr.ExprDef.BinopType;
 import famuz.compiler.Token;
 import famuz.compiler.parser.Precedence.*;
@@ -47,7 +48,7 @@ class ParserBinop
         var right = Parser.parse(PRECEDENCE_SUM, scanner, context, false);
 		return new Expr(
 			EBinop(op, left, right),
-			Expr._T,
+			TMono({ref: null}),
 			Position.union(left.pos, right.pos)
         );
     }

@@ -36,7 +36,7 @@ class ParserPrint
 
         return new Expr(
             EPrint(expr),
-			Expr._T,
+			TMono({ref: null}),
             Position.union(token.pos, rightParentheses.pos)
         );
     }

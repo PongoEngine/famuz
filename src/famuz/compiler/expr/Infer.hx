@@ -1,5 +1,7 @@
 package famuz.compiler.expr;
 
+import famuz.compiler.expr.Type.TypeTools;
+
 class Infer
 {
     public static function unify(t1 :Type, t2 :Type) : Void
@@ -64,5 +66,82 @@ class Infer
         return types.map(function(t2) {
             return occursInType(t1, t2);
         }).indexOf(true) >= 0;
+    }
+
+    private static function fresh(type :Type, nonGeneric :Array<Type>, ?mappings : Map<Type, Type>) : Type
+    {
+        if(mappings == null) mappings = new Map<Type, Type>();
+    
+        type = prune(type);
+
+        return switch type {
+            case TMono(t): {
+                if(occursInTypeArray(type, nonGeneric)) {
+                    type;
+                } 
+                else {
+                    if(!mappings.exists(type)) {
+                        mappings.set(type, TMono({ref: null}));
+                    }
+                    mappings.get(type);
+                }
+            }
+            case TBool: 
+                TBool;
+            case TFun(args, ret): 
+                var freshArgs = args.map(a -> {t:fresh(a.t, nonGeneric, mappings), name:a.name});
+                var freshRet = fresh(ret, nonGeneric, mappings);
+                TFun(freshArgs, freshRet);
+            case TNumber: 
+                TNumber;
+            case TScale: 
+                TScale;
+            case TKey: 
+                TKey;
+        }
+    }
+
+    private static function analyse(node :Expr, env :Context, ?nonGeneric :Array<Type>) : Type
+    {
+        if(nonGeneric == null) nonGeneric = [];
+
+        return switch node.def {
+            case EBlock(exprs): 
+                null;
+            case EConstant(constant): 
+                null;
+            case EEnumParameter(e, def, index): 
+                null;
+            case ESwitch(e, cases, edef): 
+                null;
+            case EObjectDecl(fields): 
+                null;
+            case EArray(e1, e2): 
+                null;
+            case EArrayFunc(e, op): 
+                null;
+            case EArrayDecl(values): 
+                null;
+            case EField(e, field): 
+                null;
+            case EVar(identifier, expr): 
+                null;
+            case ECall(e, args): 
+                null;
+            case EIf(econd, ethen, eelse): 
+                null;
+            case EUnop(op, e): 
+                null;
+            case ETernary(econd, eif, eelse): 
+                null;
+            case EBinop(type, e1, e2): 
+                null;
+            case EParentheses(expr): 
+                null;
+            case EPrint(expr): 
+                null;
+            case EFunction(identifier, params, body, scope): 
+                null;
+        }
     }
 }

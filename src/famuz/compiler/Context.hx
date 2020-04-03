@@ -146,23 +146,23 @@ class ContextTools
 
     private static function addPush(ctx :Context) : Void
     {
-        var array = new Expr(EConstant(CIdentifier("array")), Expr._T, null);
-        var element = new Expr(EConstant(CIdentifier("element")), Expr._T, null);
-        var op = new Expr(EArrayFunc(array, OpPush(element)), Expr._T, null);
+        var array = new Expr(EConstant(CIdentifier("array")), TMono({ref: null}), null);
+        var element = new Expr(EConstant(CIdentifier("element")), TMono({ref: null}), null);
+        var op = new Expr(EArrayFunc(array, OpPush(element)), TMono({ref: null}), null);
         ctx.addVarFunc("push", new Expr(
             EFunction("push", ["array", "element"], op, ctx.createContext()), 
-            Expr._T,
+            TMono({ref: null}),
             null
         ));
     }
 
     private static function addPop(ctx :Context) : Void
     {
-        var array = new Expr(EConstant(CIdentifier("array")), Expr._T, null);
-        var op = new Expr(EArrayFunc(array, OpPop), Expr._T, null);
+        var array = new Expr(EConstant(CIdentifier("array")), TMono({ref: null}), null);
+        var op = new Expr(EArrayFunc(array, OpPop), TMono({ref: null}), null);
         ctx.addVarFunc("pop", new Expr(
             EFunction("pop", ["array"], op, ctx.createContext()), 
-            Expr._T,
+            TMono({ref: null}),
             null
         ));
     }

@@ -49,7 +49,7 @@ class Famuz
             var main = context.getExpr("main");
             return switch main.def {
                 case EFunction(_, _, body, scope): {
-                    var expr = new Expr(ECall(main, []), Expr._T, null).evaluate(context);
+                    var expr = new Expr(ECall(main, []), TMono({ref: null}), null).evaluate(context);
                     Some(expr);
                 }
                 case _: 

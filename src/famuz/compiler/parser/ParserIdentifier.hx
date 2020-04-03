@@ -23,6 +23,7 @@ package famuz.compiler.parser;
 
 import famuz.compiler.Token;
 import famuz.compiler.expr.Expr;
+import famuz.compiler.expr.Type.TypeTools;
 
 class ParserIdentifier
 {
@@ -31,7 +32,7 @@ class ParserIdentifier
         var token = scanner.next();
         return new Expr(
             EConstant(CIdentifier(identifier)),
-			TMono({ref:null}),
+			TMono({ref: null}),
             token.pos
         );
     }

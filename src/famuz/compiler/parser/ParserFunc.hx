@@ -22,10 +22,10 @@
 package famuz.compiler.parser;
 
 import famuz.compiler.Token;
-import famuz.compiler.parser.Precedence.*;
 import famuz.compiler.parser.Parser;
 import famuz.compiler.expr.Expr;
 import famuz.compiler.expr.Type;
+import famuz.compiler.expr.Type.TypeTools;
 
 class ParserFunc
 {
@@ -39,7 +39,7 @@ class ParserFunc
         while (scanner.peek().isNotPunctuator(EQUALS)) {
             var name = scanner.next().getIdentifier();
             params.push(name);
-            args.push({t:TMono({ref:null}), name: name});
+            args.push({t:TMono({ref: null}), name: name});
         }
 
         scanner.next(); // '='
