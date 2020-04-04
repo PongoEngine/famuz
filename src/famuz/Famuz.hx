@@ -22,7 +22,6 @@
 package famuz;
 
 import famuz.compiler.expr.Expr;
-import famuz.compiler.Error;
 import sys.io.File;
 import haxe.ds.Option;
 import famuz.compiler.parser.Precedence;
@@ -35,29 +34,28 @@ class Famuz
 {
     public static function compile(filePath :String) : Option<Expr>
     {
-        // try {
-            var content = File.getContent(filePath);
-            var tokens = Lexer.lex(filePath, content);
-            var tokenScanner = new TokenScanner(tokens);
-            var context = new Context();
-            ContextTools.addArrayExprs(context);
+        var content = File.getContent(filePath);
+        var tokens = Lexer.lex(filePath, content);
+        var tokenScanner = new TokenScanner(tokens);
+        var context = new Context();
+        ContextTools.addArrayExprs(context);
 
-            while(tokenScanner.hasNext()) {
-                Parser.parse(new Precedence(0), tokenScanner, context, false);
-            }
-        
-            var main = context.getExpr("main");
-            return switch main.def {
-                case EFunction(_, _, body, scope): {
-                    var expr = new Expr(ECall(main, []), TMono({ref: null}), null).evaluate(context);
-                    Some(expr);
-                }
-                case _: 
-                    None;
-            }
+        while(tokenScanner.hasNext()) {
+            Parser.parse(new Precedence(0), tokenScanner, context, false);
+        }
+    
+        var main = context.getExpr("main");
+        Expr.analyse(main, context);
+        trace(main + "\n");
+
+        // return switch main.def {
+        //     case EFunction(_, _, body, scope): {
+        //         var expr = new Expr(ECall(main, []), TMono({ref: null}), null).evaluate(context);
+        //         Some(expr);
+        //     }
+        //     case _: 
+        //         None;
         // }
-        // catch(e :Dynamic) {
-        //     return None;
-        // }
+        return None;
     }
 }

@@ -40,6 +40,7 @@ class ParserLet
             Position.union(let.pos, value.pos)
         );
         context.addVarFunc(identifier.getIdentifier(), value);
+        context.addType(identifier.getIdentifier(), letExpr.t);
 
         return letExpr;
     }

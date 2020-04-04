@@ -65,6 +65,7 @@ class Parser
             {
                 left = parseExpressionInfix(left, scanner, context);
             }
+            
             return left;
         }
         else
@@ -78,7 +79,7 @@ class Parser
         if(scanner.hasNext()) {
             scanner.next();
         }
-        return EMPTY_EXPR;
+        return null;
     }
 
     private static function parseExpressionPrefix(scanner :TokenScanner, context :Context, isFunc :Bool) : Expr
@@ -153,20 +154,20 @@ class Parser
                         ParserCall.parse(left, scanner, context);
                     case EQUALS, BANG, RIGHT_PARENTHESES, LEFT_BRACE, RIGHT_BRACE, 
                         RIGHT_BRACKET, SLASH, COMMA, COLON: 
-                        EMPTY_EXPR;
+                        null;
                 }
             case TTKeyword(_): 
-                EMPTY_EXPR;
+                null;
             case TTIdentifier(_): 
-                EMPTY_EXPR;
+                null;
             case TTScale(_): 
-                EMPTY_EXPR;
+                null;
             case TTKey(_): 
-                EMPTY_EXPR;
+                null;
             case TTNumber(_): 
-                EMPTY_EXPR;
+                null;
             case TTRhythm(_): 
-                EMPTY_EXPR;
+                null;
         }
     }
 
@@ -180,6 +181,4 @@ class Parser
             case _: false;
         }
     }
-
-    private static var EMPTY_EXPR :Expr = null;
 }

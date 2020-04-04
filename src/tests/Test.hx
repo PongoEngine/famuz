@@ -26,7 +26,6 @@ import famuz.Famuz;
 import famuz.compiler.midi.Midi;
 import famuz.compiler.expr.Expr;
 import haxe.ds.Option;
-import famuz.compiler.expr.Infer;
 
 
 class Test {
@@ -36,8 +35,9 @@ class Test {
         }
         
         // run("./src/tests/let.famuz");
+        run("./src/tests/call.famuz");
         // run("./src/tests/func.famuz");
-        run("./src/tests/array.famuz");
+        // run("./src/tests/array.famuz");
         // run("./src/tests/rhythm.famuz");
         // run("./src/tests/recursion.famuz");
         // run("./src/tests/melody.famuz");

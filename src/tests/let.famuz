@@ -1,5 +1,5 @@
-let r = 22
 
 func main = {
-    print(r)
+    let r = 22
+    r
 }

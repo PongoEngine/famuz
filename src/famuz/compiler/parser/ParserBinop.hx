@@ -22,7 +22,6 @@
 package famuz.compiler.parser;
 
 import famuz.compiler.expr.Expr;
-import famuz.compiler.expr.Infer;
 import famuz.compiler.expr.ExprDef.BinopType;
 import famuz.compiler.Token;
 import famuz.compiler.parser.Precedence.*;

@@ -269,9 +269,53 @@ class Expr
         }
     }
 
+    public static function analyse(node :Expr, env :IContext) : Type
+    {
+        var t = switch node.def {
+            case EBlock(exprs): {
+                for(expr in exprs) {
+                    analyse(expr, env);
+                }
+                node.t.unify(exprs[exprs.length - 1].t);
+                node.t;
+            }
+            case EConstant(constant): {
+                switch constant {
+                    case CIdentifier(str):
+                        env.getType(str);
+                    case CBool(value):
+                        Type.TBool;
+                    case CNumber(value):
+                        Type.TNumber;
+                    case CScale(type):
+                        Type.TScale;
+                    case CKey(key):
+                        Type.TKey;
+                }
+            }
+            case ECall(e, callArgs): {
+                var resultType = Type.TMono({ref:null});
+                resultType;
+            }
+            case EFunction(identifier, params, body, scope): {
+                var ctx = new ContextInnerOuter(scope, env);
+                var types = [];
+                for(p in params) {
+                    types.push({t: Type.TMono({ref: null}), name: p});
+                }
+                analyse(body, ctx);
+                Type.TFun(types, body.t);
+            }
+            case _: 
+                throw "err";
+        }
+
+        return node.t = t;
+    }
+
     public function toString() : String
     {
-        return switch def {
+        var str = switch def {
             case EConstant(constant): switch constant {
                 case CIdentifier(str): str;
                 case CNumber(value): value + "";
@@ -313,7 +357,7 @@ class Expr
             case EObjectDecl(fields):
                 '${fields.mapToStringSmall()}';
             case EParentheses(expr):
-                throw "err";
+                '( ${expr.toString()} )';
             case EPrint(expr):
                 'print ${expr}';
             case ESwitch(e, cases, edef):
@@ -323,6 +367,8 @@ class Expr
             case EUnop(op, e):
                 throw "err";
         }
+        
+        return str + " : " + t.toString();
     }
 }
 

@@ -1,5 +1,6 @@
 let r = @2 9--- 8~~~
+let q = @2 9--- 8~~~
 
 func main = {
-    print(r)
+    [r,q]
 }

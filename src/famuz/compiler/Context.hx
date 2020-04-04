@@ -21,13 +21,15 @@
 
 package famuz.compiler;
 
-import famuz.compiler.Error.ParserError;
+import famuz.compiler.expr.Type;
 import famuz.compiler.expr.Expr;
 import famuz.compiler.expr.EnumDefinition;
 
 interface IContext {
+    function getType(name :String) : Type;
     function getExpr(name :String) : Expr;
     function clone() : IContext;
+    function addType(name :String, expr :Type) : Void;
     function addVarFunc(name :String, expr :Expr) : Void;
 }
 
@@ -38,17 +40,28 @@ class Context implements IContext
 {
     public function new() : Void
     {
-        _map = new Map<String, Expr>();
+        _typeMap = new Map<String, Type>();
+        _exprMap = new Map<String, Expr>();
         _enumDefs = new Map<String, EnumDefinition>();
     }
 
     public function addVarFunc(name :String, expr :Expr) : Void
     {
-        if(_map.exists(name)) {
+        if(_exprMap.exists(name)) {
             throw '"${name}" already exists.';
         }
         else {
-            _map.set(name, expr);
+            _exprMap.set(name, expr);
+        }
+    }
+
+    public function addType(name :String, type :Type) : Void
+    {
+        if(_typeMap.exists(name)) {
+            throw '"${name}" already exists.';
+        }
+        else {
+            _typeMap.set(name, type);
         }
     }
 
@@ -67,11 +80,21 @@ class Context implements IContext
 
     public function getExpr(name :String) : Expr
     {
-        if(_map.exists(name)) {
-            return _map.get(name);
+        if(_exprMap.exists(name)) {
+            return _exprMap.get(name);
         }
         else {
             throw 'Expr:${name} not found.';
+        }
+    }
+
+    public function getType(name :String) : Type
+    {
+        if(_typeMap.exists(name)) {
+            return _typeMap.get(name);
+        }
+        else {
+            throw 'Type:${name} not found.';
         }
     }
 
@@ -83,12 +106,13 @@ class Context implements IContext
     public function clone() : Context
     {
         var c = this.createContext();
-        c._map = this._map.copy();
+        c._exprMap = this._exprMap.copy();
         c._enumDefs = this._enumDefs.copy();
         return c;
     }
 
-    private var _map :Map<String, Expr>;
+    private var _typeMap :Map<String, Type>;
+    private var _exprMap :Map<String, Expr>;
     private var _enumDefs :Map<String, EnumDefinition>;
 }
 
@@ -96,15 +120,16 @@ class ContextInnerOuter implements IContext
 {
     public function new(inner :IContext, outer :IContext)
     {
-        _map = new Map<String, Expr>();
+        _typeMap = new Map<String, Type>();
+        _exprMap = new Map<String, Expr>();
         _inner = inner;
         _outer = outer;
     }
 
     public function getExpr(name :String) : Expr
     {
-        if(_map.exists(name)) {
-            return _map.get(name);
+        if(_exprMap.exists(name)) {
+            return _exprMap.get(name);
         }
         try {
             return _inner.getExpr(name);
@@ -114,24 +139,48 @@ class ContextInnerOuter implements IContext
         }
     }
 
+    public function getType(name :String) : Type
+    {
+        if(_typeMap.exists(name)) {
+            return _typeMap.get(name);
+        }
+        try {
+            return _inner.getType(name);
+        }
+        catch(e :Dynamic) {
+            return _outer.getType(name);
+        }
+    }
+
     public function addVarFunc(name :String, expr :Expr) : Void
     {
-        if(_map.exists(name)) {
+        if(_exprMap.exists(name)) {
             throw '"${name}" already exists.';
         }
         else {
-            _map.set(name, expr);
+            _exprMap.set(name, expr);
+        }
+    }
+
+    public function addType(name :String, type :Type) : Void
+    {
+        if(_typeMap.exists(name)) {
+            throw '"${name}" already exists.';
+        }
+        else {
+            _typeMap.set(name, type);
         }
     }
 
     public function clone() : ContextInnerOuter
     {
         var c = new ContextInnerOuter(this._inner, this._outer);
-        c._map = this._map.copy();
+        c._exprMap = this._exprMap.copy();
         return c;
     }
 
-    private var _map :Map<String, Expr>;
+    private var _typeMap :Map<String, Type>;
+    private var _exprMap :Map<String, Expr>;
     private var _inner :IContext;
     private var _outer :IContext;
 }

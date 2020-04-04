@@ -53,6 +53,8 @@ class ParserFunc
             Position.union(token.pos, body.pos)
         );
         context.addVarFunc(identifier, func);
+        context.addType(identifier, func.t);
+
 
         return func;
     }

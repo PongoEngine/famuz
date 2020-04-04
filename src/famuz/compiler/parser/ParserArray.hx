@@ -23,7 +23,6 @@ package famuz.compiler.parser;
 
 import famuz.compiler.expr.Type;
 import famuz.compiler.expr.Type.TypeTools;
-import famuz.compiler.expr.Infer;
 import famuz.compiler.Token;
 import famuz.compiler.parser.Parser;
 import famuz.compiler.expr.Expr;
@@ -48,11 +47,9 @@ class ParserArray
         }
         var rightBrace = scanner.next();
 
-        trace(exprs[0].t.toString() + "\n");
-
         return new Expr(
             EArrayDecl(exprs),
-			TMono({ref: null}),
+			TArray({ref:TMono({ref: null})}),
             Position.union(token.pos, rightBrace.pos)
         );
     }

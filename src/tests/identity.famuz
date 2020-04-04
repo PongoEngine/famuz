@@ -1,0 +1,5 @@
+func ident a = a
+
+func main = {
+    ident
+}
