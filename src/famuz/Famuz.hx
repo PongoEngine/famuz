@@ -45,7 +45,7 @@ class Famuz
         }
     
         var main = context.getExpr("main");
-        Expr.analyse(main, context);
+        main.typeCheck(context);
         trace(main + "\n");
 
         // return switch main.def {

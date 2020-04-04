@@ -269,16 +269,9 @@ class Expr
         }
     }
 
-    public static function analyse(node :Expr, env :IContext) : Type
+    public function typeCheck(env :IContext) : Type
     {
-        var t = switch node.def {
-            case EBlock(exprs): {
-                for(expr in exprs) {
-                    analyse(expr, env);
-                }
-                node.t.unify(exprs[exprs.length - 1].t);
-                node.t;
-            }
+        return switch this.def {
             case EConstant(constant): {
                 switch constant {
                     case CIdentifier(str):
@@ -293,24 +286,13 @@ class Expr
                         Type.TKey;
                 }
             }
-            case ECall(e, callArgs): {
-                var resultType = Type.TMono({ref:null});
-                resultType;
-            }
             case EFunction(identifier, params, body, scope): {
-                var ctx = new ContextInnerOuter(scope, env);
-                var types = [];
-                for(p in params) {
-                    types.push({t: Type.TMono({ref: null}), name: p});
-                }
-                analyse(body, ctx);
-                Type.TFun(types, body.t);
+                TFun([], TNumber);
             }
             case _: 
+                trace(this.def);
                 throw "err";
         }
-
-        return node.t = t;
     }
 
     public function toString() : String
