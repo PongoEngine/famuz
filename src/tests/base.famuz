@@ -1,5 +1,10 @@
 import "array/test1"
 
+let coolStr = {a:100, b:"b money"}.b
+
 func main = {
-    print(firstNum)
+    //let coolStr = true
+    let a = 0
+    let b = 10
+    print(coolStr)
 }

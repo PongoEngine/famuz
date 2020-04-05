@@ -1,3 +1,5 @@
 let arra = [0,1,2,3]
 
 let firstNum = arra[0]
+
+let coolStr = print(0)
