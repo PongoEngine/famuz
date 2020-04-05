@@ -1,11 +1,5 @@
-import "array/test1"
-import "array/switch"
-
-let coolStr = {a:100, b:"b money"}.c
+import "examples/hello"
 
 func main = {
-    //let coolStr = true
-    let a = 0
-    let b = 10
-    print(coolStr)
+    print(hw)
 }
