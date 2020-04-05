@@ -27,12 +27,12 @@ import famuz.compiler.expr.Expr;
 
 class ParserLet
 {
-    public static function parse(scanner :TokenScanner, context :Context) : Expr
+    public static function parse(scanner :TokenScanner, context :Context, imports :Map<String, Context>) : Expr
     {
         var let = scanner.next(); //let
         var identifier = scanner.next(); //id (ex: varname)
         scanner.next(); //consume '='
-        var value = Parser.parse(new Precedence(0), scanner, context, false);
+        var value = Parser.parse(new Precedence(0), scanner, context, imports, false);
 
         var letExpr = new Expr(
             EVar(identifier.getIdentifier(), value),

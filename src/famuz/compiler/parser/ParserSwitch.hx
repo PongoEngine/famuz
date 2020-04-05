@@ -28,10 +28,10 @@ import famuz.compiler.expr.ExprDef;
 
 class ParserSwitch
 {
-    public static function parse(scanner :TokenScanner, context :Context) : Expr
+    public static function parse(scanner :TokenScanner, context :Context, imports :Map<String, Context>) : Expr
     {
         var switch_ = scanner.next(); //switch
-        var e = Parser.parse(new Precedence(0), scanner, context, false);
+        var e = Parser.parse(new Precedence(0), scanner, context, imports, false);
         scanner.next(); //{
 
         var cases :Array<Case> = [];
@@ -40,9 +40,9 @@ class ParserSwitch
             switch scanner.peek().type {
                 case TTKeyword(type): switch type {
                     case CASE: 
-                        cases.push(parseCase(scanner, context));
+                        cases.push(parseCase(scanner, context, imports));
                     case DEFAULT: {
-                        default_ = parseDefault(scanner, context);
+                        default_ = parseDefault(scanner, context, imports);
                     }
                     case _: throw "err";
                 }
@@ -62,26 +62,26 @@ class ParserSwitch
         );
     }
 
-    public static function parseCase(scanner :TokenScanner, context :Context) : Case
+    public static function parseCase(scanner :TokenScanner, context :Context, imports :Map<String, Context>) : Case
     {
         scanner.next(); //case
         var values :Array<Expr> = [];
         while(scanner.peek().isNotPunctuator(COLON)) {
-            values.push(Parser.parse(new Precedence(0), scanner, context, false));
+            values.push(Parser.parse(new Precedence(0), scanner, context, imports, false));
             if(scanner.peek().isPunctuator(COMMA)) {
                 scanner.next();
             }
         }
         scanner.next(); //colon
-        var expr = Parser.parse(new Precedence(0), scanner, context, false);
+        var expr = Parser.parse(new Precedence(0), scanner, context, imports, false);
 
         return {expr:expr, values: values};
     }
 
-    public static function parseDefault(scanner :TokenScanner, context :Context) : Expr
+    public static function parseDefault(scanner :TokenScanner, context :Context, imports :Map<String, Context>) : Expr
     {
         scanner.next(); //default
         scanner.next(); //:
-        return Parser.parse(new Precedence(0), scanner, context, false);
+        return Parser.parse(new Precedence(0), scanner, context, imports, false);
     }
 }

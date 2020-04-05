@@ -26,12 +26,12 @@ import famuz.compiler.expr.Expr;
 
 class ParserTernary
 {
-    public static function parse(left :Expr, scanner :TokenScanner, context :Context) : Expr
+    public static function parse(left :Expr, scanner :TokenScanner, context :Context, imports :Map<String, Context>) : Expr
     {
         var question = scanner.next(); //?
-        var eif = Parser.parse(new Precedence(0), scanner, context, false);
+        var eif = Parser.parse(new Precedence(0), scanner, context, imports, false);
         scanner.next(); //:
-        var eelse = Parser.parse(new Precedence(0), scanner, context, false);
+        var eelse = Parser.parse(new Precedence(0), scanner, context, imports, false);
 
         return new Expr(
             ETernary(left, eif, eelse),

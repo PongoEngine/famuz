@@ -27,7 +27,7 @@ import famuz.compiler.expr.Expr;
 
 class ParserBool
 {
-    public static function parse(scanner :TokenScanner, context :IContext, keywordType :KeywordType) : Expr
+    public static function parse(scanner :TokenScanner, context :IContext, imports :Map<String, Context>, keywordType :KeywordType) : Expr
     {
         var boolToken = scanner.next(); //true | false
         var isTrue = switch keywordType {

@@ -22,33 +22,29 @@
 package famuz.compiler.parser;
 
 import famuz.compiler.Token;
-import famuz.compiler.parser.Parser;
 import famuz.compiler.expr.Expr;
 
-class ParserArray
+class ParserImport
 {
     public static function parse(scanner :TokenScanner, context :Context, imports :Map<String, Context>) : Expr
     {
-        var token = scanner.next(); //[
-        var exprs = new Array<Expr>();
+        var import_ = scanner.next(); //import
+        var path = scanner.next(); //path
 
-        while (scanner.hasNext() && scanner.peek().isNotPunctuator(RIGHT_BRACKET)) {
-            var expr = Parser.parse(new Precedence(0), scanner, context, imports, false);
+        trace(path.type + "\n\n");
+        // scanner.next(); //consume '='
+        // var value = Parser.parse(new Precedence(0), scanner, context, false);
 
-            exprs.push(expr);
-            if(scanner.hasNext() && scanner.peek().isPunctuator(COMMA)) {
-                scanner.next();
-            }
-        }
-        if(!scanner.hasNext() || scanner.peek().isNotPunctuator(RIGHT_BRACKET)) {
-            Error.create(MissingPunctuator(RIGHT_BRACKET, scanner.lastPosition()));
-        }
-        var rightBrace = scanner.next();
+        // var letExpr = new Expr(
+        //     EVar(identifier.getIdentifier(), value),
+		// 	TMono({ref: None}),
+        //     Position.union(let.pos, value.pos)
+        // );
+        // context.addVarFunc(identifier.getIdentifier(), value);
 
-        return new Expr(
-            EArrayDecl(exprs),
-			TArray({ref:TMono({ref: None})}),
-            Position.union(token.pos, rightBrace.pos)
-        );
+        // return letExpr;
+
+        // throw "err";
+        return null;
     }
 }

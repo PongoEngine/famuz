@@ -1,5 +1,0 @@
-
-func main = {
-    let r = 22
-    r
-}

@@ -1,6 +1,0 @@
-func add a b = a + b 
-
-func main = {
-    let partial = add(5)
-    print(partial(2) + 4)
-}

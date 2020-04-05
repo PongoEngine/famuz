@@ -29,7 +29,7 @@ import famuz.compiler.parser.Parser;
 
 class ParserBinop
 {
-    public static function parse(left :Expr, scanner :TokenScanner, context :Context, punctuator :PunctuatorType) : Expr
+    public static function parse(left :Expr, scanner :TokenScanner, context :Context, imports :Map<String, Context>, punctuator :PunctuatorType) : Expr
     {
         scanner.next(); //op
 
@@ -44,7 +44,7 @@ class ParserBinop
             case _: throw Error.FATAL_COMPILER_ERROR;
         }
         
-        var right = Parser.parse(PRECEDENCE_SUM, scanner, context, false);
+        var right = Parser.parse(PRECEDENCE_SUM, scanner, context, imports, false);
 		return new Expr(
 			EBinop(op, left, right),
 			TMono({ref: None}),

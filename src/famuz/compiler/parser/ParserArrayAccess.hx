@@ -27,10 +27,10 @@ import famuz.compiler.expr.Expr;
 
 class ParserArrayAccess
 {
-	public static function parse(left:Expr, scanner:TokenScanner, context:Context):Expr 
+	public static function parse(left:Expr, scanner:TokenScanner, context:Context, imports :Map<String, Context>):Expr 
 	{
 		var leftBracket = scanner.next(); // consume "["
-		var expr = Parser.parse(new Precedence(0), scanner, context, false);
+		var expr = Parser.parse(new Precedence(0), scanner, context, imports, false);
 		
 		if(!scanner.hasNext() || scanner.peek().isNotPunctuator(RIGHT_BRACKET)) {
             Error.create(MissingPunctuator(RIGHT_BRACKET, scanner.lastPosition()));

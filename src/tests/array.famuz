@@ -1,7 +1,1 @@
-func ident = 0
-func cool = true
-
-func main = {
-    //[func ident1 a b = (a + b + 0), func ident2 a c = a + c + 0]
-    [[[]], [[],[0],[],[],[],[]]]
-}
+let arra = [0,1,2,3]

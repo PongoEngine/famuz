@@ -29,7 +29,7 @@ using famuz.compiler.Scanner.ScannerTools;
 
 class ParserRhythm
 {
-    public static function parse(scanner :TokenScanner, context :IContext, d :Int, rhythm :String) : Expr
+    public static function parse(scanner :TokenScanner, context :IContext, imports :Map<String, Context>, d :Int, rhythm :String) : Expr
     {
         var token = scanner.next();
         var rhythmScanner = new Scanner(rhythm, token.pos.file);

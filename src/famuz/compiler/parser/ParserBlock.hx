@@ -28,13 +28,13 @@ using famuz.compiler.Position;
 
 class ParserBlock
 {
-    public static function parse(scanner :TokenScanner, context :Context) : Expr
+    public static function parse(scanner :TokenScanner, context :Context, imports :Map<String, Context>) : Expr
     {
         var leftBrace = scanner.next(); //{
         var exprs :Array<Expr> = [];
 
         while (scanner.hasNext() && scanner.peek().isNotPunctuator(RIGHT_BRACE)) {
-            exprs.push(Parser.parse(new Precedence(0), scanner, context, false));
+            exprs.push(Parser.parse(new Precedence(0), scanner, context, imports, false));
         }
 
         if(!scanner.hasNext() || scanner.peek().isNotPunctuator(RIGHT_BRACE)) {

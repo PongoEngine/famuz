@@ -41,25 +41,20 @@ import famuz.compiler.parser.ParserIf;
 import famuz.compiler.parser.ParserLet;
 import famuz.compiler.parser.ParserSwitch;
 import famuz.compiler.parser.ParserDot;
+import famuz.compiler.parser.ParserImport;
 import famuz.compiler.parser.ParserUnop;
 using famuz.compiler.parser.Precedence;
 
 class Parser
 {
-    public static function parse(precedence :Precedence, scanner :TokenScanner, context :Context, isFunc :Bool) : Expr
+    public static function parse(precedence :Precedence, scanner :TokenScanner, context :Context, imports :Map<String, Context>, isFunc :Bool) : Expr
     {
         if (scanner.hasNext()) {
-            var left = parseExpressionPrefix(scanner, context, isFunc);
-            // if (left == null) {
-            //     if (scanner.hasNext()) {
-            //         scanner.next();
-            //     }
-            //     return null;
-            // }
+            var left = parseExpressionPrefix(scanner, context, imports, isFunc);
 
             while (scanner.hasNext() && precedence < scanner.getPrecedence())
             {
-                left = parseExpressionInfix(left, scanner, context);
+                left = parseExpressionInfix(left, scanner, context, imports);
             }
             
             return left;
@@ -78,21 +73,21 @@ class Parser
         return null;
     }
 
-    private static function parseExpressionPrefix(scanner :TokenScanner, context :Context, isFunc :Bool) : Expr
+    private static function parseExpressionPrefix(scanner :TokenScanner, context :Context, imports :Map<String, Context>, isFunc :Bool) : Expr
     {
         return switch (scanner.peek().type) {
             case TTPunctuator(type):
                 switch type {
                     case LEFT_PARENTHESES: 
-                        ParserParentheses.parse(scanner, context);
+                        ParserParentheses.parse(scanner, context, imports);
                     case LEFT_BRACE:
                         isFunc
-                            ? ParserBlock.parse(scanner, context)
-                            : ParserStruct.parse(scanner, context);
+                            ? ParserBlock.parse(scanner, context, imports)
+                            : ParserStruct.parse(scanner, context, imports);
                     case LEFT_BRACKET: 
-                        ParserArray.parse(scanner, context);
+                        ParserArray.parse(scanner, context, imports);
                     case MINUS, BANG:
-                        ParserUnop.parse(scanner, context);
+                        ParserUnop.parse(scanner, context, imports);
                     case GREATER_THAN, EQUALITY, WRAP, ADD, EQUALS, RIGHT_PARENTHESES, RIGHT_BRACE,
                         RIGHT_BRACKET, SHIFT_LEFT, SHIFT_RIGHT, SLASH,
                         COMMA, PERIOD, QUESTION_MARK, COLON:
@@ -100,54 +95,54 @@ class Parser
                 }
             case TTKeyword(type): switch type {
                 case IMPORT:
-                    throw "err";
+                    ParserImport.parse(scanner, context, imports);
                 case LET:
-                    ParserLet.parse(scanner, context);
+                    ParserLet.parse(scanner, context, imports);
                 case FUNC: 
-                    ParserFunc.parse(scanner, context);
+                    ParserFunc.parse(scanner, context, imports);
                 case PRINT: 
-                    ParserPrint.parse(scanner, context);
+                    ParserPrint.parse(scanner, context, imports);
                 case IF: 
-                    ParserIf.parse(scanner, context);
+                    ParserIf.parse(scanner, context, imports);
                 case TRUE: 
-                    ParserBool.parse(scanner, context, type);
+                    ParserBool.parse(scanner, context, imports, type);
                 case FALSE: 
-                    ParserBool.parse(scanner, context, type);
+                    ParserBool.parse(scanner, context, imports, type);
                 case SWITCH:
-                    ParserSwitch.parse(scanner, context);
+                    ParserSwitch.parse(scanner, context, imports);
                 case CASE:
                     parseConsume(scanner);
                 case DEFAULT:
                     parseConsume(scanner);
             }
             case TTIdentifier(str):
-                ParserIdentifier.parse(scanner, context, str);
+                ParserIdentifier.parse(scanner, context, imports, str);
             case TTScale(scale): 
-                ParserScale.parse(scanner, context, scale);
+                ParserScale.parse(scanner, context, imports, scale);
             case TTKey(key): 
-                ParserKey.parse(scanner, context, key);
+                ParserKey.parse(scanner, context, imports, key);
             case TTNumber(str): 
-                ParserNumber.parse(scanner, context, str);
+                ParserNumber.parse(scanner, context, imports, str);
             case TTRhythm(d, str): 
-                ParserRhythm.parse(scanner, context, d, str);
+                ParserRhythm.parse(scanner, context, imports, d, str);
         }
     }
     
-    private static function parseExpressionInfix(left :Expr, scanner :TokenScanner, context :Context) : Expr
+    private static function parseExpressionInfix(left :Expr, scanner :TokenScanner, context :Context, imports :Map<String, Context>) : Expr
     {
         return switch (scanner.peek().type) {
             case TTPunctuator(type):
                 switch type {
                     case ADD, MINUS, SHIFT_LEFT, SHIFT_RIGHT, WRAP, EQUALITY, GREATER_THAN: 
-                            ParserBinop.parse(left, scanner, context, type);
+                            ParserBinop.parse(left, scanner, context, imports, type);
                     case LEFT_BRACKET: 
-                            ParserArrayAccess.parse(left, scanner, context);
+                            ParserArrayAccess.parse(left, scanner, context, imports);
                     case PERIOD:
-                            ParserDot.parse(left, scanner, context);
+                            ParserDot.parse(left, scanner, context, imports);
                     case QUESTION_MARK:
-                        ParserTernary.parse(left, scanner, context);
+                        ParserTernary.parse(left, scanner, context, imports);
                     case LEFT_PARENTHESES:
-                        ParserCall.parse(left, scanner, context);
+                        ParserCall.parse(left, scanner, context, imports);
                     case EQUALS, BANG, RIGHT_PARENTHESES, LEFT_BRACE, RIGHT_BRACE, 
                         RIGHT_BRACKET, SLASH, COMMA, COLON: 
                         null;

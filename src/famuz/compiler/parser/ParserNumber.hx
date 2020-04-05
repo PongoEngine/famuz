@@ -27,7 +27,7 @@ import famuz.compiler.expr.Expr;
 
 class ParserNumber
 {
-    public static function parse(scanner :TokenScanner, context :IContext, number :Int) : Expr
+    public static function parse(scanner :TokenScanner, context :IContext, imports :Map<String, Context>, number :Int) : Expr
     {
         var token = scanner.next();
         return new Expr(

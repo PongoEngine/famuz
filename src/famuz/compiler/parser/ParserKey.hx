@@ -28,7 +28,7 @@ import famuz.compiler.expr.Expr;
 
 class ParserKey
 {
-    public static function parse(scanner :TokenScanner, context :IContext, key :Key) : Expr
+    public static function parse(scanner :TokenScanner, context :IContext, imports :Map<String, Context>, key :Key) : Expr
     {
         var token = scanner.next();
 

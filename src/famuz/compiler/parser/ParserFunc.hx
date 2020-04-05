@@ -28,7 +28,7 @@ import famuz.compiler.expr.Type;
 
 class ParserFunc
 {
-    public static function parse(scanner :TokenScanner, context :Context) : Expr
+    public static function parse(scanner :TokenScanner, context :Context, imports :Map<String, Context>) : Expr
     {
         var token = scanner.next(); //func
         
@@ -44,7 +44,7 @@ class ParserFunc
         scanner.next(); // '='
         
         var scope = context.createContext();
-        var body = Parser.parse(new Precedence(0), scanner, scope, true);
+        var body = Parser.parse(new Precedence(0), scanner, scope, imports, true);
 
         var func = new Expr(
             EFunction(identifier, params, body, scope),

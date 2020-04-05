@@ -27,13 +27,13 @@ import famuz.compiler.expr.Expr;
 
 class ParserCall
 {
-    public static function parse(left :Expr, scanner :TokenScanner, context :Context) : Expr
+    public static function parse(left :Expr, scanner :TokenScanner, context :Context, imports :Map<String, Context>) : Expr
     {
         var leftParentheses = scanner.next();
         var args :Array<Expr> = [];
 
         while (scanner.hasNext() && scanner.peek().isNotPunctuator(RIGHT_PARENTHESES)) {
-            var expr = Parser.parse(new Precedence(0), scanner, context, false);
+            var expr = Parser.parse(new Precedence(0), scanner, context, imports, false);
             if(scanner.peek().isPunctuator(COMMA)) {
                 scanner.next();
             }

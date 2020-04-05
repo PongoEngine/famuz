@@ -22,13 +22,12 @@
 package famuz.compiler.parser;
 
 import famuz.compiler.Token;
-import famuz.compiler.Context;
 import famuz.compiler.theory.Scale;
 import famuz.compiler.expr.Expr;
 
 class ParserScale
 {
-    public static function parse(scanner :TokenScanner, context :IContext, scale :Scale) : Expr
+    public static function parse(scanner :TokenScanner, context :Context, imports :Map<String, Context>, scale :Scale) : Expr
     {
         var token = scanner.next();
 

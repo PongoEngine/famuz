@@ -21,9 +21,8 @@
 
 package tests;
 
-import haxe.io.Path;
+import famuz.compiler.Context;
 import famuz.Famuz;
-import famuz.compiler.midi.Midi;
 import famuz.compiler.expr.Expr;
 import haxe.ds.Option;
 
@@ -34,17 +33,12 @@ class Test {
 			Sys.print(v + "");
         }
         
-        // run("./src/tests/let.famuz");
-        // run("./src/tests/call.famuz");
-        // run("./src/tests/func.famuz");
-        // run("./src/tests/array.famuz");
-        run("./src/tests/rhythm.famuz");
-        // run("./src/tests/recursion.famuz");
-        // run("./src/tests/melody.famuz");
+        run("./src/tests/base.famuz");
     }
 
 	static function run(sourcePath :String) : Option<Expr>
 	{
-		return Famuz.compile(sourcePath);
+        var imports = new Map<String, Context>();
+		return Famuz.compile(sourcePath, imports);
 	}
 }

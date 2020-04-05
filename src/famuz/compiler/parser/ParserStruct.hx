@@ -27,7 +27,7 @@ import famuz.compiler.parser.Parser;
 
 class ParserStruct
 {
-    public static function parse(scanner :TokenScanner, context :Context) : Expr
+    public static function parse(scanner :TokenScanner, context :Context, imports :Map<String, Context>) : Expr
     {
         var leftBrace = scanner.next();
         var fields = new Map<String, Expr>();
@@ -35,7 +35,7 @@ class ParserStruct
         while (scanner.hasNext() && scanner.peek().isNotPunctuator(RIGHT_BRACE)) {
             var name = scanner.next();
             scanner.next(); //consume '='
-            var expr = Parser.parse(new Precedence(0), scanner, context, false);
+            var expr = Parser.parse(new Precedence(0), scanner, context, imports, false);
             fields.set(name.getIdentifier(), expr);
 
             if(scanner.peek().isPunctuator(COMMA)) {
