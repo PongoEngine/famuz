@@ -24,7 +24,6 @@ package famuz.compiler.parser;
 import famuz.compiler.Token;
 import famuz.compiler.Context;
 import famuz.compiler.expr.Expr;
-import famuz.compiler.expr.Type.TypeTools;
 
 class ParserIdentifier
 {

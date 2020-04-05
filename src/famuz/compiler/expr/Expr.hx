@@ -24,7 +24,6 @@ package famuz.compiler.expr;
 import famuz.compiler.Context;
 import famuz.compiler.expr.ExprDef;
 import famuz.compiler.expr.Type;
-import famuz.util.Set;
 using famuz.compiler.expr.ExprBinops;
 using famuz.util.FStringTools;
 

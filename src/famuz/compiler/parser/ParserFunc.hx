@@ -34,11 +34,11 @@ class ParserFunc
         
         var identifier = scanner.next().getIdentifier(); //id (ex: main)
         var params :Array<String> = [];
-        var args :Array<Arg> = [];
+        var args :Array<TypedName> = [];
         while (scanner.peek().isNotPunctuator(EQUALS)) {
             var name = scanner.next().getIdentifier();
             params.push(name);
-            args.push(new Arg(name, TMono({ref: None})));
+            args.push(new TypedName(name, TMono({ref: None})));
         }
 
         scanner.next(); // '='

@@ -44,7 +44,7 @@ class TypeChecker
                     var arg_type = TMono({ref: None});
                     new_non_generic.set(arg_type);
                     new_env.addType(p, arg_type);
-                    return new Arg(p, arg_type);
+                    return new TypedName(p, arg_type);
                 });
 
                 var result_type = analyse(body, new_env, new_non_generic);
@@ -86,7 +86,7 @@ class TypeChecker
                     case TFun(fun_args, ret):
                         call_args.mapi((index, item) -> {
                             var argType = analyse(item, env, non_generic);
-                            return new Arg(fun_args[index].name, argType);
+                            return new TypedName(fun_args[index].name, argType);
                         });
                     case _:
                         throw "err";
@@ -102,9 +102,16 @@ class TypeChecker
                     case _: throw "err";
                 }
                 for(v in values) {
-                    unify(arrayType, v.t);
+                    unify(arrayType, analyse(v, env, non_generic));
                 }
                 expr.t;
+
+            case EObjectDecl(fields):
+                var anonFields :Array<TypedName> = [];
+                for(kv in fields.keyValueIterator()) {
+                    anonFields.push(new TypedName(kv.key, analyse(kv.value, env, non_generic)));
+                }
+                TAnonymous({ref:{fields: anonFields}});
 
             case _:
                 trace(expr.def + "\n");
@@ -147,6 +154,9 @@ class TypeChecker
                     throw "Type error: " + t1.toString() + " is not " + t2.toString();
                 }
                 for(i in 0...fieldsA.length) {
+                    if(fieldsA[i].name != fieldsB[i].name) {
+                        throw "Type error: " + t1.toString() + " is not " + t2.toString();
+                    }
                     unify(fieldsA[i].type, fieldsB[i].type);
                 }
             }

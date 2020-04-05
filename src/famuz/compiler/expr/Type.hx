@@ -21,7 +21,6 @@
 
 package famuz.compiler.expr;
 
-import haxe.macro.Type.TFunc;
 import famuz.compiler.expr.Ref;
 import haxe.ds.Option;
 
@@ -37,10 +36,10 @@ enum Type
     TKey;
     TMono(t:Ref<Option<Type>>);
     TArray(t:Ref<Type>);
-    TFun(args:Array<Arg>, ret:Type);
+    TFun(args:Array<TypedName>, ret:Type);
 }
 
-class Arg
+class TypedName
 {
     public var name :String;
     public var type :Type;
@@ -52,25 +51,10 @@ class Arg
     }
 }
 
-typedef AnonType = {fields :Array<{name :String, type :Type}>};
+typedef AnonType = {fields :Array<TypedName>};
 
 class TypeTools
 {
-    // public static function typeEquals(t1 :Type, t2 :Type) : Bool
-    // {
-    //     return switch [t1, t2] {
-    //         case [TAnonymous(a), TAnonymous(b)]: throw "err";
-    //         case [TNumber, TNumber]: true;
-    //         case [TBool, TBool]: true;
-    //         case [TScale, TScale]: true;
-    //         case [TKey, TKey]: true;
-    //         case [TMono(t1), TMono(t2)]: throw "err";
-    //         case [TArray(t1), TArray(t2)]: throw "err";
-    //         case [TFun(args1, ret1), TFun(args2, ret2)]: throw "err";
-    //         case _: false;
-    //     }
-    // }
-
     public static function toString(t :Type) : String
     {
         return switch t {
