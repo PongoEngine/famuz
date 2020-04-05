@@ -143,7 +143,7 @@ class TypeChecker
                 throw "err";
             
             case EUnop(op, e):
-                throw "err";
+                analyse(e, env, non_generic);
         }
     }
 

@@ -3,5 +3,5 @@ func hello a b = {
 }
 
 func main = {
-    if true then 0 else 1
+    true ? -1 : 1
 }
