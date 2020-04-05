@@ -99,6 +99,8 @@ class Parser
                         parseConsume(scanner);
                 }
             case TTKeyword(type): switch type {
+                case IMPORT:
+                    throw "err";
                 case LET:
                     ParserLet.parse(scanner, context);
                 case FUNC: 

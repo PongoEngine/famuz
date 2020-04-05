@@ -19,7 +19,7 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
- package famuz.compiler;
+package famuz.compiler;
 
 import famuz.compiler.Token.PunctuatorType;
 import famuz.compiler.Position;

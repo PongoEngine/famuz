@@ -24,7 +24,6 @@ package famuz.compiler.expr;
 import famuz.compiler.Context;
 import famuz.compiler.expr.Type;
 import famuz.util.TypeMap;
-
 using Lambda;
 
 class TypeChecker
