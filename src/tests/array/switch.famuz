@@ -1,0 +1,6 @@
+let switchexpr = switch 0 {
+    case 0, 1: "0 or 1"
+    case 2: "2"
+    case -1: "-1"
+    default: "default"
+}

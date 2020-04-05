@@ -1,6 +1,7 @@
 import "array/test1"
+import "array/switch"
 
-let coolStr = {a:100, b:"b money"}.b
+let coolStr = {a:100, b:"b money"}.c
 
 func main = {
     //let coolStr = true

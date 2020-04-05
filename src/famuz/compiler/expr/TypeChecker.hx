@@ -126,7 +126,12 @@ class TypeChecker
             case EField(e, field):
                 return switch analyse(e, env) {
                     case TAnonymous(a): {
-                        a.ref.fields.get(field);
+                        if(a.ref.fields.exists(field)) {
+                            a.ref.fields.get(field);
+                        }
+                        else {
+                            throw '${field} does not exist on ${e.toString()}';
+                        }
                     }
                     case _: throw "err";
                 }
@@ -146,7 +151,15 @@ class TypeChecker
                 analyse(expr, env);
 
             case ESwitch(e, cases, edef):
-                throw "err";
+                var t = analyse(e, env);
+                for(case_ in cases) {
+                    for(value in case_.values) {
+                        unify(t, analyse(value, env));
+                    }
+                    unify(expr.t, analyse(case_.expr, env));
+                }
+                unify(expr.t, analyse(edef, env));
+                expr.t;
 
             case ETernary(econd, eif, eelse):
                 unify(
