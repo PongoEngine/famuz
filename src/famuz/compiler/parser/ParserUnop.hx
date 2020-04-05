@@ -43,7 +43,7 @@ class ParserUnop
 
         return new Expr(
             EUnop(unop, expr), 
-			TMono({ref: null}),
+			TMono({ref: None}),
             Position.union(unopToken.pos, expr.pos)
         );
     }

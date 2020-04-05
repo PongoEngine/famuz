@@ -35,7 +35,7 @@ class ParserParentheses
 
         return new Expr(
             EParentheses(expr),
-			TMono({ref: null}),
+			TMono({ref: None}),
             Position.union(token.pos, rightParentheses.pos)
         );
     }

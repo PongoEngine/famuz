@@ -47,7 +47,7 @@ class ParserBinop
         var right = Parser.parse(PRECEDENCE_SUM, scanner, context, false);
 		return new Expr(
 			EBinop(op, left, right),
-			TMono({ref: null}),
+			TMono({ref: None}),
 			Position.union(left.pos, right.pos)
         );
     }

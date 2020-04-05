@@ -113,8 +113,36 @@ class TypeChecker
                 }
                 TAnonymous({ref:{fields: anonFields}});
 
-            case _:
-                trace(expr.def + "\n");
+            case EArray(e1, e2):
+                throw "err";
+
+            case EArrayFunc(e, op):
+                throw "err";
+
+            case EField(e, field):
+                throw "err";
+
+            case EIf(econd, ethen, eelse):
+                unify(
+                    analyse(ethen, env, non_generic),
+                    analyse(eelse, env, non_generic)
+                );
+                unify(expr.t, ethen.t);
+                expr.t;
+
+            case EParentheses(expr):
+                throw "err";
+
+            case EPrint(expr):
+                throw "err";
+
+            case ESwitch(e, cases, edef):
+                throw "err";
+
+            case ETernary(econd, eif, eelse):
+                throw "err";
+            
+            case EUnop(op, e):
                 throw "err";
         }
     }

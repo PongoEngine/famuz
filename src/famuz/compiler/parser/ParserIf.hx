@@ -38,7 +38,7 @@ class ParserIf
 
         return new Expr(
             EIf(econd, ethen, eelse), 
-			TMono({ref: null}),
+			TMono({ref: None}),
             Position.union(if_.pos, eelse.pos)
         );
     }
