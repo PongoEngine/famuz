@@ -33,7 +33,7 @@ import famuz.compiler.parser.Parser;
 
 class Famuz
 {
-    public static function compile(filePath :String, imports :Map<String, Context>) : Option<Expr>
+    public static function compileContext(filePath :String, imports :Map<String, Context>) : Context
     {
         var content = File.getContent(filePath);
         var tokens = Lexer.lex(filePath, content);
@@ -44,18 +44,23 @@ class Famuz
             Parser.parse(new Precedence(0), tokenScanner, context, imports, false);
         }
     
+        return context;
+    }
+
+    public static function compile(filePath :String, imports :Map<String, Context>) : Option<Expr>
+    {
+        var context = compileContext(filePath, imports);
+    
         var main = context.getExpr("main");
         TypeChecker.analyse(main, context);
-        trace(main + "\n");
 
-        // return switch main.def {
-        //     case EFunction(_, _, body, scope): {
-        //         var expr = new Expr(ECall(main, []), TMono({ref: None}), null).evaluate(context);
-        //         Some(expr);
-        //     }
-        //     case _: 
-        //         None;
-        // }
-        return None;
+        return switch main.def {
+            case EFunction(_, _, body, scope): {
+                var expr = new Expr(ECall(main, []), TMono({ref: None}), null).evaluate(context);
+                Some(expr);
+            }
+            case _: 
+                None;
+        }
     }
 }

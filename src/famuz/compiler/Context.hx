@@ -42,6 +42,7 @@ class Context implements IContext
     {
         _typeMap = new Map<String, Type>();
         _exprMap = new Map<String, Expr>();
+        _imports = [];
     }
 
     public function addVarFunc(name :String, expr :Expr) : Void
@@ -70,8 +71,16 @@ class Context implements IContext
             return _exprMap.get(name);
         }
         else {
-            throw 'Expr:${name} not found.';
+            var expr = getExprFromImport(name);
+            return expr != null
+                ? expr
+                : throw 'Expr:${name} not found.';
         }
+    }
+
+    public inline function hasExpr(name :String) : Bool
+    {
+        return _exprMap.exists(name);
     }
 
     public function getType(name :String) : Option<Type>
@@ -79,6 +88,11 @@ class Context implements IContext
         return _typeMap.exists(name)
             ? Some(_typeMap.get(name))
             : None;
+    }
+
+    public function addImport(ctx :Context) : Void
+    {
+        _imports.push(ctx);
     }
 
     public function createContext() : Context
@@ -94,8 +108,19 @@ class Context implements IContext
         return c;
     }
 
+    private function getExprFromImport(name :String) : Expr
+    {
+        for(import_ in _imports) {
+            if(import_.hasExpr(name)) {
+                return import_.getExpr(name);
+            }
+        }
+        return null;
+    }
+
     private var _typeMap :Map<String, Type>;
     private var _exprMap :Map<String, Expr>;
+    private var _imports :Array<Context>;
 }
 
 class ContextInnerOuter implements IContext

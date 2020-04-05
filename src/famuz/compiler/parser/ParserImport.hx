@@ -33,23 +33,14 @@ class ParserImport
         var path = scanner.next(); //path
 
         var base = Path.directory(import_.pos.file);
+        var importPath = Path.join([base, path.getString()]) + ".famuz";
 
-        var p = Path.join([base, path.getString()]) + ".famuz";
+        if(!imports.exists(importPath)) {
+            var importCtx = Famuz.compileContext(importPath, imports);
+            imports.set(importPath, importCtx);
+        }
+        context.addImport(imports.get(importPath));
 
-        trace(p + "\n\n");
-        // scanner.next(); //consume '='
-        // var value = Parser.parse(new Precedence(0), scanner, context, false);
-
-        // var letExpr = new Expr(
-        //     EVar(identifier.getIdentifier(), value),
-		// 	TMono({ref: None}),
-        //     Position.union(let.pos, value.pos)
-        // );
-        // context.addVarFunc(identifier.getIdentifier(), value);
-
-        // return letExpr;
-
-        // throw "err";
         return null;
     }
 }
