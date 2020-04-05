@@ -1,6 +1,7 @@
-func ident q = [{a:0}, {a:20}, q]
-//func ident q r = [q, r]
+func hello a b = {
+    a + b
+}
 
 func main = {
-    ident({a:200})
+    hello(100)
 }

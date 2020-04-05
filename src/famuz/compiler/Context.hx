@@ -24,7 +24,6 @@ package famuz.compiler;
 import haxe.ds.Option;
 import famuz.compiler.expr.Type;
 import famuz.compiler.expr.Expr;
-import famuz.compiler.expr.EnumDefinition;
 
 interface IContext {
     function getType(name :String) : Option<Type>;
@@ -43,7 +42,6 @@ class Context implements IContext
     {
         _typeMap = new Map<String, Type>();
         _exprMap = new Map<String, Expr>();
-        _enumDefs = new Map<String, EnumDefinition>();
     }
 
     public function addVarFunc(name :String, expr :Expr) : Void
@@ -63,19 +61,6 @@ class Context implements IContext
         }
         else {
             _typeMap.set(name, type);
-        }
-    }
-
-    public function defineEnumDef(def :EnumDefinition) : Void
-    {
-        if(_enumDefs.exists(def.name)) {
-            throw '"${def.name}" already exists.';
-        }
-        else {
-            _enumDefs.set(def.name, def);
-            for(f in def.fields) {
-                this.addVarFunc(f.name, f.expr);
-            }
         }
     }
 
@@ -106,13 +91,11 @@ class Context implements IContext
         var c = this.createContext();
         c._typeMap = this._typeMap.copy();
         c._exprMap = this._exprMap.copy();
-        c._enumDefs = this._enumDefs.copy();
         return c;
     }
 
     private var _typeMap :Map<String, Type>;
     private var _exprMap :Map<String, Expr>;
-    private var _enumDefs :Map<String, EnumDefinition>;
 }
 
 class ContextInnerOuter implements IContext

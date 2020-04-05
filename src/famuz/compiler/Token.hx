@@ -150,5 +150,4 @@ enum KeywordType
 	IF;
 	TRUE;
     FALSE;
-    ENUM;
 }

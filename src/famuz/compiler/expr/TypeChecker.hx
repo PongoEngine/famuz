@@ -127,7 +127,7 @@ class TypeChecker
         switch [t1, t2] {
             case [TMono(t), _]: {
                 if(!t1.equals(t2)) {
-                    if(occurs_in_type(t1, t2)) {
+                    if(occursInType(t1, t2)) {
                         throw "Recursive unification";
                     }
                     t.ref = Some(t2);
@@ -136,10 +136,7 @@ class TypeChecker
             case [_, TMono(t)]:
                 unify(t2, t1);
             case [TFun(args1, ret1), TFun(args2, ret2)]: {
-                if(args1.length != args2.length) {
-                    throw "Type error: " + t1.toString() + " is not " + t2.toString();
-                }
-                for(i in 0...args1.length) {
+                for(i in 0...Math.floor(Math.min(args1.length, args2.length))) {
                     unify(args1[i].type, args2[i].type);
                 }
                 unify(ret1, ret2);
@@ -180,7 +177,7 @@ class TypeChecker
         }
     }
 
-    private static function occurs_in_type(v :Type, type2 :Type) : Bool
+    private static function occursInType(v :Type, type2 :Type) : Bool
     {
         var pruned_type2 = prune(type2);
         if (pruned_type2.equals(v)) {
@@ -189,14 +186,14 @@ class TypeChecker
 
         return switch pruned_type2 {
             case TFun(args, ret): {
-                occurs_in(v, args.map(a -> a.type).concat([ret]));
+                occursIn(v, args.map(a -> a.type).concat([ret]));
             }
             case _: false;
         }
     }
 
-    private static function occurs_in(t :Type, types :Array<Type>) : Bool
+    private static function occursIn(t :Type, types :Array<Type>) : Bool
     {
-        return types.filter(t2 -> occurs_in_type(t, t2)).length > 0;
+        return types.filter(t2 -> occursInType(t, t2)).length > 0;
     }
 }

@@ -68,9 +68,6 @@ class Expr
                     : edef.evaluate(context);
             }
 
-            case EEnumParameter(e, type, index):
-                this;
-
             case EObjectDecl(_):
                 this;
 
@@ -250,8 +247,6 @@ class Expr
                 '${e1}${op}${e2}';
             case ECall(e, params):
                 '${e}(${params.join(",")})';
-            case EEnumParameter(e, def, index):
-                throw "err";
             case EField(e, field):
                 throw "err";
             case EIf(econd, ethen, eelse):

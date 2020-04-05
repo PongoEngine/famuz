@@ -124,8 +124,6 @@ class ExprBinops
                     case [CBool(valueA), CBool(valueB)]: valueA == valueB;
                     case _: false;
                 }
-            case [EEnumParameter(e1, type1, index1), EEnumParameter(e2, type2, index2)]:
-                index1 == index2 && type1 == type2;
             case _: 
                 false;
         }

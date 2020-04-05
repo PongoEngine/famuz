@@ -42,7 +42,6 @@ import famuz.compiler.parser.ParserLet;
 import famuz.compiler.parser.ParserSwitch;
 import famuz.compiler.parser.ParserDot;
 import famuz.compiler.parser.ParserUnop;
-import famuz.compiler.parser.ParserEnum;
 using famuz.compiler.parser.Precedence;
 
 class Parser
@@ -50,9 +49,6 @@ class Parser
     public static function parse(precedence :Precedence, scanner :TokenScanner, context :Context, isFunc :Bool) : Expr
     {
         if (scanner.hasNext()) {
-            while(isEnumType(scanner)) {
-                ParserEnum.parse(scanner, context);
-            }
             var left = parseExpressionPrefix(scanner, context, isFunc);
             if (left == null) {
                 if (scanner.hasNext()) {
@@ -121,8 +117,6 @@ class Parser
                     parseConsume(scanner);
                 case DEFAULT:
                     parseConsume(scanner);
-                case ENUM:
-                    throw "err";
             }
             case TTIdentifier(str):
                 ParserIdentifier.parse(scanner, context, str);
@@ -168,17 +162,6 @@ class Parser
                 null;
             case TTRhythm(_): 
                 null;
-        }
-    }
-
-    private static function isEnumType(scanner :TokenScanner) : Bool
-    {
-        return switch scanner.peek().type {
-            case TTKeyword(type): switch type {
-                case ENUM: true;
-                case _: false;
-            }
-            case _: false;
         }
     }
 }

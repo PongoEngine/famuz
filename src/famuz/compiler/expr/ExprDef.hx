@@ -23,7 +23,6 @@ package famuz.compiler.expr;
 
 import famuz.compiler.Context;
 import famuz.compiler.expr.Expr;
-import famuz.compiler.expr.EnumDefinition;
 import famuz.compiler.theory.Scale;
 import famuz.compiler.theory.Key;
 
@@ -37,11 +36,6 @@ enum ExprDef
      * A constant.
      */
     EConstant(constant :Constant);
-
-    /**
-     * A constant.
-     */
-    EEnumParameter(e :Expr, def :Ref<EnumDefinition>, index :Int);
 
     /**
      * Represents a switch expression with related cases and an optional. 

@@ -151,7 +151,6 @@ class Lexer
     {
         return switch str {
             //keyword
-            case "enum": TTKeyword(ENUM);
             case "let": TTKeyword(LET);
             case "func": TTKeyword(FUNC);
             case "switch": TTKeyword(SWITCH);
