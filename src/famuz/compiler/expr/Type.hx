@@ -32,6 +32,7 @@ enum Type
 {
     TAnonymous(a:Ref<AnonType>);
     TNumber;
+    TString;
     TBool;
     TScale;
     TKey;
@@ -65,6 +66,8 @@ class TypeTools
                 'Array<${TypeTools.toString(t.ref)}>';
             case TNumber: 
                 "Number";
+            case TString: 
+                "String";
             case TBool: 
                 "Bool";
             case TScale: 

@@ -205,6 +205,7 @@ class Expr
         var str = switch def {
             case EConstant(constant): switch constant {
                 case CIdentifier(str): str;
+                case CString(str): str;
                 case CNumber(value): value + "";
                 case CBool(value): value + "";
                 case CScale(scale): scale.toString();

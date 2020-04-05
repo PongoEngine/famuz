@@ -22,34 +22,18 @@
 package famuz.compiler.parser;
 
 import famuz.compiler.Token;
+import famuz.compiler.Context;
 import famuz.compiler.expr.Expr;
-import haxe.io.Path;
 
-class ParserImport
+class ParserString
 {
-    public static function parse(scanner :TokenScanner, context :Context, imports :Map<String, Context>) : Expr
+    public static function parse(scanner :TokenScanner, context :IContext, imports :Map<String, Context>, str :String) : Expr
     {
-        var import_ = scanner.next(); //import
-        var path = scanner.next(); //path
-
-        var base = Path.directory(import_.pos.file);
-
-        var p = Path.join([base, path.getString()]) + ".famuz";
-
-        trace(p + "\n\n");
-        // scanner.next(); //consume '='
-        // var value = Parser.parse(new Precedence(0), scanner, context, false);
-
-        // var letExpr = new Expr(
-        //     EVar(identifier.getIdentifier(), value),
-		// 	TMono({ref: None}),
-        //     Position.union(let.pos, value.pos)
-        // );
-        // context.addVarFunc(identifier.getIdentifier(), value);
-
-        // return letExpr;
-
-        // throw "err";
-        return null;
+        var token = scanner.next();
+        return new Expr(
+            EConstant(CString(str)),
+			TString,
+            token.pos
+        );
     }
 }

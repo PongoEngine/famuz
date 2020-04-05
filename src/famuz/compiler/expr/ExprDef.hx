@@ -196,6 +196,7 @@ class ExprDefTools
 enum Constant
 {
     CIdentifier(str :String);
+    CString(str :String);
     CBool(value :Bool);
     CNumber(value :Int);
     CScale(type :Scale);

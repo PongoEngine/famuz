@@ -43,6 +43,7 @@ import famuz.compiler.parser.ParserSwitch;
 import famuz.compiler.parser.ParserDot;
 import famuz.compiler.parser.ParserImport;
 import famuz.compiler.parser.ParserUnop;
+import famuz.compiler.parser.ParserString;
 using famuz.compiler.parser.Precedence;
 
 class Parser
@@ -117,12 +118,14 @@ class Parser
             }
             case TTIdentifier(str):
                 ParserIdentifier.parse(scanner, context, imports, str);
+            case TTString(str):
+                ParserString.parse(scanner, context, imports, str);
             case TTScale(scale): 
                 ParserScale.parse(scanner, context, imports, scale);
             case TTKey(key): 
                 ParserKey.parse(scanner, context, imports, key);
-            case TTNumber(str): 
-                ParserNumber.parse(scanner, context, imports, str);
+            case TTNumber(num): 
+                ParserNumber.parse(scanner, context, imports, num);
             case TTRhythm(d, str): 
                 ParserRhythm.parse(scanner, context, imports, d, str);
         }
@@ -148,6 +151,8 @@ class Parser
                         null;
                 }
             case TTKeyword(_): 
+                null;
+            case TTString(_): 
                 null;
             case TTIdentifier(_): 
                 null;

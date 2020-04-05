@@ -63,6 +63,8 @@ class TypeChecker
                         TScale;
                     case CKey(key): 
                         TKey;
+                    case CString(str): 
+                        TString;
                 }
 
             case EBinop(type, e1, e2):

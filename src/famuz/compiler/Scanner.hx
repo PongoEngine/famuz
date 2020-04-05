@@ -113,6 +113,17 @@ class Scanner
         }
         return str;
     }
+
+    public function consumeString() : String
+    {
+        this.next(); //consume '"'
+        var str = "";
+        while(this.hasNext() && this.peek() != '"') {
+            str += this.next();
+        }
+        this.next(); //consume '"'
+        return str;
+    }
 }
 
 class ScannerTools

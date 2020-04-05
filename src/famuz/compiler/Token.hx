@@ -67,6 +67,14 @@ class Token
             case _: throw "Error";
         }
     }
+
+    public function getString() : String
+    {
+        return switch this.type {
+            case TTString(str): str;
+            case _: throw "Error";
+        }
+    }
 }
 
 class TokenScanner
@@ -109,10 +117,10 @@ enum TokenType
     TTPunctuator(type :PunctuatorType);
     TTKeyword(type :KeywordType);
     TTIdentifier(str :String);
-    // TTWhitespace;
     TTScale(scale :Scale);
     TTKey(key :Key);
     TTNumber(num :Int);
+    TTString(str :String);
     TTRhythm(duration: Int, str :String);
 }
 

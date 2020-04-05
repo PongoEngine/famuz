@@ -52,6 +52,8 @@ enum abstract LexerToken(String) from String
     var GT = ">";
 
     var AT = "@";
+    
+    var QUOTES = '"';
 
     var TAB = "\t";
     var SPACE = " ";

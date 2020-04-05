@@ -90,6 +90,8 @@ class Lexer
                         : tokens.push(createToken(GREATER_THAN, 1, scanner));
                 case DURATION:
                     scanner.next();
+                case QUOTES:
+                    tokens.push(createTokenString(scanner));
                 case TAB, SPACE, LINE:
                     scanner.consumeWhitespace();
                 case ZERO, ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE:
@@ -121,6 +123,16 @@ class Lexer
         var max = scanner.curIndex;
         var position = new Position(line, min, max, scanner.filepath, scanner.content);
         return new Token(wordType(lexeme), position);
+    }
+
+    public static function createTokenString(scanner :Scanner) : Token
+    {
+        var line = scanner.curLine;
+        var min = scanner.curIndex;
+        var lexeme = scanner.consumeString();
+        var max = scanner.curIndex;
+        var position = new Position(line, min, max, scanner.filepath, scanner.content);
+        return new Token(TTString(lexeme), position);
     }
 
     public static function createTokenRhythm(scanner :Scanner) : Token

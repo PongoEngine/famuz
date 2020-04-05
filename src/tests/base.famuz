@@ -1,4 +1,4 @@
-import array
+import "array/test1"
 
 func main = {
     0
