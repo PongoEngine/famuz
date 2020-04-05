@@ -164,35 +164,3 @@ class ContextInnerOuter implements IContext
     private var _inner :IContext;
     private var _outer :IContext;
 }
-
-class ContextTools
-{
-    public static function addArrayExprs(ctx :Context) : Void
-    {
-        addPush(ctx);
-        addPop(ctx);
-    }
-
-    private static function addPush(ctx :Context) : Void
-    {
-        var array = new Expr(EConstant(CIdentifier("array")), TMono({ref: None}), null);
-        var element = new Expr(EConstant(CIdentifier("element")), TMono({ref: None}), null);
-        var op = new Expr(EArrayFunc(array, OpPush(element)), TMono({ref: None}), null);
-        ctx.addVarFunc("push", new Expr(
-            EFunction("push", ["array", "element"], op, ctx.createContext()), 
-            TMono({ref: None}),
-            null
-        ));
-    }
-
-    private static function addPop(ctx :Context) : Void
-    {
-        var array = new Expr(EConstant(CIdentifier("array")), TMono({ref: None}), null);
-        var op = new Expr(EArrayFunc(array, OpPop), TMono({ref: None}), null);
-        ctx.addVarFunc("pop", new Expr(
-            EFunction("pop", ["array"], op, ctx.createContext()), 
-            TMono({ref: None}),
-            null
-        ));
-    }
-}

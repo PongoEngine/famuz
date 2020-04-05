@@ -51,4 +51,9 @@ class Position
             a.content
         );
     }
+
+    public static function identity() : Position
+    {
+        return new Position(0, 0, 0, "", "");
+    }
 }

@@ -32,7 +32,7 @@ class ParserLet
         var let = scanner.next(); //let
         var identifier = scanner.next(); //id (ex: varname)
         scanner.next(); //consume '='
-        var value = Parser.parse(new Precedence(0), scanner, context, true);
+        var value = Parser.parse(new Precedence(0), scanner, context, false);
 
         var letExpr = new Expr(
             EVar(identifier.getIdentifier(), value),

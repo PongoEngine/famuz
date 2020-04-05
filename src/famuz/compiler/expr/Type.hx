@@ -36,10 +36,10 @@ enum Type
     TKey;
     TMono(t:Ref<Option<Type>>);
     TArray(t:Ref<Type>);
-    TFun(args:Array<TypedName>, ret:Type);
+    TFun(args:Array<Arg>, ret:Type);
 }
 
-class TypedName
+class Arg
 {
     public var name :String;
     public var type :Type;
@@ -51,7 +51,7 @@ class TypedName
     }
 }
 
-typedef AnonType = {fields :Array<TypedName>};
+typedef AnonType = {fields :Map<String, Type>};
 
 class TypeTools
 {
@@ -59,9 +59,14 @@ class TypeTools
     {
         return switch t {
             case TAnonymous(a):
-                "{" + a.ref.fields.map(f -> {
-                    return '${f.name}: ${f.type.toString()}';
-                }).join(", ") + "}";
+                // "{" + a.ref.fields.(f -> {
+                //     return '${f.name}: ${f.type.toString()}';
+                // }).join(", ") + "}";
+                var fields = [];
+                for(kv in a.ref.fields.keyValueIterator()) {
+                    fields.push('${kv.key}: ${kv.value.toString()}');
+                }
+                '{${fields.join(", ")}}';
             case TArray(t):
                 'Array<${TypeTools.toString(t.ref)}>';
             case TNumber: 

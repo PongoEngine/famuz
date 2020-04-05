@@ -1,7 +1,8 @@
-func hello a b = {
-    a + b
-}
+func identity a = a
+func swag a b = a + b
+
+
 
 func main = {
-    true ? -1 : 1
+    let obj2 = {a:0,b:true}
 }

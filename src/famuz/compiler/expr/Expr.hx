@@ -83,18 +83,6 @@ class Expr
             case EArrayDecl(_):
                 this;
 
-             case EArrayFunc(e, op):
-                var evalArra = e.evaluate(context);
-                switch [evalArra.def, op] {
-                    case [EArrayDecl(values), OpPush(expr)]:
-                        values.push(expr.evaluate(context));
-                        evalArra;
-                    case [EArrayDecl(values), OpPop]:
-                        values.pop();
-                        evalArra;
-                    case _:throw "err";
-                }
-
             case EField(e, field): {
                 switch e.evaluate(context).def {
                     case EObjectDecl(fields):
@@ -128,7 +116,7 @@ class Expr
                             for(i in 0...args.length) {
                                 identParams += '_${params[i]}';
                             }
-                            new Expr(EFunction(ident + identParams, params.slice(args.length), body, ctxInnerOuter), TMono({ref: None}), null);
+                            new Expr(EFunction(ident + identParams, params.slice(args.length), body, ctxInnerOuter), TMono({ref: None}), Position.identity());
                         }
                         else {
                             Error.create(TooManyArgs(this.pos));
@@ -231,8 +219,6 @@ class Expr
             case EBlock(exprs):
                 '{...}';
             case EArray(e1, e2):
-                throw "err";
-            case EArrayFunc(e, op):
                 throw "err";
             case EBinop(type, e1, e2):
                 var op = switch type {

@@ -52,11 +52,6 @@ enum ExprDef
      * Array access e1[e2].
      */
     EArray(e1:Expr, e2:Expr);
-
-    /**
-     * Array access e1.push(e2)
-     */
-    EArrayFunc(e:Expr, op :ArrayOp);
     
     /**
      * An array declaration [el].

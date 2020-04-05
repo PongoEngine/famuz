@@ -23,30 +23,12 @@ package famuz.compiler.parser;
 
 import famuz.compiler.Token;
 
-// https://github.com/HaxeFoundation/haxe/blob/development/src/syntax/parser.ml
-// let precedence op =
-// 	let left = true and right = false in
-// 	match op with
-// 	| OpIn -> 0, right
-// 	| OpMod -> 1, left
-// 	| OpMult | OpDiv -> 2, left
-// 	| OpAdd | OpSub -> 3, left
-// 	| OpShl | OpShr | OpUShr -> 4, left
-// 	| OpOr | OpAnd | OpXor -> 5, left
-// 	| OpEq | OpNotEq | OpGt | OpLt | OpGte | OpLte -> 6, left
-// 	| OpInterval -> 7, left
-// 	| OpBoolAnd -> 8, left
-// 	| OpBoolOr -> 9, left
-// 	| OpArrow -> 10, right
-// 	| OpAssign | OpAssignOp _ -> 11, right
-
 abstract Precedence(Int)
 {
     public static var PRECEDENCE_ASSIGNMENT = new Precedence(1);
 	public static var PRECEDENCE_TERNARY = new Precedence(2);
 	public static var PRECEDENCE_PERIOD = new Precedence(2);
 	public static var PRECEDENCE_ARRAY = new Precedence(2);
-    // public static var PRECEDENCE_SUM = new Precedence(3);
     public static var PRECEDENCE_SUBTRACT = new Precedence(3);
 	public static var PRECEDENCE_CALL = new Precedence(4);
     public static var PRECEDENCE_SUM = new Precedence(5);

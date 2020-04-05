@@ -23,35 +23,28 @@ package famuz.compiler.expr;
 
 import famuz.compiler.Context;
 import famuz.compiler.expr.Type;
-import famuz.util.Set;
 
 using Lambda;
 
 class TypeChecker
 {
-    public static function analyse(expr :Expr, env :IContext, ?non_generic :Set<Type>) : Type
+    public static function analyse(expr :Expr, env :IContext) : Type
     {
-        if(non_generic == null) {
-            non_generic = new Set<Type>();
-        }
-
         return expr.t = switch expr.def {
             case EFunction(identifier, params, body, scope):
                 var new_env = new ContextInnerOuter(scope, env);
-                var new_non_generic = non_generic.copy();
 
                 var args = params.map(p -> {
                     var arg_type = TMono({ref: None});
-                    new_non_generic.set(arg_type);
                     new_env.addType(p, arg_type);
-                    return new TypedName(p, arg_type);
+                    return new Arg(p, arg_type);
                 });
 
-                var result_type = analyse(body, new_env, new_non_generic);
+                var result_type = analyse(body, new_env);
                 TFun(args, result_type);
 
             case EBlock(exprs):
-                analyse(exprs[exprs.length -1], env, non_generic);
+                analyse(exprs[exprs.length -1], env);
 
             case EConstant(constant): 
                 switch constant {
@@ -60,7 +53,7 @@ class TypeChecker
                             case Some(v):
                                 v;
                             case None:
-                                analyse(env.getExpr(str), env, non_generic);
+                                analyse(env.getExpr(str), env);
                         }
                     case CBool(value): 
                         TBool;
@@ -73,20 +66,20 @@ class TypeChecker
                 }
 
             case EBinop(type, e1, e2):
-                analyse(e1, env, non_generic);
-                analyse(e2, env, non_generic);
+                analyse(e1, env);
+                analyse(e2, env);
                 unify(e1.t, e2.t);
                 e1.t;
 
             case EVar(identifier, expr):
-                analyse(expr, env, non_generic);
+                analyse(expr, env);
 
             case ECall(e, call_args):
-                var new_fun_args = switch analyse(e, env, non_generic) {
+                var new_fun_args = switch analyse(e, env) {
                     case TFun(fun_args, ret):
                         call_args.mapi((index, item) -> {
-                            var argType = analyse(item, env, non_generic);
-                            return new TypedName(fun_args[index].name, argType);
+                            var argType = analyse(item, env);
+                            return new Arg(fun_args[index].name, argType);
                         });
                     case _:
                         throw "err";
@@ -102,48 +95,56 @@ class TypeChecker
                     case _: throw "err";
                 }
                 for(v in values) {
-                    unify(arrayType, analyse(v, env, non_generic));
+                    unify(arrayType, analyse(v, env));
                 }
                 expr.t;
 
             case EObjectDecl(fields):
-                var anonFields :Array<TypedName> = [];
+                var anonFields :Map<String, Type> = new Map<String, Type>();
                 for(kv in fields.keyValueIterator()) {
-                    anonFields.push(new TypedName(kv.key, analyse(kv.value, env, non_generic)));
+                    anonFields.set(kv.key, analyse(kv.value, env));
                 }
                 TAnonymous({ref:{fields: anonFields}});
 
             case EArray(e1, e2):
-                throw "err";
-
-            case EArrayFunc(e, op):
-                throw "err";
+                switch analyse(e1, env) {
+                    case TArray(t): t.ref;
+                    case _: throw "err";
+                }
 
             case EField(e, field):
-                throw "err";
+                return switch analyse(e, env) {
+                    case TAnonymous(a): a.ref.fields.get(field);
+                    case _: throw "err";
+                }
 
             case EIf(econd, ethen, eelse):
                 unify(
-                    analyse(ethen, env, non_generic),
-                    analyse(eelse, env, non_generic)
+                    analyse(ethen, env),
+                    analyse(eelse, env)
                 );
                 unify(expr.t, ethen.t);
                 expr.t;
 
             case EParentheses(expr):
-                throw "err";
+                analyse(expr, env);
 
             case EPrint(expr):
-                throw "err";
+                analyse(expr, env);
 
             case ESwitch(e, cases, edef):
                 throw "err";
 
             case ETernary(econd, eif, eelse):
-                throw "err";
+                unify(
+                    analyse(eif, env),
+                    analyse(eelse, env)
+                );
+                unify(expr.t, eif.t);
+                expr.t;
             
             case EUnop(op, e):
-                analyse(e, env, non_generic);
+                analyse(e, env);
         }
     }
 
@@ -175,15 +176,16 @@ class TypeChecker
             case [TAnonymous(a), TAnonymous(b)]: {
                 var fieldsA = a.ref.fields;
                 var fieldsB = b.ref.fields;
-                if(fieldsA.length != fieldsB.length) {
-                    throw "Type error: " + t1.toString() + " is not " + t2.toString();
-                }
-                for(i in 0...fieldsA.length) {
-                    if(fieldsA[i].name != fieldsB[i].name) {
-                        throw "Type error: " + t1.toString() + " is not " + t2.toString();
-                    }
-                    unify(fieldsA[i].type, fieldsB[i].type);
-                }
+                // if(fieldsA.length != fieldsB.length) {
+                //     throw "Type error: " + t1.toString() + " is not " + t2.toString();
+                // }
+                // for(i in 0...fieldsA.length) {
+                //     if(fieldsA[i].name != fieldsB[i].name) {
+                //         throw "Type error: " + t1.toString() + " is not " + t2.toString();
+                //     }
+                //     unify(fieldsA[i].type, fieldsB[i].type);
+                // }
+                throw "err";
             }
             case _: {
                 if(!t1.equals(t2)) {
