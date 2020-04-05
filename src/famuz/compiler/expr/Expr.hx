@@ -269,6 +269,6 @@ class ExprTools
 
     public static function createEArrayDecl(values :Array<Expr>, position :Position) : Expr
     {
-        return new Expr(EArrayDecl(values), TMono({ref: None}), position);
+        return new Expr(EArrayDecl(values), TArray({ref:TMono({ref: None})}), position);
     }
 }

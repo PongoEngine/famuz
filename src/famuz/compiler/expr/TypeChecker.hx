@@ -23,6 +23,7 @@ package famuz.compiler.expr;
 
 import famuz.compiler.Context;
 import famuz.compiler.expr.Type;
+import famuz.util.TypeMap;
 
 using Lambda;
 
@@ -66,10 +67,17 @@ class TypeChecker
                 }
 
             case EBinop(type, e1, e2):
-                analyse(e1, env);
-                analyse(e2, env);
-                unify(e1.t, e2.t);
-                e1.t;
+                var t1 = analyse(e1, env);
+                var t2 = analyse(e2, env);
+                unify(t1, t2);
+                switch type {
+                    case ADD, SUBTRACT: 
+                        t1;
+                    case SHIFT_LEFT, SHIFT_RIGHT, WRAP:
+                        t1;
+                    case EQUALITY, GREATER_THAN:
+                        TBool;
+                }
 
             case EVar(identifier, expr):
                 analyse(expr, env);
@@ -92,7 +100,9 @@ class TypeChecker
             case EArrayDecl(values):
                 var arrayType = switch expr.t {
                     case TArray(t): t.ref;
-                    case _: throw "err";
+                    case _:
+                        trace(expr.t + "\n\n");
+                        throw "err";
                 }
                 for(v in values) {
                     unify(arrayType, analyse(v, env));
@@ -100,7 +110,7 @@ class TypeChecker
                 expr.t;
 
             case EObjectDecl(fields):
-                var anonFields :Map<String, Type> = new Map<String, Type>();
+                var anonFields = new TypeMap();
                 for(kv in fields.keyValueIterator()) {
                     anonFields.set(kv.key, analyse(kv.value, env));
                 }
@@ -114,7 +124,9 @@ class TypeChecker
 
             case EField(e, field):
                 return switch analyse(e, env) {
-                    case TAnonymous(a): a.ref.fields.get(field);
+                    case TAnonymous(a): {
+                        a.ref.fields.get(field);
+                    }
                     case _: throw "err";
                 }
 
@@ -176,16 +188,15 @@ class TypeChecker
             case [TAnonymous(a), TAnonymous(b)]: {
                 var fieldsA = a.ref.fields;
                 var fieldsB = b.ref.fields;
-                // if(fieldsA.length != fieldsB.length) {
-                //     throw "Type error: " + t1.toString() + " is not " + t2.toString();
-                // }
-                // for(i in 0...fieldsA.length) {
-                //     if(fieldsA[i].name != fieldsB[i].name) {
-                //         throw "Type error: " + t1.toString() + " is not " + t2.toString();
-                //     }
-                //     unify(fieldsA[i].type, fieldsB[i].type);
-                // }
-                throw "err";
+
+                if(fieldsA.equalsKeys(fieldsB)) {
+                    for(key in fieldsA.keys()) {
+                        unify(fieldsA.get(key), fieldsB.get(key));
+                    }
+                }
+                else {
+                    throw "Type error: " + t1.toString() + " is not " + t2.toString();
+                }
             }
             case _: {
                 if(!t1.equals(t2)) {

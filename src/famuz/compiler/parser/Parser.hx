@@ -50,12 +50,12 @@ class Parser
     {
         if (scanner.hasNext()) {
             var left = parseExpressionPrefix(scanner, context, isFunc);
-            if (left == null) {
-                if (scanner.hasNext()) {
-                    scanner.next();
-                }
-                return null;
-            }
+            // if (left == null) {
+            //     if (scanner.hasNext()) {
+            //         scanner.next();
+            //     }
+            //     return null;
+            // }
 
             while (scanner.hasNext() && precedence < scanner.getPrecedence())
             {

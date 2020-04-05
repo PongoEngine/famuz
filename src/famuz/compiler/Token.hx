@@ -109,6 +109,7 @@ enum TokenType
     TTPunctuator(type :PunctuatorType);
     TTKeyword(type :KeywordType);
     TTIdentifier(str :String);
+    // TTWhitespace;
     TTScale(scale :Scale);
     TTKey(key :Key);
     TTNumber(num :Int);

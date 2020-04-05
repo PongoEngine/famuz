@@ -1,8 +1,8 @@
 func identity a = a
 func swag a b = a + b
 
-
-
 func main = {
     let obj2 = {a:0,b:true}
+    let x = [obj2.b + false, true, obj2.a == 20]
+    //0 == 4
 }

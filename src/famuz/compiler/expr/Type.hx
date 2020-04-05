@@ -22,6 +22,7 @@
 package famuz.compiler.expr;
 
 import famuz.compiler.expr.Ref;
+import famuz.util.TypeMap;
 import haxe.ds.Option;
 
 using Lambda;
@@ -51,7 +52,7 @@ class Arg
     }
 }
 
-typedef AnonType = {fields :Map<String, Type>};
+typedef AnonType = {fields :TypeMap};
 
 class TypeTools
 {
@@ -59,14 +60,7 @@ class TypeTools
     {
         return switch t {
             case TAnonymous(a):
-                // "{" + a.ref.fields.(f -> {
-                //     return '${f.name}: ${f.type.toString()}';
-                // }).join(", ") + "}";
-                var fields = [];
-                for(kv in a.ref.fields.keyValueIterator()) {
-                    fields.push('${kv.key}: ${kv.value.toString()}');
-                }
-                '{${fields.join(", ")}}';
+                a.ref.fields.toString();
             case TArray(t):
                 'Array<${TypeTools.toString(t.ref)}>';
             case TNumber: 
