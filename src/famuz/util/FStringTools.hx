@@ -2,27 +2,18 @@ package famuz.util;
 
 class FStringTools
 {
-    public static function mapToString<T>(map :Map<String, T>) : String
+    public static function mapToStringSmall<T>(map :Map<String, T>) : String
     {
-        var str = "{\n";
-        for(kv in map.keyValueIterator()) {
-            str += '  ${kv.key}: ${kv.value}\n';
+        var str = "{";
+        var itr = map.keyValueIterator();
+        for(kv in itr) {
+            str += '${kv.key}:${kv.value}';
+            if(itr.hasNext()) {
+                str += ",";
+            }
         }
         return str + "}";
     }
-
-    public static function mapToStringSmall<T>(map :Map<String, T>) : String
-        {
-            var str = "{";
-            var itr = map.keyValueIterator();
-            for(kv in itr) {
-                str += '${kv.key}:${kv.value}';
-                if(itr.hasNext()) {
-                    str += ",";
-                }
-            }
-            return str + "}";
-        }
 
     public static function isNumber(str :String) : Bool
     {

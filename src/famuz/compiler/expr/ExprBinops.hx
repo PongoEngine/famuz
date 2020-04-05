@@ -57,7 +57,7 @@ class ExprBinops
 
         return new Expr(
             constant, 
-			TMono({ref: null}),
+			TMono({ref: None}),
             Position.union(left.pos, right.pos)
         );
     }
@@ -89,7 +89,7 @@ class ExprBinops
 
         return new Expr(
             constant, 
-            TMono({ref: null}),
+            TMono({ref: None}),
             Position.union(left.pos, right.pos)
         );
     }
@@ -130,7 +130,7 @@ class ExprBinops
                 false;
         }
 
-        return new Expr(EConstant(CBool(v)), TMono({ref: null}), Position.union(a.pos, b.pos));
+        return new Expr(EConstant(CBool(v)), TMono({ref: None}), Position.union(a.pos, b.pos));
     }
 
     public static function greaterThan(left :Expr, right :Expr, context :IContext) : Expr
@@ -148,6 +148,6 @@ class ExprBinops
                 false;
         }
 
-        return new Expr(EConstant(CBool(v)), TMono({ref: null}), Position.union(a.pos, b.pos));
+        return new Expr(EConstant(CBool(v)), TMono({ref: None}), Position.union(a.pos, b.pos));
     }
 }

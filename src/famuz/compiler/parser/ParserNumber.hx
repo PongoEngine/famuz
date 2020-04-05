@@ -22,11 +22,12 @@
 package famuz.compiler.parser;
 
 import famuz.compiler.Token;
+import famuz.compiler.Context;
 import famuz.compiler.expr.Expr;
 
 class ParserNumber
 {
-    public static function parse(scanner :TokenScanner, context :Context, number :Int) : Expr
+    public static function parse(scanner :TokenScanner, context :IContext, number :Int) : Expr
     {
         var token = scanner.next();
         return new Expr(

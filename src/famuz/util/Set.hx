@@ -19,27 +19,52 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package famuz.compiler.parser;
+package famuz.util;
 
-import famuz.compiler.Token;
-import famuz.compiler.Context;
-import famuz.compiler.expr.Expr;
+import haxe.Constraints.IMap;
+import haxe.ds.StringMap;
+import haxe.ds.IntMap;
+import haxe.ds.ObjectMap;
+import haxe.ds.EnumValueMap;
 
-class ParserDot
+@:multiType(@:followWithAbstracts K)
+abstract Set<T>(IMap<T,T>)
 {
-    public static function parse(left :Expr, scanner :TokenScanner, context :IContext) : Expr
+    public function new() : Void;
+
+    public inline function set(val :T) : Void
     {
-        var dot = scanner.next();
-
-        if(!scanner.hasNext() || !scanner.peek().isIdentifier()) {
-            Error.create(MissingIdentifier(scanner.lastPosition()));
-        }
-        var field = scanner.next();
-
-        return new Expr(
-            EField(left, field.getIdentifier()),
-			TMono({ref: None}),
-            Position.union(dot.pos, field.pos)
-        );
+        this.set(val, val);
     }
+
+    public inline function get(val :T) : T
+    {
+        return this.get(val);
+    }
+
+    public inline function exists(val :T) : Bool
+    {
+        return this.exists(val);
+    }
+
+    public inline function copy() : Set<T>
+    {
+        return cast this.copy();
+    }
+
+    @:to static inline function toStringMap<K:String>(t:IMap<K, K>):StringMap<K> {
+		return new StringMap<K>();
+	}
+
+	@:to static inline function toIntMap<K:Int>(t:IMap<K, K>):IntMap<K> {
+		return new IntMap<K>();
+	}
+
+	@:to static inline function toEnumValueMapMap<K:EnumValue>(t:IMap<K, K>):EnumValueMap<K, K> {
+		return new EnumValueMap<K, K>();
+	}
+
+	@:to static inline function toObjectMap<K:{}>(t:IMap<K, K>):ObjectMap<K, K> {
+		return new ObjectMap<K, K>();
+	}
 }

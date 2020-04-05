@@ -24,6 +24,7 @@ package famuz.compiler.expr;
 import famuz.compiler.Context;
 import famuz.compiler.expr.ExprDef;
 import famuz.compiler.expr.Type;
+import famuz.util.Set;
 using famuz.compiler.expr.ExprBinops;
 using famuz.util.FStringTools;
 
@@ -46,9 +47,6 @@ class Expr
     public function evaluate(context :IContext) : Expr
     {
         return switch this.def {
-            /**
-             * 
-             */
             case EConstant(constant):
                 switch constant {
                     case CIdentifier(str):
@@ -57,9 +55,6 @@ class Expr
                         this;
                 }
 
-            /**
-             * 
-             */
             case ESwitch(e, cases, edef): {
                 for(case_ in cases) {
                     for(v in case_.values) {
@@ -74,21 +69,12 @@ class Expr
                     : edef.evaluate(context);
             }
 
-            /**
-             * 
-             */
             case EEnumParameter(e, type, index):
                 this;
 
-            /**
-             * 
-             */
             case EObjectDecl(_):
                 this;
 
-            /**
-             * 
-             */
             case EArray(e1, e2):
                 switch [e1.evaluate(context).def, e2.evaluate(context).def] {
                     case [EArrayDecl(values), EConstant(constant)]: switch constant {
@@ -98,15 +84,9 @@ class Expr
                     case _: throw "err";
                 }
 
-            /**
-             * 
-             */
             case EArrayDecl(_):
                 this;
 
-            /**
-             * 
-             */
              case EArrayFunc(e, op):
                 var evalArra = e.evaluate(context);
                 switch [evalArra.def, op] {
@@ -119,9 +99,6 @@ class Expr
                     case _:throw "err";
                 }
 
-            /**
-             * 
-             */
             case EField(e, field): {
                 switch e.evaluate(context).def {
                     case EObjectDecl(fields):
@@ -131,15 +108,9 @@ class Expr
                 }
             }
 
-            /**
-             * 
-             */
             case EVar(_, expr):
                 expr.evaluate(context);
 
-            /**
-             * 
-             */
             case ECall(e, args):
                 switch e.evaluate(context).def {
                     case EFunction(ident, params, body, scope): {
@@ -161,7 +132,7 @@ class Expr
                             for(i in 0...args.length) {
                                 identParams += '_${params[i]}';
                             }
-                            new Expr(EFunction(ident + identParams, params.slice(args.length), body, ctxInnerOuter), TMono({ref: null}), null);
+                            new Expr(EFunction(ident + identParams, params.slice(args.length), body, ctxInnerOuter), TMono({ref: None}), null);
                         }
                         else {
                             Error.create(TooManyArgs(this.pos));
@@ -171,15 +142,9 @@ class Expr
                         throw "err";
                 }
 
-            /**
-             * 
-             */
             case EBlock(exprs):
                 exprs[exprs.length - 1].evaluate(context);
 
-            /**
-             * 
-             */
             case EIf(econd, ethen, eelse):
                 switch econd.evaluate(context).def {
                     case EConstant(constant): switch constant {
@@ -191,16 +156,13 @@ class Expr
                     case _: throw "err";
                 }
             
-            /**
-             * 
-             */
             case EUnop(op, e):
                 switch [op, e.evaluate(context).def] {
                     case [OpNot, EConstant(constant)]: switch constant {
                         case CBool(value): 
                             new Expr(
                                 EConstant(CBool(!value)), 
-                                TMono({ref: null}),
+                                TMono({ref: None}),
                                 this.pos
                             );
                         case _: throw "err";
@@ -209,7 +171,7 @@ class Expr
                         case CNumber(value): 
                             new Expr(
                                 EConstant(CNumber(-value)), 
-                                TMono({ref: null}),
+                                TMono({ref: None}),
                                 this.pos
                             );
                         case _: throw "err";
@@ -217,9 +179,6 @@ class Expr
                     case _: throw "err";
                 }
 
-            /**
-             * 
-             */
             case ETernary(econd, eif, eelse):
                 switch econd.evaluate(context).def {
                     case EConstant(constant): {
@@ -233,9 +192,6 @@ class Expr
                     case _: throw "err";
                 }
 
-            /**
-             * 
-             */
             case EBinop(type, e1, e2):
                 switch type {
                     case ADD: e1.add(e2, context);
@@ -247,51 +203,16 @@ class Expr
                     case SHIFT_RIGHT: throw "SHIFT_RIGHT";
                 }
 
-            /**
-             * 
-             */
             case EParentheses(expr):
                 expr.evaluate(context);
 
-            /**
-             * 
-             */
             case EPrint(expr):
                 var evalExpr = expr.evaluate(context);
                 trace('${this.pos.file}:${this.pos.line}: ${evalExpr}\n');
                 evalExpr;
 
-            /**
-             * 
-             */
             case EFunction(_, _, _):
                 this;
-        }
-    }
-
-    public function typeCheck(env :IContext) : Type
-    {
-        return switch this.def {
-            case EConstant(constant): {
-                switch constant {
-                    case CIdentifier(str):
-                        env.getType(str);
-                    case CBool(value):
-                        Type.TBool;
-                    case CNumber(value):
-                        Type.TNumber;
-                    case CScale(type):
-                        Type.TScale;
-                    case CKey(key):
-                        Type.TKey;
-                }
-            }
-            case EFunction(identifier, params, body, scope): {
-                TFun([], TNumber);
-            }
-            case _: 
-                trace(this.def);
-                throw "err";
         }
     }
 
@@ -358,16 +279,16 @@ class ExprTools
 {
     public static function createCNumber(value :Int, position :Position) : Expr
     {
-        return new Expr(EConstant(CNumber(value)), TMono({ref: null}), position);
+        return new Expr(EConstant(CNumber(value)), TMono({ref: None}), position);
     }
 
     public static function createEObjectDecl(fields :Map<String, Expr>, position :Position) : Expr
     {
-        return new Expr(EObjectDecl(fields), TMono({ref: null}), position);
+        return new Expr(EObjectDecl(fields), TMono({ref: None}), position);
     }
 
     public static function createEArrayDecl(values :Array<Expr>, position :Position) : Expr
     {
-        return new Expr(EArrayDecl(values), TMono({ref: null}), position);
+        return new Expr(EArrayDecl(values), TMono({ref: None}), position);
     }
 }

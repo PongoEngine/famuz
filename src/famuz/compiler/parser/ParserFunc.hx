@@ -25,7 +25,6 @@ import famuz.compiler.Token;
 import famuz.compiler.parser.Parser;
 import famuz.compiler.expr.Expr;
 import famuz.compiler.expr.Type;
-import famuz.compiler.expr.Type.TypeTools;
 
 class ParserFunc
 {
@@ -35,11 +34,11 @@ class ParserFunc
         
         var identifier = scanner.next().getIdentifier(); //id (ex: main)
         var params :Array<String> = [];
-        var args :Array<{t:Type, name:String}> = [];
+        var args :Array<Arg> = [];
         while (scanner.peek().isNotPunctuator(EQUALS)) {
             var name = scanner.next().getIdentifier();
             params.push(name);
-            args.push({t:TMono({ref: null}), name: name});
+            args.push(new Arg(name, TMono({ref: None})));
         }
 
         scanner.next(); // '='
@@ -53,8 +52,6 @@ class ParserFunc
             Position.union(token.pos, body.pos)
         );
         context.addVarFunc(identifier, func);
-        context.addType(identifier, func.t);
-
 
         return func;
     }

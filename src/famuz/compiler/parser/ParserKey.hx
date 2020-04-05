@@ -22,12 +22,13 @@
 package famuz.compiler.parser;
 
 import famuz.compiler.Token;
+import famuz.compiler.Context;
 import famuz.compiler.theory.Key;
 import famuz.compiler.expr.Expr;
 
 class ParserKey
 {
-    public static function parse(scanner :TokenScanner, context :Context, key :Key) : Expr
+    public static function parse(scanner :TokenScanner, context :IContext, key :Key) : Expr
     {
         var token = scanner.next();
 

@@ -1,5 +1,5 @@
-func ident q = q
+func ident q r = [q, 1]
 
 func main = {
-    true
+    ident
 }

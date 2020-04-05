@@ -22,13 +22,14 @@
 package famuz.compiler.parser;
 
 import famuz.compiler.Token;
+import famuz.compiler.Context;
 import famuz.compiler.expr.Expr;
 import famuz.compiler.expr.Expr.ExprTools;
 using famuz.compiler.Scanner.ScannerTools;
 
 class ParserRhythm
 {
-    public static function parse(scanner :TokenScanner, context :Context, d :Int, rhythm :String) : Expr
+    public static function parse(scanner :TokenScanner, context :IContext, d :Int, rhythm :String) : Expr
     {
         var token = scanner.next();
         var rhythmScanner = new Scanner(rhythm, token.pos.file);

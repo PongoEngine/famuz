@@ -40,7 +40,7 @@ class ParserArrayAccess
         
 		return new Expr(
 			EArray(left, expr),
-			TMono({ref: null}),
+			TMono({ref: None}),
 			Position.union(leftBracket.pos, rightBracket.pos)
 		);
 	}

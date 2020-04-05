@@ -26,6 +26,7 @@ import sys.io.File;
 import haxe.ds.Option;
 import famuz.compiler.parser.Precedence;
 import famuz.compiler.Context;
+import famuz.compiler.expr.TypeChecker;
 import famuz.compiler.Token.TokenScanner;
 import famuz.compiler.lexer.Lexer;
 import famuz.compiler.parser.Parser;
@@ -45,12 +46,12 @@ class Famuz
         }
     
         var main = context.getExpr("main");
-        main.typeCheck(context);
+        TypeChecker.analyse(main, context);
         trace(main + "\n");
 
         // return switch main.def {
         //     case EFunction(_, _, body, scope): {
-        //         var expr = new Expr(ECall(main, []), TMono({ref: null}), null).evaluate(context);
+        //         var expr = new Expr(ECall(main, []), TMono({ref: None}), null).evaluate(context);
         //         Some(expr);
         //     }
         //     case _: 

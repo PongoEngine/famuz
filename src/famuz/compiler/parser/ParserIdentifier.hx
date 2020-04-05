@@ -22,17 +22,18 @@
 package famuz.compiler.parser;
 
 import famuz.compiler.Token;
+import famuz.compiler.Context;
 import famuz.compiler.expr.Expr;
 import famuz.compiler.expr.Type.TypeTools;
 
 class ParserIdentifier
 {
-    public static function parse(scanner :TokenScanner, context :Context, identifier :String) : Expr
+    public static function parse(scanner :TokenScanner, context :IContext, identifier :String) : Expr
     {
         var token = scanner.next();
         return new Expr(
             EConstant(CIdentifier(identifier)),
-			TMono({ref: null}),
+			TMono({ref: None}),
             token.pos
         );
     }

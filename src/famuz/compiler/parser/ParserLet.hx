@@ -36,11 +36,10 @@ class ParserLet
 
         var letExpr = new Expr(
             EVar(identifier.getIdentifier(), value),
-			TMono({ref: null}),
+			TMono({ref: None}),
             Position.union(let.pos, value.pos)
         );
         context.addVarFunc(identifier.getIdentifier(), value);
-        context.addType(identifier.getIdentifier(), letExpr.t);
 
         return letExpr;
     }

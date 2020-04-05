@@ -21,12 +21,13 @@
 
 package famuz.compiler;
 
+import haxe.ds.Option;
 import famuz.compiler.expr.Type;
 import famuz.compiler.expr.Expr;
 import famuz.compiler.expr.EnumDefinition;
 
 interface IContext {
-    function getType(name :String) : Type;
+    function getType(name :String) : Option<Type>;
     function getExpr(name :String) : Expr;
     function clone() : IContext;
     function addType(name :String, expr :Type) : Void;
@@ -88,14 +89,11 @@ class Context implements IContext
         }
     }
 
-    public function getType(name :String) : Type
+    public function getType(name :String) : Option<Type>
     {
-        if(_typeMap.exists(name)) {
-            return _typeMap.get(name);
-        }
-        else {
-            throw 'Type:${name} not found.';
-        }
+        return _typeMap.exists(name)
+            ? Some(_typeMap.get(name))
+            : None;
     }
 
     public function createContext() : Context
@@ -106,6 +104,7 @@ class Context implements IContext
     public function clone() : Context
     {
         var c = this.createContext();
+        c._typeMap = this._typeMap.copy();
         c._exprMap = this._exprMap.copy();
         c._enumDefs = this._enumDefs.copy();
         return c;
@@ -128,27 +127,24 @@ class ContextInnerOuter implements IContext
 
     public function getExpr(name :String) : Expr
     {
-        if(_exprMap.exists(name)) {
-            return _exprMap.get(name);
-        }
         try {
             return _inner.getExpr(name);
         }
         catch(e :Dynamic) {
-            return _outer.getExpr(name);
+            return _exprMap.exists(name)
+                ? return _exprMap.get(name)
+                : _outer.getExpr(name);
         }
     }
 
-    public function getType(name :String) : Type
+    public function getType(name :String) : Option<Type>
     {
-        if(_typeMap.exists(name)) {
-            return _typeMap.get(name);
-        }
-        try {
-            return _inner.getType(name);
-        }
-        catch(e :Dynamic) {
-            return _outer.getType(name);
+        var innerType = _inner.getType(name);
+        return switch innerType {
+            case Some(v): innerType;
+            case None: _typeMap.exists(name)
+                ? Some(_typeMap.get(name))
+                : _outer.getType(name);
         }
     }
 
@@ -176,6 +172,7 @@ class ContextInnerOuter implements IContext
     {
         var c = new ContextInnerOuter(this._inner, this._outer);
         c._exprMap = this._exprMap.copy();
+        c._typeMap = this._typeMap.copy();
         return c;
     }
 
@@ -195,23 +192,23 @@ class ContextTools
 
     private static function addPush(ctx :Context) : Void
     {
-        var array = new Expr(EConstant(CIdentifier("array")), TMono({ref: null}), null);
-        var element = new Expr(EConstant(CIdentifier("element")), TMono({ref: null}), null);
-        var op = new Expr(EArrayFunc(array, OpPush(element)), TMono({ref: null}), null);
+        var array = new Expr(EConstant(CIdentifier("array")), TMono({ref: None}), null);
+        var element = new Expr(EConstant(CIdentifier("element")), TMono({ref: None}), null);
+        var op = new Expr(EArrayFunc(array, OpPush(element)), TMono({ref: None}), null);
         ctx.addVarFunc("push", new Expr(
             EFunction("push", ["array", "element"], op, ctx.createContext()), 
-            TMono({ref: null}),
+            TMono({ref: None}),
             null
         ));
     }
 
     private static function addPop(ctx :Context) : Void
     {
-        var array = new Expr(EConstant(CIdentifier("array")), TMono({ref: null}), null);
-        var op = new Expr(EArrayFunc(array, OpPop), TMono({ref: null}), null);
+        var array = new Expr(EConstant(CIdentifier("array")), TMono({ref: None}), null);
+        var op = new Expr(EArrayFunc(array, OpPop), TMono({ref: None}), null);
         ctx.addVarFunc("pop", new Expr(
             EFunction("pop", ["array"], op, ctx.createContext()), 
-            TMono({ref: null}),
+            TMono({ref: None}),
             null
         ));
     }

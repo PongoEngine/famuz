@@ -49,7 +49,7 @@ class ParserArray
 
         return new Expr(
             EArrayDecl(exprs),
-			TArray({ref:TMono({ref: null})}),
+			TArray({ref:TMono({ref: None})}),
             Position.union(token.pos, rightBrace.pos)
         );
     }
