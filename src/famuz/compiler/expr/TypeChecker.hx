@@ -90,6 +90,11 @@ class TypeChecker
                             var argType = analyse(item, env);
                             return new Arg(fun_args[index].name, argType);
                         });
+                    case TMono(t):
+                        call_args.mapi((index, item) -> {
+                            var argType = analyse(item, env);
+                            return new Arg("?", argType);
+                        });
                     case _:
                         throw "err";
                 }
@@ -191,7 +196,10 @@ class TypeChecker
             case [_, TMono(t)]:
                 unify(t2, t1);
             case [TFun(args1, ret1), TFun(args2, ret2)]: {
-                for(i in 0...Math.floor(Math.min(args1.length, args2.length))) {
+                if(args1.length != args2.length) {
+                    throw "Type error: " + t1.toString() + " is not " + t2.toString();
+                }
+                for(i in 0...args1.length) {
                     unify(args1[i].type, args2[i].type);
                 }
                 unify(ret1, ret2);

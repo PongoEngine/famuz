@@ -1,0 +1,10 @@
+func switchfun a b c swag = switch a {
+    case 0, 3: "A is 0 or 3"
+    case b: "A is B"
+    default: switch c {
+        case "neptune": "is neptune"
+        case "sage": "is sage"
+        case "woah": swag("a was the param")
+        default: "IDK"
+    }
+}

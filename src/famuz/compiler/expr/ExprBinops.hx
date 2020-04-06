@@ -122,6 +122,7 @@ class ExprBinops
                 switch [constantA, constantB] {
                     case [CNumber(valueA), CNumber(valueB)]: valueA == valueB;
                     case [CBool(valueA), CBool(valueB)]: valueA == valueB;
+                    case [CString(valueA), CString(valueB)]: valueA == valueB;
                     case _: false;
                 }
             case _: 

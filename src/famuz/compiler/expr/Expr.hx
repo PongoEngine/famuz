@@ -212,9 +212,9 @@ class Expr
                 case CKey(key): key.toString();
             }
             case EArrayDecl(values):
-                values.map(v -> v.toString()) + "";
+                '[${values.map(v -> v.toString()).join(", ")}]';
             case EFunction(identifier, params, _):
-                '${identifier}(${params.join(",")}){...}';
+                '${identifier} ${t.toString()}';
             case EVar(identifier, expr):
                 '${identifier}: ${expr}';
             case EBlock(exprs):
@@ -252,7 +252,7 @@ class Expr
                 throw "err";
         }
         
-        return str + " : " + t.toString();
+        return str;
     }
 }
 
