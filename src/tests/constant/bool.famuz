@@ -1,0 +1,12 @@
+func main = {
+    let val =
+        0 == 0 
+            ? true == false
+                ? "So true"
+                : if "cool" == "uncool"
+                    then "Super Cool"
+                    else "So UnCool"
+            : "Woah"
+
+    print(val)
+}

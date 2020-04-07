@@ -34,6 +34,7 @@ class Test {
         }
         
         run("./src/tests/constant/string.famuz");
+        run("./src/tests/constant/bool.famuz");
     }
 
 	static function run(sourcePath :String) : Option<Expr>
