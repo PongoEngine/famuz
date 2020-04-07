@@ -7,8 +7,6 @@ func strToStr a b c = a
 func main = {
     //print(switchfun(221, 220, "neptune"))
     //print(switchfun(10,1,"woah",strToStr))
-    let q = push([0,1,2,3], 4)
-    let r = pop(q)
-    let x = pop(r)
-    print(pop(x))
+    let q = [0,1,2,3]
+    print(pop(pop(pop(pop(q)))))
 }

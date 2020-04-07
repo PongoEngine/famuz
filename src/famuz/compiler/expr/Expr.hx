@@ -48,17 +48,17 @@ class Expr
     {
         return switch this.def {
             case ENativeCall(funcName, args):
-                var array = context.getExpr(args[0]);
-                switch [funcName, array.def] {
-                    case ["push", EArrayDecl(values)]: 
+                switch funcName {
+                    case "push":
+                        var array = context.getExpr(args[0]);
                         var element = context.getExpr(args[1]);
-                        values.push(element);
+                        array.def.getArrayDecl().push(element);
                         array;
-                    case ["pop", EArrayDecl(values)]: 
-                        values.pop();
+                    case "pop":
+                        var array = context.getExpr(args[0]);
+                        array.def.getArrayDecl().pop();
                         array;
-                    case _: 
-                        throw "err";
+                    case _: throw "err";
                 }
 
             case EConstant(constant):
