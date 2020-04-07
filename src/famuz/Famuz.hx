@@ -37,10 +37,10 @@ class Famuz
     public static function compile(filePath :String, imports :Map<String, Context>) : Option<Expr>
     {
         var context = compileContext(filePath, imports);
+        BuiltIns.include(context);
     
         var main = context.getExpr("main");
         TypeChecker.analyse(main, context);
-        BuiltIns.include(context);
 
 
         return switch main.def {

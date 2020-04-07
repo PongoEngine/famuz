@@ -254,6 +254,9 @@ class Expr
             case EIf(econd, ethen, eelse):
                 throw "err";
             case EObjectDecl(fields):
+                if(TypeChecker.unifyEquals(this.t, BuiltIns.rhythmType)) {
+                    trace("hi!!!\n\n");
+                }
                 '${fields.mapToStringSmall()}';
             case EParentheses(expr):
                 '( ${expr.toString()} )';

@@ -23,9 +23,14 @@ package famuz.compiler;
 
 import famuz.compiler.expr.ExprDef;
 import famuz.compiler.expr.Expr;
+import famuz.compiler.expr.Type;
+import famuz.compiler.expr.Type.TypeTools;
+import famuz.util.TypeMap;
 
 class BuiltIns
 {
+    public static var rhythmType (get, null): Type;
+
     public static function include(context :Context) : Void
     {
         BuiltIns.push(context);
@@ -47,4 +52,21 @@ class BuiltIns
         var popExpr = new Expr(func, TMono({ref:None}), Position.identity());
         context.addVarFunc("pop", popExpr);
     }
+
+    private static function get_rhythmType() : Type
+    {
+        if(_rhythmType == null) {
+            _rhythmType =  TypeTools.createTAnonymous([
+                {name: "hits", type: TArray({ref: TypeTools.createTAnonymous([
+                    {name: "velocity", type: TNumber},
+                    {name: "start", type: TNumber},
+                    {name: "duration", type: TNumber}
+                ])})},
+                {name: "d", type: TNumber}
+            ]);
+        }
+        return _rhythmType;
+    }
+
+    private static var _rhythmType :Type;
 }

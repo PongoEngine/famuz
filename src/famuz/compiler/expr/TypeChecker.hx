@@ -183,6 +183,17 @@ class TypeChecker
         }
     }
 
+    public static function unifyEquals(t1 :Type, t2 :Type) : Bool
+    {
+        try {
+            unify(t1, t2);
+            return true;
+        }
+        catch(e :String) {
+            return false;
+        }
+    }
+
     public static function unify(t1 :Type, t2 :Type) : Void
     {
         t1 = prune(t1);

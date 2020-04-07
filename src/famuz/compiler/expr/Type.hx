@@ -57,6 +57,15 @@ typedef AnonType = {fields :TypeMap};
 
 class TypeTools
 {
+    public static function createTAnonymous(fields :Array<{name:String,type :Type}>) : Type
+    {
+        var typeMap = new TypeMap();
+        for(field in fields) {
+            typeMap.set(field.name, field.type);
+        }
+        return TAnonymous({ref:{fields:typeMap}});
+    }
+
     public static function toString(t :Type) : String
     {
         return switch t {

@@ -1,5 +1,6 @@
-let r = @3 9--- 3~~- 2-2- ---9
+let r1 = @3 9--- 3~~- 2-2- ---9
+let r2 = @3 1234 1234 1234 1234
 
 func main = {
-    print(r)
+    print(push(r2.hits, {velocity:20, start: 0, duration: 12}))
 }
