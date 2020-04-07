@@ -21,6 +21,7 @@
 
 package famuz.compiler.expr;
 
+import haxe.macro.Expr.ExprDef;
 import famuz.compiler.Context;
 import famuz.compiler.expr.ExprDef;
 import famuz.compiler.expr.Type;
@@ -46,6 +47,20 @@ class Expr
     public function evaluate(context :IContext) : Expr
     {
         return switch this.def {
+            case ENativeCall(funcName, args):
+                var array = context.getExpr(args[0]);
+                switch [funcName, array.def] {
+                    case ["push", EArrayDecl(values)]: 
+                        var element = context.getExpr(args[1]);
+                        values.push(element);
+                        array;
+                    case ["pop", EArrayDecl(values)]: 
+                        values.pop();
+                        array;
+                    case _: 
+                        throw "err";
+                }
+
             case EConstant(constant):
                 switch constant {
                     case CIdentifier(str):
@@ -203,6 +218,7 @@ class Expr
     public function toString() : String
     {
         var str = switch def {
+            case ENativeCall(_): "NativeCall";
             case EConstant(constant): switch constant {
                 case CIdentifier(str): str;
                 case CString(str): '"${str}"';
@@ -258,6 +274,11 @@ class Expr
 
 class ExprTools
 {
+    public static function createIdentifier(value :String, position :Position) : Expr
+    {
+        return new Expr(EConstant(CIdentifier(value)), TMono({ref: None}), position);
+    }
+
     public static function createCNumber(value :Int, position :Position) : Expr
     {
         return new Expr(EConstant(CNumber(value)), TMono({ref: None}), position);

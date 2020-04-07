@@ -26,6 +26,7 @@ import sys.io.File;
 import haxe.ds.Option;
 import famuz.compiler.parser.Precedence;
 import famuz.compiler.Context;
+import famuz.compiler.Context.ArrayFuncs;
 import famuz.compiler.expr.TypeChecker;
 import famuz.compiler.Token.TokenScanner;
 import famuz.compiler.lexer.Lexer;
@@ -33,20 +34,6 @@ import famuz.compiler.parser.Parser;
 
 class Famuz
 {
-    public static function compileContext(filePath :String, imports :Map<String, Context>) : Context
-    {
-        var content = File.getContent(filePath);
-        var tokens = Lexer.lex(filePath, content);
-        var tokenScanner = new TokenScanner(tokens);
-        var context = new Context();
-
-        while(tokenScanner.hasNext()) {
-            Parser.parse(new Precedence(0), tokenScanner, context, imports, false);
-        }
-    
-        return context;
-    }
-
     public static function compile(filePath :String, imports :Map<String, Context>) : Option<Expr>
     {
         var context = compileContext(filePath, imports);
@@ -62,5 +49,21 @@ class Famuz
             case _: 
                 None;
         }
+    }
+
+    public static function compileContext(filePath :String, imports :Map<String, Context>) : Context
+    {
+        var content = File.getContent(filePath);
+        var tokens = Lexer.lex(filePath, content);
+        var tokenScanner = new TokenScanner(tokens);
+        var context = new Context();
+        ArrayFuncs.push(context);
+        ArrayFuncs.pop(context);
+
+        while(tokenScanner.hasNext()) {
+            Parser.parse(new Precedence(0), tokenScanner, context, imports, false);
+        }
+    
+        return context;
     }
 }

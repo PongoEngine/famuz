@@ -31,6 +31,9 @@ class TypeChecker
     public static function analyse(expr :Expr, env :IContext) : Type
     {
         return expr.t = switch expr.def {
+            case ENativeCall(_):
+                expr.t;
+
             case EFunction(identifier, params, body, scope):
                 var new_env = new ContextInnerOuter(scope, env);
 
@@ -125,7 +128,8 @@ class TypeChecker
             case EArray(e1, e2):
                 switch analyse(e1, env) {
                     case TArray(t): t.ref;
-                    case _: throw "err";
+                    case _: 
+                        throw "err";
                 }
 
             case EField(e, field):

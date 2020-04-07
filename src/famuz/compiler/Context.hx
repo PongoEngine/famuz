@@ -21,6 +21,7 @@
 
 package famuz.compiler;
 
+import famuz.compiler.expr.ExprDef;
 import haxe.ds.Option;
 import famuz.compiler.expr.Type;
 import famuz.compiler.expr.Expr;
@@ -188,4 +189,23 @@ class ContextInnerOuter implements IContext
     private var _exprMap :Map<String, Expr>;
     private var _inner :IContext;
     private var _outer :IContext;
+}
+
+class ArrayFuncs
+{
+    public static function push(context :Context) : Void
+    {
+        var nativeCall = new Expr(ENativeCall("push", ["array", "element"]), TMono({ref:None}), Position.identity());
+        var func = EFunction("push", ["array", "element"], nativeCall, context);
+        var pushExpr = new Expr(func, TMono({ref:None}), Position.identity());
+        context.addVarFunc("push", pushExpr);
+    }
+
+    public static function pop(context :Context) : Void
+    {
+        var nativeCall = new Expr(ENativeCall("pop", ["array"]), TMono({ref:None}), Position.identity());
+        var func = EFunction("pop", ["array"], nativeCall, context);
+        var popExpr = new Expr(func, TMono({ref:None}), Position.identity());
+        context.addVarFunc("pop", popExpr);
+    }
 }

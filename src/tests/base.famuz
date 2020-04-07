@@ -3,8 +3,12 @@ import "examples/switch"
 
 func strToStr a b c = a
 
+
 func main = {
     //print(switchfun(221, 220, "neptune"))
     //print(switchfun(10,1,"woah",strToStr))
-    print(switchfun)
+    let q = push([0,1,2,3], 4)
+    let r = pop(q)
+    let x = pop(r)
+    print(pop(x))
 }

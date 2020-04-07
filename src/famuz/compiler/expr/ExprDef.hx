@@ -114,6 +114,11 @@ enum ExprDef
      * A function declaration.
      */
     EFunction(identifier :String, params :Array<String>, body :Expr, scope :IContext);
+
+    /**
+     * A Native Function.
+     */
+    ENativeCall(funcName :String, args :Array<String>);
 }
 
 class ExprDefTools
