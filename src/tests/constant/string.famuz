@@ -1,0 +1,6 @@
+let hello = "Hello"
+let world = "World"
+
+func main = {
+    print(hello + " " + world)
+}

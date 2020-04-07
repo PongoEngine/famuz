@@ -47,6 +47,8 @@ class ExprBinops
                 switch [constantA, constantB] {
                     case [CNumber(valueA), CNumber(valueB)]:
                         EConstant(CNumber(valueA + valueB));
+                    case [CString(valueA), CString(valueB)]:
+                        EConstant(CString(valueA + valueB));
                     case _: 
                         throw "Only Supports Numbers";
                 }

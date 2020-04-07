@@ -1,12 +1,6 @@
-import "examples/hello"
-import "examples/switch"
-
-func strToStr a b c = a
+import "constant/string"
 
 
 func main = {
-    //print(switchfun(221, 220, "neptune"))
-    //print(switchfun(10,1,"woah",strToStr))
-    let q = [0,1,2,3]
-    print(pop(pop(pop(pop(q)))))
+    print(hw)
 }

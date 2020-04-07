@@ -21,7 +21,6 @@
 
 package famuz.compiler.expr;
 
-import haxe.macro.Expr.ExprDef;
 import famuz.compiler.Context;
 import famuz.compiler.expr.ExprDef;
 import famuz.compiler.expr.Type;

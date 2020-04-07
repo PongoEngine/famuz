@@ -33,7 +33,7 @@ class Test {
 			Sys.print(v + "");
         }
         
-        run("./src/tests/base.famuz");
+        run("./src/tests/constant/string.famuz");
     }
 
 	static function run(sourcePath :String) : Option<Expr>
