@@ -190,22 +190,3 @@ class ContextInnerOuter implements IContext
     private var _inner :IContext;
     private var _outer :IContext;
 }
-
-class ArrayFuncs
-{
-    public static function push(context :Context) : Void
-    {
-        var nativeCall = new Expr(ENativeCall("push", ["array", "element"]), TMono({ref:None}), Position.identity());
-        var func = EFunction("push", ["array", "element"], nativeCall, context);
-        var pushExpr = new Expr(func, TMono({ref:None}), Position.identity());
-        context.addVarFunc("push", pushExpr);
-    }
-
-    public static function pop(context :Context) : Void
-    {
-        var nativeCall = new Expr(ENativeCall("pop", ["array"]), TMono({ref:None}), Position.identity());
-        var func = EFunction("pop", ["array"], nativeCall, context);
-        var popExpr = new Expr(func, TMono({ref:None}), Position.identity());
-        context.addVarFunc("pop", popExpr);
-    }
-}

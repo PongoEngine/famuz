@@ -1,6 +1,0 @@
-import "constant/string"
-
-
-func main = {
-    print(hw)
-}

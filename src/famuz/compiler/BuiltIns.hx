@@ -19,28 +19,32 @@
  * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package tests;
+package famuz.compiler;
 
-import famuz.compiler.Context;
-import famuz.Famuz;
+import famuz.compiler.expr.ExprDef;
 import famuz.compiler.expr.Expr;
-import haxe.ds.Option;
 
-
-class Test {
-    static function main() {
-        haxe.Log.trace = function(v:Dynamic, ?infos:haxe.PosInfos) {
-			Sys.print(v + "");
-        }
-        
-        run("./src/tests/constant/string.famuz");
-        run("./src/tests/constant/bool.famuz");
-        run("./src/tests/rhythm/basic.famuz");
+class BuiltIns
+{
+    public static function include(context :Context) : Void
+    {
+        BuiltIns.push(context);
+        BuiltIns.pop(context);
     }
 
-	static function run(sourcePath :String) : Option<Expr>
-	{
-        var imports = new Map<String, Context>();
-		return Famuz.compile(sourcePath, imports);
-	}
+    private static function push(context :Context) : Void
+    {
+        var nativeCall = new Expr(ENativeCall("push", ["array", "element"]), TMono({ref:None}), Position.identity());
+        var func = EFunction("push", ["array", "element"], nativeCall, context);
+        var pushExpr = new Expr(func, TMono({ref:None}), Position.identity());
+        context.addVarFunc("push", pushExpr);
+    }
+
+    private static function pop(context :Context) : Void
+    {
+        var nativeCall = new Expr(ENativeCall("pop", ["array"]), TMono({ref:None}), Position.identity());
+        var func = EFunction("pop", ["array"], nativeCall, context);
+        var popExpr = new Expr(func, TMono({ref:None}), Position.identity());
+        context.addVarFunc("pop", popExpr);
+    }
 }

@@ -26,7 +26,7 @@ import sys.io.File;
 import haxe.ds.Option;
 import famuz.compiler.parser.Precedence;
 import famuz.compiler.Context;
-import famuz.compiler.Context.ArrayFuncs;
+import famuz.compiler.BuiltIns;
 import famuz.compiler.expr.TypeChecker;
 import famuz.compiler.Token.TokenScanner;
 import famuz.compiler.lexer.Lexer;
@@ -40,6 +40,8 @@ class Famuz
     
         var main = context.getExpr("main");
         TypeChecker.analyse(main, context);
+        BuiltIns.include(context);
+
 
         return switch main.def {
             case EFunction(_, _, body, scope): {
@@ -57,9 +59,7 @@ class Famuz
         var tokens = Lexer.lex(filePath, content);
         var tokenScanner = new TokenScanner(tokens);
         var context = new Context();
-        ArrayFuncs.push(context);
-        ArrayFuncs.pop(context);
-
+        
         while(tokenScanner.hasNext()) {
             Parser.parse(new Precedence(0), tokenScanner, context, imports, false);
         }

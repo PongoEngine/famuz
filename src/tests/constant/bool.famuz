@@ -5,7 +5,7 @@ func main = {
                 ? "So true"
                 : if "cool" == "uncool"
                     then "Super Cool"
-                    else "So UnCool"
+                    else "So Uber UnCool"
             : "Woah"
 
     print(val)
