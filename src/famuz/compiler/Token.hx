@@ -151,6 +151,7 @@ enum PunctuatorType
 enum KeywordType 
 {
 	IMPORT;
+	STRUCT;
 	FUNC;
 	LET;
 	SWITCH;

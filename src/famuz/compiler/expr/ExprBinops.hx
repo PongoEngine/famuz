@@ -21,88 +21,88 @@
 
 package famuz.compiler.expr;
 
+import haxe.macro.Expr.ExprDef;
 import famuz.compiler.Context;
 using famuz.compiler.expr.Expr;
 using famuz.compiler.expr.ExprDef;
+using StringTools;
 
 /**
  * 
  */
 class ExprBinops
 {
-    /**
-     * [Description]
-     * @param left 
-     * @param right 
-     * @param context 
-     * @return Expr
-     */
+
     public static function add(left :Expr, right :Expr, context :IContext) : Expr
     {
         var a = left.evaluate(context);
         var b = right.evaluate(context);
 
-        var constant = switch [a.def, b.def] {
+        var def = switch [a.def, b.def] {
             case [EConstant(constantA), EConstant(constantB)]: {
                 switch [constantA, constantB] {
                     case [CNumber(valueA), CNumber(valueB)]:
                         EConstant(CNumber(valueA + valueB));
                     case [CString(valueA), CString(valueB)]:
                         EConstant(CString(valueA + valueB));
+                    case [CBool(valueA), CBool(valueB)]:
+                        throw "cannot add booleans";
                     case _: 
-                        throw "Only Supports Numbers";
+                        throw "err";
                 }
             }
+            case [EObjectDecl(fields1), EObjectDecl(fields2)]:
+                var fields = new Map<String, Expr>();
+                for(key in fields1.keys()) {
+                    fields.set(key, add(fields1.get(key), fields2.get(key), context));
+                }
+                EObjectDecl(fields);
             case _: 
-                throw "Can only add constants";
+                throw "err";
         }
 
         return new Expr(
-            constant, 
+            def, 
 			TMono({ref: None}),
             Position.union(left.pos, right.pos)
         );
     }
 
-    /**
-     * [Description]
-     * @param left 
-     * @param right 
-     * @param context 
-     * @return Expr
-     */
     public static function subtract(left :Expr, right :Expr, context :IContext) : Expr
-    {
-        var a = left.evaluate(context);
-        var b = right.evaluate(context);
-
-        var constant = switch [a.def, b.def] {
-            case [EConstant(constantA), EConstant(constantB)]: {
-                switch [constantA, constantB] {
-                    case [CNumber(valueA), CNumber(valueB)]:
-                        EConstant(CNumber(valueA - valueB));
-                    case _: 
-                        throw "Only Supports Numbers";
+        {
+            var a = left.evaluate(context);
+            var b = right.evaluate(context);
+    
+            var def = switch [a.def, b.def] {
+                case [EConstant(constantA), EConstant(constantB)]: {
+                    switch [constantA, constantB] {
+                        case [CNumber(valueA), CNumber(valueB)]:
+                            EConstant(CNumber(valueA - valueB));
+                        case [CString(_), CString(_)]:
+                            throw "cannot subtract strings";
+                        case [CBool(_), CBool(_)]:
+                            throw "cannot subtract booleans";
+                        case _: 
+                            throw "err";
+                    }
                 }
+                case [EObjectDecl(fields1), EObjectDecl(fields2)]:
+                    var fields = new Map<String, Expr>();
+                    for(key in fields1.keys()) {
+                        fields.set(key, subtract(fields1.get(key), fields2.get(key), context));
+                    }
+                    EObjectDecl(fields);
+                case _: 
+                    throw "err";
             }
-            case _: 
-                throw "Can only add constants";
+    
+            return new Expr(
+                def, 
+                TMono({ref: None}),
+                Position.union(left.pos, right.pos)
+            );
         }
 
-        return new Expr(
-            constant, 
-            TMono({ref: None}),
-            Position.union(left.pos, right.pos)
-        );
-    }
-
-    /**
-     * [Description]
-     * @param left 
-     * @param right 
-     * @param context 
-     * @return Expr
-     */
     public static function wrap(left :Expr, right :Expr, context :IContext) : Expr
     {
         var a = left.evaluate(context);

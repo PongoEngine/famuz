@@ -30,6 +30,7 @@ import famuz.util.TypeMap;
 class BuiltIns
 {
     public static var rhythmType (get, null): Type;
+    public static var laidType (get, null): Type;
 
     public static function include(context :Context) : Void
     {
@@ -59,7 +60,6 @@ class BuiltIns
             _rhythmType =  TypeTools.createTAnonymous([
                 {name: "hits", type: TArray({ref: TypeTools.createTAnonymous([
                     {name: "velocity", type: TNumber},
-                    {name: "start", type: TNumber},
                     {name: "duration", type: TNumber}
                 ])})},
                 {name: "d", type: TNumber}
@@ -68,5 +68,17 @@ class BuiltIns
         return _rhythmType;
     }
 
+    private static function get_laidType() : Type
+    {
+        if(_laidType == null) {
+            _laidType =  TypeTools.createTAnonymous([
+                {name: "a", type: TNumber},
+                {name: "b", type: TBool}
+            ]);
+        }
+        return _laidType;
+    }
+
+    private static var _laidType :Type;
     private static var _rhythmType :Type;
 }

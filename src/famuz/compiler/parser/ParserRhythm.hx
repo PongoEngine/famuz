@@ -43,7 +43,6 @@ class ParserRhythm
                 var duration = rhythmScanner.curIndex - start;
 
                 hits.push(ExprTools.createEObjectDecl([
-                    "start" => ExprTools.createCNumber(start, token.pos),
                     "velocity" => ExprTools.createCNumber(velocity, token.pos),
                     "duration" => ExprTools.createCNumber(duration, token.pos)
                 ], token.pos));
@@ -53,7 +52,6 @@ class ParserRhythm
                 eatRest(rhythmScanner);
                 var duration = rhythmScanner.curIndex - start;
                 hits.push(ExprTools.createEObjectDecl([
-                    "start" => ExprTools.createCNumber(start, token.pos),
                     "velocity" => ExprTools.createCNumber(-1, token.pos),
                     "duration" => ExprTools.createCNumber(duration, token.pos)
                 ], token.pos));

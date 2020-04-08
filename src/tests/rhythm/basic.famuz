@@ -1,6 +1,13 @@
 let r1 = @3 9--- 3~~- 2-2- ---9
 let r2 = @3 1234 1234 1234 1234
 
+let q = {a:14,b:false,c:"neptune ",d:{woah:"sauce "}}
+let r = {a:10,b:true,c:" ",d:{woah:"pbnj"}}
+
+let p1 = {x:0,y:12}
+let p2 = {x:-44,y:118}
+
+
 func main = {
-    print(push(r2.hits, {velocity:20, start: 0, duration: 12}))
+    print(p1 - p2)
 }

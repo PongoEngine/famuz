@@ -163,6 +163,7 @@ class Lexer
     {
         return switch str {
             //keyword
+            case "struct": TTKeyword(STRUCT);
             case "import": TTKeyword(IMPORT);
             case "let": TTKeyword(LET);
             case "func": TTKeyword(FUNC);
