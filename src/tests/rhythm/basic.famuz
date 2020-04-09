@@ -1,13 +1,7 @@
-let r1 = @3 9--- 3~~- 2-2- ---9
-let r2 = @3 1234 1234 1234 1234
-
-let q = {a:14,b:false,c:"neptune ",d:{woah:"sauce "}}
-let r = {a:10,b:true,c:" ",d:{woah:"pbnj"}}
-
-let p1 = {x:0,y:12}
-let p2 = {x:-44,y:118}
+let r1 = @1/4 9~--
+let r2 = @1/8 -234
 
 
 func main = {
-    print(p1 - p2)
+    print(r1 + r2)
 }

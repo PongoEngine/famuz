@@ -57,7 +57,9 @@ class ExprBinops
                     fields.set(key, add(fields1.get(key), fields2.get(key), context));
                 }
                 EObjectDecl(fields);
-            case _: 
+            case [EArrayDecl(values1), EArrayDecl(values2)]:
+                EArrayDecl(values1.concat(values2));
+            case _:
                 throw "err";
         }
 
@@ -69,49 +71,38 @@ class ExprBinops
     }
 
     public static function subtract(left :Expr, right :Expr, context :IContext) : Expr
-        {
-            var a = left.evaluate(context);
-            var b = right.evaluate(context);
-    
-            var def = switch [a.def, b.def] {
-                case [EConstant(constantA), EConstant(constantB)]: {
-                    switch [constantA, constantB] {
-                        case [CNumber(valueA), CNumber(valueB)]:
-                            EConstant(CNumber(valueA - valueB));
-                        case [CString(_), CString(_)]:
-                            throw "cannot subtract strings";
-                        case [CBool(_), CBool(_)]:
-                            throw "cannot subtract booleans";
-                        case _: 
-                            throw "err";
-                    }
-                }
-                case [EObjectDecl(fields1), EObjectDecl(fields2)]:
-                    var fields = new Map<String, Expr>();
-                    for(key in fields1.keys()) {
-                        fields.set(key, subtract(fields1.get(key), fields2.get(key), context));
-                    }
-                    EObjectDecl(fields);
-                case _: 
-                    throw "err";
-            }
-    
-            return new Expr(
-                def, 
-                TMono({ref: None}),
-                Position.union(left.pos, right.pos)
-            );
-        }
-
-    public static function wrap(left :Expr, right :Expr, context :IContext) : Expr
     {
         var a = left.evaluate(context);
         var b = right.evaluate(context);
-        return switch [a.def, b.def] {
-            case [EArrayDecl(values), EObjectDecl(fields)]: throw "err";
-            case [EObjectDecl(fields), EArrayDecl(values)]: throw "err";
-            case _: throw "err";
+
+        var def = switch [a.def, b.def] {
+            case [EConstant(constantA), EConstant(constantB)]: {
+                switch [constantA, constantB] {
+                    case [CNumber(valueA), CNumber(valueB)]:
+                        EConstant(CNumber(valueA - valueB));
+                    case [CString(_), CString(_)]:
+                        throw "cannot subtract strings";
+                    case [CBool(_), CBool(_)]:
+                        throw "cannot subtract booleans";
+                    case _: 
+                        throw "err";
+                }
+            }
+            case [EObjectDecl(fields1), EObjectDecl(fields2)]:
+                var fields = new Map<String, Expr>();
+                for(key in fields1.keys()) {
+                    fields.set(key, subtract(fields1.get(key), fields2.get(key), context));
+                }
+                EObjectDecl(fields);
+            case _: 
+                throw "err";
         }
+
+        return new Expr(
+            def, 
+            TMono({ref: None}),
+            Position.union(left.pos, right.pos)
+        );
     }
 
     public static function equals(left :Expr, right :Expr, context :IContext) : Expr

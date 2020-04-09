@@ -33,8 +33,8 @@ class Test {
 			Sys.print(v + "");
         }
         
-        run("./src/tests/constant/string.famuz");
-        run("./src/tests/constant/bool.famuz");
+        // run("./src/tests/constant/string.famuz");
+        // run("./src/tests/constant/bool.famuz");
         run("./src/tests/rhythm/basic.famuz");
     }
 

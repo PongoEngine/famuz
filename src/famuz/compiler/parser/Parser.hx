@@ -89,14 +89,12 @@ class Parser
                         ParserArray.parse(scanner, context, imports);
                     case MINUS, BANG:
                         ParserUnop.parse(scanner, context, imports);
-                    case GREATER_THAN, EQUALITY, WRAP, ADD, EQUALS, RIGHT_PARENTHESES, RIGHT_BRACE,
+                    case GREATER_THAN, EQUALITY, ADD, DIVIDE, EQUALS, RIGHT_PARENTHESES, RIGHT_BRACE,
                         RIGHT_BRACKET, SHIFT_LEFT, SHIFT_RIGHT, SLASH,
                         COMMA, PERIOD, QUESTION_MARK, COLON:
                         parseConsume(scanner);
                 }
             case TTKeyword(type): switch type {
-                case STRUCT:
-                    throw "err";
                 case IMPORT:
                     ParserImport.parse(scanner, context, imports);
                 case LET:
@@ -128,8 +126,8 @@ class Parser
                 ParserKey.parse(scanner, context, imports, key);
             case TTNumber(num): 
                 ParserNumber.parse(scanner, context, imports, num);
-            case TTRhythm(d, str): 
-                ParserRhythm.parse(scanner, context, imports, d, str);
+            case TTRhythm(num, den, str): 
+                ParserRhythm.parse(scanner, context, imports, num, den, str);
         }
     }
     
@@ -138,7 +136,7 @@ class Parser
         return switch (scanner.peek().type) {
             case TTPunctuator(type):
                 switch type {
-                    case ADD, MINUS, SHIFT_LEFT, SHIFT_RIGHT, WRAP, EQUALITY, GREATER_THAN: 
+                    case ADD, MINUS, SHIFT_LEFT, SHIFT_RIGHT, EQUALITY, GREATER_THAN, DIVIDE: 
                             ParserBinop.parse(left, scanner, context, imports, type);
                     case LEFT_BRACKET: 
                             ParserArrayAccess.parse(left, scanner, context, imports);

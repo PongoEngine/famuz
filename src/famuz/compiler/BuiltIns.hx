@@ -25,7 +25,6 @@ import famuz.compiler.expr.ExprDef;
 import famuz.compiler.expr.Expr;
 import famuz.compiler.expr.Type;
 import famuz.compiler.expr.Type.TypeTools;
-import famuz.util.TypeMap;
 
 class BuiltIns
 {

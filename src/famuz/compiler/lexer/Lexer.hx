@@ -64,9 +64,7 @@ class Lexer
                 case QUESTION_MARK:
                     tokens.push(createToken(QUESTION_MARK, 1, scanner));
                 case COLON:
-                    scanner.peekDouble() == '>'
-                        ? tokens.push(createToken(WRAP, 2, scanner))
-                        : tokens.push(createToken(COLON, 1, scanner));
+                    tokens.push(createToken(COLON, 1, scanner));
                 case ADD:
                     tokens.push(createToken(ADD, 1, scanner));
                 case MINUS:
@@ -79,7 +77,7 @@ class Lexer
                 case FORWARD_SLASH:
                     scanner.peekDouble() == '/'
                         ? scanner.consumeComment()
-                        : throw "err";
+                        : tokens.push(createToken(DIVIDE, 1, scanner));
                 case LT:
                     scanner.peekDouble() == '<'
                         ? tokens.push(createToken(SHIFT_LEFT, 2, scanner))
@@ -140,12 +138,13 @@ class Lexer
         var line = scanner.curLine;
         var min = scanner.curIndex;
         scanner.next(); //consume '@'
-        var d = scanner.consumeNumber();
-        var num = Std.parseInt(d);
+        var num = Std.parseInt(scanner.consumeNumber());
+        scanner.next(); //consume '/'
+        var den = Std.parseInt(scanner.consumeNumber());
         var lexeme = scanner.consumeRhythm();
         var max = scanner.curIndex;
         var position = new Position(line, min, max, scanner.filepath, scanner.content);
-        return new Token(TTRhythm(num, lexeme), position);
+        return new Token(TTRhythm(num, den, lexeme), position);
     }
 
     public static function createTokenNumber(scanner :Scanner) : Token
@@ -163,7 +162,6 @@ class Lexer
     {
         return switch str {
             //keyword
-            case "struct": TTKeyword(STRUCT);
             case "import": TTKeyword(IMPORT);
             case "let": TTKeyword(LET);
             case "func": TTKeyword(FUNC);

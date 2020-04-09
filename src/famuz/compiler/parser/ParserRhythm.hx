@@ -29,18 +29,19 @@ using famuz.compiler.Scanner.ScannerTools;
 
 class ParserRhythm
 {
-    public static function parse(scanner :TokenScanner, context :IContext, imports :Map<String, Context>, d :Int, rhythm :String) : Expr
+    public static function parse(scanner :TokenScanner, context :IContext, imports :Map<String, Context>, numerator :Int, denominator :Int, rhythm :String) : Expr
     {
         var token = scanner.next();
         var rhythmScanner = new Scanner(rhythm, token.pos.file);
         var hits :Array<Expr> = [];
+        var ratio = Math.floor((numerator/denominator) * 1000);
 
         while (rhythmScanner.hasNext()) {
             if (rhythmScanner.peek().isDigit()) {
-                var start = rhythmScanner.curIndex;
+                var start = pos(rhythmScanner.curIndex, ratio);
                 var velocity = Std.parseInt(rhythmScanner.next());
                 eatDuration(rhythmScanner);
-                var duration = rhythmScanner.curIndex - start;
+                var duration = pos(rhythmScanner.curIndex, ratio) - start;
 
                 hits.push(ExprTools.createEObjectDecl([
                     "velocity" => ExprTools.createCNumber(velocity, token.pos),
@@ -48,9 +49,9 @@ class ParserRhythm
                 ], token.pos));
             }
             else if (rhythmScanner.peek() == '-') {
-                var start = rhythmScanner.curIndex;
+                var start = pos(rhythmScanner.curIndex, ratio);
                 eatRest(rhythmScanner);
-                var duration = rhythmScanner.curIndex - start;
+                var duration = pos(rhythmScanner.curIndex, ratio) - start;
                 hits.push(ExprTools.createEObjectDecl([
                     "velocity" => ExprTools.createCNumber(-1, token.pos),
                     "duration" => ExprTools.createCNumber(duration, token.pos)
@@ -62,10 +63,12 @@ class ParserRhythm
             }
         }
 
-        return ExprTools.createEObjectDecl([
-            "d" => ExprTools.createCNumber(d, token.pos),
-            "hits" => ExprTools.createEArrayDecl(hits, token.pos)
-        ], token.pos);
+        return ExprTools.createEArrayDecl(hits, token.pos);
+    }
+
+    private static function pos(curIndex :Int, ratio :Int) : Int
+    {
+        return curIndex * ratio;
     }
 
     private static function eatDuration(scanner :Scanner) : Void

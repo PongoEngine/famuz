@@ -121,12 +121,13 @@ enum TokenType
     TTKey(key :Key);
     TTNumber(num :Int);
     TTString(str :String);
-    TTRhythm(duration: Int, str :String);
+    TTRhythm(numerator: Int, denominator: Int, str :String);
 }
 
 enum PunctuatorType 
 {
 	ADD;
+	DIVIDE;
 	MINUS;
 	BANG;
 	EQUALS;
@@ -140,7 +141,6 @@ enum PunctuatorType
 	RIGHT_BRACKET;
 	SHIFT_LEFT;
 	SHIFT_RIGHT;
-	WRAP;
 	SLASH;
 	COMMA;
 	PERIOD;
@@ -151,7 +151,6 @@ enum PunctuatorType
 enum KeywordType 
 {
 	IMPORT;
-	STRUCT;
 	FUNC;
 	LET;
 	SWITCH;

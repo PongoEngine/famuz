@@ -265,7 +265,6 @@ enum BinopType
     SUBTRACT;
     SHIFT_LEFT;
     SHIFT_RIGHT;
-    WRAP;
     EQUALITY;
     GREATER_THAN;
 }
