@@ -23,7 +23,6 @@ package famuz.compiler;
 
 import famuz.compiler.Position;
 import famuz.compiler.theory.Key;
-import famuz.compiler.theory.Scale;
 
 /**
  * 
@@ -117,7 +116,6 @@ enum TokenType
     TTPunctuator(type :PunctuatorType);
     TTKeyword(type :KeywordType);
     TTIdentifier(str :String);
-    TTScale(scale :Scale);
     TTKey(key :Key);
     TTNumber(num :Int);
     TTString(str :String);

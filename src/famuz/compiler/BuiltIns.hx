@@ -35,6 +35,25 @@ class BuiltIns
     {
         BuiltIns.push(context);
         BuiltIns.pop(context);
+        BuiltIns.scales(context);
+    }
+
+    private static function scales(context :Context) : Void
+    {
+        scale(context, "major", [0,2,4,5,7,9,11]);
+        scale(context, "natural-minor", [0,2,3,5,7,8,10]);
+        scale(context, "melodic-minor", [0,2,3,5,7,8,11]);
+        scale(context, "harmonic-minor", [0,2,3,5,7,9,11]);
+        scale(context, "chromatic", [0,1,2,3,4,5,6,7,8,9,10,11]);
+    }
+
+    private static function scale(context :Context, name :String, steps :Array<Int>) : Void
+    {
+        context.addVarFunc(name, 
+            new Expr(EArrayDecl(steps.map(n -> 
+                new Expr(EConstant(CNumber(n)), TNumber, Position.identity()))
+            ), TArray({ref:TNumber}), Position.identity())
+        );
     }
 
     private static function push(context :Context) : Void

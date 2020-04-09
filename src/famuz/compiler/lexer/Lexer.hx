@@ -172,12 +172,6 @@ class Lexer
             case "if": TTKeyword(IF);
             case "true": TTKeyword(TRUE);
             case "false": TTKeyword(FALSE);
-            //scale
-            case "major": TTScale(MAJOR);
-            case "natural-minor": TTScale(NATURAL_MINOR);
-            case "melodic-minor": TTScale(MELODIC_MINOR);
-            case "harmonic-minor": TTScale(HARMONIC_MINOR);
-            case "chromatic": TTScale(CHROMATIC);
             //key
             case "C": TTKey(C);
             case "C#": TTKey(C_SHARP);

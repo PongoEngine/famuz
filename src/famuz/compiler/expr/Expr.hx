@@ -222,7 +222,6 @@ class Expr
                 case CString(str): '"${str}"';
                 case CNumber(value): value + "";
                 case CBool(value): value + "";
-                case CScale(scale): scale.toString();
                 case CKey(key): key.toString();
             }
             case EArrayDecl(values):

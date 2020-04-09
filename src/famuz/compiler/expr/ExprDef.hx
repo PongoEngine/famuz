@@ -23,7 +23,6 @@ package famuz.compiler.expr;
 
 import famuz.compiler.Context;
 import famuz.compiler.expr.Expr;
-import famuz.compiler.theory.Scale;
 import famuz.compiler.theory.Key;
 
 /**
@@ -156,17 +155,6 @@ class ExprDefTools
         }
     }
 
-    public static function getScale(def :ExprDef) : Scale
-    {
-        return switch def {
-            case EConstant(constant): switch constant {
-                case CScale(type): type;
-                case _: throw "err";
-            }
-            case _: throw "err";
-        }
-    }
-
     public static function getKey(def :ExprDef) : Key
     {
         return switch def {
@@ -204,7 +192,6 @@ enum Constant
     CString(str :String);
     CBool(value :Bool);
     CNumber(value :Int);
-    CScale(type :Scale);
     CKey(key :Key);
 }
 

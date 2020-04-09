@@ -62,8 +62,6 @@ class TypeChecker
                         TBool;
                     case CNumber(value): 
                         TNumber;
-                    case CScale(type): 
-                        TScale;
                     case CKey(key): 
                         TKey;
                     case CString(str): 

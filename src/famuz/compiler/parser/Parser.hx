@@ -34,7 +34,6 @@ import famuz.compiler.parser.ParserParentheses;
 import famuz.compiler.parser.ParserPrint;
 import famuz.compiler.parser.ParserBool;
 import famuz.compiler.parser.ParserRhythm;
-import famuz.compiler.parser.ParserScale;
 import famuz.compiler.parser.ParserArrayAccess;
 import famuz.compiler.parser.ParserStruct;
 import famuz.compiler.parser.ParserIf;
@@ -120,8 +119,6 @@ class Parser
                 ParserIdentifier.parse(scanner, context, imports, str);
             case TTString(str):
                 ParserString.parse(scanner, context, imports, str);
-            case TTScale(scale): 
-                ParserScale.parse(scanner, context, imports, scale);
             case TTKey(key): 
                 ParserKey.parse(scanner, context, imports, key);
             case TTNumber(num): 
@@ -155,8 +152,6 @@ class Parser
             case TTString(_): 
                 null;
             case TTIdentifier(_): 
-                null;
-            case TTScale(_): 
                 null;
             case TTKey(_): 
                 null;

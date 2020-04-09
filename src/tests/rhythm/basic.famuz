@@ -1,7 +1,8 @@
 let r1 = @1/4 9~--
 let r2 = @1/8 -234
 
+let r = major
 
 func main = {
-    print(r1 + r2)
+    print(r)
 }
