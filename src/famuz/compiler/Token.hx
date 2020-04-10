@@ -116,7 +116,6 @@ enum TokenType
     TTPunctuator(type :PunctuatorType);
     TTKeyword(type :KeywordType);
     TTIdentifier(str :String);
-    TTKey(key :Key);
     TTNumber(num :Int);
     TTString(str :String);
     TTRhythm(numerator: Int, denominator: Int, str :String);

@@ -173,23 +173,23 @@ class Lexer
             case "true": TTKeyword(TRUE);
             case "false": TTKeyword(FALSE);
             //key
-            case "C": TTKey(C);
-            case "C#": TTKey(C_SHARP);
-            case "Db": TTKey(D_FLAT);
-            case "D": TTKey(D);
-            case "D#": TTKey(D_SHARP);
-            case "Eb": TTKey(E_FLAT);
-            case "E": TTKey(E);
-            case "F": TTKey(F);
-            case "F#": TTKey(F_SHARP);
-            case "Gb": TTKey(G_FLAT);
-            case "G": TTKey(G);
-            case "G#": TTKey(G_SHARP);
-            case "Ab": TTKey(A_FLAT);
-            case "A": TTKey(A);
-            case "A#": TTKey(A_SHARP);
-            case "Bb": TTKey(B_FLAT);
-            case "B": TTKey(B);
+            case "C": TTNumber(24);
+            case "C#": TTNumber(25);
+            case "Db": TTNumber(25);
+            case "D": TTNumber(26);
+            case "D#": TTNumber(27);
+            case "Eb": TTNumber(27);
+            case "E": TTNumber(28);
+            case "F": TTNumber(29);
+            case "F#": TTNumber(30);
+            case "Gb": TTNumber(30);
+            case "G": TTNumber(31);
+            case "G#": TTNumber(32);
+            case "Ab": TTNumber(32);
+            case "A": TTNumber(21);
+            case "A#": TTNumber(22);
+            case "Bb": TTNumber(22);
+            case "B": TTNumber(23);
             default: TTIdentifier(str);
         }
     }

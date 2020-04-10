@@ -57,7 +57,15 @@ class Expr
                         var array = context.getExpr(args[0]);
                         array.def.getArrayDecl().pop();
                         array;
-                    case _: throw "err";
+                    case "map":
+                        var array = context.getExpr(args[0]);
+                        var fn = context.getExpr(args[1]);
+                        var exprs = array.def.getArrayDecl().map(item -> {
+                            return new Expr(ECall(fn, [item]), null, Position.identity()).evaluate(context);
+                        });
+                        new Expr(EArrayDecl(exprs), TArray({ref:exprs[0].t}), Position.identity());
+                    case _: 
+                        throw "err";
                 }
 
             case EConstant(constant):
@@ -222,7 +230,6 @@ class Expr
                 case CString(str): '"${str}"';
                 case CNumber(value): value + "";
                 case CBool(value): value + "";
-                case CKey(key): key.toString();
             }
             case EArrayDecl(values):
                 '[${values.map(v -> v.toString()).join(", ")}]';

@@ -34,8 +34,6 @@ enum Type
     TNumber;
     TString;
     TBool;
-    TScale;
-    TKey;
     TMono(t:Ref<Option<Type>>);
     TArray(t:Ref<Type>);
     TFun(args:Array<Arg>, ret:Type);
@@ -79,10 +77,6 @@ class TypeTools
                 "String";
             case TBool: 
                 "Bool";
-            case TScale: 
-                "Scale";
-            case TKey: 
-                "Key";
             case TMono(t): 
                 switch t.ref {
                     case Some(v): 

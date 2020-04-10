@@ -28,7 +28,6 @@ import famuz.compiler.parser.ParserBlock;
 import famuz.compiler.parser.ParserCall;
 import famuz.compiler.parser.ParserFunc;
 import famuz.compiler.parser.ParserIdentifier;
-import famuz.compiler.parser.ParserKey;
 import famuz.compiler.parser.ParserNumber;
 import famuz.compiler.parser.ParserParentheses;
 import famuz.compiler.parser.ParserPrint;
@@ -119,8 +118,6 @@ class Parser
                 ParserIdentifier.parse(scanner, context, imports, str);
             case TTString(str):
                 ParserString.parse(scanner, context, imports, str);
-            case TTKey(key): 
-                ParserKey.parse(scanner, context, imports, key);
             case TTNumber(num): 
                 ParserNumber.parse(scanner, context, imports, num);
             case TTRhythm(num, den, str): 
@@ -152,8 +149,6 @@ class Parser
             case TTString(_): 
                 null;
             case TTIdentifier(_): 
-                null;
-            case TTKey(_): 
                 null;
             case TTNumber(_): 
                 null;

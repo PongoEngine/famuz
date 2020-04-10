@@ -155,17 +155,6 @@ class ExprDefTools
         }
     }
 
-    public static function getKey(def :ExprDef) : Key
-    {
-        return switch def {
-            case EConstant(constant): switch constant {
-                case CKey(type): type;
-                case _: throw "err";
-            }
-            case _: throw "err";
-        }
-    }
-
     public static function getArrayDecl(def :ExprDef) : Array<Expr>
     {
         return switch def {
@@ -192,7 +181,6 @@ enum Constant
     CString(str :String);
     CBool(value :Bool);
     CNumber(value :Int);
-    CKey(key :Key);
 }
 
 /**

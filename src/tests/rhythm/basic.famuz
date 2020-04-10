@@ -1,8 +1,15 @@
 let r1 = @1/4 9~--
 let r2 = @1/8 -234
 
-let r = major
+func woah item = {
+    {d: item}
+}
+
+func melody rhythm = {
+    map(rhythm, woah)
+}
 
 func main = {
-    print(r)
+    let data = []
+    print(melody(r1)[0].d)
 }

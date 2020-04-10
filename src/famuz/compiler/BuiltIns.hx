@@ -35,15 +35,16 @@ class BuiltIns
     {
         BuiltIns.push(context);
         BuiltIns.pop(context);
+        BuiltIns.map(context);
         BuiltIns.scales(context);
     }
 
     private static function scales(context :Context) : Void
     {
         scale(context, "major", [0,2,4,5,7,9,11]);
-        scale(context, "natural-minor", [0,2,3,5,7,8,10]);
-        scale(context, "melodic-minor", [0,2,3,5,7,8,11]);
-        scale(context, "harmonic-minor", [0,2,3,5,7,9,11]);
+        scale(context, "natural_minor", [0,2,3,5,7,8,10]);
+        scale(context, "melodic_minor", [0,2,3,5,7,8,11]);
+        scale(context, "harmonic_minor", [0,2,3,5,7,9,11]);
         scale(context, "chromatic", [0,1,2,3,4,5,6,7,8,9,10,11]);
     }
 
@@ -62,6 +63,22 @@ class BuiltIns
         var func = EFunction("push", ["array", "element"], nativeCall, context);
         var pushExpr = new Expr(func, TMono({ref:None}), Position.identity());
         context.addVarFunc("push", pushExpr);
+    }
+
+    private static function map(context :Context) : Void
+    {
+        var nativeCall = new Expr(ENativeCall("map", ["array", "fn"]), TMono({ref:None}), Position.identity());
+        var func = EFunction("map", ["array", "fn"], nativeCall, context);
+        var mapExpr = new Expr(func, TMono({ref:None}), Position.identity());
+        context.addVarFunc("map", mapExpr);
+    }
+
+    private static function mapi(context :Context) : Void
+    {
+        var nativeCall = new Expr(ENativeCall("mapi", ["array", "fn"]), TMono({ref:None}), Position.identity());
+        var func = EFunction("mapi", ["array", "fn"], nativeCall, context);
+        var mapiExpr = new Expr(func, TMono({ref:None}), Position.identity());
+        context.addVarFunc("mapi", mapiExpr);
     }
 
     private static function pop(context :Context) : Void

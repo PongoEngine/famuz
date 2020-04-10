@@ -133,7 +133,7 @@ class ScannerTools
         return ch == SPACE || ch == LINE || ch == TAB;
     }
 
-    public static function isIdentifer(ch :String) : Bool
+    public static inline function isIdentifer(ch :String) : Bool
     {
         return isAlphaNumericUnderscore(ch);
     }
@@ -149,16 +149,14 @@ class ScannerTools
         return code > 47 && code < 58;
     }
 
-    public static function isAlphaNumericUnderscore(str :String) {
-        var code :Int;
-      
-        code = str.charCodeAt(0);
-        if (!(code == 95) && // _
-        !(code > 47 && code < 58) && // numeric (0-9)
-        !(code > 64 && code < 91) && // upper alpha (A-Z)
-        !(code > 96 && code < 123)) { // lower alpha (a-z)
-            return false;
+    private static function isAlphaNumericUnderscore(str :String) {
+        var token :LexerToken = str;
+        return switch token {
+            case ADD, AT, BACKWARD_SLASH, BANG, COLON, COMMA, DURATION, EQUALS, 
+            FORWARD_SLASH, GT, LT, HIT, LEFT_BRACE, RIGHT_BRACE, PERIOD, QUOTES,
+            LEFT_BRACKET, RIGHT_BRACKET, LINE, MINUS, QUESTION_MARK, SPACE, TAB, 
+            LEFT_PARENTHESES, RIGHT_PARENTHESES: false;
+            case _: true;
         }
-        return true;
-      }
+    }
 }

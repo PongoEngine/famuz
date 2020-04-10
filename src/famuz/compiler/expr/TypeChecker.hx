@@ -62,8 +62,6 @@ class TypeChecker
                         TBool;
                     case CNumber(value): 
                         TNumber;
-                    case CKey(key): 
-                        TKey;
                     case CString(str): 
                         TString;
                 }
@@ -126,8 +124,7 @@ class TypeChecker
             case EArray(e1, e2):
                 switch analyse(e1, env) {
                     case TArray(t): t.ref;
-                    case _: 
-                        throw "err";
+                    case _: TMono({ref:None});
                 }
 
             case EField(e, field):
@@ -140,7 +137,7 @@ class TypeChecker
                             throw '${field} does not exist on ${e.toString()}';
                         }
                     }
-                    case _: throw "err";
+                    case _: TMono({ref:None});
                 }
 
             case EIf(econd, ethen, eelse):
