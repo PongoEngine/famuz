@@ -36,6 +36,7 @@ class BuiltIns
         BuiltIns.push(context);
         BuiltIns.pop(context);
         BuiltIns.map(context);
+        BuiltIns.mapi(context);
         BuiltIns.scales(context);
     }
 
@@ -69,7 +70,7 @@ class BuiltIns
     {
         var nativeCall = new Expr(ENativeCall("map", ["array", "fn"]), TMono({ref:None}), Position.identity());
         var func = EFunction("map", ["array", "fn"], nativeCall, context);
-        var mapExpr = new Expr(func, TMono({ref:None}), Position.identity());
+        var mapExpr = new Expr(func, TypeTools.createAnonTFun(1), Position.identity());
         context.addVarFunc("map", mapExpr);
     }
 
@@ -77,7 +78,7 @@ class BuiltIns
     {
         var nativeCall = new Expr(ENativeCall("mapi", ["array", "fn"]), TMono({ref:None}), Position.identity());
         var func = EFunction("mapi", ["array", "fn"], nativeCall, context);
-        var mapiExpr = new Expr(func, TMono({ref:None}), Position.identity());
+        var mapiExpr = new Expr(func, TypeTools.createAnonTFun(2), Position.identity());
         context.addVarFunc("mapi", mapiExpr);
     }
 

@@ -1,5 +1,13 @@
-func robot a b = ${a:a,b:b}
+let r1 = @1/4 9--- 4---
+let steps = [0,1]
+func cool r i q = $
+  {
+    duration: r.duration, 
+    velocity: r.velocity
+    step: 0
+  }
 
 func main = {
-    print(robot(0,10))
+    let q = mapi(r1)
+    q
 }

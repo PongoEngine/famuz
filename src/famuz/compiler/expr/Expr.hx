@@ -27,6 +27,8 @@ import famuz.compiler.expr.Type;
 using famuz.compiler.expr.ExprBinops;
 using famuz.util.FStringTools;
 
+using Lambda;
+
 /**
  * 
  */
@@ -49,19 +51,28 @@ class Expr
             case ENativeCall(funcName, args):
                 switch funcName {
                     case "push":
-                        var array = context.getExpr(args[0]);
-                        var element = context.getExpr(args[1]);
+                        var array = context.getExpr(args[0]).evaluate(context);
+                        var element = context.getExpr(args[1]).evaluate(context);
                         array.def.getArrayDecl().push(element);
                         array;
                     case "pop":
-                        var array = context.getExpr(args[0]);
+                        var array = context.getExpr(args[0]).evaluate(context);
                         array.def.getArrayDecl().pop();
                         array;
                     case "map":
-                        var array = context.getExpr(args[0]);
-                        var fn = context.getExpr(args[1]);
+                        var array = context.getExpr(args[0]).evaluate(context);
+                        var fn = context.getExpr(args[1]).evaluate(context);
                         var exprs = array.def.getArrayDecl().map(item -> {
-                            return new Expr(ECall(fn, [item]), null, Position.identity()).evaluate(context);
+                            return new Expr(ECall(fn, [item]), TMono({ref:None}), Position.identity()).evaluate(context);
+                        });
+                        new Expr(EArrayDecl(exprs), TArray({ref:exprs[0].t}), Position.identity());
+                    case "mapi":
+                        var array = context.getExpr(args[0]).evaluate(context);
+                        var fn = context.getExpr(args[1]).evaluate(context);
+                        var exprs = array.def.getArrayDecl().mapi((index, item) -> {
+                            var i = new Expr(EConstant(CNumber(index)), TNumber, Position.identity());
+                            var call = ECall(fn, [item, i]);
+                            return new Expr(call, TMono({ref:None}), Position.identity()).evaluate(context);
                         });
                         new Expr(EArrayDecl(exprs), TArray({ref:exprs[0].t}), Position.identity());
                     case _: 
@@ -71,7 +82,7 @@ class Expr
             case EConstant(constant):
                 switch constant {
                     case CIdentifier(str):
-                        context.getExpr(str);
+                        context.getExpr(str).evaluate(context);
                     case _: this;
                 }
 
@@ -122,7 +133,8 @@ class Expr
                         for(i in 0...params.length) {
                             ctx.addVarFunc(params[i], args[i]);
                         }
-                        body.evaluate(ctx);
+                        var x = body.evaluate(ctx);
+                        x;
                     case _: 
                         throw "err";
                 }

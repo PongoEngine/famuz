@@ -64,6 +64,12 @@ class TypeTools
         return TAnonymous({ref:{fields:typeMap}});
     }
 
+    public static function createAnonTFun(argsLength :Int) : Type
+    {
+        var args = [for(i in 0...argsLength) new Arg("?", TMono({ref:None}))];
+        return TFun(args, TMono({ref:None}));
+    }
+
     public static function toString(t :Type) : String
     {
         return switch t {
