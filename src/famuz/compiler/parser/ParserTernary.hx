@@ -29,9 +29,11 @@ class ParserTernary
     public static function parse(left :Expr, scanner :TokenScanner, context :Context, imports :Map<String, Context>) : Expr
     {
         var question = scanner.next(); //?
-        var eif = Parser.parse(0, scanner, context, imports, false);
-        scanner.next(); //:
-        var eelse = Parser.parse(0, scanner, context, imports, false);
+
+        var ifprec = Precedence.get(question.type); //op
+        var eif = Parser.parse(ifprec, scanner, context, imports, false);
+        var elseprec = Precedence.get(scanner.next().type); //:
+        var eelse = Parser.parse(elseprec, scanner, context, imports, false);
 
         return new Expr(
             ETernary(left, eif, eelse),

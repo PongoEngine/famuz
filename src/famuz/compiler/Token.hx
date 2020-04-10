@@ -124,8 +124,9 @@ enum TokenType
 enum PunctuatorType 
 {
 	ADD;
-	DIVIDE;
 	MINUS;
+	DIVIDE;
+	MULTIPLY;
 	BANG;
 	ASSIGNMENT;
 	EQUALITY;

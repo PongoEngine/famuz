@@ -25,9 +25,9 @@ import famuz.compiler.Token;
 
 class Precedence
 {
-    public static function getPrecedence(scanner :TokenScanner) : Int
+    public static function get(type :TokenType) : Int
     {
-        return switch (scanner.peek().type)
+        return switch (type)
         {
             case TTPunctuator(type): {
                 switch type {
@@ -38,13 +38,11 @@ class Precedence
                     case ASSIGNMENT: 0;
                     case COLON: 0;
                     case BANG: 1;
-                    case GREATER_THAN: 2;
-                    case LESS_THAN: 2;
-                    case EQUALITY: 2;
-                    case QUESTION_MARK: 3;
+                    case EQUALITY, GREATER_THAN, LESS_THAN, QUESTION_MARK: 3;
                     case ADD: 4;
                     case MINUS: 4;
                     case DIVIDE: 5;
+                    case MULTIPLY: 5;
                     case LEFT_BRACE: 6;
                     case LEFT_PARENTHESES: 7;
                     case LEFT_BRACKET: 8;

@@ -202,6 +202,8 @@ class Expr
                 switch type {
                     case ADD: e1.add(e2, context);
                     case SUBTRACT: e1.subtract(e2, context);
+                    case DIVIDE: e1.divide(e2, context);
+                    case MULTIPLY: e1.multiply(e2, context);
                     case EQUALITY: e1.equals(e2, context);
                     case GREATER_THAN: e1.greaterThan(e2, context);
                     case LESS_THAN: e1.lessThan(e2, context);
@@ -244,6 +246,8 @@ class Expr
                 var op = switch type {
                     case ADD: '+';
                     case SUBTRACT: '-';
+                    case DIVIDE: '/';
+                    case MULTIPLY: '*';
                     case EQUALITY: '==';
                     case LESS_THAN: "<";
                     case GREATER_THAN: ">";

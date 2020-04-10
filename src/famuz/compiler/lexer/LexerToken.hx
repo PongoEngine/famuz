@@ -40,6 +40,7 @@ enum abstract LexerToken(String) from String
     var EQUALS = "=";
 
     var ADD = "+";
+    var MULTIPLY = "*";
     var MINUS = "-";
     var BANG = "!";
     var FORWARD_SLASH = "/";

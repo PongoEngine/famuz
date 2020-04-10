@@ -24,25 +24,27 @@ package famuz.compiler.parser;
 import famuz.compiler.expr.Expr;
 import famuz.compiler.expr.ExprDef.BinopType;
 import famuz.compiler.Token;
-import famuz.compiler.parser.Precedence.*;
+import famuz.compiler.parser.Precedence;
 import famuz.compiler.parser.Parser;
 
 class ParserBinop
 {
     public static function parse(left :Expr, scanner :TokenScanner, context :Context, imports :Map<String, Context>, punctuator :PunctuatorType) : Expr
     {
-        scanner.next(); //op
+        var prec = Precedence.get(scanner.next().type); //op
 
         var op :BinopType = switch punctuator {
             case PunctuatorType.ADD: ADD;
             case PunctuatorType.MINUS: SUBTRACT;
+            case PunctuatorType.DIVIDE: DIVIDE;
+            case PunctuatorType.MULTIPLY: MULTIPLY;
             case PunctuatorType.EQUALITY: EQUALITY;
             case PunctuatorType.GREATER_THAN: GREATER_THAN;
             case PunctuatorType.LESS_THAN: LESS_THAN;
             case _: throw Error.FATAL_COMPILER_ERROR;
         }
         
-        var right = Parser.parse(0, scanner, context, imports, false);
+        var right = Parser.parse(prec, scanner, context, imports, false);
 		return new Expr(
 			EBinop(op, left, right),
 			TMono({ref: None}),

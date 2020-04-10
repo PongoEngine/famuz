@@ -237,6 +237,8 @@ enum ArrayOp
 enum BinopType
 {
     ADD;
+    DIVIDE;
+    MULTIPLY;
     SUBTRACT;
     EQUALITY;
     GREATER_THAN;

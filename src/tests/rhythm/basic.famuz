@@ -3,6 +3,6 @@ func robot a = {
 }
 
 func main = {
-    let r = 10 + 2 == 12 ? "good" : "bad"
-    print(robot(10).cool)
+    let r = (10 / 2 + 3 - 1 * 2 + 3 + 1) / 2 == 5 ? "good" : "bad"
+    print(r)
 }

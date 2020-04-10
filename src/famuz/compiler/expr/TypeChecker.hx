@@ -71,7 +71,7 @@ class TypeChecker
                 var t2 = analyse(e2, env);
                 unify(t1, t2);
                 switch type {
-                    case ADD, SUBTRACT: 
+                    case ADD, SUBTRACT, DIVIDE, MULTIPLY: 
                         t1;
                     case EQUALITY, GREATER_THAN, LESS_THAN:
                         TBool;

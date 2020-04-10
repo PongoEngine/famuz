@@ -84,7 +84,9 @@ class ExprBinops
                         throw "cannot subtract strings";
                     case [CBool(_), CBool(_)]:
                         throw "cannot subtract booleans";
-                    case _: 
+                    case _:
+                        trace(constantA + "\n");
+                        trace(constantB + "\n");
                         throw "err";
                 }
             }
@@ -92,6 +94,68 @@ class ExprBinops
                 var fields = new Map<String, Expr>();
                 for(key in fields1.keys()) {
                     fields.set(key, subtract(fields1.get(key), fields2.get(key), context));
+                }
+                EObjectDecl(fields);
+            case _: 
+                throw "err";
+        }
+
+        return new Expr(
+            def, 
+            TMono({ref: None}),
+            Position.union(left.pos, right.pos)
+        );
+    }
+
+    public static function divide(left :Expr, right :Expr, context :IContext) : Expr
+    {
+        var a = left.evaluate(context);
+        var b = right.evaluate(context);
+
+        var def = switch [a.def, b.def] {
+            case [EConstant(constantA), EConstant(constantB)]: {
+                switch [constantA, constantB] {
+                    case [CNumber(valueA), CNumber(valueB)]:
+                        EConstant(CNumber(Math.floor(valueA / valueB)));
+                    case _: 
+                        throw "err";
+                }
+            }
+            case [EObjectDecl(fields1), EObjectDecl(fields2)]:
+                var fields = new Map<String, Expr>();
+                for(key in fields1.keys()) {
+                    fields.set(key, divide(fields1.get(key), fields2.get(key), context));
+                }
+                EObjectDecl(fields);
+            case _: 
+                throw "err";
+        }
+
+        return new Expr(
+            def, 
+            TMono({ref: None}),
+            Position.union(left.pos, right.pos)
+        );
+    }
+
+    public static function multiply(left :Expr, right :Expr, context :IContext) : Expr
+    {
+        var a = left.evaluate(context);
+        var b = right.evaluate(context);
+
+        var def = switch [a.def, b.def] {
+            case [EConstant(constantA), EConstant(constantB)]: {
+                switch [constantA, constantB] {
+                    case [CNumber(valueA), CNumber(valueB)]:
+                        EConstant(CNumber(valueA * valueB));
+                    case _: 
+                        throw "err";
+                }
+            }
+            case [EObjectDecl(fields1), EObjectDecl(fields2)]:
+                var fields = new Map<String, Expr>();
+                for(key in fields1.keys()) {
+                    fields.set(key, multiply(fields1.get(key), fields2.get(key), context));
                 }
                 EObjectDecl(fields);
             case _: 

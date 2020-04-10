@@ -51,7 +51,7 @@ class Parser
         if (scanner.hasNext()) {
             var left = parseExpressionPrefix(scanner, context, imports, isFunc);
 
-            while (scanner.hasNext() && precedence < scanner.getPrecedence())
+            while (scanner.hasNext() && precedence < Precedence.get(scanner.peek().type))
             {
                 left = parseExpressionInfix(left, scanner, context, imports);
             }
@@ -87,7 +87,7 @@ class Parser
                         ParserArray.parse(scanner, context, imports);
                     case MINUS, BANG:
                         ParserUnop.parse(scanner, context, imports);
-                    case GREATER_THAN, LESS_THAN, EQUALITY, ADD, DIVIDE, ASSIGNMENT, RIGHT_PARENTHESES, RIGHT_BRACE,
+                    case GREATER_THAN, LESS_THAN, EQUALITY, ADD, DIVIDE, MULTIPLY, ASSIGNMENT, RIGHT_PARENTHESES, RIGHT_BRACE,
                         RIGHT_BRACKET, COMMA, PERIOD, QUESTION_MARK, COLON:
                         parseConsume(scanner);
                 }
@@ -129,7 +129,7 @@ class Parser
         return switch (scanner.peek().type) {
             case TTPunctuator(type):
                 switch type {
-                    case ADD, MINUS, EQUALITY, GREATER_THAN, LESS_THAN, DIVIDE: 
+                    case ADD, MINUS, EQUALITY, GREATER_THAN, LESS_THAN, DIVIDE, MULTIPLY: 
                             ParserBinop.parse(left, scanner, context, imports, type);
                     case LEFT_BRACKET: 
                             ParserArrayAccess.parse(left, scanner, context, imports);
