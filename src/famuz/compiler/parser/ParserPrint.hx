@@ -31,7 +31,7 @@ class ParserPrint
     {
         var token = scanner.next(); //consume "print"
         scanner.next(); //consume "("
-        var expr = Parser.parse(new Precedence(0), scanner, context, imports, false);
+        var expr = Parser.parse(0, scanner, context, imports, false);
         var rightParentheses = scanner.next(); //consume ")"
 
         return new Expr(

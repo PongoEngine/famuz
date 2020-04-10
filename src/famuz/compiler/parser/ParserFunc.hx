@@ -35,7 +35,7 @@ class ParserFunc
         var identifier = scanner.next().getIdentifier(); //id (ex: main)
         var params :Array<String> = [];
         var args :Array<Arg> = [];
-        while (scanner.peek().isNotPunctuator(EQUALS)) {
+        while (scanner.peek().isNotPunctuator(ASSIGNMENT)) {
             var name = scanner.next().getIdentifier();
             params.push(name);
             args.push(new Arg(name, TMono({ref: None})));
@@ -44,7 +44,7 @@ class ParserFunc
         scanner.next(); // '='
         
         var scope = context.createContext();
-        var body = Parser.parse(new Precedence(0), scanner, scope, imports, true);
+        var body = Parser.parse(0, scanner, scope, imports, true);
 
         var func = new Expr(
             EFunction(identifier, params, body, scope),

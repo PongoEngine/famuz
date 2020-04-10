@@ -33,7 +33,7 @@ class ParserArray
         var exprs = new Array<Expr>();
 
         while (scanner.hasNext() && scanner.peek().isNotPunctuator(RIGHT_BRACKET)) {
-            var expr = Parser.parse(new Precedence(0), scanner, context, imports, false);
+            var expr = Parser.parse(0, scanner, context, imports, false);
 
             exprs.push(expr);
             if(scanner.hasNext() && scanner.peek().isPunctuator(COMMA)) {

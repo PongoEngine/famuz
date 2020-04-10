@@ -73,9 +73,7 @@ class TypeChecker
                 switch type {
                     case ADD, SUBTRACT: 
                         t1;
-                    case SHIFT_LEFT, SHIFT_RIGHT:
-                        t1;
-                    case EQUALITY, GREATER_THAN:
+                    case EQUALITY, GREATER_THAN, LESS_THAN:
                         TBool;
                 }
 

@@ -34,7 +34,7 @@ class ParserBlock
         var exprs :Array<Expr> = [];
 
         while (scanner.hasNext() && scanner.peek().isNotPunctuator(RIGHT_BRACE)) {
-            exprs.push(Parser.parse(new Precedence(0), scanner, context, imports, false));
+            exprs.push(Parser.parse(0, scanner, context, imports, false));
         }
 
         if(!scanner.hasNext() || scanner.peek().isNotPunctuator(RIGHT_BRACE)) {

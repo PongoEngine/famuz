@@ -23,55 +23,36 @@ package famuz.compiler.parser;
 
 import famuz.compiler.Token;
 
-abstract Precedence(Int)
+class Precedence
 {
-    public static var PRECEDENCE_ASSIGNMENT = new Precedence(1);
-	public static var PRECEDENCE_TERNARY = new Precedence(2);
-	public static var PRECEDENCE_PERIOD = new Precedence(2);
-	public static var PRECEDENCE_ARRAY = new Precedence(2);
-    public static var PRECEDENCE_SUBTRACT = new Precedence(3);
-	public static var PRECEDENCE_CALL = new Precedence(4);
-    public static var PRECEDENCE_SUM = new Precedence(5);
-
-    public function new(val :Int) : Void
-    {
-        this = val;
-    }
-    
-    public function toInt() : Int
-    {
-        return this;
-    }
-
-    public static function getPrecedence(scanner :TokenScanner) : Precedence
+    public static function getPrecedence(scanner :TokenScanner) : Int
     {
         return switch (scanner.peek().type)
         {
             case TTPunctuator(type): {
                 switch type {
-                    case EQUALS:
-                        PRECEDENCE_ASSIGNMENT;
-                    case EQUALITY, ADD, SHIFT_LEFT, SHIFT_RIGHT, GREATER_THAN:
-                        PRECEDENCE_SUM;
-                    case MINUS:
-                        PRECEDENCE_SUBTRACT;
-                    case LEFT_PARENTHESES:
-                        PRECEDENCE_CALL;
-                    case LEFT_BRACKET:
-                        PRECEDENCE_ARRAY;
-                    case PERIOD:
-                        PRECEDENCE_PERIOD;
-                    case QUESTION_MARK:
-                        PRECEDENCE_TERNARY;
-                    default:
-                        new Precedence(0);
+                    case RIGHT_BRACE: 0;
+                    case RIGHT_PARENTHESES: 0;
+                    case RIGHT_BRACKET: 0;
+                    case COMMA: 0;
+                    case ASSIGNMENT: 0;
+                    case COLON: 0;
+                    case BANG: 1;
+                    case GREATER_THAN: 2;
+                    case LESS_THAN: 2;
+                    case EQUALITY: 2;
+                    case QUESTION_MARK: 3;
+                    case ADD: 4;
+                    case MINUS: 4;
+                    case DIVIDE: 5;
+                    case LEFT_BRACE: 6;
+                    case LEFT_PARENTHESES: 7;
+                    case LEFT_BRACKET: 8;
+                    case PERIOD: 9;
                 }
             }
             default:
-                new Precedence(0);
+                0;
         }
     }
-
-    //Comparison with Octave
-    @:op(A < B) static function lessThan(a :Precedence, b :Precedence) : Bool;
 }

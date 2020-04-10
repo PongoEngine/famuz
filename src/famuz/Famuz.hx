@@ -61,7 +61,7 @@ class Famuz
         var context = new Context();
         
         while(tokenScanner.hasNext()) {
-            Parser.parse(new Precedence(0), tokenScanner, context, imports, false);
+            Parser.parse(0, tokenScanner, context, imports, false);
         }
     
         return context;

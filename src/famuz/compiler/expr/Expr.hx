@@ -204,8 +204,7 @@ class Expr
                     case SUBTRACT: e1.subtract(e2, context);
                     case EQUALITY: e1.equals(e2, context);
                     case GREATER_THAN: e1.greaterThan(e2, context);
-                    case SHIFT_LEFT: throw "SHIFT_LEFT";
-                    case SHIFT_RIGHT: throw "SHIFT_RIGHT";
+                    case LESS_THAN: e1.lessThan(e2, context);
                 }
 
             case EParentheses(expr):
@@ -246,9 +245,8 @@ class Expr
                     case ADD: '+';
                     case SUBTRACT: '-';
                     case EQUALITY: '==';
+                    case LESS_THAN: "<";
                     case GREATER_THAN: ">";
-                    case SHIFT_LEFT: '<<';
-                    case SHIFT_RIGHT: '>>';
                 }
                 '${e1}${op}${e2}';
             case ECall(e, params):

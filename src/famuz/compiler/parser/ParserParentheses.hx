@@ -30,7 +30,7 @@ class ParserParentheses
     public static function parse(scanner :TokenScanner, context :Context, imports :Map<String, Context>) : Expr
     {
         var token = scanner.next(); // (
-        var expr = Parser.parse(new Precedence(0), scanner, context, imports, false);
+        var expr = Parser.parse(0, scanner, context, imports, false);
         var rightParentheses = scanner.next(); // )
 
         return new Expr(

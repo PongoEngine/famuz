@@ -46,7 +46,7 @@ using famuz.compiler.parser.Precedence;
 
 class Parser
 {
-    public static function parse(precedence :Precedence, scanner :TokenScanner, context :Context, imports :Map<String, Context>, isFunc :Bool) : Expr
+    public static function parse(precedence :Int, scanner :TokenScanner, context :Context, imports :Map<String, Context>, isFunc :Bool) : Expr
     {
         if (scanner.hasNext()) {
             var left = parseExpressionPrefix(scanner, context, imports, isFunc);
@@ -87,9 +87,8 @@ class Parser
                         ParserArray.parse(scanner, context, imports);
                     case MINUS, BANG:
                         ParserUnop.parse(scanner, context, imports);
-                    case GREATER_THAN, EQUALITY, ADD, DIVIDE, EQUALS, RIGHT_PARENTHESES, RIGHT_BRACE,
-                        RIGHT_BRACKET, SHIFT_LEFT, SHIFT_RIGHT, SLASH,
-                        COMMA, PERIOD, QUESTION_MARK, COLON:
+                    case GREATER_THAN, LESS_THAN, EQUALITY, ADD, DIVIDE, ASSIGNMENT, RIGHT_PARENTHESES, RIGHT_BRACE,
+                        RIGHT_BRACKET, COMMA, PERIOD, QUESTION_MARK, COLON:
                         parseConsume(scanner);
                 }
             case TTKeyword(type): switch type {
@@ -130,7 +129,7 @@ class Parser
         return switch (scanner.peek().type) {
             case TTPunctuator(type):
                 switch type {
-                    case ADD, MINUS, SHIFT_LEFT, SHIFT_RIGHT, EQUALITY, GREATER_THAN, DIVIDE: 
+                    case ADD, MINUS, EQUALITY, GREATER_THAN, LESS_THAN, DIVIDE: 
                             ParserBinop.parse(left, scanner, context, imports, type);
                     case LEFT_BRACKET: 
                             ParserArrayAccess.parse(left, scanner, context, imports);
@@ -140,8 +139,8 @@ class Parser
                         ParserTernary.parse(left, scanner, context, imports);
                     case LEFT_PARENTHESES:
                         ParserCall.parse(left, scanner, context, imports);
-                    case EQUALS, BANG, RIGHT_PARENTHESES, LEFT_BRACE, RIGHT_BRACE, 
-                        RIGHT_BRACKET, SLASH, COMMA, COLON: 
+                    case ASSIGNMENT, BANG, RIGHT_PARENTHESES, LEFT_BRACE, RIGHT_BRACE, 
+                        RIGHT_BRACKET, COMMA, COLON: 
                         null;
                 }
             case TTKeyword(_): 

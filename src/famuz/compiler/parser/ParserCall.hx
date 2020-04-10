@@ -33,7 +33,7 @@ class ParserCall
         var args :Array<Expr> = [];
 
         while (scanner.hasNext() && scanner.peek().isNotPunctuator(RIGHT_PARENTHESES)) {
-            var expr = Parser.parse(new Precedence(0), scanner, context, imports, false);
+            var expr = Parser.parse(0, scanner, context, imports, false);
             if(scanner.peek().isPunctuator(COMMA)) {
                 scanner.next();
             }

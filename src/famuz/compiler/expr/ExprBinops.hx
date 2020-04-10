@@ -142,4 +142,9 @@ class ExprBinops
 
         return new Expr(EConstant(CBool(v)), TMono({ref: None}), Position.union(a.pos, b.pos));
     }
+
+    public static function lessThan(left :Expr, right :Expr, context :IContext) : Expr
+    {
+        throw "err";
+    }
 }

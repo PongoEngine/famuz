@@ -238,8 +238,7 @@ enum BinopType
 {
     ADD;
     SUBTRACT;
-    SHIFT_LEFT;
-    SHIFT_RIGHT;
     EQUALITY;
     GREATER_THAN;
+    LESS_THAN;
 }

@@ -44,7 +44,7 @@ class Lexer
                 case EQUALS:
                     scanner.peekDouble() == '='
                         ? tokens.push(createToken(EQUALITY, 2, scanner))
-                        : tokens.push(createToken(EQUALS, 1, scanner));
+                        : tokens.push(createToken(ASSIGNMENT, 1, scanner));
                 case LEFT_PARENTHESES:
                     tokens.push(createToken(LEFT_PARENTHESES, 1, scanner));
                 case RIGHT_PARENTHESES:
@@ -79,13 +79,9 @@ class Lexer
                         ? scanner.consumeComment()
                         : tokens.push(createToken(DIVIDE, 1, scanner));
                 case LT:
-                    scanner.peekDouble() == '<'
-                        ? tokens.push(createToken(SHIFT_LEFT, 2, scanner))
-                        : throw "err";
+                    tokens.push(createToken(LESS_THAN, 1, scanner));
                 case GT:
-                    scanner.peekDouble() == '>'
-                        ? tokens.push(createToken(SHIFT_RIGHT, 2, scanner))
-                        : tokens.push(createToken(GREATER_THAN, 1, scanner));
+                    tokens.push(createToken(GREATER_THAN, 1, scanner));
                 case DURATION:
                     scanner.next();
                 case QUOTES:

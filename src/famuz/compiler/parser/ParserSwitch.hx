@@ -31,7 +31,7 @@ class ParserSwitch
     public static function parse(scanner :TokenScanner, context :Context, imports :Map<String, Context>) : Expr
     {
         var switch_ = scanner.next(); //switch
-        var e = Parser.parse(new Precedence(0), scanner, context, imports, false);
+        var e = Parser.parse(0, scanner, context, imports, false);
         scanner.next(); //{
 
         var cases :Array<Case> = [];
@@ -67,13 +67,13 @@ class ParserSwitch
         scanner.next(); //case
         var values :Array<Expr> = [];
         while(scanner.peek().isNotPunctuator(COLON)) {
-            values.push(Parser.parse(new Precedence(0), scanner, context, imports, false));
+            values.push(Parser.parse(0, scanner, context, imports, false));
             if(scanner.peek().isPunctuator(COMMA)) {
                 scanner.next();
             }
         }
         scanner.next(); //colon
-        var expr = Parser.parse(new Precedence(0), scanner, context, imports, false);
+        var expr = Parser.parse(0, scanner, context, imports, false);
 
         return {expr:expr, values: values};
     }
@@ -82,6 +82,6 @@ class ParserSwitch
     {
         scanner.next(); //default
         scanner.next(); //:
-        return Parser.parse(new Precedence(0), scanner, context, imports, false);
+        return Parser.parse(0, scanner, context, imports, false);
     }
 }
