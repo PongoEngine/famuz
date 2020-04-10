@@ -72,7 +72,7 @@ class Expr
                         var exprs = array.def.getArrayDecl().mapi((index, item) -> {
                             var i = new Expr(EConstant(CNumber(index)), TNumber, Position.identity());
                             var call = ECall(fn, [item, i]);
-                            return new Expr(call, TMono({ref:None}), Position.identity()).evaluate(context);
+                            new Expr(call, TMono({ref:None}), Position.identity()).evaluate(context);
                         });
                         new Expr(EArrayDecl(exprs), TArray({ref:exprs[0].t}), Position.identity());
                     case _: 
@@ -99,10 +99,11 @@ class Expr
                     : edef.evaluate(context);
 
             case EObjectDecl(fields):
+                var newFields = new Map<String, Expr>();
                 for(kv in fields.keyValueIterator()) {
-                    fields.set(kv.key, kv.value.evaluate(context));
+                    newFields.set(kv.key, kv.value.evaluate(context));
                 }
-                this;
+                new Expr(EObjectDecl(newFields), this.t, this.pos);
 
             case EArray(e1, e2):
                 var array = e1.evaluate(context).def.getArrayDecl();
@@ -110,10 +111,11 @@ class Expr
                 array[index];
 
             case EArrayDecl(arra):
-                for(i in 0...arra.length) {
-                    arra[i] = arra[i].evaluate(context);
+                var newArra = [];
+                for(item in arra) {
+                    newArra.push(item.evaluate(context));
                 }
-                this;
+                new Expr(EArrayDecl(newArra), this.t, this.pos);
 
             case EField(e, field):
                 switch e.evaluate(context).def {
@@ -133,8 +135,7 @@ class Expr
                         for(i in 0...params.length) {
                             ctx.addVarFunc(params[i], args[i]);
                         }
-                        var x = body.evaluate(ctx);
-                        x;
+                        body.evaluate(ctx);
                     case _: 
                         throw "err";
                 }
@@ -183,7 +184,8 @@ class Expr
                             case CBool(value): value
                                 ? eif.evaluate(context)
                                 : eelse.evaluate(context);
-                            case _: throw "err";
+                            case _:
+                                throw "err";
                         }
                     }
                     case _: throw "err";
