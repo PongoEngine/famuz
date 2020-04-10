@@ -29,7 +29,8 @@ class ParserStruct
 {
     public static function parse(scanner :TokenScanner, context :Context, imports :Map<String, Context>) : Expr
     {
-        var leftBrace = scanner.next();
+        var dollar = scanner.next();
+        scanner.next();
         var fields = new Map<String, Expr>();
 
         while (scanner.hasNext() && scanner.peek().isNotPunctuator(RIGHT_BRACE)) {
@@ -47,7 +48,7 @@ class ParserStruct
         return new Expr(
             EObjectDecl(fields),
 			TMono({ref: None}),
-            Position.union(leftBrace.pos, rightBrace.pos)
+            Position.union(dollar.pos, rightBrace.pos)
         );
     }
 }

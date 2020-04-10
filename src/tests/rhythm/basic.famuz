@@ -1,8 +1,5 @@
-func robot a b = {
-    {a: a,b:b}
-}
+func robot a b = ${a:a,b:b}
 
 func main = {
-    let r = {q:0}
-    print(r)
+    print(robot(0,10))
 }

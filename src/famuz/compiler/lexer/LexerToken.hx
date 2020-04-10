@@ -39,6 +39,8 @@ enum abstract LexerToken(String) from String
     var PERIOD = ".";
     var EQUALS = "=";
 
+    var DOLLAR = "$";
+
     var ADD = "+";
     var MULTIPLY = "*";
     var MINUS = "-";

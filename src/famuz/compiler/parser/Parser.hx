@@ -79,10 +79,10 @@ class Parser
                 switch type {
                     case LEFT_PARENTHESES: 
                         ParserParentheses.parse(scanner, context, imports);
+                    case DOLLAR:
+                        ParserStruct.parse(scanner, context, imports);
                     case LEFT_BRACE:
-                        isFunc
-                            ? ParserBlock.parse(scanner, context, imports)
-                            : ParserStruct.parse(scanner, context, imports);
+                        ParserBlock.parse(scanner, context, imports);
                     case LEFT_BRACKET: 
                         ParserArray.parse(scanner, context, imports);
                     case MINUS, BANG:
@@ -130,17 +130,17 @@ class Parser
             case TTPunctuator(type):
                 switch type {
                     case ADD, MINUS, EQUALITY, GREATER_THAN, LESS_THAN, DIVIDE, MULTIPLY: 
-                            ParserBinop.parse(left, scanner, context, imports, type);
+                        ParserBinop.parse(left, scanner, context, imports, type);
                     case LEFT_BRACKET: 
-                            ParserArrayAccess.parse(left, scanner, context, imports);
+                        ParserArrayAccess.parse(left, scanner, context, imports);
                     case PERIOD:
-                            ParserDot.parse(left, scanner, context, imports);
+                        ParserDot.parse(left, scanner, context, imports);
                     case QUESTION_MARK:
                         ParserTernary.parse(left, scanner, context, imports);
                     case LEFT_PARENTHESES:
                         ParserCall.parse(left, scanner, context, imports);
                     case ASSIGNMENT, BANG, RIGHT_PARENTHESES, LEFT_BRACE, RIGHT_BRACE, 
-                        RIGHT_BRACKET, COMMA, COLON: 
+                        RIGHT_BRACKET, COMMA, COLON, DOLLAR: 
                         null;
                 }
             case TTKeyword(_): 

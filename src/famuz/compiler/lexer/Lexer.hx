@@ -65,6 +65,8 @@ class Lexer
                     tokens.push(createToken(QUESTION_MARK, 1, scanner));
                 case COLON:
                     tokens.push(createToken(COLON, 1, scanner));
+                case DOLLAR:
+                    tokens.push(createToken(DOLLAR, 1, scanner));
                 case ADD:
                     tokens.push(createToken(ADD, 1, scanner));
                 case MULTIPLY:

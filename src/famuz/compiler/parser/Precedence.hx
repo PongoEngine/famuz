@@ -45,6 +45,7 @@ class Precedence
                     case MULTIPLY: 5;
                     case LEFT_BRACE: 6;
                     case LEFT_PARENTHESES: 7;
+                    case DOLLAR: 8;
                     case LEFT_BRACKET: 8;
                     case PERIOD: 9;
                 }
