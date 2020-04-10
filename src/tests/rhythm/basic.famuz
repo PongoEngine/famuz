@@ -1,8 +1,7 @@
-func robot a = {
-    {cool: a}
+func robot a b = {
+    {a: a,b:b}
 }
 
 func main = {
-    let r = (10 / 2 + 3 - 1 * 2 + 3 + 1) / 2 == 5 ? "good" : "bad"
-    print(r)
+    print(robot(10, 20).b)
 }

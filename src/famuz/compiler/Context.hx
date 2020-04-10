@@ -141,7 +141,7 @@ class ContextInnerOuter implements IContext
         }
         catch(e :Dynamic) {
             return _exprMap.exists(name)
-                ? return _exprMap.get(name)
+                ? _exprMap.get(name)
                 : _outer.getExpr(name);
         }
     }

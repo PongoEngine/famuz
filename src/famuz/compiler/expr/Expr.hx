@@ -71,12 +71,11 @@ class Expr
             case EConstant(constant):
                 switch constant {
                     case CIdentifier(str):
-                        context.getExpr(str).evaluate(context);
-                    case _:
-                        this;
+                        context.getExpr(str);
+                    case _: this;
                 }
 
-            case ESwitch(e, cases, edef): {
+            case ESwitch(e, cases, edef):
                 for(case_ in cases) {
                     for(v in case_.values) {
                         if(v.equals(e, context).def.getBool()) {
@@ -84,72 +83,52 @@ class Expr
                         }
                     }
                 }
-
                 edef == null
                     ? throw "err"
                     : edef.evaluate(context);
-            }
 
-            case EObjectDecl(_):
+            case EObjectDecl(fields):
+                for(kv in fields.keyValueIterator()) {
+                    fields.set(kv.key, kv.value.evaluate(context));
+                }
                 this;
 
             case EArray(e1, e2):
-                switch [e1.evaluate(context).def, e2.evaluate(context).def] {
-                    case [EArrayDecl(values), EConstant(constant)]: switch constant {
-                        case CNumber(index): values[index].evaluate(context);
-                        case _: throw "err";
-                    }
-                    case _: throw "err";
-                }
+                var array = e1.evaluate(context).def.getArrayDecl();
+                var index = e2.evaluate(context).def.getNumber();
+                array[index];
 
-            case EArrayDecl(_):
+            case EArrayDecl(arra):
+                for(i in 0...arra.length) {
+                    arra[i] = arra[i].evaluate(context);
+                }
                 this;
 
-            case EField(e, field): {
+            case EField(e, field):
                 switch e.evaluate(context).def {
                     case EObjectDecl(fields):
-                        fields.get(field);
+                        fields.get(field).evaluate(context);
                     case _:
                         throw "err";
                 }
-            }
 
             case EVar(_, expr):
                 expr.evaluate(context);
 
             case ECall(e, args):
                 switch e.evaluate(context).def {
-                    case EFunction(ident, params, body, scope): {
-                        if(args.length == params.length) {
-                            var callScoped = scope.clone();
-                            for(i in 0...args.length) {
-                                callScoped.addVarFunc(params[i], args[i].evaluate(context));
-                            }
-                            var ctxInnerOuter = new ContextInnerOuter(callScoped, context);
-                            body.evaluate(ctxInnerOuter);
+                    case EFunction(identifier, params, body, scope):
+                        var ctx = new ContextInnerOuter(scope, context);
+                        for(i in 0...params.length) {
+                            ctx.addVarFunc(params[i], args[i]);
                         }
-                        else if(args.length < params.length) {
-                            var callScoped = scope.clone();
-                            for(i in 0...args.length) {
-                                callScoped.addVarFunc(params[i], args[i]);
-                            }
-                            var ctxInnerOuter = new ContextInnerOuter(callScoped, context);
-                            var identParams = "";
-                            for(i in 0...args.length) {
-                                identParams += '_${params[i]}';
-                            }
-                            new Expr(EFunction(ident + identParams, params.slice(args.length), body, ctxInnerOuter), TMono({ref: None}), Position.identity());
-                        }
-                        else {
-                            Error.create(TooManyArgs(this.pos));
-                        }
-                    }
-                    case _:
+                        body.evaluate(ctx);
+                    case _: 
                         throw "err";
                 }
 
             case EBlock(exprs):
-                exprs[exprs.length - 1].evaluate(context);
+                exprs[exprs.length -1].evaluate(context);
 
             case EIf(econd, ethen, eelse):
                 switch econd.evaluate(context).def {
@@ -213,9 +192,9 @@ class Expr
                 expr.evaluate(context);
 
             case EPrint(expr):
-                var evalExpr = expr.evaluate(context);
-                trace('${this.pos.file}:${this.pos.line}: ${evalExpr}\n');
-                evalExpr;
+                var e = expr.evaluate(context);
+                trace('${this.pos.file}:${this.pos.line}: ${e}\n');
+                e;
 
             case EFunction(_, _, _):
                 this;

@@ -44,8 +44,8 @@ class Error
                 printErrorMsg('Missing punctuator: ${t}', pos);
             case MissingIdentifier(pos):
                 printErrorMsg('Missing identifier', pos);
-            case TooManyArgs(pos):
-                printErrorMsg('Too many args', pos);
+            case ArgLengthMismatch(pos):
+                printErrorMsg('Arg length mismatch', pos);
         }
     }
 
@@ -59,5 +59,5 @@ enum ParserError
 {
     MissingPunctuator(t :PunctuatorType, pos :Position);
     MissingIdentifier(pos :Position);
-    TooManyArgs(pos :Position);
+    ArgLengthMismatch(pos :Position);
 }
