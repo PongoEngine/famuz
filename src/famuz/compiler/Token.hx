@@ -22,7 +22,6 @@
 package famuz.compiler;
 
 import famuz.compiler.Position;
-import famuz.compiler.theory.Key;
 
 /**
  * 
