@@ -1,10 +1,14 @@
 <img src="./famous.png" height="200"  align="right">
 
+## Disclaimer
+
+This project is on hold while I work on a tool for Renoise. The goal of this project is to compose music and use as a source for other DAWs. There is a lot of work left to go. It is in an operable but not midi producing state.
+
 # Famuz
 
 > A Modular Music Format for famous compositions.
 
-Famuz is a programming language that compiles to Midi. The goal of this project is to create music from atomic musical definitions.
+Famuz is a programming language that compiles to Midi.
 
 ## Simple Example
 
