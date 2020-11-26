@@ -2,7 +2,7 @@
 
 ## Disclaimer
 
-This project is on hold while I work on a tool for Renoise. The goal of this project is to compose music and use as a source for other DAWs. There is a lot of work left to go. It is in an operable but not midi producing state.
+This project is on hold until I have more time. The goal of this project is to compose music and use as a source for other DAWs. There is a lot of work left to go. It is in an operable but not midi producing state.
 
 # Famuz
 
